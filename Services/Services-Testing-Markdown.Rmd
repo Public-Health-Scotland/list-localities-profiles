@@ -1,0 +1,57 @@
+---
+title: ''
+output:
+  word_document:
+    reference_docx: //conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality
+      Profiles/Master RMarkdown Document & Render Code/Locality_Profiles_Report_Template.docx
+  html_document:
+    df_print: paged
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(kableExtra.auto_format = FALSE)
+
+#Line below for testing only
+Loc <-  "Falkirk West"
+
+locality <- Loc
+LOCALITY <- Loc
+
+source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Services/Scripts/2. Services Outputs.R")
+
+x <- 1 #object for figure numbers
+y <- 1 #object for table numbers
+```
+
+
+##Services
+
+####Figure `r x`: Map of GP practices by locality in `r HSCP` HSCP^2^.
+
+\newline
+
+```{r echo = F}
+knitr::include_graphics("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Services/map.png")
+
+x <- x + 1
+```
+
+######ED = Emergency Department, MIU = Minor Injuries Unit (or other)
+
+\newline
+
+####Table `r y`: Number of each type of service in `r LOCALITY` Locality^2^.
+\newline
+
+```{r echo=F}
+knitr::kable(services_tibble, col.names = c("**Service Type**", "**Service**", "**Number**"))
+
+y <- y + 1
+```
+
+\newline
+
+In `r latest_year_access_dep`, `r format_number_for_text(access_dep_latest)`% of the population of `r LOCALITY` lived in the 15% most 'access deprived' areas.
+
