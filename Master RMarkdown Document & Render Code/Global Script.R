@@ -115,9 +115,9 @@ theme_profiles <- function() {
 ## Import the latest locality lookup from cl-out ----
 # Argument dz_level: Allows you to choose whether lookup contains all datazones in localities
 # default is F - datazones are not imported, there is one line per locality (125 rows)
-# if changed to dz_level = T, this shows all the datazones in each locality (6976 rows)
+# if changed to dz_level = TRUE, this shows all the datazones in each locality (6976 rows)
 
-read_in_localities <- function(dz_level = F) {
+read_in_localities <- function(dz_level = FALSE) {
   test <- data <- fs::dir_ls(
     glue(
       "/conf/linkage/output/lookups/Unicode/",
@@ -129,13 +129,13 @@ read_in_localities <- function(dz_level = F) {
     max() %>%
     read_rds()
 
-  if (dz_level == F) {
+  if (dz_level == FALSE) {
     data %>%
       clean_names() %>%
       mutate(hscp_locality = gsub("&", "and", hscp_locality)) %>%
       select(hscp_locality, hscp2019name, hscp2019, hb2019name, hb2019) %>%
       distinct()
-  } else if (dz_level == T) {
+  } else if (dz_level == TRUE) {
     data %>%
       clean_names() %>%
       mutate(hscp_locality = gsub("&", "and", hscp_locality)) %>%
@@ -162,7 +162,7 @@ read_in_postcodes <- function() {
     read_rds() %>%
     clean_names() %>%
     select(-c(hscp2019, hscp2019name, hb2019, hb2019name)) %>%
-    left_join(read_in_localities(dz_level = T))
+    left_join(read_in_localities(dz_level = TRUE))
 }
 
 
@@ -190,7 +190,7 @@ read_in_dz_pops <- function() {
       ca2018, ca2011,
       hscp2019, hscp2019name, hscp2018, hscp2016, hb2019, hb2019name, hb2018, hb2014
     )) %>%
-    left_join(read_in_localities(dz_level = T))
+    left_join(read_in_localities(dz_level = TRUE))
 }
 
 ## Function to read in latest population projections ----
@@ -255,9 +255,9 @@ clean_scotpho_dat <- function(data) {
 # (ScotPHO data uses year aggregates which don't always fit on axis unless wrapped)
 # rotate_xaxis: default F, if labels still don't fit even with wrapping (prev argument), labels can be rotated
 
-scotpho_time_trend <- function(data, chart_title, xaxis_title, yaxis_title, string_wrap, rotate_xaxis = F) {
+scotpho_time_trend <- function(data, chart_title, xaxis_title, yaxis_title, string_wrap, rotate_xaxis = FALSE) {
   # rotate axis criteria if T/F
-  if (rotate_xaxis == T) {
+  if (rotate_xaxis == TRUE) {
     rotation <- element_text(angle = 45, hjust = 1)
   } else {
     rotation <- element_text(angle = 0)
@@ -307,9 +307,9 @@ scotpho_time_trend <- function(data, chart_title, xaxis_title, yaxis_title, stri
 }
 
 
-scotpho_time_trend_HSCP <- function(data, chart_title, xaxis_title, yaxis_title, string_wrap, rotate_xaxis = F) {
+scotpho_time_trend_HSCP <- function(data, chart_title, xaxis_title, yaxis_title, string_wrap, rotate_xaxis = FALSE) {
   # rotate axis criteria if T/F
-  if (rotate_xaxis == T) {
+  if (rotate_xaxis == TRUE) {
     rotation <- element_text(angle = 45, hjust = 1)
   } else {
     rotation <- element_text(angle = 0)

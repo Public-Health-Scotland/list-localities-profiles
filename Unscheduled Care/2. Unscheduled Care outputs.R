@@ -986,7 +986,7 @@ psych_hosp_time_trend <- psych_hosp %>%
     xaxis_title = "Financial Year Groups (3-year aggregates)",
     yaxis_title = "Psychiatric patient hospitalisations\n(Standardised rates per 100,000)",
     string_wrap = 10,
-    rotate_xaxis = T
+    rotate_xaxis = TRUE
   )
 
 psych_hosp_time_trend

@@ -41,7 +41,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 ### Geographical lookups and objects ----
 
 # Locality lookup
-lookup <- read_in_localities(dz_level = T)
+lookup <- read_in_localities(dz_level = TRUE)
 
 # Lookup without datazones
 lookup2 <- read_in_localities()

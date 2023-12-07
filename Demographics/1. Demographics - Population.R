@@ -159,7 +159,7 @@ pop_pyramid <- ggplot(
   ) +
   coord_flip() +
   scale_fill_manual(values = palette) +
-  theme_profiles() + # guides(fill = F)
+  theme_profiles() + # guides(fill = FALSE)
   labs(
     y = "Population", x = "Age Group",
     title = paste0(str_wrap(`LOCALITY`, 50), " population pyramid")

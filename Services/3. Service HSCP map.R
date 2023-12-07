@@ -53,7 +53,7 @@ source("Services/Scripts/2. Services data manipulation & table.R")
 
 shp <- readOGR(
   dsn = "/conf/linkage/output/lookups/Unicode/Geography/Shapefiles/HSCP Locality (Datazone2011 Base)",
-  layer = "HSCP_Locality", GDAL1_integer64_policy = T
+  layer = "HSCP_Locality", GDAL1_integer64_policy = TRUE
 )
 
 shp <- spTransform(shp, "+init=epsg:4326")
@@ -111,7 +111,7 @@ service_map <-
     fillColor = ~ loc.cols(hscp_locality),
     fillOpacity = 0.5,
     color = "#2e2e30",
-    stroke = T,
+    stroke = TRUE,
     weight = 2,
     label = ~hscp_locality,
     group = "Locality"

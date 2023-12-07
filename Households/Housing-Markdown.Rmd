@@ -48,7 +48,7 @@ The graph below shows the number of dwellings in `r LOCALITY` from `r min(house_
 ####Figure `r x`: Number of dwellings time trend.
 \newline
 
-```{r echo = FALSE, fig.width= 7, fig.height= 3, warning = F}
+```{r echo = FALSE, fig.width= 7, fig.height= 3, warning = FALSE}
 houses_ts
 
 x <- x + 1
@@ -82,7 +82,7 @@ The proportion of households within each council tax band are displayed in the c
 ####Figure `r x`: Breakdown of households by council tax band for `r LOCALITY` in `r max_year_housing`.
 \newline
 
-```{r echo = FALSE, fig.width= 7, fig.height= 2, warning = F}
+```{r echo = FALSE, fig.width= 7, fig.height= 2, warning = FALSE}
 ctb_plot
 
 x <- x + 1

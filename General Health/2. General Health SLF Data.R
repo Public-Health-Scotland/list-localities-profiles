@@ -32,7 +32,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 ### Geographical lookups and objects ----
 
 # Locality lookup
-lookup <- read_in_localities(dz_level = T)
+lookup <- read_in_localities(dz_level = TRUE)
 
 # Read in SLF individual level file
 slf <- read.fst(paste0(

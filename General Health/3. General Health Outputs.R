@@ -425,7 +425,7 @@ adp_presc_time_trend <- adp_presc %>%
     xaxis_title = "Financial Year",
     yaxis_title = "Population prescribed\n medication (%)",
     string_wrap = 20,
-    rotate_xaxis = T
+    rotate_xaxis = TRUE
   )
 
 adp_presc_time_trend
