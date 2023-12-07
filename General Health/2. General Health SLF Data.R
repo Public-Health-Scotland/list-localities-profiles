@@ -28,6 +28,7 @@ lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality
 # Source in functions code
 source("Master RMarkdown Document & Render Code/Global Script.R")
 
+
 ### Geographical lookups and objects ----
 
 # Locality lookup

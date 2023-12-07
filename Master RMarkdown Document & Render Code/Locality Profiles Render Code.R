@@ -71,18 +71,20 @@ for (LOCALITY in locality_list) {
   
   # appendices
   source("Master RMarkdown Document & Render Code/Tables for Appendix.R")
-  
+
   # Remove tidylog package which messes up outputs
   detach(package:tidylog, unload = TRUE)
 
   ## 2b) Create the main body of the profiles
   
   rmarkdown::render("Master RMarkdown Document & Render Code/Locality_Profiles_Master_Markdown.Rmd",
-                    output_file =  paste0(LOCALITY, " - Locality Profile.docx"),
-                    output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/"))
-  
+    output_file = paste0(LOCALITY, " - Locality Profile.docx"),
+    output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/")
+  )
+
   ## 2c) Create the summary tables
   rmarkdown::render("Summary Table/Summary-Table-Markdown.Rmd",
-                    output_file = paste0(LOCALITY, " - Summary Table.docx"),
-                    output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/Summary Tables/"))
+    output_file = paste0(LOCALITY, " - Summary Table.docx"),
+    output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/Summary Tables/")
+  )
 }
