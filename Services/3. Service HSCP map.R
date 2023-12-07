@@ -131,7 +131,11 @@ service_map <-
 ## Screenshot the map
 # It gets saved in the Services folder and inserted in the R Markdown document
 # Every time the R Markdown is run, the previous map is overwritten.
+<<<<<<< HEAD
 mapshot(service_map, file = paste0(lp_path, "/Services/map.png"))
+=======
+mapshot(service_map, file = "/Services/map.png")
+>>>>>>> 55314fccbe9c9bb769ecc04250e748924f543690
 
 
 #remove unnecessary objects

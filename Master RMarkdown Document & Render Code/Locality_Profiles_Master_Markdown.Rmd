@@ -45,7 +45,11 @@ y <- 1 #tables
 # source("Unscheduled Care/Scripts/2. Unscheduled Care outputs.R")
 # 
 # #appendices
+<<<<<<< HEAD
 # source(paste0(lp_path, "Master RMarkdown Document & Render Code/Tables for Appendix.R"))
+=======
+# source("Master RMarkdown Document & Render Code/Tables for Appendix.R")
+>>>>>>> 55314fccbe9c9bb769ecc04250e748924f543690
 
 library(tidyverse) 
 library(knitr)

@@ -39,7 +39,11 @@ Sys.umask("006")
 Sys.getenv("R_ZIPCMD", "zip")
 
 # Folder to export to
+<<<<<<< HEAD
 exportfolder <- paste0(lp_path, "Unscheduled Care/DATA ", ext_year, "/")
+=======
+exportfolder <- "Unscheduled Care/DATA ", ext_year, "/"
+>>>>>>> 55314fccbe9c9bb769ecc04250e748924f543690
 
 
 ## Lookups ----

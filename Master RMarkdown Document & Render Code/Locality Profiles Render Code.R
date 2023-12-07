@@ -43,7 +43,11 @@ locality_list <- lookup %>%
           #2c. Run the Rmd for the summary tables
 
 # 1. HSCP Services Map
+<<<<<<< HEAD
 source(paste0(lp_path, "Services/Scripts/3. Service HSCP map.R"))
+=======
+source("Services/Scripts/3. Service HSCP map.R")
+>>>>>>> 55314fccbe9c9bb769ecc04250e748924f543690
 
 
 # 2. Loop through each locality to create the main body of the profiles and the summary table
@@ -71,7 +75,11 @@ for (LOCALITY in locality_list){
   source("Unscheduled Care/Scripts/2. Unscheduled Care outputs.R")
   
   #appendices
+<<<<<<< HEAD
   source(paste0(lp_path, "Master RMarkdown Document & Render Code/Tables for Appendix.R"))
+=======
+  source("Master RMarkdown Document & Render Code/Tables for Appendix.R")
+>>>>>>> 55314fccbe9c9bb769ecc04250e748924f543690
   
   # Remove tidylog package which messes up outputs
   detach(package:tidylog, unload=TRUE)
@@ -79,11 +87,20 @@ for (LOCALITY in locality_list){
   ## 2b) Create the main body of the profiles
   rmarkdown::render("Master RMarkdown Document & Render Code/Locality_Profiles_Master_Markdown.Rmd",
                     output_file =  paste0(LOCALITY, " - Locality Profile.docx"),
+<<<<<<< HEAD
                     output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/"))
   
   ## 2c) Create the summary tables
   rmarkdown::render(paste0(lp_path, "Summary Table/Summary-Table-Markdown.Rmd"),
                     output_file = paste0(LOCALITY, " - Summary Table.docx"),
                     output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/Summary Tables/"))
+=======
+                    output_dir = "Master RMarkdown Document & Render Code/Output/")
+  
+  ## 2c) Create the summary tables
+  rmarkdown::render("Summary Table/Summary-Table-Markdown.Rmd",
+                    output_file = paste0(LOCALITY, " - Summary Table.docx"),
+                    output_dir = "Master RMarkdown Document & Render Code/Output/Summary Tables/")
+>>>>>>> 55314fccbe9c9bb769ecc04250e748924f543690
 }
 

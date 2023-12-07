@@ -69,7 +69,11 @@ n_loc <- lookup %>%
 ### Import + clean datasets ----
 
 ## Drug-related hospital admissions
+<<<<<<< HEAD
 drug_hosp <- readRDS(paste0(lp_path, "Lifestyle & Risk Factors/Data ", ext_year, "/scotpho_data_extract_drug_hosp.RDS"))  %>%
+=======
+drug_hosp <- readRDS("Lifestyle & Risk Factors/Data ", ext_year, "/scotpho_data_extract_drug_hosp.RDS")  %>%
+>>>>>>> 55314fccbe9c9bb769ecc04250e748924f543690
   clean_scotpho_dat() %>% 
   mutate(period_short = gsub("to", "-", substr(period, 1, 18)))
 
@@ -77,7 +81,11 @@ check_missing_data_scotpho(drug_hosp)
 
 
 # Alcohol-related hospital admissions
+<<<<<<< HEAD
 alcohol_hosp <- readRDS(paste0(lp_path, "Lifestyle & Risk Factors/Data ", ext_year, "/scotpho_data_extract_alcohol_hosp.RDS"))  %>%
+=======
+alcohol_hosp <- readRDS("Lifestyle & Risk Factors/Data ", ext_year, "/scotpho_data_extract_alcohol_hosp.RDS")  %>%
+>>>>>>> 55314fccbe9c9bb769ecc04250e748924f543690
   clean_scotpho_dat() %>% 
   mutate(period_short = substr(period, 1, 7))
 
@@ -85,14 +93,22 @@ check_missing_data_scotpho(alcohol_hosp)
 
 
 ## Alcohol-specific deaths
+<<<<<<< HEAD
 alcohol_deaths <- readRDS(paste0(lp_path, "Lifestyle & Risk Factors/Data ", ext_year, "/scotpho_data_extract_alcohol_deaths.RDS"))  %>%
+=======
+alcohol_deaths <- readRDS("Lifestyle & Risk Factors/Data ", ext_year, "/scotpho_data_extract_alcohol_deaths.RDS")  %>%
+>>>>>>> 55314fccbe9c9bb769ecc04250e748924f543690
   clean_scotpho_dat() %>% 
   mutate(period_short = gsub("to", "-", substr(period, 1, 12)))
 
 check_missing_data_scotpho(alcohol_deaths)
 
 ## Bowel screening uptake
+<<<<<<< HEAD
 bowel_screening <- readRDS(paste0(lp_path, "Lifestyle & Risk Factors/Data ", ext_year, "/scotpho_data_extract_bowel_screening.RDS"))  %>%
+=======
+bowel_screening <- readRDS("Lifestyle & Risk Factors/Data ", ext_year, "/scotpho_data_extract_bowel_screening.RDS")  %>%
+>>>>>>> 55314fccbe9c9bb769ecc04250e748924f543690
   clean_scotpho_dat() %>% 
   mutate(period_short = gsub("to", "-", substr(period, 1, 12)))
 

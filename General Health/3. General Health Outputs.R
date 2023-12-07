@@ -84,10 +84,17 @@ theme_icon <- function () {
 # Life expectancy
 
 # Males
+<<<<<<< HEAD
 life_exp_male <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_life_exp_male.RDS")) %>%
   clean_scotpho_dat()
 # Females
 life_exp_fem <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_life_exp_fem.RDS")) %>%
+=======
+life_exp_male <- readRDS("General Health/DATA ", ext_year, "/scotpho_data_extract_life_exp_male.RDS") %>%
+  clean_scotpho_dat()
+# Females
+life_exp_fem <- readRDS("General Health/DATA ", ext_year, "/scotpho_data_extract_life_exp_fem.RDS") %>%
+>>>>>>> 55314fccbe9c9bb769ecc04250e748924f543690
   clean_scotpho_dat()
 
 life_exp <- bind_rows(life_exp_male, life_exp_fem) %>% 
@@ -99,21 +106,33 @@ rm(life_exp_fem, life_exp_male)
 check_missing_data_scotpho(life_exp)
 
 ## Deaths aged 15-44
+<<<<<<< HEAD
 deaths_15_44 <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_deaths_15_44.RDS"))  %>%
+=======
+deaths_15_44 <- readRDS("General Health/DATA ", ext_year, "/scotpho_data_extract_deaths_15_44.RDS")  %>%
+>>>>>>> 55314fccbe9c9bb769ecc04250e748924f543690
   clean_scotpho_dat() %>% 
   mutate(period_short = gsub("to", "-", substr(period, 1, 12)))
 
 check_missing_data_scotpho(deaths_15_44)
 
 ## Cancer registrations
+<<<<<<< HEAD
 cancer_reg <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_cancer_reg.RDS"))  %>%
+=======
+cancer_reg <- readRDS("General Health/DATA ", ext_year, "/scotpho_data_extract_cancer_reg.RDS")  %>%
+>>>>>>> 55314fccbe9c9bb769ecc04250e748924f543690
   clean_scotpho_dat() %>% 
   mutate(period_short = gsub("to", "-", substr(period, 1, 12))) 
 
 check_missing_data_scotpho(cancer_reg)
 
 ## Early deaths cancer
+<<<<<<< HEAD
 early_deaths_cancer <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_early_deaths_cancer.RDS"))  %>%
+=======
+early_deaths_cancer <- readRDS("General Health/DATA ", ext_year, "/scotpho_data_extract_early_deaths_cancer.RDS")  %>%
+>>>>>>> 55314fccbe9c9bb769ecc04250e748924f543690
   clean_scotpho_dat() %>% 
   mutate(period_short = gsub("to", "-", substr(period, 1, 12))) 
 
@@ -121,21 +140,33 @@ check_missing_data_scotpho(early_deaths_cancer)
 
 
 ## Asthma hospitalisations
+<<<<<<< HEAD
 asthma_hosp <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_asthma_hosp.RDS"))  %>%
+=======
+asthma_hosp <- readRDS("General Health/DATA ", ext_year, "/scotpho_data_extract_asthma_hosp.RDS")  %>%
+>>>>>>> 55314fccbe9c9bb769ecc04250e748924f543690
   clean_scotpho_dat() %>% 
   mutate(period_short = gsub("to", "-", substr(period, 1, 18))) 
 
 check_missing_data_scotpho(asthma_hosp)
 
 ## CHD hospitalisations
+<<<<<<< HEAD
 chd_hosp <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_chd_hosp.RDS"))  %>%
+=======
+chd_hosp <- readRDS("General Health/DATA ", ext_year, "/scotpho_data_extract_chd_hosp.RDS")  %>%
+>>>>>>> 55314fccbe9c9bb769ecc04250e748924f543690
   clean_scotpho_dat() %>% 
   mutate(period_short = gsub("to", "-", substr(period, 1, 18))) 
 
 check_missing_data_scotpho(chd_hosp)
 
 ## COPD hospitalisations
+<<<<<<< HEAD
 copd_hosp <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_copd_hosp.RDS"))  %>%
+=======
+copd_hosp <- readRDS("General Health/DATA ", ext_year, "/scotpho_data_extract_copd_hosp.RDS")  %>%
+>>>>>>> 55314fccbe9c9bb769ecc04250e748924f543690
   clean_scotpho_dat() %>% 
   mutate(period_short = gsub("to", "-", substr(period, 1, 18))) 
 
@@ -150,7 +181,11 @@ check_missing_data_scotpho(adp_presc)
 
 
 #Long-term conditions
+<<<<<<< HEAD
 ltc <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/LTC_from_SLF.RDS"))
+=======
+ltc <- readRDS("General Health/DATA ", ext_year, "/LTC_from_SLF.RDS")
+>>>>>>> 55314fccbe9c9bb769ecc04250e748924f543690
 
 ltc <- dplyr::rename(ltc, 'Arthritis' = 'arth', 'Asthma' = 'asthma', 'Atrial fibrillation' = 'atrialfib', 'Cancer' = 'cancer', 
                    'Cardiovascular disease' = 'cvd', 'Liver disease' = 'liver', 'COPD*' = 'copd', 'Dementia' = 'dementia', 
@@ -452,6 +487,7 @@ ltc_scot <- ltc %>%
 
 #Load images
 #under 65
+<<<<<<< HEAD
 ppl_bold_u65 <- readPNG(paste0(lp_path, "General Health/infographics/people bold under 65.png"))
 ppl_faint_u65 <- readPNG(paste0(lp_path, "General Health/infographics/people faint under 65.png"))
 #65-74
@@ -463,6 +499,19 @@ ppl_faint_7584<- readPNG(paste0(lp_path, "General Health/infographics/people fai
 #over 85
 ppl_bold_o85 <- readPNG(paste0(lp_path, "General Health/infographics/people bold over 85.png"))
 ppl_faint_o85 <- readPNG(paste0(lp_path, "General Health/infographics/people faint over 85.png"))
+=======
+ppl_bold_u65 <- readPNG("General Health/infographics/people bold under 65.png")
+ppl_faint_u65 <- readPNG("General Health/infographics/people faint under 65.png")
+#65-74
+ppl_bold_6574 <- readPNG("General Health/infographics/people bold 65-74.png")
+ppl_faint_6574<- readPNG("General Health/infographics/people faint 65-74.png")
+#75-84
+ppl_bold_7584 <- readPNG("General Health/infographics/people bold 75-84.png")
+ppl_faint_7584<- readPNG("General Health/infographics/people faint 75-84.png")
+#over 85
+ppl_bold_o85 <- readPNG("General Health/infographics/people bold over 85.png")
+ppl_faint_o85 <- readPNG("General Health/infographics/people faint over 85.png")
+>>>>>>> 55314fccbe9c9bb769ecc04250e748924f543690
 
 # LTC infographic waffle chart
 create_infographic <- function(image1, image2, perc_ltc, col, age_label1, age_label2){
@@ -993,5 +1042,9 @@ scot_ltc <- round_half_up((sum(filter(ltc_scot, total_ltc > 0)$people) / ltc_pop
 # writexl::write_xlsx(x = list("Total Pop with LTC Age" = sdc1,
 #                              "LTC Multimorbidity Age" = sdc2,
 #                              "LTC Types Age" = sdc3),
+<<<<<<< HEAD
 #                  path = paste0(lp_path, "Publishing/LTC Data.xlsx"))
+=======
+#                     path = "Publishing/LTC Data.xlsx")
+>>>>>>> 55314fccbe9c9bb769ecc04250e748924f543690
   

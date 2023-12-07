@@ -69,7 +69,11 @@ postcode_lkp <- read_in_postcodes() %>%
 
 ## Read in all data in services folder
 
+<<<<<<< HEAD
 services_file_names <- list.files(paste0(lp_path, "Services/DATA ", ext_year), pattern = "RDS")
+=======
+services_file_names <- list.files("Services/DATA ", ext_year), pattern = "RDS"
+>>>>>>> 55314fccbe9c9bb769ecc04250e748924f543690
 
 for (file in services_file_names) {
   
