@@ -75,8 +75,8 @@ ca_pop <- readRDS(paste0(lookups, "CA Populations.rds"))
 data <- data %>%
   arrange(link_no, cis_marker, admission_date, discharge_date) %>%
   mutate(
-    specialty = ifelse(is.na(specialty) == TRUE, "NA", specialty),
-    hospital_type = ifelse(is.na(hospital_type) == TRUE, "NA",
+    specialty = ifelse(is.na(specialty), "NA", specialty),
+    hospital_type = ifelse(is.na(hospital_type), "NA",
       as.character(hospital_type)
     )
   )

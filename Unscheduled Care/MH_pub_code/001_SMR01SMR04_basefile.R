@@ -224,7 +224,7 @@ data_smr01 <- data_smr01 %>%
 
 ### 7 - Remove any record where link no is missing ----
 data_smr01 <- data_smr01 %>%
-  filter(is.na(link_no) == FALSE)
+  filter(!is.na(link_no))
 
 
 ###########################################
@@ -240,7 +240,7 @@ names(data_smr04) <- tolower(names(data_smr04))
 data_smr04 <- data_smr04 %>%
   mutate(
     discharge_date = substr(discharge_date, 1, 10),
-    discharge_date = ifelse(is.na(discharge_date) == TRUE, future_date,
+    discharge_date = ifelse(is.na(discharge_date), future_date,
       discharge_date
     )
   )
@@ -271,13 +271,13 @@ data_smr04 <- data_smr04 %>%
 
 ### 5 - Remove any record where link no is missing ----
 data_smr04 <- data_smr04 %>%
-  filter(is.na(link_no) == FALSE)
+  filter(!is.na(link_no))
 
 
 ### 6 - Hospital Type Recode ----
 # Hospital Types
 data_smr04 <- data_smr04 %>%
-  mutate(hospital_type = ifelse(is.na(hospital_type) == TRUE, 0, hospital_type))
+  mutate(hospital_type = ifelse(is.na(hospital_type), 0, hospital_type))
 
 
 ### 7 - Financial Year Derivation ----
@@ -499,8 +499,8 @@ data_res <- data_res %>%
 # 'Fill in' the SMR01/04 variables with 0s if case is not from relevant dataset
 data_smr_all <- data_smr_all %>%
   mutate(
-    SMR01 = ifelse(is.na(SMR01) == TRUE, 0, SMR01),
-    SMR04 = ifelse(is.na(SMR04) == TRUE, 0, SMR04)
+    SMR01 = ifelse(is.na(SMR01), 0, SMR01),
+    SMR04 = ifelse(is.na(SMR04), 0, SMR04)
   )
 
 

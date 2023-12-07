@@ -129,13 +129,13 @@ read_in_localities <- function(dz_level = FALSE) {
     max() %>%
     read_rds()
 
-  if (dz_level == FALSE) {
+  if (!dz_level) {
     data %>%
       clean_names() %>%
       mutate(hscp_locality = gsub("&", "and", hscp_locality)) %>%
       select(hscp_locality, hscp2019name, hscp2019, hb2019name, hb2019) %>%
       distinct()
-  } else if (dz_level == TRUE) {
+  } else if (dz_level) {
     data %>%
       clean_names() %>%
       mutate(hscp_locality = gsub("&", "and", hscp_locality)) %>%
@@ -257,7 +257,7 @@ clean_scotpho_dat <- function(data) {
 
 scotpho_time_trend <- function(data, chart_title, xaxis_title, yaxis_title, string_wrap, rotate_xaxis = FALSE) {
   # rotate axis criteria if T/F
-  if (rotate_xaxis == TRUE) {
+  if (rotate_xaxis) {
     rotation <- element_text(angle = 45, hjust = 1)
   } else {
     rotation <- element_text(angle = 0)
@@ -309,7 +309,7 @@ scotpho_time_trend <- function(data, chart_title, xaxis_title, yaxis_title, stri
 
 scotpho_time_trend_HSCP <- function(data, chart_title, xaxis_title, yaxis_title, string_wrap, rotate_xaxis = FALSE) {
   # rotate axis criteria if T/F
-  if (rotate_xaxis == TRUE) {
+  if (rotate_xaxis) {
     rotation <- element_text(angle = 45, hjust = 1)
   } else {
     rotation <- element_text(angle = 0)
