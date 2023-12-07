@@ -9,7 +9,7 @@ output:
 ---
 
 
-```{r setup, include=FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 options(kableExtra.auto_format = FALSE)
 
@@ -63,7 +63,7 @@ Figure `r x + 1` then compares different areas, including the other localities i
 #### Figure `r x`: Alcohol-related hospital admission rates by area and over time.
 \newline
 
-```{r echo=FALSE, fig.width= 7.5, fig.height = 4, warning= FALSE}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 4, warning = FALSE}
 alcohol_hosp_time_trend
 
 x <- x + 1
@@ -72,7 +72,7 @@ x <- x + 1
 #### Figure `r x`: Alcohol-related hospital admissions by area for the latest time period.
 \newline
 
-```{r echo=FALSE, fig.width= 7.5, fig.height = 4.8, warning= FALSE}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 4.8, warning = FALSE}
 alcohol_hosp_bar
 
 x <- x + 1
@@ -87,7 +87,7 @@ Data on alcohol-specific deaths is available as 5-year aggregates. In `r LOCALIT
 #### Figure `r x`: Alcohol-specific deaths by area and over time.
 \newline
 
-```{r echo=FALSE, fig.width= 7.5, fig.height = 3.6, warning= FALSE}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 3.6, warning = FALSE}
 alcohol_deaths_time_trend
 
 x <- x + 1
@@ -96,7 +96,7 @@ x <- x + 1
 #### Figure `r x`: Alcohol-specific deaths by area for the latest time period available.
 \newline
 
-```{r echo=FALSE, fig.width= 7.5, fig.height = 4.5, warning= FALSE}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 4.5, warning = FALSE}
 alcohol_deaths_bar
 
 x <- x + 1
@@ -113,7 +113,7 @@ A comparison of areas at the most recent time period  (`r latest_period_drug_hos
 #### Figure `r x`: Drug-related hospital admission rates by area and over time.
 \newline
 
-```{r echo=FALSE, fig.width= 7.5, fig.height = 4, warning= FALSE}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 4, warning = FALSE}
 drug_hosp_time_trend
 
 x <- x + 1
@@ -123,7 +123,7 @@ x <- x + 1
 
 #### Figure `r x`: Drug-related hospital admission rates by area for the latest time period available.
 
-```{r echo=FALSE, fig.width= 7.5, fig.height = 4.8, warning= FALSE}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 4.8, warning = FALSE}
 drug_hosp_bar
 
 x <- x + 1
@@ -143,7 +143,7 @@ A trend of the percentage uptake of bowel screening among the eligible populatio
 #### Figure `r x`: Bowel screening uptake for eligible men and women, by area and over time. 
 \newline
 
-```{r echo=FALSE, fig.width= 7.5, fig.height = 4, warning= FALSE}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 4, warning = FALSE}
 bowel_screening_time_trend
 
 x <- x + 1
@@ -152,7 +152,7 @@ x <- x + 1
 #### Figure `r x`: Bowel screening uptake by area for the latest time period available.
 \newline
 
-```{r echo=FALSE, fig.width= 7.5, fig.height = 4.8, warning= FALSE}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 4.8, warning = FALSE}
 bowel_screening_bar
 
 x <- x + 1

@@ -9,7 +9,7 @@ output:
 ---
 
 
-```{r setup, include=FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 options(kableExtra.auto_format = FALSE)
 
@@ -45,7 +45,7 @@ x <- x + 1
 ####Table `r y`: Number of each type of service in `r LOCALITY` Locality^2^.
 \newline
 
-```{r echo= FALSE}
+```{r echo = FALSE}
 knitr::kable(services_tibble, col.names = c("**Service Type**", "**Service**", "**Number**"))
 
 y <- y + 1

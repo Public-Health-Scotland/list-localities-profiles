@@ -9,7 +9,7 @@ output:
 ---
 
 
-```{r setup, include=FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 options(kableExtra.auto_format = FALSE)
 
@@ -52,7 +52,7 @@ library(knitr)
 library(gridExtra)
 library(grid)
 
-# detach(package:tidylog, unload=TRUE)
+# detach(package:tidylog, unload = TRUE)
 ```
 
 #####Page break
@@ -93,7 +93,7 @@ In `r pop_max_year`, the total population of `r LOCALITY` locality was `r total_
 
 \newline
 
-```{r echo = FALSE, fig.width=6, fig.height= 3, warning = FALSE}
+```{r echo = FALSE, fig.width = 6, fig.height = 3, warning = FALSE}
 pop_pyramid
 
 x <- x + 1
@@ -109,7 +109,7 @@ Figure `r x` shows the historical population of `r LOCALITY`, along with the NRS
 ####Figure `r x`: Population time trend and projection.
 \newline
 
-```{r echo = FALSE, fig.width= 7, fig.height= 3, warning = FALSE}
+```{r echo = FALSE, fig.width = 7, fig.height = 3, warning = FALSE}
 pop_ts_plot
 
 x <- x + 1
@@ -122,7 +122,7 @@ Figure `r x` shows how the population structure has changed between `r pop_min_y
 ####Figure `r x`: Change in population structure over the last five years.
 \newline
 
-```{r echo = FALSE, fig.width= 7, fig.height= 3.5, warning = FALSE}
+```{r echo = FALSE, fig.width = 7, fig.height = 3.5, warning = FALSE}
 hist_pop_change
 
 x <- x + 1
@@ -138,7 +138,7 @@ Of the `r pop_max_year` population in `r LOCALITY`, **`r perc_bottom_quintile`%*
 
 ####Figure `r x`: Map of Data Zones within `r LOCALITY` coloured by SIMD  quintiles.
 
-```{r echo = FALSE, fig.width= 7, warning = FALSE}
+```{r echo = FALSE, fig.width = 7, warning = FALSE}
 simd_map
 
 x <- x + 1
@@ -170,7 +170,7 @@ Source: Scottish Government, Public Health Scotland, National Records Scotland.
 ####Figure `r x`: Proportion of the population that reside in each 2020 SIMD quintile by domain in `r pop_max_year`.
 \newline
 
-```{r echo = FALSE, fig.width= 7, fig.height=4, warning = FALSE}
+```{r echo = FALSE, fig.width = 7, fig.height = 4, warning = FALSE}
 simd_domains
 
 x <- x + 1
@@ -187,7 +187,7 @@ Figure `r x` presents a comparison between the 2016 SIMD ranking applied to 2016
 
 \newline
 
-```{r echo = FALSE, fig.width= 7.5, fig.height= 7, warning = FALSE}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 7, warning = FALSE}
 simd_diff_plot
 
 x <- x + 1
@@ -215,7 +215,7 @@ x <- x + 1
 ####Table `r y`: Number of each type of service in `r LOCALITY` Locality^2^.
 \newline
 
-```{r echo= FALSE}
+```{r echo = FALSE}
 knitr::kable(services_tibble, col.names = c("**Service Type**", "**Service**", "**Number**"), format = "markdown")
 
 y <- y + 1
@@ -248,7 +248,7 @@ The graph below shows the number of dwellings in `r LOCALITY` from `r min(house_
 ####Figure `r x`: Number of dwellings time trend.
 \newline
 
-```{r echo = FALSE, fig.width= 7, fig.height= 3, warning = FALSE}
+```{r echo = FALSE, fig.width = 7, fig.height = 3, warning = FALSE}
 houses_ts
 
 x <- x + 1
@@ -282,7 +282,7 @@ The proportion of households within each council tax band are displayed in the c
 ####Figure `r x`: Breakdown of households by council tax band for `r LOCALITY` in `r max_year_housing`.
 \newline
 
-```{r echo = FALSE, fig.width= 7, fig.height= 2, warning = FALSE}
+```{r echo = FALSE, fig.width = 7, fig.height = 2, warning = FALSE}
 ctb_plot
 
 x <- x + 1
@@ -314,7 +314,7 @@ Source: Scottish Assessors’ Association (via NRS)
 
 For the most recent time period available^3^, `r LOCALITY` Locality had:
 
-```{r echo=FALSE}
+```{r echo = FALSE}
 life_exp_text <- if (is.na(avg_life_exp_latest_male)) {
   "No data available for life expectancy."
 } else {
@@ -343,7 +343,7 @@ life_exp_text2 <- if (is.na(avg_life_exp_latest_male)) {
 ####Figure `r x`: Average life expectancy in men and women over time.
 \newline
 
-```{r echo=FALSE, fig.width = 6, fig.height= 3.5}
+```{r echo = FALSE, fig.width = 6, fig.height = 3.5}
 if (LOCALITY %in% check_missing_data_scotpho(life_exp)$area_name) {
   print("No data available for this locality")
 } else {
@@ -362,7 +362,7 @@ Table `r y` provides the average life expectancy for men and women in different 
 
 \newline
 
-```{r echo=FALSE}
+```{r echo = FALSE}
 knitr::kable(life_exp_table, format = "markdown")
 
 y <- y + 1
@@ -381,7 +381,7 @@ The following chart shows a trend of death rates among 15-44 year olds per 100,0
 ####Figure `r x`: Deaths aged 15-44 years by geographical area and over time.
 \newline
 
-```{r echo=FALSE, fig.width = 7.5, fig.height= 4.2}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 4.2}
 deaths_15_44_time_trend
 
 x <- x + 1
@@ -395,7 +395,7 @@ Figure `r x` provides comparisons of deaths at ages 15-44 across all areas inclu
 ####Figure `r x`: Deaths at ages 15-44 by area for the latest time period available.
 \newline
 
-```{r echo=FALSE, fig.width = 7.5, fig.height= 4.8}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 4.8}
 deaths_15_44_bar
 
 x <- x + 1
@@ -409,7 +409,7 @@ x <- x + 1
 
 In the financial year `r latest_year_ltc`, in `r LOCALITY` Locality, it is estimated that **`r format_number_for_text(ltc_percent_total_latest)`%** of the population had at least one physical long-term condition (LTC). These include: cardiovascular, neurodegenerative, and respiratory conditions, as well as other organ conditions (namely liver disease and renal failure), arthritis, cancer, diabetes, and epilepsy. *Please note that estimates for this section are based on people who had contact with NHS services - see footnotes for further information and caveats on identifying LTCs.^5^*
 
-```{r echo=FALSE, fig.width = 7.5, fig.height= 3.5}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 3.5}
 waffles
 ```
 
@@ -420,7 +420,7 @@ The co-occurrence of two or more conditions, known as multimorbidity, is broken 
 ####Table `r y`: Multimorbidity of physical long-term conditions by age group in `r latest_year_ltc`.
 \newline
 
-```{r echo=FALSE}
+```{r echo = FALSE}
 knitr::kable(ltc_multimorbidity_table, format = "markdown")
 
 y <- y + 1
@@ -435,7 +435,7 @@ Below is a breakdown of the physical LTCs, for the financial year `r latest_year
 ####Figure `r x`: Percentage people with each physical LTC, split by age group.
 \newline
 
-```{r echo=FALSE, fig.width = 7.5, fig.height= 3.8}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 3.8}
 ltc_types_plot
 
 x <- x + 1
@@ -447,7 +447,7 @@ x <- x + 1
 
 \newline
 
-```{r echo=FALSE, fig.width = 7.5, fig.height= 3.5}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 3.5}
 top5_ltc_table
 
 y <- y + 1
@@ -461,7 +461,7 @@ For the period `r latest_period_cancer_reg`, there were **`r format_number_for_t
 ####Figure `r x`: Cancer registration rate over time and by area.
 \newline
 
-```{r echo=FALSE, fig.width = 7.5, fig.height= 3.7}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 3.7}
 cancer_reg_time_trend
 
 
@@ -471,7 +471,7 @@ x <- x + 1
 ####Figure `r x`: Early deaths from cancer (<75 years) over time and by area.
 \newline
 
-```{r echo=FALSE, fig.width = 7.5, fig.height= 3.7}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 3.7}
 early_deaths_cancer_time_trend
 
 x <- x + 1
@@ -486,7 +486,7 @@ Patient hospitalisations can provide some indication of how certain diseases hav
 
 #### Table `r y`: Patient hospitalisations by condition and geographical area, age-sex standardised rates per 100,000^3,4^.
 
-```{r echo=FALSE}
+```{r echo = FALSE}
 knitr::kable(disease_hosp_table, format = "markdown")
 
 y <- y + 1
@@ -501,7 +501,7 @@ In `r latest_period_adp_presc`, **`r format_number_for_text(adp_presc_latest)`%*
 ####Figure `r x`: Anxiety, depression, and psychosis prescriptions over time and by geographical area.
 \newline
 
-```{r echo=FALSE, fig.width = 7.5, fig.height= 3.8}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 3.8}
 adp_presc_time_trend
 
 x <- x + 1
@@ -515,7 +515,7 @@ In `r latest_period_adp_presc`, `r LOCALITY` had a `r adp_presc_diff_scot` propo
 ####Figure `r x`: Percentage population prescribed medication for anxiety, depression, and psychosis by area for the latest time period available.
 \newline
 
-```{r echo=FALSE, fig.width = 7.5, fig.height= 4.8}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 4.8}
 adp_presc_bar
 ```
 
@@ -552,7 +552,7 @@ Figure `r x + 1` then compares different areas, including the other localities i
 #### Figure `r x`: Alcohol-related hospital admission rates by area and over time.
 \newline
 
-```{r echo=FALSE, fig.width= 7.5, fig.height = 4, warning= FALSE}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 4, warning = FALSE}
 alcohol_hosp_time_trend
 
 x <- x + 1
@@ -561,7 +561,7 @@ x <- x + 1
 #### Figure `r x`: Alcohol-related hospital admissions by area for the latest time period.
 \newline
 
-```{r echo=FALSE, fig.width= 7.5, fig.height = 4.8, warning= FALSE}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 4.8, warning = FALSE}
 alcohol_hosp_bar
 
 x <- x + 1
@@ -576,7 +576,7 @@ Data on alcohol-specific deaths is available as 5-year aggregates. In `r LOCALIT
 #### Figure `r x`: Alcohol-specific deaths by area and over time.
 \newline
 
-```{r echo=FALSE, fig.width= 7.5, fig.height = 3.6, warning= FALSE}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 3.6, warning = FALSE}
 alcohol_deaths_time_trend
 
 x <- x + 1
@@ -585,7 +585,7 @@ x <- x + 1
 #### Figure `r x`: Alcohol-specific deaths by area for the latest time period available.
 \newline
 
-```{r echo=FALSE, fig.width= 7.5, fig.height = 4.5, warning= FALSE}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 4.5, warning = FALSE}
 alcohol_deaths_bar
 
 x <- x + 1
@@ -602,7 +602,7 @@ A comparison of areas at the most recent time period  (`r latest_period_drug_hos
 #### Figure `r x`: Drug-related hospital admission rates by area and over time.
 \newline
 
-```{r echo=FALSE, fig.width= 7.5, fig.height = 4, warning= FALSE}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 4, warning = FALSE}
 drug_hosp_time_trend
 
 x <- x + 1
@@ -612,7 +612,7 @@ x <- x + 1
 
 #### Figure `r x`: Drug-related hospital admission rates by area for the latest time period available.
 
-```{r echo=FALSE, fig.width= 7.5, fig.height = 4.8, warning= FALSE}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 4.8, warning = FALSE}
 drug_hosp_bar
 
 x <- x + 1
@@ -632,7 +632,7 @@ A trend of the percentage uptake of bowel screening among the eligible populatio
 #### Figure `r x`: Bowel screening uptake for eligible men and women, by area and over time. 
 \newline
 
-```{r echo=FALSE, fig.width= 7.5, fig.height = 4, warning= FALSE}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 4, warning = FALSE}
 bowel_screening_time_trend
 
 x <- x + 1
@@ -641,7 +641,7 @@ x <- x + 1
 #### Figure `r x`: Bowel screening uptake by area for the latest time period available.
 \newline
 
-```{r echo=FALSE, fig.width= 7.5, fig.height = 4.8, warning= FALSE}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 4.8, warning = FALSE}
 bowel_screening_bar
 
 x <- x + 1
@@ -680,7 +680,7 @@ This section includes acute hospital data, delayed discharge bed days and A&E at
 ####Figure `r x`: Emergency admissions by geographical area
 \newline
 
-```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
 EAs_loc_ts
 
 x <- x + 1
@@ -689,7 +689,7 @@ x <- x + 1
 ####Figure `r x`: Emergency admissions by age group
 \newline
 
-```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
 EAs_age_ts
 
 x <- x + 1
@@ -702,7 +702,7 @@ x <- x + 1
 ####Figure `r x`: Unscheduled acute bed days by geographical area
 \newline
 
-```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
 BDs_loc_ts
 
 x <- x + 1
@@ -711,7 +711,7 @@ x <- x + 1
 ####Figure `r x`: Unscheduled acute bed days by age group
 \newline
 
-```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
 BDs_age_ts
 
 x <- x + 1
@@ -725,7 +725,7 @@ x <- x + 1
 ####Figure `r x`: A&E attendances by geographical area
 \newline
 
-```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
 AandE_loc_ts
 
 x <- x + 1
@@ -734,7 +734,7 @@ x <- x + 1
 ####Figure `r x`: A&E attendances by age group
 \newline
 
-```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
 AandE_age_ts
 
 x <- x + 1
@@ -748,7 +748,7 @@ x <- x + 1
 ####Figure `r x`: Emergency readmissions (28 days) by geographical area
 \newline
 
-```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
 Read_loc_ts
 
 x <- x + 1
@@ -757,7 +757,7 @@ x <- x + 1
 ####Figure `r x`: Emergency readmissions (28 days) by age group
 \newline
 
-```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
 Read_age_ts
 
 x <- x + 1
@@ -771,7 +771,7 @@ x <- x + 1
 ####Figure `r x`: Delayed discharge bed days in population aged 65+ by geographical area
 \newline
 
-```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
 DD_loc_ts
 
 x <- x + 1
@@ -782,7 +782,7 @@ x <- x + 1
 ####Figure `r x`: Falls in population aged 65+ by geographical area
 \newline
 
-```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
 Falls_loc_ts
 
 x <- x + 1
@@ -798,7 +798,7 @@ Information on the conditions included in PPAs is available in Appendix 3. In `r
 ####Figure `r x`: Potentially Preventable Admissions (PPAs) by geographical area
 \newline
 
-```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
 PPA_loc_ts
 
 x <- x + 1
@@ -827,7 +827,7 @@ This section looks at mental health related unscheduled care indicators. For the
 ####Figure `r x`: Psychiatric patient hospitalisations by geographical area
 \newline
 
-```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
 psych_hosp_time_trend
 
 x <- x + 1
@@ -841,7 +841,7 @@ x <- x + 1
 ####Figure `r x`: Unscheduled mental health specialty bed days by geographical area
 \newline
 
-```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
 BDMH_loc_ts
 
 x <- x + 1
@@ -850,7 +850,7 @@ x <- x + 1
 ####Figure `r x`: Unscheduled mental health specialty bed days by age group
 \newline
 
-```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
 BDMH_age_ts
 
 x <- x + 1
@@ -879,7 +879,7 @@ x <- x + 1
 
 \newline
 
-```{r echo= FALSE, fig.width= 4, fig.height = 10, ft.split = TRUE}
+```{r echo = FALSE, fig.width = 4, fig.height = 10, ft.split = TRUE}
 knitr::kable(indicator_defs, format = "markdown")
 ```
 
@@ -890,7 +890,7 @@ knitr::kable(indicator_defs, format = "markdown")
 
 \newline
 
-```{r echo= FALSE, fig.width= 4, fig.height = 10, ft.split = TRUE}
+```{r echo = FALSE, fig.width = 4, fig.height = 10, ft.split = TRUE}
 knitr::kable(dates_extract, col.names = c("**Section**", "**Indicator**", "**Date of data extraction**"), format = "markdown")
 ```
 
@@ -900,6 +900,6 @@ knitr::kable(dates_extract, col.names = c("**Section**", "**Indicator**", "**Dat
 ###Appendix 3: Conditions included as Potentially Preventable Admissions (PPAs)
 
 
-```{r echo = FALSE, fig.width= 7, fig.height= 10, warning = FALSE}
+```{r echo = FALSE, fig.width = 7, fig.height = 10, warning = FALSE}
 knitr::kable(ppa_def, format = "markdown")
 ```

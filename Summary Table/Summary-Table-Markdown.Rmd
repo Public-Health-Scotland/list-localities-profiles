@@ -5,7 +5,7 @@ output:
     reference_docx: "//conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Summary Table/ST_ref_doc.docx"
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE, comment = NA)
 
 
@@ -41,12 +41,12 @@ library(knitr)
 library(gridExtra)
 library(grid)
 
-# detach(package:tidylog, unload=TRUE)
+# detach(package:tidylog, unload = TRUE)
 ```
 
 ## Summary Table (1)
 
-```{r echo=FALSE, fig.width = 11.5, fig.height= 6}
+```{r echo = FALSE, fig.width = 11.5, fig.height = 6}
 ## The summary table is built using table grob, which generates a picture of a table and allows for
 # more personalised formatting than regular table functions.
 
@@ -138,7 +138,7 @@ Headings <- gtable_combine(col_indicator, col_datatype, col_time, col_loc, col_o
 # grid.draw(LP.headings)
 ```
 
-```{r echo=FALSE, fig.width = 11.5, fig.height= 6}
+```{r echo = FALSE, fig.width = 11.5, fig.height = 6}
 ### 2. TABLE BODY -----------------------------------------------------
 
 ### Set themes for each column
@@ -336,7 +336,7 @@ grid.draw(Summary_Table1)
 
 ## Summary Table (2)
 
-```{r echo=FALSE, fig.width = 11.5, fig.height= 6}
+```{r echo = FALSE, fig.width = 11.5, fig.height = 6}
 ## 2d. Lifestyle & Risk Factors ----
 
 indicators <- c(

@@ -9,7 +9,7 @@ output:
 ---
 
 
-```{r setup, include=FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 options(kableExtra.auto_format = FALSE)
 
@@ -51,7 +51,7 @@ In `r pop_max_year`, the total population of `r LOCALITY` locality was `r total_
 
 \newline
 
-```{r echo = FALSE, fig.width=6, fig.height= 3, warning = FALSE}
+```{r echo = FALSE, fig.width = 6, fig.height = 3, warning = FALSE}
 pop_pyramid
 
 x <- x + 1
@@ -67,7 +67,7 @@ Figure `r x` shows the historical population of `r LOCALITY`, along with the NRS
 ####Figure `r x`: Population time trend and projection.
 \newline
 
-```{r echo = FALSE, fig.width= 7, fig.height= 3, warning = FALSE}
+```{r echo = FALSE, fig.width = 7, fig.height = 3, warning = FALSE}
 pop_ts_plot
 
 x <- x + 1
@@ -80,7 +80,7 @@ Figure `r x` shows how population structure has changed between `r pop_min_year`
 ####Figure `r x`: Change in population structure over the last five years.
 \newline
 
-```{r echo = FALSE, fig.width= 7, fig.height= 3.5, warning = FALSE}
+```{r echo = FALSE, fig.width = 7, fig.height = 3.5, warning = FALSE}
 hist_pop_change
 
 x <- x + 1
@@ -96,7 +96,7 @@ Of the `r pop_max_year` population in `r LOCALITY`, **`r perc_bottom_quintile`%*
 
 ####Figure `r x`: Map of Data Zones within `r LOCALITY` coloured by SIMD  quintiles.
 
-```{r echo = FALSE, fig.width= 7, warning = FALSE}
+```{r echo = FALSE, fig.width = 7, warning = FALSE}
 simd_map
 
 x <- x + 1
@@ -126,7 +126,7 @@ y <- y + 1
 ####Figure `r x`: Proportion of the population that reside in each 2020 SIMD quintile by domain in `r pop_max_year`.
 \newline
 
-```{r echo = FALSE, fig.width= 7, fig.height=4, warning = FALSE}
+```{r echo = FALSE, fig.width = 7, fig.height = 4, warning = FALSE}
 simd_domains
 
 x <- x + 1
@@ -143,7 +143,7 @@ Figure `r x` presents a comparison between the 2016 SIMD ranking applied to 2016
 
 \newline
 
-```{r echo = FALSE, fig.width= 7.5, fig.height= 7, warning = FALSE}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 7, warning = FALSE}
 simd_diff_plot
 
 x <- x + 1
