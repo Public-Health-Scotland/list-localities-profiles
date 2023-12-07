@@ -809,7 +809,7 @@ ltc_pops_total_hscp <- sum(filter(slf_pops, hscp2019name == HSCP)$slf_adj_pop)
 
 # Colour lookup for table
 ltc_cols <- ltc_scot %>%
-  select(c(3:17)) %>%
+  select(3:17) %>%
   summarise_all(sum) %>%
   gather() %>%
   rename(topltc = key) %>%
@@ -881,7 +881,7 @@ hscp.ltc.table <- sapply(hscp.ltc.table.wrapped, paste, collapse = "\n")
 ## If any areas have a tie for fifth place, add top5ltc_area[c(1:5), 1] to select only the first 5 rows
 
 ltc_loc_col <- tableGrob(top5ltc_loc[, 1],
-  cols = loc.ltc.table, rows = c(1:5),
+  cols = loc.ltc.table, rows = 1:5,
   theme = ttheme_default(
     core = list(bg_params = list(fill = top5ltc_loc$colours), fg_params = list(col = "white", fontface = 2, fontsize = 11)),
     colhead = list(bg_params = list(fill = "white"), fg_params = list(fontface = 3, fontsize = 11))

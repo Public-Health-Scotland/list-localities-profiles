@@ -123,7 +123,7 @@ pop_areas <- pops %>%
       ungroup() %>%
       mutate(location = "Scotland")
   ) %>%
-  pivot_longer(c("Pop0_17":"total_pop"), names_to = "age_group", values_to = "pop") %>%
+  pivot_longer("Pop0_17":"total_pop", names_to = "age_group", values_to = "pop") %>%
   mutate(age_group = case_when(
     age_group == "Pop0_17" ~ "0 - 17",
     age_group == "Pop18_44" ~ "18 - 44",
@@ -136,7 +136,7 @@ pop_areas <- pops %>%
 
 
 loc_pop <- pops %>%
-  pivot_longer(c("Pop0_17":"total_pop"), names_to = "age_group", values_to = "pop") %>%
+  pivot_longer("Pop0_17":"total_pop", names_to = "age_group", values_to = "pop") %>%
   mutate(age_group = case_when(
     age_group == "Pop0_17" ~ "0 - 17",
     age_group == "Pop18_44" ~ "18 - 44",
