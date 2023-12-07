@@ -222,7 +222,7 @@ simd_domains <- simd2020 %>%
     fill = factor(value, levels = 1:5), y = total_pop,
     x = factor(variable, levels = tolower(plot_labels))
   )) +
-  geom_bar(stat = "identity", position = "fill") +
+  geom_col(position = "fill") +
   scale_x_discrete(labels = plot_labels) +
   scale_y_continuous(labels = scales::percent) +
   labs(
@@ -324,8 +324,8 @@ simd_16_20_dom <- full_join(base_data, simd2016_dom) %>%
 simd_diff_plot <- ggplot(simd_16_20_dom, aes(x = quintile, y = diff, fill = factor(quintile))) +
   facet_wrap(~ factor(domain, levels = c("SIMD", unique(sort(simd_16_20_dom$domain))[1:7])), ncol = 4) +
   geom_line(aes(y = 0, group = 1)) +
-  geom_bar(
-    stat = "identity", position = position_dodge(),
+  geom_col(
+    position = position_dodge(),
     color = "black"
   ) +
   geom_text(

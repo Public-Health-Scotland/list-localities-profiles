@@ -145,12 +145,12 @@ pop_pyramid <- ggplot(
     fill = Gender
   )
 ) +
-  geom_bar(
-    data = subset(pop_breakdown, Gender == "Male"), stat = "identity",
+  geom_col(
+    data = subset(pop_breakdown, Gender == "Male"),
     aes(y = Population)
   ) +
-  geom_bar(
-    data = subset(pop_breakdown, Gender == "Female"), stat = "identity",
+  geom_col(
+    data = subset(pop_breakdown, Gender == "Female"),
     aes(y = Population * (-1))
   ) +
   scale_y_continuous(
@@ -199,7 +199,7 @@ hist_pop_change <- ggplot(
     y = change, fill = Gender
   )
 ) +
-  geom_bar(stat = "identity", position = position_dodge()) +
+  geom_col(position = position_dodge()) +
   geom_hline(yintercept = 0, linetype = "dashed", colour = "black") +
   scale_y_continuous(labels = scales::percent) +
   scale_fill_manual(values = palette) +

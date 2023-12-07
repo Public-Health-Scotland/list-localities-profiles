@@ -821,7 +821,7 @@ scot_read <- readmissions_areas %>%
 #   mutate(location = fct_reorder(as.factor(str_wrap(location, 28)), as.numeric(area_type))) %>%
 #
 #   ggplot(aes(x = location, y = data, fill = location, weight = data)) +
-#   geom_bar(stat = "identity", position = position_dodge()) +
+#   geom_col(position = position_dodge()) +
 #   geom_text(aes(y = data, label = round_half_up(data, 1)),
 #             position=position_dodge(width=0.9),
 #             vjust=-0.25, color = "#4a4a4a", size = 4, fontface = "bold") +

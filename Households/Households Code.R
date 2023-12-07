@@ -173,7 +173,7 @@ pal_ctb <- phsstyles::phs_colours(c(
 ))
 
 ctb_plot <- ggplot(ctb, aes(fill = factor(variable, levels = rev(variable)), y = value, x = 1)) +
-  geom_bar(stat = "identity", position = "fill", colour = "black", size = 0.5) +
+  geom_col(position = "fill", colour = "black", size = 0.5) +
   theme_classic() +
   coord_flip() +
   labs(x = "", y = "Proportion of Households", caption = "Source: Scottish Assessors’ Association (via NRS)") +
