@@ -828,7 +828,7 @@ top5ltc_loc <- ltc_totals %>%
   top_n(5, value) %>%
   mutate(topltc = key, percent = round_half_up((value / ltc_pops_total_loc) * 100, 2)) %>%
   select(-key, -value) %>%
-  left_join(., ltc_cols) %>%
+  left_join(ltc_cols) %>%
   unite(col = "Prevalence", c(topltc, percent), sep = "\n") %>%
   mutate(Prevalence = paste0(Prevalence, "%"))
 
@@ -845,7 +845,7 @@ top5ltc_hscp <- ltc_totals %>%
   top_n(5, value) %>%
   mutate(topltc = key, percent = round_half_up((value / ltc_pops_total_hscp) * 100, 2)) %>%
   select(-key, -value) %>%
-  left_join(., ltc_cols) %>%
+  left_join(ltc_cols) %>%
   unite(col = "Prevalence", c(topltc, percent), sep = "\n") %>%
   mutate(Prevalence = paste0(Prevalence, "%"))
 
@@ -863,7 +863,7 @@ top5ltc_scot <- ltc_scot %>%
   top_n(5, value) %>%
   mutate(topltc = key, percent = round_half_up((value / ltc_pops_total_scot) * 100, 2)) %>%
   select(-key, -value) %>%
-  left_join(., ltc_cols) %>%
+  left_join(ltc_cols) %>%
   unite(col = "Prevalence", c(topltc, percent), sep = "\n") %>%
   mutate(Prevalence = paste0(Prevalence, "%"))
 
@@ -939,7 +939,7 @@ other_locs_summary_table <- function(data, latest_year) {
     filter(year == latest_year) %>%
     filter(area_type == "Locality") %>%
     rename("hscp_locality" = "area_name") %>%
-    right_join(., other_locs) %>%
+    right_join(other_locs) %>%
     arrange(hscp_locality) %>%
     select(hscp_locality, measure) %>%
     mutate(measure = round_half_up(measure, 1)) %>%
@@ -1000,11 +1000,11 @@ other_locs_ltc <- inner_join(ltc, other_locs) %>%
   group_by(hscp_locality) %>%
   summarise(ltc_people = sum(people)) %>%
   ungroup() %>%
-  left_join(., otherloc_ltc_pops, by = "hscp_locality") %>%
+  left_join(otherloc_ltc_pops, by = "hscp_locality") %>%
   mutate(percent = round_half_up(ltc_people / slf_adj_pop * 100, 1)) %>%
   arrange(hscp_locality) %>%
   select(hscp_locality, percent) %>%
-  spread(., key = hscp_locality, value = percent)
+  spread(key = hscp_locality, value = percent)
 
 
 # 2. HSCP

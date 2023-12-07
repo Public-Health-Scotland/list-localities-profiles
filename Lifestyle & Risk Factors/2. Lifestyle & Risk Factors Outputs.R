@@ -348,7 +348,7 @@ other_locs_summary_table <- function(data, latest_year) {
     filter(year == latest_year) %>%
     filter(area_type == "Locality") %>%
     rename("hscp_locality" = "area_name") %>%
-    right_join(., other_locs) %>%
+    right_join(other_locs) %>%
     arrange(hscp_locality) %>%
     select(hscp_locality, measure) %>%
     mutate(measure = round_half_up(measure, 1)) %>%

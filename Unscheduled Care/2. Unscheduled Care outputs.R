@@ -95,28 +95,34 @@ pop_areas <- pops %>%
   select(-hb2019name, -hscp2019name) %>%
   rename(location = hscp_locality) %>%
   # Add a partnership total
-  bind_rows(., pops %>%
-    select(-hscp_locality, -hb2019name) %>%
-    filter(hscp2019name == HSCP) %>%
-    group_by(financial_year, year, hscp2019name) %>%
-    summarise_all(sum) %>%
-    ungroup() %>%
-    rename(location = hscp2019name)) %>%
+  bind_rows(
+    pops %>%
+      select(-hscp_locality, -hb2019name) %>%
+      filter(hscp2019name == HSCP) %>%
+      group_by(financial_year, year, hscp2019name) %>%
+      summarise_all(sum) %>%
+      ungroup() %>%
+      rename(location = hscp2019name)
+  ) %>%
   # Add HB total
-  bind_rows(., pops %>%
-    select(-hscp_locality, -hscp2019name) %>%
-    filter(hb2019name == HB) %>%
-    group_by(financial_year, year, hb2019name) %>%
-    summarise_all(sum) %>%
-    ungroup() %>%
-    rename(location = hb2019name)) %>%
+  bind_rows(
+    pops %>%
+      select(-hscp_locality, -hscp2019name) %>%
+      filter(hb2019name == HB) %>%
+      group_by(financial_year, year, hb2019name) %>%
+      summarise_all(sum) %>%
+      ungroup() %>%
+      rename(location = hb2019name)
+  ) %>%
   # Add a Scotland total
-  bind_rows(., pops %>%
-    select(-hscp_locality, -hscp2019name, -hb2019name) %>%
-    group_by(financial_year, year) %>%
-    summarise_all(sum) %>%
-    ungroup() %>%
-    mutate(location = "Scotland")) %>%
+  bind_rows(
+    pops %>%
+      select(-hscp_locality, -hscp2019name, -hb2019name) %>%
+      group_by(financial_year, year) %>%
+      summarise_all(sum) %>%
+      ungroup() %>%
+      mutate(location = "Scotland")
+  ) %>%
   pivot_longer(c("Pop0_17":"total_pop"), names_to = "age_group", values_to = "pop") %>%
   mutate(age_group = case_when(
     age_group == "Pop0_17" ~ "0 - 17",
@@ -998,7 +1004,7 @@ other_locs_psych_hosp <- psych_hosp %>%
   filter(year == max(year)) %>%
   filter(area_type == "Locality") %>%
   rename("hscp_locality" = "area_name") %>%
-  right_join(., other_locs) %>%
+  right_join(other_locs) %>%
   arrange(hscp_locality) %>%
   select(hscp_locality, measure) %>%
   mutate(measure = as.character(round_half_up(measure, 1))) %>%
