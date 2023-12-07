@@ -11,7 +11,7 @@ ext_year <- 2022
 
 #Set locality profiles file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
-import_folder <- paste0(lp_path, "Unscheduled Care/DATA ", ext_year, "/")
+import_folder <- "Unscheduled Care/DATA ", ext_year, "/"
 
 ##Packages
 library(tidyverse)
@@ -919,7 +919,7 @@ scot_psych_hosp <- round_half_up(filter(psych_hosp, year == max(year) & area_nam
 #                              "Unsch Bed Days (SMR4)" = bed_days_mh,
 #                              "A&E Att" = ae_attendances,
 #                              "Delayed Disch" = delayed_disch),
-#                     path = paste0(lp_path, "Publishing/MSG Data.xlsx"))
+#                     path = "Publishing/MSG Data.xlsx")
 
 # falls_sdc <- falls %>% 
 #   group_by(financial_year, hscp2019name, hscp_locality) %>% 
@@ -929,4 +929,4 @@ scot_psych_hosp <- round_half_up(filter(psych_hosp, year == max(year) & area_nam
 # writexl::write_xlsx(x = list("Falls" = falls_sdc,
 #                              "Readmissions 28" = readmissions,
 #                              "PPA" = ppa),
-#                     path = paste0(lp_path, "Publishing/SMR Data.xlsx"))
+#                     path = "Publishing/SMR Data.xlsx")

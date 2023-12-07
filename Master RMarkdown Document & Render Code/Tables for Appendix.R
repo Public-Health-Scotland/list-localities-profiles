@@ -22,7 +22,7 @@ lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality
 
 ## Indicator Definitions ----
 
-indicator_defs <- read_excel(paste0(lp_path, "Project Info & Indicators/Indicator Tracker ", ext_year, ".xlsx"),
+indicator_defs <- read_excel("Project Info & Indicators/Indicator Tracker ", ext_year, ".xlsx",
                              sheet = "Definitions")
 indicator_defs$format <- "**"
 indicator_defs$Indicator <- paste0(indicator_defs$format, indicator_defs$Indicator, indicator_defs$format)
@@ -33,7 +33,7 @@ indicator_defs <- dplyr::select(indicator_defs, -format)
 
 ## Data extraction dates ----
 
-dates_extract <- read_excel(paste0(lp_path, "Project Info & Indicators/Indicator Tracker ", ext_year, ".xlsx"),
+dates_extract <- read_excel("Project Info & Indicators/Indicator Tracker ", ext_year, ".xlsx",
                             sheet = "Overview", 
                             skip = 2) %>% 
   clean_names() %>% 
@@ -50,6 +50,6 @@ dates_extract <- dplyr::select(dates_extract, -format)
 
 ## PPA conditions included ----
 
-ppa_def <- read_excel(paste0(lp_path, "Project Info & Indicators/Indicator Tracker ", ext_year, ".xlsx"),
+ppa_def <- read_excel("Project Info & Indicators/Indicator Tracker ", ext_year, ".xlsx",
                                sheet = "PPA")
 

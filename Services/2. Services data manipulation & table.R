@@ -35,7 +35,7 @@ ext_year <- 2022
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 #Source in functions code
-source(paste0(lp_path, "Master RMarkdown Document & Render Code/Global Script.R"))
+source("Master RMarkdown Document & Render Code/Global Script.R")
 
 
 ### Geographical lookups and objects ----
@@ -69,7 +69,7 @@ postcode_lkp <- read_in_postcodes() %>%
 
 ## Read in all data in services folder
 
-services_file_names <- list.files(paste0(lp_path, "Services/DATA ", ext_year), pattern = "RDS")
+services_file_names <- list.files("Services/DATA ", ext_year), pattern = "RDS"
 
 for (file in services_file_names) {
   

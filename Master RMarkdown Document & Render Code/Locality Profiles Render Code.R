@@ -16,7 +16,7 @@ Sys.umask("006")
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 #Source in functions code
-source(paste0(lp_path, "Master RMarkdown Document & Render Code/Global Script.R"))
+source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ##Specify HSCP here
 ## NOTE - make sure that the formatting of the partnership's name matches the lookup  
@@ -43,7 +43,7 @@ locality_list <- lookup %>%
           #2c. Run the Rmd for the summary tables
 
 # 1. HSCP Services Map
-source(paste0(lp_path, "Services/Scripts/3. Service HSCP map.R"))
+source("Services/Scripts/3. Service HSCP map.R")
 
 
 # 2. Loop through each locality to create the main body of the profiles and the summary table
@@ -52,38 +52,38 @@ for (LOCALITY in locality_list){
   ## 2a) Source in all the scripts for a given LOCALITY
   
   #demographics
-  source(paste0(lp_path, "Demographics/Scripts/1. Demographics - Population.R"))
-  source(paste0(lp_path, "Demographics/Scripts/2. Demographics - SIMD.R"))
+  source("Demographics/Scripts/1. Demographics - Population.R")
+  source("Demographics/Scripts/2. Demographics - SIMD.R")
   
   #housing
-  source(paste0(lp_path, "Households/Scripts/Households Code.R"))
+  source("Households/Scripts/Households Code.R")
   
   #services
-  source(paste0(lp_path, "Services/Scripts/2. Services data manipulation & table.R"))
+  source("Services/Scripts/2. Services data manipulation & table.R")
 
   #general health
-  source(paste0(lp_path, "General Health/Scripts/3. General Health Outputs.R"))
+  source("General Health/Scripts/3. General Health Outputs.R")
   
   #lifestyle & risk factors
-  source(paste0(lp_path, "Lifestyle & Risk Factors/Scripts/2. Lifestyle & Risk Factors Outputs.R"))
+  source("Lifestyle & Risk Factors/Scripts/2. Lifestyle & Risk Factors Outputs.R")
   
   #unscheduled care
-  source(paste0(lp_path, "Unscheduled Care/Scripts/2. Unscheduled Care outputs.R"))
+  source("Unscheduled Care/Scripts/2. Unscheduled Care outputs.R")
   
   #appendices
-  source(paste0(lp_path, "Master RMarkdown Document & Render Code/Tables for Appendix.R"))
+  source("Master RMarkdown Document & Render Code/Tables for Appendix.R")
   
   # Remove tidylog package which messes up outputs
   detach(package:tidylog, unload=TRUE)
 
   ## 2b) Create the main body of the profiles
-  rmarkdown::render(paste0(lp_path, "Master RMarkdown Document & Render Code/Locality_Profiles_Master_Markdown.Rmd"),
+  rmarkdown::render("Master RMarkdown Document & Render Code/Locality_Profiles_Master_Markdown.Rmd",
                     output_file =  paste0(LOCALITY, " - Locality Profile.docx"),
-                    output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/"))
+                    output_dir = "Master RMarkdown Document & Render Code/Output/")
   
   ## 2c) Create the summary tables
-  rmarkdown::render(paste0(lp_path, "Summary Table/Summary-Table-Markdown.Rmd"),
+  rmarkdown::render("Summary Table/Summary-Table-Markdown.Rmd",
                     output_file = paste0(LOCALITY, " - Summary Table.docx"),
-                    output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/Summary Tables/"))
+                    output_dir = "Master RMarkdown Document & Render Code/Output/Summary Tables/")
 }
 
