@@ -13,18 +13,18 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 options(kableExtra.auto_format = FALSE)
 
-#Line below for testing only
-#LOCALITY <- "Falkirk West"
-#LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
-#LOCALITY <- "Helensburgh and Lomond"
-#LOCALITY <- "City of Dunfermline"
-#LOCALITY <- "Skye, Lochalsh and West Ross"
+# Line below for testing only
+# LOCALITY <- "Falkirk West"
+# LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
+# LOCALITY <- "Helensburgh and Lomond"
+# LOCALITY <- "City of Dunfermline"
+# LOCALITY <- "Skye, Lochalsh and West Ross"
 LOCALITY <- "Ayr North and Former Coalfield Communities"
 
 source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Households/Scripts/Households Code.R")
 
-x <- 1 #object for figure numbers
-y <- 1 #object for table numbers
+x <- 1 # object for figure numbers
+y <- 1 # object for table numbers
 ```
 
 ##### Page break
@@ -64,10 +64,13 @@ There were `r n_second_homes` dwellings classed as a second home in `r max_year_
 \newline
 										
 ```{r echo = FALSE}
-knitr::kable(house_table, 
-             col.names = c("**Year**", "**Total Dwellings**", "**Occupied Dwellings**", 
-                           "**Vacant Dwellings**", "**Single Occupant Tax Discount**", "**Council Tax Exempt Dwellings**", "**Second Homes**"),
-             align = c('l','r','r','r','r','r','r'))
+knitr::kable(house_table,
+  col.names = c(
+    "**Year**", "**Total Dwellings**", "**Occupied Dwellings**",
+    "**Vacant Dwellings**", "**Single Occupant Tax Discount**", "**Council Tax Exempt Dwellings**", "**Second Homes**"
+  ),
+  align = c("l", "r", "r", "r", "r", "r", "r")
+)
 
 y <- y + 1
 ```
@@ -82,17 +85,20 @@ The proportion of households within each council tax band are displayed in the c
 ```{r echo = FALSE, fig.width= 7, fig.height= 2, warning = F}
 ctb_plot
 
-x <- x+1
+x <- x + 1
 ```
 
 ####Table `r y`: Percentage of households by council tax band for `r LOCALITY` in `r max_year_housing`.
 \newline
 
 ```{r echo = FALSE}
-knitr::kable(ctb_table, 
-             col.names = c("**Tax Band**", "**A**","**B**", "**C**",
-                           "**D**","**E**", "**F**","**G**","**H**"),
-             align = c('l',rep('r', 8)))
+knitr::kable(ctb_table,
+  col.names = c(
+    "**Tax Band**", "**A**", "**B**", "**C**",
+    "**D**", "**E**", "**F**", "**G**", "**H**"
+  ),
+  align = c("l", rep("r", 8))
+)
 
 y <- y + 1
 ```
