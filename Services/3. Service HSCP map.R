@@ -40,13 +40,13 @@ library(data.table)
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 #Source in functions code
-source(paste0(lp_path, "Master RMarkdown Document & Render Code/Global Script.R"))
+source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ##Select a locality based on the HSCP (for source code "2. Services Outputs" to run - it does not matter which one is chosen)
 LOCALITY <- as.character(filter(read_in_localities(), hscp2019name == HSCP)[1, 1])
 
 #Source the data manipulation script for services
-source(paste0(lp_path, "Services/Scripts/2. Services data manipulation & table.R"))
+source("Services/Scripts/2. Services data manipulation & table.R")
 
 
 ###### 5. Read in locality shape files ######
