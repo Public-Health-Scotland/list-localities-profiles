@@ -154,7 +154,7 @@ theme_otherlocs <- ttheme_default(core=list(bg_params = list(fill = "#E1C7DF"),
                                   colhead=list(bg_params = list(fill = "white"), 
                                                fg_params=list(fontface=2, fontsize = sizes)))
 
-##Each section is built seperately as its own table and then merged.
+##Each section is built separately as its own table and then merged.
 
 ## 2a. Demographics ----
 
