@@ -13,21 +13,20 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 options(kableExtra.auto_format = FALSE)
 
-#Line below for testing only
-#LOCALITY <-  "Skye, Lochalsh and West Ross"
-#LOCALITY <- "Falkirk West"
-#LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
-#LOCALITY <- "Ayr North and Former Coalfield Communities"
-#LOCALITY <- "Helensburgh and Lomond"
-#LOCALITY <- "City of Dunfermline"
+# Line below for testing only
+# LOCALITY <-  "Skye, Lochalsh and West Ross"
+# LOCALITY <- "Falkirk West"
+# LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
+# LOCALITY <- "Ayr North and Former Coalfield Communities"
+# LOCALITY <- "Helensburgh and Lomond"
+# LOCALITY <- "City of Dunfermline"
 LOCALITY <- "Inverness"
 
 source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Demographics/Scripts/1. Demographics - Population.R")
 source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Demographics/Scripts/2. Demographics - SIMD.R")
 
-x <- 1 #object for figure numbers
-y <- 1 #object for table numbers
-
+x <- 1 # object for figure numbers
+y <- 1 # object for table numbers
 ```
 
 #####Page break
@@ -53,10 +52,9 @@ In `r pop_max_year`, the total population of `r LOCALITY` locality was `r total_
 \newline
 
 ```{r echo = FALSE, fig.width=6, fig.height= 3, warning = F}
-
 pop_pyramid
 
-x <- x +1
+x <- x + 1
 ```
 
 <!-- Population over time -->
@@ -72,7 +70,7 @@ Figure `r x` shows the historical population of `r LOCALITY`, along with the NRS
 ```{r echo = FALSE, fig.width= 7, fig.height= 3, warning = F}
 pop_ts_plot
 
-x <- x +1
+x <- x + 1
 ```
 
 \newline
@@ -85,7 +83,7 @@ Figure `r x` shows how population structure has changed between `r pop_min_year`
 ```{r echo = FALSE, fig.width= 7, fig.height= 3.5, warning = F}
 hist_pop_change
 
-x <- x +1
+x <- x + 1
 ```
 
 ##### Page break
@@ -112,10 +110,13 @@ The following table details the percentage of the 2016 population living in the 
 \newline
 
 ```{r echo = FALSE}
-knitr::kable(simd_diff_overall, 
-             col.names = c("**Quintile**", "**Percent of 2016 Population (SIMD 2016 Ranking)**",
-                           "**Percent of 2021 Population (SIMD 2020 Ranking)**", "**Difference**"),
-             align = c('l','r','r','r'))
+knitr::kable(simd_diff_overall,
+  col.names = c(
+    "**Quintile**", "**Percent of 2016 Population (SIMD 2016 Ranking)**",
+    "**Percent of 2021 Population (SIMD 2020 Ranking)**", "**Difference**"
+  ),
+  align = c("l", "r", "r", "r")
+)
 
 y <- y + 1
 ```
@@ -145,5 +146,5 @@ Figure `r x` presents a comparison between the 2016 SIMD ranking applied to 2016
 ```{r echo = FALSE, fig.width= 7.5, fig.height= 7, warning = F}
 simd_diff_plot
 
-x <- x+1
+x <- x + 1
 ```
