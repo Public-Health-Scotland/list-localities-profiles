@@ -9,7 +9,8 @@
 ###              used for LIST locality profiles produced in RMarkdown.
 
 ### Revised Oct/Nov 2022 by Craig Fraser and Luke Taylor for smoother process, ex:
-# Incorporated lookup functions so less dependant on static files
+
+# Incorporated lookup functions so less dependent on static files
 
 
 

@@ -198,7 +198,7 @@ theme_otherlocs <- ttheme_default(
   )
 )
 
-## Each section is built seperately as its own table and then merged.
+## Each section is built separately as its own table and then merged.
 
 ## 2a. Demographics ----
 
