@@ -12,7 +12,7 @@
 
 # Incorporated lookup functions so less dependent on static files
 
-
+#this is test 
 
 ####################### SECTION 1: Packages, file paths, etc #########################
 
@@ -38,8 +38,6 @@ filepath <- "./RMarkdown/Locality Profiles/Demographics/"
 # Create placeholder for for loop
 # LOCALITY <- "Inverness"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
-# LOCALITY <- "Ayr North and Former Coalfield Communities"
-
 
 
 ########################## SECTION 2: Data Imports ###############################
@@ -73,7 +71,7 @@ pop_raw_data$"Pop75_84" <- rowSums(subset(pop_raw_data, select = age75:age84))
 pop_raw_data$"Pop85Plus" <- rowSums(subset(pop_raw_data, select = age85:age90plus))
 pop_raw_data$"Pop65Plus" <- rowSums(subset(pop_raw_data, select = age65:age90plus))
 
-pops <- pop_raw_data %>%
+pops <- pop_raw_data |> 
   select(
     year, sex, hscp2019name, hscp_locality,
     Pop0_4, Pop5_17, Pop18_44, Pop45_64, Pop65_74,
