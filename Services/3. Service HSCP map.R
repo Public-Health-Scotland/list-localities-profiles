@@ -15,19 +15,13 @@
 
 ## Load packages
 
-## If there are any packages issues with mapping related packages - use code "Package Error Fixes" saved here:
-# \\Isdsf00d03\LIST_analytics\West Hub\02 - Scaled Up Work\RMarkdown\Locality Profiles\Master RMarkdown Document & Render Code
-
-dyn.load("/usr/local/gdal/lib/libgdal.so")
-
 library(tidyverse)
 library(readxl)
 library(janitor)
-library(rgdal)
 library(leaflet)
 library(dplyr)
 library(htmlwidgets)
-library(mapview)
+#library(mapview)
 library(knitr)
 library(gridExtra)
 library(grid)
@@ -51,21 +45,15 @@ source("Services/Scripts/2. Services data manipulation & table.R")
 
 ###### 5. Read in locality shape files ######
 
-shp <- readOGR(
-  dsn = "/conf/linkage/output/lookups/Unicode/Geography/Shapefiles/HSCP Locality (Datazone2011 Base)",
-  layer = "HSCP_Locality", GDAL1_integer64_policy = T
-)
+shp <- sf::read_sf("/conf/linkage/output/lookups/Unicode/Geography/Shapefiles/HSCP Locality (Datazone2011 Base)/HSCP_Locality.shp")
+shp <- sf::st_transform(shp,4326)
 
-shp <- spTransform(shp, "+init=epsg:4326")
+shp <- shp |> 
+  dplyr::mutate(hscp_locality = gsub("&", "and", HSCP_Local)) |> 
+  merge(lookup, by = "datazone2011")
 
-
-# rename locality variable and names "&" to "and"
-shp@data <- mutate(shp@data, hscp_locality = gsub("&", "and", HSCP_Local))
-
-shp_hscp <- merge(shp, lookup2, by = "hscp_locality")
-shp_hscp <- shp_hscp[!is.na(shp_hscp@data$hscp2019name), ]
-shp_hscp <- shp_hscp[shp_hscp@data$hscp2019name == HSCP, ]
-
+shp_hscp <- shp |> 
+  filter(hscp2019name == HSCP)
 
 ###### 6. Mapping Code ######
 
@@ -144,7 +132,17 @@ service_map <-
 ## Screenshot the map
 # It gets saved in the Services folder and inserted in the R Markdown document
 # Every time the R Markdown is run, the previous map is overwritten.
-mapshot(service_map, file = paste0(lp_path, "/Services/map.png"))
+#mapshot(service_map, file = paste0(lp_path, "/Services/map.png"))
+
+htmlwidgets::saveWidget(service_map, "./Services/service_map.html")
+
+# Introduce a delay before taking a screenshot
+Sys.sleep(5)  # Adjust the delay time (in seconds) as needed
+
+
+webshot::webshot("./Services/service_map.html", "./Services/service_map.png")
+
+
 
 
 # remove unnecessary objects
