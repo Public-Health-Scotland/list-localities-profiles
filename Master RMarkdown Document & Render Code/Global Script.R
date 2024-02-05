@@ -490,7 +490,8 @@ fy <- function(date) {
     date %within% interval(dmy(01042019), dmy(31032020)) ~ "2019/20",
     date %within% interval(dmy(01042020), dmy(31032021)) ~ "2020/21",
     date %within% interval(dmy(01042021), dmy(31032022)) ~ "2021/22",
-    date %within% interval(dmy(01042022), dmy(31032023)) ~ "2022/23"
+    date %within% interval(dmy(01042022), dmy(31032023)) ~ "2022/23",
+    date %within% interval(dmy(01042023), dmy(31032024)) ~ "2023/24"
   )
 }
 
