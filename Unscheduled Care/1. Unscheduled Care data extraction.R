@@ -49,7 +49,7 @@ postcodes <- read_in_postcodes() %>%
   rename(postcode = pc8)
 
 # Localities/Datazones
-datazones <- read_in_localities(dz_level = T)
+datazones <- read_in_localities(dz_level = TRUE)
 localities <- read_in_localities()
 
 

@@ -9,7 +9,7 @@ output:
 ---
 
 
-```{r setup, include=FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 options(kableExtra.auto_format = FALSE)
 
@@ -40,7 +40,7 @@ y <- 1 # object for table numbers
 
 **For the most recent time periods available^3^, `r LOCALITY` Locality had:**
 
-```{r echo=FALSE}
+```{r echo = FALSE}
 life_exp_text <- if (is.na(avg_life_exp_latest_male)) {
   "No data available for life expectancy."
 } else {
@@ -69,7 +69,7 @@ life_exp_text2 <- if (is.na(avg_life_exp_latest_male)) {
 ####Figure `r x`: Average life expectancy in men and women over time.
 \newline
 
-```{r echo=FALSE, fig.width = 6, fig.height= 3.5}
+```{r echo = FALSE, fig.width = 6, fig.height = 3.5}
 if (LOCALITY %in% check_missing_data_scotpho(life_exp)$area_name) {
   print("No data available for this locality")
 } else {
@@ -88,7 +88,7 @@ Table `r y` provides the average life expectancy for men and women in different 
 
 \newline
 
-```{r echo=FALSE}
+```{r echo = FALSE}
 knitr::kable(life_exp_table)
 
 y <- y + 1
@@ -106,7 +106,7 @@ The following chart shows a trend of death rates among 15-44 year olds per 100,0
 ####Figure `r x`: Deaths aged 15-44 years by geographical area and over time.
 \newline
 
-```{r echo=FALSE, fig.width = 7.5, fig.height= 4.2}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 4.2}
 deaths_15_44_time_trend
 
 x <- x + 1
@@ -120,7 +120,7 @@ Figure `r x` provides comparisons of deaths at ages 15-44 across all areas inclu
 ####Figure `r x`: Deaths at ages 15-44 by area for the latest time period available.
 \newline
 
-```{r echo=FALSE, fig.width = 7.5, fig.height= 4.8}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 4.8}
 deaths_15_44_bar
 
 x <- x + 1
@@ -134,7 +134,7 @@ x <- x + 1
 
 In the financial year `r latest_year_ltc`, in `r LOCALITY` Locality, it is estimated that **`r format_number_for_text(ltc_percent_total_latest)`%** of the population had at least one physical long-term condition (LTC). These include: cardiovascular, neurodegenerative, and respiratory conditions, as well as other organ conditions (namely liver disease and renal failure), arthritis, cancer, diabetes, and epilepsy. *Please note that estimates for this section are based on people who had contact with NHS services - see footnotes for further information and caveats on identifying LTCs.^5^*
 
-```{r echo=FALSE, fig.width = 7.5, fig.height= 3.5}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 3.5}
 waffles
 ```
 
@@ -145,7 +145,7 @@ The co-occurrence of two or more conditions, known as multimorbidity, is broken 
 ####Table `r y`: Multimorbidity of physical long-term conditions by age group in `r latest_year_ltc`.
 \newline
 
-```{r echo=FALSE}
+```{r echo = FALSE}
 knitr::kable(ltc_multimorbidity_table)
 
 y <- y + 1
@@ -159,7 +159,7 @@ Below is a breakdown of the physical LTCs, for the financial year `r latest_year
 ####Figure `r x`: Percentage people with each physical LTC, split by age group.
 \newline
 
-```{r echo=FALSE, fig.width = 7.5, fig.height= 3.8}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 3.8}
 ltc_types_plot
 
 x <- x + 1
@@ -171,7 +171,7 @@ x <- x + 1
 
 \newline
 
-```{r echo=FALSE, fig.width = 7.5, fig.height= 3.5}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 3.5}
 top5_ltc_table
 
 y <- y + 1
@@ -185,7 +185,7 @@ For the period `r latest_period_cancer_reg`, there were **`r format_number_for_t
 ####Figure `r x`: Cancer registration rate over time and by area.
 \newline
 
-```{r echo=FALSE, fig.width = 7.5, fig.height= 3.7}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 3.7}
 cancer_reg_time_trend
 
 
@@ -195,7 +195,7 @@ x <- x + 1
 ####Figure `r x`: Early deaths from cancer (<75 years) over time and by area.
 \newline
 
-```{r echo=FALSE, fig.width = 7.5, fig.height= 3.7}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 3.7}
 early_deaths_cancer_time_trend
 
 x <- x + 1
@@ -210,7 +210,7 @@ Patient hospitalisations can provide some indication of how certain diseases hav
 
 #### Table `r y`: Patient hospitalisations by condition and geographical area, age-sex standardised rates per 100,000.
 
-```{r echo=FALSE}
+```{r echo = FALSE}
 knitr::kable(disease_hosp_table)
 
 y <- y + 1
@@ -225,7 +225,7 @@ In `r latest_period_adp_presc`, **`r format_number_for_text(adp_presc_latest)`%*
 ####Figure `r x`: Anxiety, depression, and psychosis prescriptions over time and by geographical area.
 \newline
 
-```{r echo=FALSE, fig.width = 7.5, fig.height= 3.8}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 3.8}
 adp_presc_time_trend
 
 x <- x + 1
@@ -239,6 +239,6 @@ In `r latest_period_adp_presc`, `r LOCALITY` had a `r adp_presc_diff_scot` propo
 ####Figure `r x`: Percentage population prescribed medication for anxiety, depression, and psychosis by area for the latest time period available.
 \newline
 
-```{r echo=FALSE, fig.width = 7.5, fig.height= 4.8}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 4.8}
 adp_presc_bar
 ```

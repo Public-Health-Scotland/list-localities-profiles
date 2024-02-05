@@ -12,8 +12,6 @@
 
 # Incorporated lookup functions so less dependent on static files
 
-
-
 ####################### SECTION 1: Packages, file paths, etc #########################
 
 ## Libraries
@@ -87,19 +85,23 @@ pops <- pops %>%
   summarise_all(sum) %>%
   ungroup() %>%
   # Add a partnership total
-  bind_rows(., pops %>%
-    select(-hscp_locality) %>%
-    group_by(year, hscp2019name, sex) %>%
-    summarise_all(sum) %>%
-    ungroup() %>%
-    mutate(hscp_locality = "Partnership Total")) %>%
+  bind_rows(
+    pops %>%
+      select(-hscp_locality) %>%
+      group_by(year, hscp2019name, sex) %>%
+      summarise_all(sum) %>%
+      ungroup() %>%
+      mutate(hscp_locality = "Partnership Total")
+  ) %>%
   # Add a Scotland total
-  bind_rows(., pops %>%
-    select(-hscp_locality, -hscp2019name) %>%
-    group_by(year, sex) %>%
-    summarise_all(sum) %>%
-    ungroup() %>%
-    mutate(hscp_locality = "Scotland Total", hscp2019name = "Scotland"))
+  bind_rows(
+    pops %>%
+      select(-hscp_locality, -hscp2019name) %>%
+      group_by(year, sex) %>%
+      summarise_all(sum) %>%
+      ungroup() %>%
+      mutate(hscp_locality = "Scotland Total", hscp2019name = "Scotland")
+  )
 
 
 
@@ -143,12 +145,12 @@ pop_pyramid <- ggplot(
     fill = Gender
   )
 ) +
-  geom_bar(
-    data = subset(pop_breakdown, Gender == "Male"), stat = "identity",
+  geom_col(
+    data = subset(pop_breakdown, Gender == "Male"),
     aes(y = Population)
   ) +
-  geom_bar(
-    data = subset(pop_breakdown, Gender == "Female"), stat = "identity",
+  geom_col(
+    data = subset(pop_breakdown, Gender == "Female"),
     aes(y = Population * (-1))
   ) +
   scale_y_continuous(
@@ -157,7 +159,7 @@ pop_pyramid <- ggplot(
   ) +
   coord_flip() +
   scale_fill_manual(values = palette) +
-  theme_profiles() + # guides(fill = F)
+  theme_profiles() + # guides(fill = FALSE)
   labs(
     y = "Population", x = "Age Group",
     title = paste0(str_wrap(`LOCALITY`, 50), " population pyramid")
@@ -197,7 +199,7 @@ hist_pop_change <- ggplot(
     y = change, fill = Gender
   )
 ) +
-  geom_bar(stat = "identity", position = position_dodge()) +
+  geom_col(position = position_dodge()) +
   geom_hline(yintercept = 0, linetype = "dashed", colour = "black") +
   scale_y_continuous(labels = scales::percent) +
   scale_fill_manual(values = palette) +
@@ -464,7 +466,7 @@ other_locs_over65 <- pops %>%
 pop_hscp <- filter(pops, hscp2019name == HSCP, hscp_locality == "Partnership Total", year == max(year))
 
 hscp_total_pop <- sum(pop_hscp$total_pop) %>%
-  formatC(., format = "d", big.mark = ",")
+  formatC(format = "d", big.mark = ",")
 hscp_gender_ratio <- paste0("1:", round_half_up(filter(pop_hscp, sex == "F")$total_pop / filter(pop_hscp, sex == "M")$total_pop, 2))
 hscp_over65 <- pop_hscp %>%
   group_by(hscp2019name) %>%
@@ -477,7 +479,7 @@ hscp_over65 <- pop_hscp %>%
 pop_scot <- filter(pops, hscp2019name == "Scotland", hscp_locality == "Scotland Total", year == max(year))
 
 scot_total_pop <- sum(pop_scot$total_pop) %>%
-  formatC(., format = "d", big.mark = ",")
+  formatC(format = "d", big.mark = ",")
 scot_gender_ratio <- paste0("1:", round_half_up(filter(pop_scot, sex == "F")$total_pop / filter(pop_scot, sex == "M")$total_pop, 2))
 scot_over65 <- pop_scot %>%
   group_by(hscp2019name) %>%

@@ -50,7 +50,7 @@ filepath <- paste0(
 ########################## SECTION 2: Data Imports ###############################
 
 ## Locality/DZ lookup
-lookup_dz <- read_in_localities(T)
+lookup_dz <- read_in_localities(TRUE)
 
 ## Population data
 pop_raw_data <- read_in_dz_pops()
@@ -100,7 +100,7 @@ rm(simd_2020_all, simd_2020_dom, simd_2016_all, simd_2016_dom)
 simd_perc_breakdown <- pop_data %>%
   mutate(simd2020v2_sc_quintile = as.factor(simd2020v2_sc_quintile)) %>%
   filter(hscp_locality == LOCALITY) %>%
-  group_by(simd2020v2_sc_quintile, .drop = F) %>%
+  group_by(simd2020v2_sc_quintile, .drop = FALSE) %>%
   dplyr::summarise(pop = sum(total_pop)) %>%
   mutate(
     total_pop = sum(pop),
@@ -222,7 +222,7 @@ simd_domains <- simd2020 %>%
     fill = factor(value, levels = 1:5), y = total_pop,
     x = factor(variable, levels = tolower(plot_labels))
   )) +
-  geom_bar(stat = "identity", position = "fill") +
+  geom_col(position = "fill") +
   scale_x_discrete(labels = plot_labels) +
   scale_y_continuous(labels = scales::percent) +
   labs(
@@ -233,7 +233,7 @@ simd_domains <- simd2020 %>%
   scale_fill_manual(
     name = "Quintile",
     labels = simd_cats,
-    values = simd_col, drop = F
+    values = simd_col, drop = FALSE
   ) +
   theme_profiles()
 
@@ -324,8 +324,8 @@ simd_16_20_dom <- full_join(base_data, simd2016_dom) %>%
 simd_diff_plot <- ggplot(simd_16_20_dom, aes(x = quintile, y = diff, fill = factor(quintile))) +
   facet_wrap(~ factor(domain, levels = c("SIMD", unique(sort(simd_16_20_dom$domain))[1:7])), ncol = 4) +
   geom_line(aes(y = 0, group = 1)) +
-  geom_bar(
-    stat = "identity", position = position_dodge(),
+  geom_col(
+    position = position_dodge(),
     color = "black"
   ) +
   geom_text(
@@ -343,7 +343,7 @@ simd_diff_plot <- ggplot(simd_16_20_dom, aes(x = quintile, y = diff, fill = fact
   scale_fill_manual(
     name = "Population-Weighted Quintile",
     labels = simd_cats,
-    values = (simd_col), drop = F
+    values = (simd_col), drop = FALSE
   ) +
   theme_minimal() +
   theme(legend.position = "bottom") +
@@ -398,7 +398,7 @@ other_locs_simd <- pop_data %>%
     year == max(year),
     hscp_locality %in% other_locs$hscp_locality
   ) %>%
-  group_by(hscp_locality, simd2020v2_sc_quintile, .drop = F) %>%
+  group_by(hscp_locality, simd2020v2_sc_quintile, .drop = FALSE) %>%
   summarise(pop = sum(total_pop)) %>%
   ungroup() %>%
   group_by(hscp_locality) %>%
@@ -421,7 +421,7 @@ hscp_simd <- pop_data %>%
     year == max(year),
     hscp2019name == HSCP
   ) %>%
-  group_by(simd2020v2_sc_quintile, .drop = F) %>%
+  group_by(simd2020v2_sc_quintile, .drop = FALSE) %>%
   summarise(pop = sum(total_pop)) %>%
   ungroup() %>%
   mutate(perc = round_half_up(pop / sum(pop) * 100, 1))

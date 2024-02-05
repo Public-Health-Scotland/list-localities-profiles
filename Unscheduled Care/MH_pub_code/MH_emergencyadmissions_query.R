@@ -60,11 +60,11 @@ smr_mh_emergency_adm <- smr4_extract %>%
   filter(admission_type %in% c("30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "20", "21", "22", "18")) %>% # emergency admissions only
   mutate(main_con = substr(main_condition, 1, 3)) %>%
   mutate(diag = case_when(
-    main_con %in% c("F[00-09]") ~ "Dementia",
-    main_con %in% c("F[10-19]") ~ "Psychoactive Substance Misuse",
-    main_con %in% c("F[20-29]") ~ "Schizophrenia",
-    main_con %in% c("F[30-49]") ~ "Mood (affective) disorders",
-    main_con %in% c("F[60-69]") ~ "Adult personality and behavioural disorders",
+    main_con %in% "F[00-09]" ~ "Dementia",
+    main_con %in% "F[10-19]" ~ "Psychoactive Substance Misuse",
+    main_con %in% "F[20-29]" ~ "Schizophrenia",
+    main_con %in% "F[30-49]" ~ "Mood (affective) disorders",
+    main_con %in% "F[60-69]" ~ "Adult personality and behavioural disorders",
     main_con %in% c("F[50-59]", "F[70-99]") ~ "Adolescent behavioural and emotional disorders"
   )) %>%
   # mutate(diag = fct_explicit_na(diag, na_level = "Other")) %>%

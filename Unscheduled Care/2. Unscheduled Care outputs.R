@@ -95,29 +95,35 @@ pop_areas <- pops %>%
   select(-hb2019name, -hscp2019name) %>%
   rename(location = hscp_locality) %>%
   # Add a partnership total
-  bind_rows(., pops %>%
-    select(-hscp_locality, -hb2019name) %>%
-    filter(hscp2019name == HSCP) %>%
-    group_by(financial_year, year, hscp2019name) %>%
-    summarise_all(sum) %>%
-    ungroup() %>%
-    rename(location = hscp2019name)) %>%
+  bind_rows(
+    pops %>%
+      select(-hscp_locality, -hb2019name) %>%
+      filter(hscp2019name == HSCP) %>%
+      group_by(financial_year, year, hscp2019name) %>%
+      summarise_all(sum) %>%
+      ungroup() %>%
+      rename(location = hscp2019name)
+  ) %>%
   # Add HB total
-  bind_rows(., pops %>%
-    select(-hscp_locality, -hscp2019name) %>%
-    filter(hb2019name == HB) %>%
-    group_by(financial_year, year, hb2019name) %>%
-    summarise_all(sum) %>%
-    ungroup() %>%
-    rename(location = hb2019name)) %>%
+  bind_rows(
+    pops %>%
+      select(-hscp_locality, -hscp2019name) %>%
+      filter(hb2019name == HB) %>%
+      group_by(financial_year, year, hb2019name) %>%
+      summarise_all(sum) %>%
+      ungroup() %>%
+      rename(location = hb2019name)
+  ) %>%
   # Add a Scotland total
-  bind_rows(., pops %>%
-    select(-hscp_locality, -hscp2019name, -hb2019name) %>%
-    group_by(financial_year, year) %>%
-    summarise_all(sum) %>%
-    ungroup() %>%
-    mutate(location = "Scotland")) %>%
-  pivot_longer(c("Pop0_17":"total_pop"), names_to = "age_group", values_to = "pop") %>%
+  bind_rows(
+    pops %>%
+      select(-hscp_locality, -hscp2019name, -hb2019name) %>%
+      group_by(financial_year, year) %>%
+      summarise_all(sum) %>%
+      ungroup() %>%
+      mutate(location = "Scotland")
+  ) %>%
+  pivot_longer("Pop0_17":"total_pop", names_to = "age_group", values_to = "pop") %>%
   mutate(age_group = case_when(
     age_group == "Pop0_17" ~ "0 - 17",
     age_group == "Pop18_44" ~ "18 - 44",
@@ -130,7 +136,7 @@ pop_areas <- pops %>%
 
 
 loc_pop <- pops %>%
-  pivot_longer(c("Pop0_17":"total_pop"), names_to = "age_group", values_to = "pop") %>%
+  pivot_longer("Pop0_17":"total_pop", names_to = "age_group", values_to = "pop") %>%
   mutate(age_group = case_when(
     age_group == "Pop0_17" ~ "0 - 17",
     age_group == "Pop18_44" ~ "18 - 44",
@@ -815,7 +821,7 @@ scot_read <- readmissions_areas %>%
 #   mutate(location = fct_reorder(as.factor(str_wrap(location, 28)), as.numeric(area_type))) %>%
 #
 #   ggplot(aes(x = location, y = data, fill = location, weight = data)) +
-#   geom_bar(stat = "identity", position = position_dodge()) +
+#   geom_col(position = position_dodge()) +
 #   geom_text(aes(y = data, label = round_half_up(data, 1)),
 #             position=position_dodge(width=0.9),
 #             vjust=-0.25, color = "#4a4a4a", size = 4, fontface = "bold") +
@@ -980,7 +986,7 @@ psych_hosp_time_trend <- psych_hosp %>%
     xaxis_title = "Financial Year Groups (3-year aggregates)",
     yaxis_title = "Psychiatric patient hospitalisations\n(Standardised rates per 100,000)",
     string_wrap = 10,
-    rotate_xaxis = T
+    rotate_xaxis = TRUE
   )
 
 psych_hosp_time_trend
@@ -998,7 +1004,7 @@ other_locs_psych_hosp <- psych_hosp %>%
   filter(year == max(year)) %>%
   filter(area_type == "Locality") %>%
   rename("hscp_locality" = "area_name") %>%
-  right_join(., other_locs) %>%
+  right_join(other_locs) %>%
   arrange(hscp_locality) %>%
   select(hscp_locality, measure) %>%
   mutate(measure = as.character(round_half_up(measure, 1))) %>%

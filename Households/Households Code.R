@@ -69,7 +69,7 @@ for (i in 2014:max_year_housing) {
 rm(temp)
 
 # Global Script Function to read in Localities Lookup
-lookup <- read_in_localities(dz_level = T) %>%
+lookup <- read_in_localities(dz_level = TRUE) %>%
   dplyr::select(datazone2011, hscp_locality) %>%
   filter(hscp_locality == LOCALITY)
 
@@ -173,7 +173,7 @@ pal_ctb <- phsstyles::phs_colours(c(
 ))
 
 ctb_plot <- ggplot(ctb, aes(fill = factor(variable, levels = rev(variable)), y = value, x = 1)) +
-  geom_bar(stat = "identity", position = "fill", colour = "black", size = 0.5) +
+  geom_col(position = "fill", colour = "black", size = 0.5) +
   theme_classic() +
   coord_flip() +
   labs(x = "", y = "Proportion of Households", caption = "Source: Scottish Assessors’ Association (via NRS)") +
@@ -181,8 +181,8 @@ ctb_plot <- ggplot(ctb, aes(fill = factor(variable, levels = rev(variable)), y =
     name = "Council Tax Band",
     labels = (paste("Band", LETTERS[8:1])),
     values = pal_ctb,
-    drop = F,
-    guide = guide_legend(reverse = T)
+    drop = FALSE,
+    guide = guide_legend(reverse = TRUE)
   ) +
   theme(
     axis.text = element_blank(),
@@ -224,7 +224,7 @@ perc_houses_FH <- format_number_for_text(sum(
 ## Relevant lookups for creating the table objects
 
 # Global Script Function to read in Localities Lookup
-lookup2 <- read_in_localities(dz_level = F)
+lookup2 <- read_in_localities(dz_level = FALSE)
 
 # Determine HSCP and HB based on Loc
 HSCP <- as.character(filter(lookup2, hscp_locality == LOCALITY)$hscp2019name)
@@ -248,7 +248,7 @@ rm(lookup2)
 # 1. Other localities
 
 # Global Script Function to read in Localities Lookup
-other_locs_dz <- read_in_localities(dz_level = T) %>%
+other_locs_dz <- read_in_localities(dz_level = TRUE) %>%
   arrange() %>%
   dplyr::select(datazone2011, hscp_locality) %>%
   inner_join(other_locs, by = c("hscp_locality" = "hscp_locality"))
@@ -309,7 +309,7 @@ rm(house_dat2_otherlocs, house_dat_otherlocs, other_locs_dz)
 # 2. HSCP
 
 # Global Script Function to read in Localities Lookup
-hscp_dz <- read_in_localities(dz_level = T) %>%
+hscp_dz <- read_in_localities(dz_level = TRUE) %>%
   select(datazone2011, hscp2019name) %>%
   filter(hscp2019name == HSCP)
 
@@ -354,19 +354,19 @@ rm(hscp_dz, house_dat_hscp, house_dat2_hscp)
 
 
 # 3. Scotland
-scot_n_houses <- format_number_for_text(sum(filter(house_raw_dat, year == max(year))$total_number_of_dwellings, na.rm = T))
-scot_perc_discount <- format_number_for_text(sum(filter(house_raw_dat, year == max(year))$dwellings_with_a_single_adult_council_tax_discount, na.rm = T) / sum(filter(house_raw_dat, year == max(year))$total_number_of_dwellings, na.rm = T) * 100)
+scot_n_houses <- format_number_for_text(sum(filter(house_raw_dat, year == max(year))$total_number_of_dwellings, na.rm = TRUE))
+scot_perc_discount <- format_number_for_text(sum(filter(house_raw_dat, year == max(year))$dwellings_with_a_single_adult_council_tax_discount, na.rm = TRUE) / sum(filter(house_raw_dat, year == max(year))$total_number_of_dwellings, na.rm = TRUE) * 100)
 
 scot_perc_housesAC <- format_number_for_text(sum(house_raw_dat2$council_tax_band_a,
   house_raw_dat2$council_tax_band_b,
   house_raw_dat2$council_tax_band_c,
-  na.rm = T
-) / sum(house_raw_dat2$total_number_of_dwellings, na.rm = T) * 100)
+  na.rm = TRUE
+) / sum(house_raw_dat2$total_number_of_dwellings, na.rm = TRUE) * 100)
 scot_perc_housesFH <- format_number_for_text(sum(house_raw_dat2$council_tax_band_f,
   house_raw_dat2$council_tax_band_g,
   house_raw_dat2$council_tax_band_h,
-  na.rm = T
-) / sum(house_raw_dat2$total_number_of_dwellings, na.rm = T) * 100)
+  na.rm = TRUE
+) / sum(house_raw_dat2$total_number_of_dwellings, na.rm = TRUE) * 100)
 
 
 
