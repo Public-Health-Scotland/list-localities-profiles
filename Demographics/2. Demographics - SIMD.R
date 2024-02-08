@@ -21,11 +21,11 @@ library(janitor)
 library(readxl)
 library(reshape2)
 library(scales)
-library(rgdal)
 library(broom)
-# library(OpenStreetMap)
 library(ggrepel)
 library(phsstyles)
+library(leaflet)
+library(htmlwidgets)
 
 # Source in global functions/themes script
 source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/Global Script.R")
@@ -44,7 +44,7 @@ filepath <- paste0(
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
 # LOCALITY <- "Helensburgh and Lomond"
 # LOCALITY <- "City of Dunfermline"
-# LOCALITY <- "Inverness"
+ LOCALITY <- "Inverness"
 
 
 ########################## SECTION 2: Data Imports ###############################
@@ -117,13 +117,12 @@ perc_top_quintile <- simd_perc_breakdown[5, ]$perc
 ## 5b) SIMD map ----
 
 # load in shapefile for mapping
-zones <- readOGR(
-  dsn = paste0("//conf/linkage/output/lookups/Unicode/Geography/Shapefiles/Data Zones 2011/"),
-  layer = "SG_DataZone_Bdry_2011"
-)
-zones <- spTransform(zones, "+init=epsg:4326")
+zones<- sf::read_sf("//conf/linkage/output/lookups/Unicode/Geography/Shapefiles/Data Zones 2011/SG_DataZone_Bdry_2011.shp")
 
-zones@data$datazone2011 <- zones@data$DataZone
+zones <- sf::st_transform(zones,4326)
+
+zones$datazone2011 <- zones$DataZone
+
 
 # merge lookup and shapefile
 zones <- merge(zones, lookup_dz, by = "datazone2011")
@@ -156,13 +155,10 @@ simd_map_data <- simd2020 %>%
 # merge with shapefile
 zones <- merge(zones, simd_map_data, by = "datazone2011")
 
-# convert to df for ggplot and add data back on
-zones_tidy <- tidy(zones)
-zones$id <- row.names(zones)
-zones_tidy <- left_join(zones_tidy, zones@data)
 
 # set colours for simd
 simd_col <- c("#de4243", "#f6bf87", "#ffffc2", "#b9e1eb", "#4f81bd")
+
 simd_cats <- c(
   "SIMD 1",
   "SIMD 2",
@@ -170,36 +166,43 @@ simd_cats <- c(
   "SIMD 4",
   "SIMD 5"
 )
-r <- (max(zones_tidy$long) - min(zones_tidy$long)) /
-  (max(zones_tidy$lat) - min(zones_tidy$lat))
-
-# plot
-simd_map <- ggplot(
-  data = zones_tidy,
-  aes(x = long, y = lat)
-) +
-  geom_polygon(
-    colour = "black", size = 0.1,
-    mapping = aes(group = group, fill = factor(simd, levels = 1:5))
-  ) +
-  scale_fill_manual(values = simd_col, labels = simd_cats, drop = FALSE) +
-  geom_text_repel(
-    data = places, aes(
-      x = Longitude, y = Latitude,
-      label = name
-    ),
-    color = "black", size = 3.5,
-    max.overlaps = getOption("ggrepel.max.overlaps", default = 12)
-  ) +
-  scale_x_continuous(limits = c(min(zones_tidy$long), max(zones_tidy$long))) +
-  scale_y_continuous(limits = c(min(zones_tidy$lat), max(zones_tidy$lat))) +
-  theme_void() +
-  coord_fixed(ratio = r) +
-  guides(fill = guide_legend(title = "SIMD Quintile")) +
-  labs(caption = "Source: Scottish Government, Public Health Scotland")
+loc.cols <- colorFactor(simd_col, domain = zones$simd, levels = 1:5)
 
 
-rm(zones, zones_tidy, places, r, simd_map_data)
+
+##Create function for adding circle markers
+addLegendCustom <- function(map, colors, labels, sizes, opacity = 1){
+  colorAdditions <- paste0(colors, "; border-radius: 50%; width:", sizes, "px; height:", sizes, "px")
+  labelAdditions <- paste0("<div style='display: inline-block;height: ", 
+                           sizes, "px;margin-top: 4px;line-height: ", sizes, "px;'>", 
+                           labels, "</div>")
+  
+  return(addLegend(map, colors = colorAdditions, 
+                   labels = labelAdditions, opacity = opacity))
+}
+
+
+## Create Map
+simd_map <- 
+  leaflet(options = leafletOptions(zoomControl = FALSE)) %>%
+  addProviderTiles(providers$OpenStreetMap) %>% 
+  
+  # Locality shapefiles
+  addPolygons(data=zones,
+              fillColor = ~loc.cols(simd),
+              fillOpacity = 0.7,
+              color = "#2e2e30",
+              stroke=T,
+              weight = 2,
+              label = ~ simd,
+              group = "SIMD") %>% 
+  
+  addLegend("bottomright", pal = loc.cols, values = zones$simd,title = "SIMD",opacity = 0.7, group="SIMD") 
+
+#adding this so you can view the map but will need deleted 
+simd_map
+
+rm(zones, places, simd_map_data)
 
 
 ## 5c) SIMD domains ----
