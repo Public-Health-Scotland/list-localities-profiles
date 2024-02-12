@@ -9,10 +9,10 @@
 ####################### SECTION 1: Packages, file paths, lookups, etc #########################
 
 ## Manually set year that the profiles are being run (extract year)
-ext_year <- 2022
+ext_year <- 2023
 
 ## Manually set the name of the latest MSG folder
-latest_msg_folder <- "2022-10 October"
+latest_msg_folder <- "2023-12 December"
 
 # Set locality profiles file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
@@ -29,14 +29,15 @@ library(reshape2)
 library(haven)
 library(fst)
 library(odbc)
+library(arrow)
 
 ## Functions
-source(paste0(lp_path, "Master RMarkdown Document & Render Code/Global Script.R"))
+source("./Master RMarkdown Document & Render Code/Global Script.R")
 
 # Read/write permissions
-Sys.umask("006")
+#Sys.umask("006")
 
-Sys.getenv("R_ZIPCMD", "zip")
+#Sys.getenv("R_ZIPCMD", "zip")
 
 # Folder to export to
 exportfolder <- paste0(lp_path, "Unscheduled Care/DATA ", ext_year, "/")
@@ -56,29 +57,29 @@ localities <- read_in_localities()
 ########################## SECTION 2: MSG Data ###############################
 
 # Read in MSG data
-msg_emerg_adm_raw <- read_sav(paste0(
+msg_emerg_adm_raw <- read_parquet(paste0(
   "/conf/LIST_analytics/MSG/", latest_msg_folder,
-  "/Breakdowns/1a-Admissions-breakdown.sav"
+  "/Breakdowns/1a-Admissions-breakdown.parquet"
 ))
 
-msg_beddays_raw <- read_sav(paste0(
+msg_beddays_raw <- read_parquet(paste0(
   "/conf/LIST_analytics/MSG/", latest_msg_folder,
-  "/Breakdowns/2a-Acute-Beddays-breakdown.sav"
+  "/Breakdowns/2a-Acute-Beddays-breakdown.parquet"
 ))
 
-msg_ae_raw <- read_sav(paste0(
+msg_ae_raw <- read_parquet(paste0(
   "/conf/LIST_analytics/MSG/", latest_msg_folder,
-  "/Breakdowns/3-A&E-Breakdowns.sav"
+  "/Breakdowns/3-A&E-Breakdowns.parquet"
 ))
 
-msg_dd_raw <- read_sav(paste0(
+msg_dd_raw <- read_parquet(paste0(
   "/conf/LIST_analytics/MSG/", latest_msg_folder,
-  "/Breakdowns/4-Delayed-Discharge-Breakdowns.sav"
+  "/Breakdowns/4-Delayed-Discharge-Breakdowns.parquet"
 ))
 
-msg_mh_beddays_raw <- read_sav(paste0(
+msg_mh_beddays_raw <- read_parquet(paste0(
   "/conf/LIST_analytics/MSG/", latest_msg_folder,
-  "/Breakdowns/2c-MH-Beddays-breakdown.sav"
+  "/Breakdowns/2c-MH-Beddays-breakdown.parquet"
 ))
 
 
@@ -166,19 +167,19 @@ msg_dd <- msg_dd_raw %>%
 
 
 # Emergency admissions
-saveRDS(msg_emergency_adm, paste0(exportfolder, "emergency_admissions_msg.rds"))
+write_parquet(msg_emergency_adm, paste0(exportfolder, "emergency_admissions_msg.parquet"))
 
 # Bed days
-saveRDS(msg_bed_days, paste0(exportfolder, "bed_days_msg.rds"))
+write_parquet(msg_bed_days, paste0(exportfolder, "bed_days_msg.parquet"))
 
 # Bed days MH
-saveRDS(msg_bed_days_mh, paste0(exportfolder, "bed_days_mh_msg.rds"))
+write_parquet(msg_bed_days_mh, paste0(exportfolder, "bed_days_mh_msg.parquet"))
 
 # A&E
-saveRDS(msg_ae, paste0(exportfolder, "ae_attendances_msg.rds"))
+write_parquet(msg_ae, paste0(exportfolder, "ae_attendances_msg.parquet"))
 
 # Delayed discharges
-saveRDS(msg_dd, paste0(exportfolder, "delayed_discharges_msg.rds"))
+write_parquet(msg_dd, paste0(exportfolder, "delayed_discharges_msg.parquet"))
 
 
 
@@ -672,10 +673,10 @@ ppa <- ppa_id %>%
 # _________________________________________________________________________
 
 # Falls
-saveRDS(smr_falls, paste0(exportfolder, "falls_smr.rds"))
+write_parquet(smr_falls, paste0(exportfolder, "falls_smr.parquet"))
 
 # Readmissions
-saveRDS(smr_readmissions, paste0(exportfolder, "readmissions_smr.rds"))
+write_parquet(smr_readmissions, paste0(exportfolder, "readmissions_smr.parquet"))
 
 # PPA
-saveRDS(ppa, paste0(exportfolder, "ppa_smr.rds"))
+write_parquet(ppa, paste0(exportfolder, "ppa_smr.parquet"))

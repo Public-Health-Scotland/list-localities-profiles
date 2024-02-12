@@ -20,11 +20,12 @@ options(kableExtra.auto_format = FALSE)
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
 # LOCALITY <- "Helensburgh and Lomond"
 # LOCALITY <- "City of Dunfermline"
-# LOCALITY <-  "Inverness"
-LOCALITY <- "East Dunbartonshire West"
+LOCALITY <-  "Inverness"
+#LOCALITY <- "East Dunbartonshire West"
 
-source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Unscheduled Care/Scripts/2. Unscheduled Care outputs.R")
+source("~/localities/Master RMarkdown Document & Render Code/Global Script.R")
 
+source("~/localities/Unscheduled Care/2. Unscheduled Care outputs.R")
 
 x <- 1 # object for figure numbers
 y <- 1 # object for table numbers

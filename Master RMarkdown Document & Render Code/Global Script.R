@@ -193,6 +193,30 @@ read_in_dz_pops <- function() {
     left_join(read_in_localities(dz_level = TRUE))
 }
 
+read_in_dz_pops22 <- function() {
+  fs::dir_ls(
+    glue(
+      "/conf/linkage/output/lookups/Unicode/",
+      "Populations/Estimates/"
+    ),
+    regexp = glue("DataZone2011_pop_est_2011_.+?\\.rds$")
+  ) %>%
+    # Read in the most up to date lookup version
+    max() %>%
+    read_rds() %>%
+    clean_names() %>%
+    select(-c(
+      intzone2011, intzone2011name,
+      ca2019, ca2019name,
+      ca2018, ca2011,
+      hscp2019, hscp2019name, hscp2018, hscp2016, hb2019, hb2019name, hb2018, hb2014
+    )) %>%
+    left_join(read_in_localities(dz_level = TRUE)) |> 
+    filter(year == '2021') |> 
+    select(-year) |> 
+    mutate(year = 2022)
+}
+
 ## Function to read in latest population projections ----
 
 # No arguments needed, just use read_in_pop_proj()
@@ -490,7 +514,8 @@ fy <- function(date) {
     date %within% interval(dmy(01042019), dmy(31032020)) ~ "2019/20",
     date %within% interval(dmy(01042020), dmy(31032021)) ~ "2020/21",
     date %within% interval(dmy(01042021), dmy(31032022)) ~ "2021/22",
-    date %within% interval(dmy(01042022), dmy(31032023)) ~ "2022/23"
+    date %within% interval(dmy(01042022), dmy(31032023)) ~ "2022/23",
+    date %within% interval(dmy(01042023), dmy(31032024)) ~ "2023/24"
   )
 }
 
