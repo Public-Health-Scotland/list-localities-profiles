@@ -27,20 +27,20 @@ library(tidylog)
 library(phsstyles)
 
 # Determine locality (for testing only)
-# LOCALITY <- "Falkirk West"
+#LOCALITY <- "Falkirk West"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
 # LOCALITY <- "Mid-Argyll, Kintyre and Islay"
 # LOCALITY <- "City of Dunfermline"
 # LOCALITY <- "Barra"
 
 # Set year of data extracts for folder
-ext_year <- 2022
+ext_year <- 2023
 
 # Set file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 # Source in functions code
-source("Master RMarkdown Document & Render Code/Global Script.R")
+#source("~/list-localities-profiles/Master RMarkdown Document & Render Code/Global Script.R")
 
 ### Geographical lookups and objects ----
 
