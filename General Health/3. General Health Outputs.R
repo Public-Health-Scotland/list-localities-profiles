@@ -7,40 +7,38 @@
 ## Code used to create infographics, charts, and figures for the General Health section of
 #  the locality profiles.
 
-## Created by C.Puech
-## Original date 10/01/2020
-## Latest update August 2022 - rewrote parts of code for smoother process
-
 ############# 1) PACKAGES, DIRECTORY, LOOKUPS, DATA IMPORT + CLEANING #############
 
 ## load packages
-library(readxl)
+#library(readxl)
 library(tidyverse)
-library(reshape2)
+#library(reshape2)
+#library(knitr)
 library(janitor)
 library(cowplot)
-library(knitr)
 library(gridExtra)
 library(grid)
 library(png)
+
 library(tidylog)
 library(phsstyles)
 
+
 # Determine locality (for testing only)
-# LOCALITY <- "Falkirk West"
+#LOCALITY <- "Inverness"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
 # LOCALITY <- "Mid-Argyll, Kintyre and Islay"
 # LOCALITY <- "City of Dunfermline"
 # LOCALITY <- "Barra"
 
 # Set year of data extracts for folder
-ext_year <- 2022
+ext_year <- 2023
 
 # Set file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 # Source in functions code
-source("Master RMarkdown Document & Render Code/Global Script.R")
+#source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ### Geographical lookups and objects ----
 
@@ -600,7 +598,7 @@ waffle.o85 <- create_infographic(
 
 
 ## Combine images
-waffles <- plot_grid(waffle.u65, waffle.6574, waffle.7584, waffle.o85, nrow = 2)
+waffles <- cowplot::plot_grid(waffle.u65, waffle.6574, waffle.7584, waffle.o85, nrow = 2)
 
 
 ## Numbers for text
