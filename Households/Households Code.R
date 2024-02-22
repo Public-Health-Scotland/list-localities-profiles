@@ -33,9 +33,9 @@ library(gridExtra)
 library(reshape2)
 
 # Update Data Year (this is the maximum year available for both housing data sets from NRS)
-max_year_housing <- 2021
+max_year_housing <- 2022
 # Update Publication Year (the year marked on the Data folder)
-ext_year <- 2022
+ext_year <- 2023
 
 # Set Directory.
 filepath <- paste0("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Households/")
