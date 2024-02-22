@@ -136,14 +136,6 @@ service_map <-
 
 htmlwidgets::saveWidget(service_map, "./Services/service_map.html")
 
-# Introduce a delay before taking a screenshot
-Sys.sleep(5)  # Adjust the delay time (in seconds) as needed
-
-
-webshot::webshot("./Services/service_map.html", "./Services/service_map.png")
-
-
-
 
 # remove unnecessary objects
 rm(
