@@ -6,21 +6,16 @@
 
 ## Code used to extract long-term conditions data from Source Linkage Files
 
-## Created by C.Puech
-## Original date 10/01/2020
-## Latest update August 2022 - rewrote parts of code for smoother process
-
 # Packages
-library(fst)
-library(tidyverse)
-library(readxl)
+library(dplyr)
+library(slfhelper)
 
 # Set year for data extracts folder for saving
-ext_year <- 2022
+ext_year <- 2023
 
 # Set financial year to use for SLFs (format ex: for FY 2021/2022 -> 202122)
 # Recommended to use previous year's data for more up to date figures + pop
-fy <- "202021"
+fy <- "202223"
 
 # Set file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
@@ -35,11 +30,15 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 lookup <- read_in_localities(dz_level = TRUE)
 
 # Read in SLF individual level file
-slf <- read.fst(paste0(
-  "/conf/hscdiip/01-Source-linkage-files/",
-  "source-individual-file-", fy, ".fst"
-)) %>%
-  select(-locality, -hscp2019, -hb2019)
+#slf <- read.fst(paste0(
+#  "/conf/hscdiip/01-Source-linkage-files/",
+#  "source-individual-file-", fy, ".fst"
+#)) %>%
+#  select(-locality, -hscp2019, -hb2019)
+
+slf <- slfhelper::read_slf_individual("2223",
+                                      col_select = c("year","datazone2011","hscp2018","age","keep_population",ltc_vars),
+                                      as_data_frame = TRUE)
 
 # Compute total LTCs
 slf$"total_ltc" <- rowSums(subset(slf, select = arth:refailure))
