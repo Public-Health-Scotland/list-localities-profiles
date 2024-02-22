@@ -21,20 +21,29 @@ LOCALITY <- "Falkirk West"
 # LOCALITY <- "Skye, Lochalsh and West Ross"
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
 
-source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Lifestyle & Risk Factors/Scripts/2. Lifestyle & Risk Factors Outputs.R")
+
+source("~/localities/Master RMarkdown Document & Render Code/Global Script.R")
+
+#For testing - CF directory
+source("~/localities/Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
+
+#KH testing directory 
+
+#source("~/localities/Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
+
 
 
 x <- 1 # object for figure numbers
 y <- 1 # object for table numbers
 ```
 
-#####Page break
+##### Page break
 
 ## Lifestyle and Risk Factors
 
 \newline
 
-###Summary
+### Summary
 
 Mental and physical wellbeing has close ties with people’s lifestyles and behaviours. Financial security, employment and location are influences that often have a bearing on these choices. Issues can develop when alcohol, smoking or drug use shape lives. This section provides data on drug-related hospital admissions, alcohol-related hospital admissions, alcohol-specific deaths and bowel screening uptake, to give an overview of some of the lifestyles and behaviours for `r LOCALITY` locality. These can give an idea of quality of life and prosperity.
 
