@@ -26,9 +26,11 @@ library(ggrepel)
 library(phsstyles)
 library(leaflet)
 library(htmlwidgets)
+library(leaflet.extras)
+library(mapview)
 
 # Source in global functions/themes script
-source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/Global Script.R")
+#source("./Master RMarkdown Document & Render Code/Global Script.R")
 
 ## File path
 filepath <- paste0(
@@ -44,7 +46,7 @@ filepath <- paste0(
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
 # LOCALITY <- "Helensburgh and Lomond"
 # LOCALITY <- "City of Dunfermline"
- LOCALITY <- "Inverness"
+# LOCALITY <- "Inverness"
 
 
 ########################## SECTION 2: Data Imports ###############################
