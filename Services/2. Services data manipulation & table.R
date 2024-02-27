@@ -116,6 +116,10 @@ markers_gp <- left_join(prac, postcode_lkp, by = "postcode") %>%
   # filter out HSCP for map
   filter(hscp2019name == HSCP)
 
+# rename for hospital_code to location
+hosp_postcodes <- hosp_postcodes %>%
+  rename(location = hospital_code)
+
 
 ## Emergency Departments and MIUs ----
 
