@@ -26,7 +26,7 @@ library(grid)
 library(data.table)
 
 # Change year to be the year in the data folder name
-ext_year <- 2022
+ext_year <- 2023
 
 ## Set Locality (for testing only)
 # LOCALITY <- "Falkirk West"
