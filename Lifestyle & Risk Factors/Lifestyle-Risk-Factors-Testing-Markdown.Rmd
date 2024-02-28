@@ -29,7 +29,7 @@ source("~/localities/Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Output
 
 #KH testing directory 
 
-#source("~/localities/Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
+#source("~/list-localities-profiles/Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
 
 
 
