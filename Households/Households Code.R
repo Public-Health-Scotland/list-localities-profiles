@@ -40,8 +40,8 @@ ext_year <- 2023
 # Set Directory.
 filepath <- paste0("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Households/")
 
-# Read in Global Script for RMarkdown
-source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/Global Script.R")
+# Read in Global Script for RMarkdown (For testing only)
+#source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set locality (for testing only)
 ## LOCALITY = "Whalsay and Skerries"
