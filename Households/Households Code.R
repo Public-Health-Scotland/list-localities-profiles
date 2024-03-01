@@ -154,8 +154,8 @@ house_raw_dat2 <- read_excel(paste0(filepath, "Data ", ext_year, "/council_tax.x
 
 # Filter and aggregate
 house_dat2 <- house_raw_dat2 %>%
-  filter(x2011_data_zone_code %in% lookup$datazone2011) %>%
-  select(3:12) %>%
+  filter(data_zone_code %in% lookup$datazone2011) %>%
+  select(5:14) %>%
   summarise_all(.funs = sum)
 
 
@@ -254,7 +254,7 @@ other_locs_dz <- read_in_localities(dz_level = TRUE) %>%
   inner_join(other_locs, by = c("hscp_locality" = "hscp_locality"))
 
 house_dat_otherlocs <- house_raw_dat %>%
-  inner_join(other_locs_dz, by = c("x2011_data_zone_code" = "datazone2011")) %>%
+  inner_join(other_locs_dz, by = c("data_zone_code" = "datazone2011")) %>%
   filter(year == max(year)) %>%
   group_by(hscp_locality) %>%
   summarise(
@@ -277,7 +277,7 @@ other_locs_perc_discount <- house_dat_otherlocs %>%
 
 
 house_dat2_otherlocs <- house_raw_dat2 %>%
-  inner_join(other_locs_dz, by = c("x2011_data_zone_code" = "datazone2011")) %>%
+  inner_join(other_locs_dz, by = c("data_zone_code" = "datazone2011")) %>%
   group_by(hscp_locality) %>%
   summarise(
     total_number_of_dwellings = sum(total_number_of_dwellings),
@@ -315,7 +315,7 @@ hscp_dz <- read_in_localities(dz_level = TRUE) %>%
 
 
 house_dat_hscp <- house_raw_dat %>%
-  inner_join(hscp_dz, by = c("x2011_data_zone_code" = "datazone2011")) %>%
+  inner_join(hscp_dz, by = c("data_zone_code" = "datazone2011")) %>%
   filter(year == max(year)) %>%
   group_by(year) %>%
   summarise(
@@ -330,7 +330,7 @@ hscp_perc_discount <- house_dat_hscp$perc_discount
 
 
 house_dat2_hscp <- house_raw_dat2 %>%
-  inner_join(hscp_dz, by = c("x2011_data_zone_code" = "datazone2011")) %>%
+  inner_join(hscp_dz, by = c("data_zone_code" = "datazone2011")) %>%
   group_by(hscp2019name) %>%
   summarise(
     total_dwellings = sum(total_number_of_dwellings),
