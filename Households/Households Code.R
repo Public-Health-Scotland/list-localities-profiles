@@ -75,7 +75,7 @@ lookup <- read_in_localities(dz_level = TRUE) %>%
 
 
 # filter housing data for locality of interest
-house_dat <- house_raw_dat %>% filter(x2011_data_zone_code %in% lookup$datazone2011)
+house_dat <- house_raw_dat %>% filter(data_zone_code %in% lookup$datazone2011)
 
 # aggregate data
 house_dat1 <- house_dat %>%
