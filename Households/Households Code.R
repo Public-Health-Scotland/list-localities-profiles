@@ -61,7 +61,7 @@ for (i in 2014:max_year_housing) {
   ) %>%
     mutate(year = i) %>%
     clean_names() %>%
-    select(year, 1:10)
+    select(year, 1:12)
 
   house_raw_dat <- rbind(house_raw_dat, temp)
 }
@@ -114,7 +114,7 @@ perc_second_homes <- format_number_for_text(filter(house_dat1, year == max(year)
 
 # Total dwellings over time
 houses_ts <- ggplot(house_dat1, aes(x = year, y = total_dwellings, group = 1)) +
-  geom_line(size = 1, colour = "#3F3685") +
+  geom_line(linewidth = 1, colour = "#3F3685") +
   theme_profiles() +
   geom_point(color = "#3F3685") +
   geom_text(aes(label = format(total_dwellings, big.mark = ",")),
