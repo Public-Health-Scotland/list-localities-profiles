@@ -26,6 +26,7 @@ library(knitr)
 library(gridExtra)
 library(grid)
 library(data.table)
+library(sf)
 
 ## Select HCSP (for testing only)
 # HSCP <- "Aberdeenshire"
@@ -33,14 +34,14 @@ library(data.table)
 ## Set file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
-# Source in functions code
-source("Master RMarkdown Document & Render Code/Global Script.R")
+# Source in functions code (for testing only)
+# source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Select a locality based on the HSCP (for source code "2. Services Outputs" to run - it does not matter which one is chosen)
 LOCALITY <- as.character(filter(read_in_localities(), hscp2019name == HSCP)[1, 1])
 
 # Source the data manipulation script for services
-source("Services/Scripts/2. Services data manipulation & table.R")
+source("Services/2. Services data manipulation & table.R")
 
 
 ###### 5. Read in locality shape files ######
@@ -50,10 +51,13 @@ shp <- sf::st_transform(shp,4326)
 
 shp <- shp |> 
   dplyr::mutate(hscp_locality = gsub("&", "and", HSCP_Local)) |> 
-  merge(lookup, by = "datazone2011")
+  merge(lookup, by = "hscp_locality")
 
 shp_hscp <- shp |> 
   filter(hscp2019name == HSCP)
+
+#convert to spatialdata frame https://stackoverflow.com/questions/61111529/converting-a-shapefile-polygon-data-frame-to-s4-in-r
+shp_hscp_sp <- as_Spatial(shp_hscp)
 
 ###### 6. Mapping Code ######
 
@@ -95,7 +99,7 @@ service_map <-
   addProviderTiles(providers$OpenStreetMap) %>%
   # Locality shapefiles
   addPolygons(
-    data = shp_hscp,
+    data = shp_hscp_sp,
     fillColor = ~ loc.cols(hscp_locality),
     fillOpacity = 0.5,
     color = "#2e2e30",
@@ -104,7 +108,7 @@ service_map <-
     label = ~hscp_locality,
     group = "Locality"
   ) %>%
-  addLegend("bottomright", pal = loc.cols, values = shp_hscp@data$hscp_locality, title = "Locality", opacity = 0.7, group = "Locality") %>%
+  addLegend("bottomright", pal = loc.cols, values = shp_hscp_sp@data$hscp_locality, title = "Locality", opacity = 0.7, group = "Locality") %>%
   # Markers
   addCircleMarkers(
     lng = markers_care_home$longitude, lat = markers_care_home$latitude, group = "Care Home",
@@ -140,7 +144,7 @@ htmlwidgets::saveWidget(service_map, "./Services/service_map.html")
 # remove unnecessary objects
 rm(
   data, hosp_postcodes, hosp_types, markers_care_home, markers_emergency_dep, markers_miu, markers_gp,
-  postcode_lkp, shp, shp_hscp, Clacks_Royal, other_care_type
+  postcode_lkp, shp, shp_hscp, shp_hscp_sp, Clacks_Royal, other_care_type
 )
 
 
