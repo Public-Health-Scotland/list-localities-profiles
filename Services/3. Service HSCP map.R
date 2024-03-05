@@ -134,7 +134,7 @@ service_map <-
 # Every time the R Markdown is run, the previous map is overwritten.
 #mapshot(service_map, file = paste0(lp_path, "/Services/map.png"))
 
-htmlwidgets::saveWidget(service_map, "./Services/service_map.html")
+#htmlwidgets::saveWidget(service_map, "./Services/service_map.html")
 
 
 # remove unnecessary objects
