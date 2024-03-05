@@ -26,9 +26,11 @@ library(ggrepel)
 library(phsstyles)
 library(leaflet)
 library(htmlwidgets)
+library(leaflet.extras)
+library(mapview)
 
 # Source in global functions/themes script
-source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/Global Script.R")
+#source("./Master RMarkdown Document & Render Code/Global Script.R")
 
 ## File path
 filepath <- paste0(
@@ -44,7 +46,7 @@ filepath <- paste0(
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
 # LOCALITY <- "Helensburgh and Lomond"
 # LOCALITY <- "City of Dunfermline"
- LOCALITY <- "Inverness"
+# LOCALITY <- "Inverness"
 
 
 ########################## SECTION 2: Data Imports ###############################
@@ -169,24 +171,17 @@ simd_cats <- c(
 loc.cols <- colorFactor(simd_col, domain = zones$simd, levels = 1:5)
 
 
-
-##Create function for adding circle markers
-addLegendCustom <- function(map, colors, labels, sizes, opacity = 1){
-  colorAdditions <- paste0(colors, "; border-radius: 50%; width:", sizes, "px; height:", sizes, "px")
-  labelAdditions <- paste0("<div style='display: inline-block;height: ", 
-                           sizes, "px;margin-top: 4px;line-height: ", sizes, "px;'>", 
-                           labels, "</div>")
-  
-  return(addLegend(map, colors = colorAdditions, 
-                   labels = labelAdditions, opacity = opacity))
-}
-
-
+library(leaflet.extras)
 ## Create Map
-simd_map <- 
+simd_map <-
   leaflet(options = leafletOptions(zoomControl = FALSE)) %>%
-  addProviderTiles(providers$OpenStreetMap) %>% 
-  
+  #order layers, map place names over polygon layer
+  addMapPane("providertitles", zIndex = 430) %>%
+  addMapPane("polygons", zIndex = 440) %>%
+  #add map background and map place names
+  addProviderTiles(providers$CartoDB.VoyagerNoLabels) %>%
+  addProviderTiles(provider = providers$CartoDB.VoyagerOnlyLabels,
+                   options = pathOptions(pane = "providertitles")) %>%
   # Locality shapefiles
   addPolygons(data=zones,
               fillColor = ~loc.cols(simd),
@@ -195,12 +190,15 @@ simd_map <-
               stroke=T,
               weight = 2,
               label = ~ simd,
-              group = "SIMD") %>% 
-  
-  addLegend("bottomright", pal = loc.cols, values = zones$simd,title = "SIMD",opacity = 0.7, group="SIMD") 
+              group = "SIMD") %>%
 
-#adding this so you can view the map but will need deleted 
-simd_map
+  addLegend("bottomright", pal = loc.cols, values = zones$simd,title = "SIMD",opacity = 0.7, group="SIMD")
+
+## Set file path for map
+lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+
+## Save map in localities
+mapshot(simd_map, file = paste0(lp_path, "/Demographics/map.png"))
 
 rm(zones, places, simd_map_data)
 
