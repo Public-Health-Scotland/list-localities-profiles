@@ -26,7 +26,7 @@ library(grid)
 library(data.table)
 
 # Change year to be the year in the data folder name
-ext_year <- 2022
+ext_year <- 2023
 
 ## Set Locality (for testing only)
 # LOCALITY <- "Falkirk West"
@@ -115,6 +115,10 @@ markers_gp <- left_join(prac, postcode_lkp, by = "postcode") %>%
   mutate(type = "GP Practice") %>%
   # filter out HSCP for map
   filter(hscp2019name == HSCP)
+
+# rename for hospital_code to location
+hosp_postcodes <- hosp_postcodes %>%
+  rename(location = hospital_code)
 
 
 ## Emergency Departments and MIUs ----
