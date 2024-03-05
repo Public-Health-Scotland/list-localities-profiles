@@ -26,7 +26,6 @@ library(knitr)
 library(gridExtra)
 library(grid)
 library(data.table)
-library(sf)
 
 ## Select HCSP (for testing only)
 # HSCP <- "Aberdeenshire"
@@ -55,9 +54,6 @@ shp <- shp |>
 
 shp_hscp <- shp |> 
   filter(hscp2019name == HSCP)
-
-#convert to spatialdata frame https://stackoverflow.com/questions/61111529/converting-a-shapefile-polygon-data-frame-to-s4-in-r
-shp_hscp_sp <- as_Spatial(shp_hscp)
 
 ###### 6. Mapping Code ######
 
@@ -99,16 +95,16 @@ service_map <-
   addProviderTiles(providers$OpenStreetMap) %>%
   # Locality shapefiles
   addPolygons(
-    data = shp_hscp_sp,
+    data = shp_hscp,
     fillColor = ~ loc.cols(hscp_locality),
-    fillOpacity = 0.5,
+    fillOpacity = 0.2,
     color = "#2e2e30",
     stroke = T,
     weight = 2,
     label = ~hscp_locality,
     group = "Locality"
   ) %>%
-  addLegend("bottomright", pal = loc.cols, values = shp_hscp_sp@data$hscp_locality, title = "Locality", opacity = 0.7, group = "Locality") %>%
+  addLegend("bottomright", pal = loc.cols, values = shp_hscp$hscp_locality, title = "Locality", opacity = 0.7, group = "Locality") %>%
   # Markers
   addCircleMarkers(
     lng = markers_care_home$longitude, lat = markers_care_home$latitude, group = "Care Home",
@@ -144,7 +140,7 @@ htmlwidgets::saveWidget(service_map, "./Services/service_map.html")
 # remove unnecessary objects
 rm(
   data, hosp_postcodes, hosp_types, markers_care_home, markers_emergency_dep, markers_miu, markers_gp,
-  postcode_lkp, shp, shp_hscp, shp_hscp_sp, Clacks_Royal, other_care_type
+  postcode_lkp, shp, shp_hscp, Clacks_Royal, other_care_type
 )
 
 
