@@ -33,14 +33,14 @@ library(data.table)
 ## Set file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
-# Source in functions code
-source("Master RMarkdown Document & Render Code/Global Script.R")
+# Source in functions code (for testing only)
+# source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Select a locality based on the HSCP (for source code "2. Services Outputs" to run - it does not matter which one is chosen)
 LOCALITY <- as.character(filter(read_in_localities(), hscp2019name == HSCP)[1, 1])
 
 # Source the data manipulation script for services
-source("Services/Scripts/2. Services data manipulation & table.R")
+source("Services/2. Services data manipulation & table.R")
 
 
 ###### 5. Read in locality shape files ######
@@ -50,7 +50,7 @@ shp <- sf::st_transform(shp,4326)
 
 shp <- shp |> 
   dplyr::mutate(hscp_locality = gsub("&", "and", HSCP_Local)) |> 
-  merge(lookup, by = "datazone2011")
+  merge(lookup, by = "hscp_locality")
 
 shp_hscp <- shp |> 
   filter(hscp2019name == HSCP)
@@ -97,14 +97,14 @@ service_map <-
   addPolygons(
     data = shp_hscp,
     fillColor = ~ loc.cols(hscp_locality),
-    fillOpacity = 0.5,
+    fillOpacity = 0.2,
     color = "#2e2e30",
     stroke = T,
     weight = 2,
     label = ~hscp_locality,
     group = "Locality"
   ) %>%
-  addLegend("bottomright", pal = loc.cols, values = shp_hscp@data$hscp_locality, title = "Locality", opacity = 0.7, group = "Locality") %>%
+  addLegend("bottomright", pal = loc.cols, values = shp_hscp$hscp_locality, title = "Locality", opacity = 0.7, group = "Locality") %>%
   # Markers
   addCircleMarkers(
     lng = markers_care_home$longitude, lat = markers_care_home$latitude, group = "Care Home",
@@ -134,7 +134,7 @@ service_map <-
 # Every time the R Markdown is run, the previous map is overwritten.
 #mapshot(service_map, file = paste0(lp_path, "/Services/map.png"))
 
-htmlwidgets::saveWidget(service_map, "./Services/service_map.html")
+#htmlwidgets::saveWidget(service_map, "./Services/service_map.html")
 
 
 # remove unnecessary objects
