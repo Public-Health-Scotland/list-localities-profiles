@@ -198,7 +198,7 @@ simd_map <-
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 ## Save map in localities
-mapshot(simd_map, file = paste0(lp_path, "/Demographics/map.png"))
+#mapshot(simd_map, file = paste0(lp_path, "/Demographics/map.png"))
 
 rm(zones, places, simd_map_data)
 
