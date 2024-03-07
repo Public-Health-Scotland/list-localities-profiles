@@ -40,8 +40,8 @@ ext_year <- 2023
 # Set Directory.
 filepath <- paste0("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Households/")
 
-# Read in Global Script for RMarkdown
-source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/Global Script.R")
+# Read in Global Script for RMarkdown (For testing only)
+#source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set locality (for testing only)
 ## LOCALITY = "Whalsay and Skerries"
@@ -61,7 +61,7 @@ for (i in 2014:max_year_housing) {
   ) %>%
     mutate(year = i) %>%
     clean_names() %>%
-    select(year, 1:10)
+    select(year, 1:12)
 
   house_raw_dat <- rbind(house_raw_dat, temp)
 }
@@ -75,7 +75,7 @@ lookup <- read_in_localities(dz_level = TRUE) %>%
 
 
 # filter housing data for locality of interest
-house_dat <- house_raw_dat %>% filter(x2011_data_zone_code %in% lookup$datazone2011)
+house_dat <- house_raw_dat %>% filter(data_zone_code %in% lookup$datazone2011)
 
 # aggregate data
 house_dat1 <- house_dat %>%
@@ -114,7 +114,7 @@ perc_second_homes <- format_number_for_text(filter(house_dat1, year == max(year)
 
 # Total dwellings over time
 houses_ts <- ggplot(house_dat1, aes(x = year, y = total_dwellings, group = 1)) +
-  geom_line(size = 1, colour = "#3F3685") +
+  geom_line(linewidth = 1, colour = "#3F3685") +
   theme_profiles() +
   geom_point(color = "#3F3685") +
   geom_text(aes(label = format(total_dwellings, big.mark = ",")),
@@ -154,8 +154,8 @@ house_raw_dat2 <- read_excel(paste0(filepath, "Data ", ext_year, "/council_tax.x
 
 # Filter and aggregate
 house_dat2 <- house_raw_dat2 %>%
-  filter(x2011_data_zone_code %in% lookup$datazone2011) %>%
-  select(3:12) %>%
+  filter(data_zone_code %in% lookup$datazone2011) %>%
+  select(5:14) %>%
   summarise_all(.funs = sum)
 
 
@@ -254,7 +254,7 @@ other_locs_dz <- read_in_localities(dz_level = TRUE) %>%
   inner_join(other_locs, by = c("hscp_locality" = "hscp_locality"))
 
 house_dat_otherlocs <- house_raw_dat %>%
-  inner_join(other_locs_dz, by = c("x2011_data_zone_code" = "datazone2011")) %>%
+  inner_join(other_locs_dz, by = c("data_zone_code" = "datazone2011")) %>%
   filter(year == max(year)) %>%
   group_by(hscp_locality) %>%
   summarise(
@@ -277,7 +277,7 @@ other_locs_perc_discount <- house_dat_otherlocs %>%
 
 
 house_dat2_otherlocs <- house_raw_dat2 %>%
-  inner_join(other_locs_dz, by = c("x2011_data_zone_code" = "datazone2011")) %>%
+  inner_join(other_locs_dz, by = c("data_zone_code" = "datazone2011")) %>%
   group_by(hscp_locality) %>%
   summarise(
     total_number_of_dwellings = sum(total_number_of_dwellings),
@@ -315,7 +315,7 @@ hscp_dz <- read_in_localities(dz_level = TRUE) %>%
 
 
 house_dat_hscp <- house_raw_dat %>%
-  inner_join(hscp_dz, by = c("x2011_data_zone_code" = "datazone2011")) %>%
+  inner_join(hscp_dz, by = c("data_zone_code" = "datazone2011")) %>%
   filter(year == max(year)) %>%
   group_by(year) %>%
   summarise(
@@ -330,7 +330,7 @@ hscp_perc_discount <- house_dat_hscp$perc_discount
 
 
 house_dat2_hscp <- house_raw_dat2 %>%
-  inner_join(hscp_dz, by = c("x2011_data_zone_code" = "datazone2011")) %>%
+  inner_join(hscp_dz, by = c("data_zone_code" = "datazone2011")) %>%
   group_by(hscp2019name) %>%
   summarise(
     total_dwellings = sum(total_number_of_dwellings),

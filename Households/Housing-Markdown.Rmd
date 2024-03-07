@@ -19,7 +19,7 @@ options(kableExtra.auto_format = FALSE)
 # LOCALITY <- "Helensburgh and Lomond"
 # LOCALITY <- "City of Dunfermline"
 # LOCALITY <- "Skye, Lochalsh and West Ross"
-LOCALITY <- "Ayr North and Former Coalfield Communities"
+#LOCALITY <- "Ayr North and Former Coalfield Communities"
 
 source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Households/Scripts/Households Code.R")
 
