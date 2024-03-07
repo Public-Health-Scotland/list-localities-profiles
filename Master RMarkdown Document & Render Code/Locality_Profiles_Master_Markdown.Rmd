@@ -55,9 +55,9 @@ library(grid)
 # detach(package:tidylog, unload = TRUE)
 ```
 
-#####Page break
+##### Page break
 
-##Notes for this profile
+## Notes for this profile
 
 
 \newline
@@ -70,7 +70,7 @@ library(grid)
  
  - Any zero figures for some indicators will indicate either suppression of small data or a complete lack of data available for this locality
 
-#####Page break
+##### Page break
 
 ## Demographics
 
@@ -89,7 +89,7 @@ For the most recent time period available, `r LOCALITY` Locality had:
 <!-- Total Population Text -->
 In `r pop_max_year`, the total population of `r LOCALITY` locality was `r total_population`. The graph below shows the population distribution of the locality. Overall, **`r gender_breakdown[gender_breakdown$sex == "M",]$perc`** of the population are male, and **`r gender_breakdown[gender_breakdown$sex == "F",]$perc`** are female.
 
-####Figure `r x`: Population by age and sex.
+#### Figure `r x`: Population by age and sex.
 
 \newline
 
@@ -104,9 +104,9 @@ x <- x + 1
 Figure `r x` shows the historical population of `r LOCALITY`, along with the NRS population projections. `r pop_graph_text` `r pop_proj_text`. *Please see the footnotes for more information on how the population projections were calculated^1^.* 
 
 
-#####Page break
+##### Page break
 
-####Figure `r x`: Population time trend and projection.
+#### Figure `r x`: Population time trend and projection.
 \newline
 
 ```{r echo = FALSE, fig.width = 7, fig.height = 3, warning = FALSE}
@@ -119,7 +119,7 @@ x <- x + 1
 
 Figure `r x` shows how the population structure has changed between `r pop_min_year` and `r pop_max_year`.
 
-####Figure `r x`: Change in population structure over the last five years.
+#### Figure `r x`: Change in population structure over the last five years.
 \newline
 
 ```{r echo = FALSE, fig.width = 7, fig.height = 3.5, warning = FALSE}
@@ -136,7 +136,7 @@ The following section explores the deprivation structure of `r LOCALITY` through
 Of the `r pop_max_year` population in `r LOCALITY`, **`r perc_bottom_quintile`%** live in the most deprived Quintile (SIMD 1), and **`r perc_top_quintile`%** live in the least deprived Quintile (SIMD 5). 
 
 
-####Figure `r x`: Map of Data Zones within `r LOCALITY` coloured by SIMD  quintiles.
+#### Figure `r x`: Map of Data Zones within `r LOCALITY` coloured by SIMD  quintiles.
 
 ```{r echo = FALSE, fig.width = 7, warning = FALSE}
 simd_map
@@ -149,7 +149,7 @@ x <- x + 1
 
 Table `r y` details the percentage of the locality's 2016 population living in the 2016 SIMD Quintiles, the percentage of the `r pop_max_year` population living in the 2020 SIMD Quintiles, and their difference for comparison. Figure `r x` then breaks down SIMD by domain in `r LOCALITY`.
 
-####Table `r y`: Percentage of the `r LOCALITY` population living in the 2016 and 2020 SIMD Datazone Quintiles in 2016 and `r pop_max_year` respectively.
+#### Table `r y`: Percentage of the `r LOCALITY` population living in the 2016 and 2020 SIMD Datazone Quintiles in 2016 and `r pop_max_year` respectively.
 \newline
 
 ```{r echo = FALSE}
@@ -167,7 +167,7 @@ y <- y + 1
 Source: Scottish Government, Public Health Scotland, National Records Scotland.
 \newline
 
-####Figure `r x`: Proportion of the population that reside in each 2020 SIMD quintile by domain in `r pop_max_year`.
+#### Figure `r x`: Proportion of the population that reside in each 2020 SIMD quintile by domain in `r pop_max_year`.
 \newline
 
 ```{r echo = FALSE, fig.width = 7, fig.height = 4, warning = FALSE}
@@ -183,7 +183,7 @@ Figure `r x` presents a comparison between the 2016 SIMD ranking applied to 2016
 
 \newline
 
-####Figure `r x`: Percentage population in 2016 and `r pop_max_year` living in the 2016 and the 2020 SIMD quintiles by domain.
+#### Figure `r x`: Percentage population in 2016 and `r pop_max_year` living in the 2016 and the 2020 SIMD quintiles by domain.
 
 \newline
 
@@ -196,9 +196,9 @@ x <- x + 1
 ##### Page break
 
 
-##Services
+## Services
 
-####Figure `r x`: Map of services by locality in `r HSCP` HSCP^2^.
+#### Figure `r x`: Map of services by locality in `r HSCP` HSCP^2^.
 
 \newline
 
@@ -208,11 +208,11 @@ knitr::include_graphics("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMark
 x <- x + 1
 ```
 
-######ED = Emergency Department, MIU = Minor Injuries Unit (or other)
+###### ED = Emergency Department, MIU = Minor Injuries Unit (or other)
 
 \newline
 
-####Table `r y`: Number of each type of service in `r LOCALITY` Locality^2^.
+#### Table `r y`: Number of each type of service in `r LOCALITY` Locality^2^.
 \newline
 
 ```{r echo = FALSE}
@@ -245,7 +245,7 @@ For the most recent time period available, `r LOCALITY` Locality had:
 
 The graph below shows the number of dwellings in `r LOCALITY` from `r min(house_dat$year)` to `r max_year_housing`.
 
-####Figure `r x`: Number of dwellings time trend.
+#### Figure `r x`: Number of dwellings time trend.
 \newline
 
 ```{r echo = FALSE, fig.width = 7, fig.height = 3, warning = FALSE}
@@ -258,9 +258,9 @@ Of the total number of dwellings in `r max_year_housing`, `r perc_single_discoun
 
 There were `r n_second_homes` dwellings classed as a second home in `r max_year_housing`, these dwellings made up `r perc_second_homes`% of the households in `r LOCALITY`.
 
-#####Page break
+##### Page break
 
-####Table `r y`: Breakdown of dwelling types by year for `r LOCALITY` locality.
+#### Table `r y`: Breakdown of dwelling types by year for `r LOCALITY` locality.
 \newline
 										
 ```{r echo = FALSE}
@@ -279,7 +279,7 @@ Source: Scottish Assessors’ Association (via NRS)
 
 The proportion of households within each council tax band are displayed in the chart below, figures are shown in Table `r y`.
 
-####Figure `r x`: Breakdown of households by council tax band for `r LOCALITY` in `r max_year_housing`.
+#### Figure `r x`: Breakdown of households by council tax band for `r LOCALITY` in `r max_year_housing`.
 \newline
 
 ```{r echo = FALSE, fig.width = 7, fig.height = 2, warning = FALSE}
@@ -288,7 +288,7 @@ ctb_plot
 x <- x + 1
 ```
 
-####Table `r y`: Percentage of households by council tax band for `r LOCALITY` in `r max_year_housing`.
+#### Table `r y`: Percentage of households by council tax band for `r LOCALITY` in `r max_year_housing`.
 \newline
 
 ```{r echo = FALSE}
@@ -304,7 +304,7 @@ y <- y + 1
 ```
 Source: Scottish Assessors’ Association (via NRS)
 
-#####Page break
+##### Page break
 
 ## General Health
 
@@ -336,11 +336,11 @@ life_exp_text2 <- if (is.na(avg_life_exp_latest_male)) {
 
 \newline
 
-###Life Expectancy
+### Life Expectancy
 
 `r life_exp_text2`
 
-####Figure `r x`: Average life expectancy in men and women over time.
+#### Figure `r x`: Average life expectancy in men and women over time.
 \newline
 
 ```{r echo = FALSE, fig.width = 6, fig.height = 3.5}
@@ -354,11 +354,11 @@ x <- x + 1
 ```
 
 
-#####Page break
+##### Page break
 
 Table `r y` provides the average life expectancy for men and women in different areas for the latest time period available. 
 
-####Table `r y`: Average life expectancy in years for the latest time periods (`r latest_period_life_exp_loc` aggregated years for the locality; `r latest_period_life_exp_otherareas` aggregated years for other areas).
+#### Table `r y`: Average life expectancy in years for the latest time periods (`r latest_period_life_exp_loc` aggregated years for the locality; `r latest_period_life_exp_otherareas` aggregated years for other areas).
 
 \newline
 
@@ -375,10 +375,10 @@ Source: ScotPHO
 
 \newline
 
-###Deaths, aged 15-44
+### Deaths, aged 15-44
 The following chart shows a trend of death rates among 15-44 year olds per 100,000 age-sex standardised population^4^ by area. In the most recent aggregate time period available (`r latest_period_deaths_15_44`), the mortality rate in `r LOCALITY` locality was **`r format_number_for_text(deaths_15_44_latest)`** deaths per 100,000 population. 
 
-####Figure `r x`: Deaths aged 15-44 years by geographical area and over time.
+#### Figure `r x`: Deaths aged 15-44 years by geographical area and over time.
 \newline
 
 ```{r echo = FALSE, fig.width = 7.5, fig.height = 4.2}
@@ -388,11 +388,11 @@ x <- x + 1
 ```
 
 
-#####Page break
+##### Page break
 
 Figure `r x` provides comparisons of deaths at ages 15-44 across all areas including other localities in `r HSCP` HSCP. In `r latest_period_deaths_15_44`, `r LOCALITY` had a `r deaths_15_44_diff_scot` rate than the rest of Scotland (`r format_number_for_text(deaths_15_44_latest)` compared to `r format_number_for_text(scot_deaths_15_44)` deaths per 100,000).
 
-####Figure `r x`: Deaths at ages 15-44 by area for the latest time period available.
+#### Figure `r x`: Deaths at ages 15-44 by area for the latest time period available.
 \newline
 
 ```{r echo = FALSE, fig.width = 7.5, fig.height = 4.8}
@@ -402,8 +402,8 @@ x <- x + 1
 ```
 
 
-#####Page break
-###Long-Term Physical Health Conditions and Multimorbidity
+##### Page break
+### Long-Term Physical Health Conditions and Multimorbidity
 
 \newline
 
@@ -417,7 +417,7 @@ waffles
 
 The co-occurrence of two or more conditions, known as multimorbidity, is broken down in table `r y`, distinguishing between age groups. Overall, **`r format_number_for_text(ltc_multimorbidity_un65_perc)`**% of those under the age of 65 have more than one LTC, compared to **`r format_number_for_text(ltc_multimorbidity_ov65_perc)`**% of those aged over 65.
 
-####Table `r y`: Multimorbidity of physical long-term conditions by age group in `r latest_year_ltc`.
+#### Table `r y`: Multimorbidity of physical long-term conditions by age group in `r latest_year_ltc`.
 \newline
 
 ```{r echo = FALSE}
@@ -427,12 +427,12 @@ y <- y + 1
 ```
 Source: Source Linkage Files
 
-#####Page break
+##### Page break
 **Most common physical Long-Term Conditions (LTCs)**
 
 Below is a breakdown of the physical LTCs, for the financial year `r latest_year_ltc`. Figure `r x` shows the prevalence of different LTCs in each age group in `r LOCALITY` locality, and Table `r y` illustrates the top 5 physical LTCs across all ages at locality, partnership, and Scotland level.
 
-####Figure `r x`: Percentage people with each physical LTC, split by age group.
+#### Figure `r x`: Percentage people with each physical LTC, split by age group.
 \newline
 
 ```{r echo = FALSE, fig.width = 7.5, fig.height = 3.8}
@@ -441,9 +441,9 @@ ltc_types_plot
 x <- x + 1
 ```
 
-######*COPD: Chronic Obstructive Pulmonary Disease
+###### *COPD: Chronic Obstructive Pulmonary Disease
 
-####Table `r y`: Prevalence of the five most common physical LTCs as a percentage of the population across geographical areas (where 1 = most prevalent).
+#### Table `r y`: Prevalence of the five most common physical LTCs as a percentage of the population across geographical areas (where 1 = most prevalent).
 
 \newline
 
@@ -454,11 +454,11 @@ y <- y + 1
 ```
 Source: Source Linkage Files
 
-###Cancer
+### Cancer
 For the period `r latest_period_cancer_reg`, there were **`r format_number_for_text(cancer_reg_total_latest)`** new cancer registrations per year on average (**`r format_number_for_text(cancer_reg_rate_latest)`** registrations per 100,000 age-sex standardised population) in `r LOCALITY` locality. For the period `r latest_period_early_deaths_cancer`, there were also **`r format_number_for_text(early_deaths_cancer_rate_latest)`** early deaths per 100,000 from cancer in the locality, this is a **`r format_number_for_text(cancer_deaths_perc_change)`%** `r cancer_deaths_changeword` compared to the rate 10 years prior.
 
 
-####Figure `r x`: Cancer registration rate over time and by area.
+#### Figure `r x`: Cancer registration rate over time and by area.
 \newline
 
 ```{r echo = FALSE, fig.width = 7.5, fig.height = 3.7}
@@ -468,7 +468,7 @@ cancer_reg_time_trend
 x <- x + 1
 ```
 
-####Figure `r x`: Early deaths from cancer (<75 years) over time and by area.
+#### Figure `r x`: Early deaths from cancer (<75 years) over time and by area.
 \newline
 
 ```{r echo = FALSE, fig.width = 7.5, fig.height = 3.7}
@@ -478,7 +478,7 @@ x <- x + 1
 ```
 
 
-#####Page break
+##### Page break
 
 ### Hospitalisations by condition
 
@@ -494,11 +494,11 @@ y <- y + 1
 
 \newline
 
-###Anxiety, Depression, and Psychosis prescriptions
+### Anxiety, Depression, and Psychosis prescriptions
 
 In `r latest_period_adp_presc`, **`r format_number_for_text(adp_presc_latest)`%** of people were prescribed medication for anxiety, depression, or psychosis in `r LOCALITY` Locality. This is a **`r format_number_for_text(adp_presc_perc_change)`% `r adp_presc_changeword`** from the rate 10 years prior in `r prev_period_adp_presc`.
 
-####Figure `r x`: Anxiety, depression, and psychosis prescriptions over time and by geographical area.
+#### Figure `r x`: Anxiety, depression, and psychosis prescriptions over time and by geographical area.
 \newline
 
 ```{r echo = FALSE, fig.width = 7.5, fig.height = 3.8}
@@ -508,11 +508,11 @@ x <- x + 1
 ```
 
 
-#####Page break
+##### Page break
 
 In `r latest_period_adp_presc`, `r LOCALITY` had a `r adp_presc_diff_scot` proportion of the population being prescribed medication for anxiety, depression, and psychosis compared to the rest of Scotland (`r format_number_for_text(adp_presc_latest)`% compared to `r format_number_for_text(scot_adp_presc)`%).
 
-####Figure `r x`: Percentage population prescribed medication for anxiety, depression, and psychosis by area for the latest time period available.
+#### Figure `r x`: Percentage population prescribed medication for anxiety, depression, and psychosis by area for the latest time period available.
 \newline
 
 ```{r echo = FALSE, fig.width = 7.5, fig.height = 4.8}
@@ -520,7 +520,7 @@ adp_presc_bar
 ```
 
 
-#####Page break
+##### Page break
 
 ## Lifestyle and Risk Factors
 
@@ -540,14 +540,14 @@ For the most recent time period available^3^, `r LOCALITY` had:
 \newline
 
 
-###Alcohol-related Hospital Admissions
+### Alcohol-related Hospital Admissions
 
 In `r latest_period_alcohol_hosp`, the rate of alcohol-related admissions was **`r format_number_for_text(alcohol_hosp_latest)`** per 100,000 age-sex standardised population in `r LOCALITY`. This is a `r format_number_for_text(alcohol_hosp_change)`% `r alcohol_hosp_change_word` overall since `r earliest_period_alcohol_hosp`. Figure `r x` shows a trend of alcohol-related hospital admissions for `r LOCALITY` locality compared with Scotland, `r HSCP` HSCP and `r HB` from financial year `r earliest_period_alcohol_hosp` to `r latest_period_alcohol_hosp`. 
 
 Figure `r x + 1` then compares different areas, including the other localities in `r HSCP`, for the latest financial year. This bar chart shows that in `r latest_period_alcohol_hosp`, `r LOCALITY` locality had a `r alcohol_hosp_diff_scot` alcohol-related hospital admissions rate compared to Scotland (`r format_number_for_text(alcohol_hosp_latest)` and `r  format_number_for_text(scot_alcohol_hosp)` admissions respectively).
 
 
-#####Page break
+##### Page break
 
 #### Figure `r x`: Alcohol-related hospital admission rates by area and over time.
 \newline
@@ -569,7 +569,7 @@ x <- x + 1
 
 \newline
 
-###Alcohol-Specific Deaths
+### Alcohol-Specific Deaths
 
 Data on alcohol-specific deaths is available as 5-year aggregates. In `r LOCALITY`, the latest rate of alcohol-specific deaths was **`r format_number_for_text(alcohol_deaths_latest)`** deaths per 100,000 age-sex standardised population. This is `r format_number_for_text(alcohol_deaths_change)`% `r alcohol_deaths_change_word` than the rate in `r earliest_period_alcohol_deaths`. Figure `r x + 1` also shows that the locality has a `r alcohol_deaths_diff_scot` alcohol-specific death rate compared to Scotland overall (`r  format_number_for_text(scot_alcohol_deaths)` deaths per 100,000).
 
@@ -593,7 +593,7 @@ x <- x + 1
 
 \newline
 
-###Drug-related Hospital Admissions
+### Drug-related Hospital Admissions
 
 There were **`r format_number_for_text(drug_hosp_latest)`** drug-related hospital admissions per 100,000 age-sex standardised population^4^ in `r LOCALITY` locality in the time period `r latest_period_drug_hosp` (3-year financial year aggregate). This is a `r format_number_for_text(drug_hosp_change)`% `r drug_hosp_change_word` since `r earliest_period_drug_hosp`. A trend of the change in drug-related hospital admissions for the locality and comparable areas is shown in figure `r x` from `r earliest_period_drug_hosp` onward.
 
@@ -608,7 +608,7 @@ drug_hosp_time_trend
 x <- x + 1
 ```
 
-#####Page break
+##### Page break
 
 #### Figure `r x`: Drug-related hospital admission rates by area for the latest time period available.
 
@@ -620,7 +620,7 @@ x <- x + 1
 
 \newline
 
-###Bowel Screening Uptake
+### Bowel Screening Uptake
 
 Bowel screening is offered every two years to eligible men and women aged between 50-74 years old. Eligible people are posted a test kit which is completed at home. Since 1st April 2013, those aged 75 and over can also self-refer and opt into screening.
 
@@ -673,11 +673,11 @@ This section includes acute hospital data, delayed discharge bed days and A&E at
  - **`r latest_ppa_loc`** potentially preventable hospital admissions per 100,000 population, compared to `r scot_ppa` in Scotland. 
 
 
-#####Page break
+##### Page break
 
 ### Emergency Admissions
 
-####Figure `r x`: Emergency admissions by geographical area
+#### Figure `r x`: Emergency admissions by geographical area
 \newline
 
 ```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
@@ -686,7 +686,7 @@ EAs_loc_ts
 x <- x + 1
 ```
 
-####Figure `r x`: Emergency admissions by age group
+#### Figure `r x`: Emergency admissions by age group
 \newline
 
 ```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
@@ -699,7 +699,7 @@ x <- x + 1
 
 ### Unscheduled Acute Bed Days
 
-####Figure `r x`: Unscheduled acute bed days by geographical area
+#### Figure `r x`: Unscheduled acute bed days by geographical area
 \newline
 
 ```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
@@ -708,7 +708,7 @@ BDs_loc_ts
 x <- x + 1
 ```
 
-####Figure `r x`: Unscheduled acute bed days by age group
+#### Figure `r x`: Unscheduled acute bed days by age group
 \newline
 
 ```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
@@ -722,7 +722,7 @@ x <- x + 1
 
 ### A&E Attendances
 
-####Figure `r x`: A&E attendances by geographical area
+#### Figure `r x`: A&E attendances by geographical area
 \newline
 
 ```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
@@ -731,7 +731,7 @@ AandE_loc_ts
 x <- x + 1
 ```
 
-####Figure `r x`: A&E attendances by age group
+#### Figure `r x`: A&E attendances by age group
 \newline
 
 ```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
@@ -745,7 +745,7 @@ x <- x + 1
 
 ### Emergency Readmissions (28 days)
 
-####Figure `r x`: Emergency readmissions (28 days) by geographical area
+#### Figure `r x`: Emergency readmissions (28 days) by geographical area
 \newline
 
 ```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
@@ -754,7 +754,7 @@ Read_loc_ts
 x <- x + 1
 ```
 
-####Figure `r x`: Emergency readmissions (28 days) by age group
+#### Figure `r x`: Emergency readmissions (28 days) by age group
 \newline
 
 ```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
@@ -768,7 +768,7 @@ x <- x + 1
 
 ### Delayed Discharge Bed Days
 
-####Figure `r x`: Delayed discharge bed days in population aged 65+ by geographical area
+#### Figure `r x`: Delayed discharge bed days in population aged 65+ by geographical area
 \newline
 
 ```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
@@ -779,7 +779,7 @@ x <- x + 1
 
 ### Emergency admissions from a fall
 
-####Figure `r x`: Falls in population aged 65+ by geographical area
+#### Figure `r x`: Falls in population aged 65+ by geographical area
 \newline
 
 ```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
@@ -795,7 +795,7 @@ x <- x + 1
 
 Information on the conditions included in PPAs is available in Appendix 3. In `r max_fy`, **`r latest_ppa_65plus`%** of PPAs in `r LOCALITY` were amongst those aged 65 and over, and **`r latest_ppa_under65`%** were amongst those aged under 65. 
 
-####Figure `r x`: Potentially Preventable Admissions (PPAs) by geographical area
+#### Figure `r x`: Potentially Preventable Admissions (PPAs) by geographical area
 \newline
 
 ```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
@@ -824,7 +824,7 @@ This section looks at mental health related unscheduled care indicators. For the
 
 ### Psychiatric patient hospitalisations
 
-####Figure `r x`: Psychiatric patient hospitalisations by geographical area
+#### Figure `r x`: Psychiatric patient hospitalisations by geographical area
 \newline
 
 ```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
@@ -838,7 +838,7 @@ x <- x + 1
 
 ### Unscheduled Mental Health Specialty Bed Days
 
-####Figure `r x`: Unscheduled mental health specialty bed days by geographical area
+#### Figure `r x`: Unscheduled mental health specialty bed days by geographical area
 \newline
 
 ```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
@@ -847,7 +847,7 @@ BDMH_loc_ts
 x <- x + 1
 ```
 
-####Figure `r x`: Unscheduled mental health specialty bed days by age group
+#### Figure `r x`: Unscheduled mental health specialty bed days by age group
 \newline
 
 ```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
@@ -859,7 +859,7 @@ x <- x + 1
 
 
 ##### Page Break
-###Footnotes
+### Footnotes
 
 1. Population projections are not currently provided by NRS at the locality level. To explore how the population in `r LOCALITY` is expected to change in the future, the percent changes in population projection to 2025 for `r HSCP` by age group and gender were calculated from the NRS Local Authority Population Projections. These percent changes were then applied to the `r LOCALITY` 2018 mid-year population estimates (also split by age group and gender) to obtain population projection estimates for `r LOCALITY`, based on the projections for the HSCP and the current population structure of the locality.
 
@@ -873,9 +873,9 @@ x <- x + 1
 
 
 ##### Page Break
-##Appendices
+## Appendices
 
-###Appendix 1: Indicator Definitions
+### Appendix 1: Indicator Definitions
 
 \newline
 
@@ -884,9 +884,9 @@ knitr::kable(indicator_defs, format = "markdown")
 ```
 
 
-#####Page break
+##### Page break
 
-###Appendix 2: Date of Indicator Data Extractions
+### Appendix 2: Date of Indicator Data Extractions
 
 \newline
 
@@ -897,7 +897,7 @@ knitr::kable(dates_extract, col.names = c("**Section**", "**Indicator**", "**Dat
 
 ##### Page Break
 
-###Appendix 3: Conditions included as Potentially Preventable Admissions (PPAs)
+### Appendix 3: Conditions included as Potentially Preventable Admissions (PPAs)
 
 
 ```{r echo = FALSE, fig.width = 7, fig.height = 10, warning = FALSE}
