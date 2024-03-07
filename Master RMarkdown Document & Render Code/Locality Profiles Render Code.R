@@ -20,7 +20,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Specify HSCP here
 ## NOTE - make sure that the formatting of the partnership's name matches the lookup
-HSCP <- "Moray"
+HSCP <- "Orkney Islands"
 
 # Below creates locality list of all the localities in a chosen HSCP
 lookup <- read_in_localities()
@@ -43,7 +43,7 @@ locality_list <- lookup %>%
 # 2c. Run the Rmd for the summary tables
 
 # 1. HSCP Services Map
-source("Services/Scripts/3. Service HSCP map.R")
+#source("Services/Scripts/3. Service HSCP map.R")
 
 
 # 2. Loop through each locality to create the main body of the profiles and the summary table
@@ -51,34 +51,34 @@ for (LOCALITY in locality_list) {
   ## 2a) Source in all the scripts for a given LOCALITY
   
   # demographics
-  source("Demographics/Scripts/1. Demographics - Population.R")
-  source("Demographics/Scripts/2. Demographics - SIMD.R")
+  source("Demographics/1. Demographics - Population.R")
+  source("./Demographics/2. Demographics - SIMD.R")
   
   # housing
-  source("Households/Scripts/Households Code.R")
+  source("./Households/Households Code.R")
   
   # services
-  source("Services/Scripts/2. Services data manipulation & table.R")
+  source("./Services/2. Services data manipulation & table.R")
   
   # general health
-  source("General Health/Scripts/3. General Health Outputs.R")
+  source("./General Health/3. General Health Outputs.R")
   
   # lifestyle & risk factors
-  source("Lifestyle & Risk Factors/Scripts/2. Lifestyle & Risk Factors Outputs.R")
+  source("./Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
   
   # unscheduled care
-  source("Unscheduled Care/Scripts/2. Unscheduled Care outputs.R")
+  source("./Unscheduled Care/2. Unscheduled Care outputs.R")
   
   # appendices
-  source("Master RMarkdown Document & Render Code/Tables for Appendix.R")
+  source("./Master RMarkdown Document & Render Code/Tables for Appendix.R")
 
   # Remove tidylog package which messes up outputs
   detach(package:tidylog, unload = TRUE)
 
   ## 2b) Create the main body of the profiles
   
-  rmarkdown::render("Master RMarkdown Document & Render Code/Locality_Profiles_Master_Markdown.Rmd",
-    output_file = paste0(LOCALITY, " - Locality Profile.docx"),
+  rmarkdown::render("./Master RMarkdown Document & Render Code/Locality_Profiles_Master_Markdown.Rmd",
+   output_file = paste0(LOCALITY, " - Locality Profile.docx"),
     output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/")
   )
 
