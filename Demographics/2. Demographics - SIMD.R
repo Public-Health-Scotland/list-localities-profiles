@@ -173,7 +173,7 @@ loc.cols <- colorFactor(simd_col, domain = zones$simd, levels = 1:5)
 
 ## Create Map
 simd_map <-
-  leaflet(options = leafletOptions(zoomControl = FALSE)) %>%
+  leaflet(options = leafletOptions(zoomControl = FALSE, attributionControl = FALSE)) %>%
   #order layers, map place names over polygon layer
   addMapPane("providertitles", zIndex = 430) %>%
   addMapPane("polygons", zIndex = 440) %>%
