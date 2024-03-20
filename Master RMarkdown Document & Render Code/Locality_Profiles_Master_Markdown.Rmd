@@ -203,7 +203,7 @@ x <- x + 1
 \newline
 
 ```{r echo = FALSE}
-knitr::include_graphics("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Services/map.png")
+knitr::include_graphics(paste0("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/Output/maps","/",HSCP,"Services.png"))
 
 x <- x + 1
 ```
