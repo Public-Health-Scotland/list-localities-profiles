@@ -602,7 +602,7 @@ A comparison of areas at the most recent time period  (`r latest_period_drug_hos
 #### Figure `r x`: Drug-related hospital admission rates by area and over time.
 \newline
 
-```{r echo = FALSE, fig.width = 7.5, fig.height = 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 8, fig.height = 4, warning = FALSE}
 drug_hosp_time_trend
 
 x <- x + 1

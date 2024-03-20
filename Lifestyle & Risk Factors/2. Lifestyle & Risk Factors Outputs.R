@@ -117,7 +117,8 @@ drug_hosp_time_trend <- drug_hosp %>%
     chart_title = "Drug-related Hospital Admissions Time Trend",
     xaxis_title = "Financial Year Groups (3-year aggregates)",
     yaxis_title = "Drug-related admissions\n(Standardised rates per 100,000)",
-    string_wrap = 10
+    string_wrap = 10,
+    rotate_xaxis = TRUE
   )
 
 drug_hosp_time_trend
@@ -176,7 +177,8 @@ alcohol_hosp_time_trend <- alcohol_hosp %>%
     chart_title = "Alcohol-related Hospital Admissions Time Trend",
     xaxis_title = "Financial Year",
     yaxis_title = "Alcohol-related admissions\n(Standardised rates per 100,000)",
-    string_wrap = 10
+    string_wrap = 10,
+    rotate_xaxis = TRUE
   )
 
 alcohol_hosp_time_trend
