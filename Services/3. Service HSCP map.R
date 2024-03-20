@@ -28,7 +28,7 @@ library(grid)
 library(data.table)
 
 ## Select HCSP (for testing only)
-# HSCP <- "Aberdeenshire"
+#HSCP <- "Aberdeenshire"
 
 ## Set file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
@@ -50,7 +50,7 @@ shp <- sf::st_transform(shp,4326)
 
 shp <- shp |> 
   dplyr::mutate(hscp_locality = gsub("&", "and", HSCP_Local)) |> 
-  merge(lookup, by = "hscp_locality")
+  merge(lookup2, by = "hscp_locality")
 
 shp_hscp <- shp |> 
   filter(hscp2019name == HSCP)
@@ -71,8 +71,11 @@ if (n_loc < 5) {
   col_palette <- c("dodgerblue2", "deeppink2", "cadetblue", "darksalmon", "purple", "forestgreen", "olivedrab3", "navy", "orchid3")
 }
 
-loc.cols <- colorFactor(col_palette, domain = shp_hscp$hscp_locality)
 
+
+loc.cols <- colorFactor(col_palette, shp_hscp$hscp_locality)
+
+loc.cols(shp_hscp$hscp_locality)
 ## Create function for adding circle markers
 addLegendCustom <- function(map, colors, labels, sizes, opacity = 1) {
   colorAdditions <- paste0(colors, "; border-radius: 50%; width:", sizes, "px; height:", sizes, "px")
@@ -88,16 +91,15 @@ addLegendCustom <- function(map, colors, labels, sizes, opacity = 1) {
   ))
 }
 
-
 ## Create Map
 service_map <-
-  leaflet(options = leafletOptions(zoomControl = FALSE)) %>%
+  leaflet(shp_hscp) %>%
   addProviderTiles(providers$OpenStreetMap) %>%
   # Locality shapefiles
   addPolygons(
-    data = shp_hscp,
-    fillColor = ~ loc.cols(hscp_locality),
-    fillOpacity = 0.2,
+    #data = shp_hscp,
+    fillColor = ~loc.cols(shp_hscp$hscp_locality),
+    fillOpacity = 0.5,
     color = "#2e2e30",
     stroke = T,
     weight = 2,
