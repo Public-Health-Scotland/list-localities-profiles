@@ -122,7 +122,7 @@ Figure `r x` shows how the population structure has changed between `r pop_min_y
 #### Figure `r x`: Change in population structure over the last five years.
 \newline
 
-```{r echo = FALSE, fig.width = 7, fig.height = 3.5, warning = FALSE}
+```{r echo = FALSE, fig.width = 9, fig.height = 3.5, warning = FALSE}
 hist_pop_change
 
 x <- x + 1
@@ -343,7 +343,7 @@ life_exp_text2 <- if (is.na(avg_life_exp_latest_male)) {
 #### Figure `r x`: Average life expectancy in men and women over time.
 \newline
 
-```{r echo = FALSE, fig.width = 6, fig.height = 4}
+```{r echo = FALSE, fig.width = 8, fig.height = 4.5}
 if (LOCALITY %in% check_missing_data_scotpho(life_exp)$area_name) {
   print("No data available for this locality")
 } else {

@@ -192,6 +192,7 @@ life_exp_trend <- life_exp %>%
     caption = "Source: ScotPHO"
   ) +
   theme(plot.margin = unit(c(0, 0, 0, 1), "cm")) +
+  theme(axis.text.x = rotation) +
   guides(
     linetype = "none", shape = "none",
     colour = guide_legend(override.aes = list(shape = c(21, 24), fill = palette[1:2]))
