@@ -171,16 +171,15 @@ simd_cats <- c(
 loc.cols <- colorFactor(simd_col, domain = zones$simd, levels = 1:5)
 
 
-library(leaflet.extras)
 ## Create Map
 simd_map <-
-  leaflet(options = leafletOptions(zoomControl = FALSE)) %>%
+  leaflet(options = leafletOptions(zoomControl = FALSE, attributionControl = FALSE)) %>%
   #order layers, map place names over polygon layer
   addMapPane("providertitles", zIndex = 430) %>%
   addMapPane("polygons", zIndex = 440) %>%
   #add map background and map place names
-  addProviderTiles(providers$CartoDB.VoyagerNoLabels) %>%
-  addProviderTiles(provider = providers$CartoDB.VoyagerOnlyLabels,
+  addProviderTiles(providers$CartoDB.PositronNoLabels) %>%
+  addProviderTiles(provider = providers$CartoDB.PositronOnlyLabels,
                    options = pathOptions(pane = "providertitles")) %>%
   # Locality shapefiles
   addPolygons(data=zones,
