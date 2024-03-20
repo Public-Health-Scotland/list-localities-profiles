@@ -138,7 +138,7 @@ Headings <- gtable_combine(col_indicator, col_datatype, col_time, col_loc, col_o
 # grid.draw(LP.headings)
 ```
 
-```{r echo = FALSE, fig.width = 11.5, fig.height = 6}
+```{r echo = FALSE, fig.width = 12, fig.height = 6}
 ### 2. TABLE BODY -----------------------------------------------------
 
 ### Set themes for each column
