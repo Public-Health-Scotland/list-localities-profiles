@@ -43,8 +43,8 @@ locality_list <- lookup %>%
 # 2c. Run the Rmd for the summary tables
 
 # 1. HSCP Services Map
-#source("Services/Scripts/3. Service HSCP map.R")
 
+map <- glue::glue(lp_path,"Master RMarkdown Document & Render Code/Output/maps","/",HSCP,".png")
 
 # 2. Loop through each locality to create the main body of the profiles and the summary table
 for (LOCALITY in locality_list) {
