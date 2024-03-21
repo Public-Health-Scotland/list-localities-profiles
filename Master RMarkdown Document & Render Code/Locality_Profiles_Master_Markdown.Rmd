@@ -138,7 +138,7 @@ Of the `r pop_max_year` population in `r LOCALITY`, **`r perc_bottom_quintile`%*
 
 #### Figure `r x`: Map of Data Zones within `r LOCALITY` coloured by SIMD  quintiles.
 
-```{r echo = FALSE, fig.width = 7, warning = FALSE}
+```{r echo = FALSE, fig.width = 8, warning = FALSE}
 simd_map
 
 x <- x + 1
@@ -203,7 +203,8 @@ x <- x + 1
 \newline
 
 ```{r echo = FALSE}
-knitr::include_graphics(paste0("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/Output/maps","/",HSCP,"Services.png"))
+knitr::include_graphics(glue::glue("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/Output/maps","/",HSCP,".PNG"))
+
 
 x <- x + 1
 ```

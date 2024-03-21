@@ -138,7 +138,7 @@ Headings <- gtable_combine(col_indicator, col_datatype, col_time, col_loc, col_o
 # grid.draw(LP.headings)
 ```
 
-```{r echo = FALSE, fig.width = 12, fig.height = 6}
+```{r echo = FALSE, fig.width = 14, fig.height = 6}
 ### 2. TABLE BODY -----------------------------------------------------
 
 ### Set themes for each column
@@ -330,13 +330,13 @@ Summary_Table1 <- gtable_rbind(Headings, Demographics, Housing, General_Health)
 grid.draw(Summary_Table1)
 ```
 
-######*At HSCP and Scotland level, the time period is a 3-year aggregate (`r latest_period_life_exp_otherareas`)
+###### *At HSCP and Scotland level, the time period is a 3-year aggregate (`r latest_period_life_exp_otherareas`)
 
-#####Page break
+##### Page break
 
 ## Summary Table (2)
 
-```{r echo = FALSE, fig.width = 11.5, fig.height = 6}
+```{r echo = FALSE, fig.width = 14, fig.height = 6}
 ## 2d. Lifestyle & Risk Factors ----
 
 indicators <- c(
