@@ -223,7 +223,9 @@ places <- read_csv(paste0("/conf/linkage/output/lookups/Unicode/Geography/",
                    Latitude = first(Latitude),
                    type = first(type),
                    datazone2011 = first(datazone2011)) %>% 
-  st_as_sf(coords = c("Longitude","Latitude"), remove = FALSE, crs = 4326)
+  st_as_sf(coords = c("Longitude","Latitude"), remove = FALSE, crs = 4326) |> 
+  filter(name != 'Crossford')
+  
 
 
 # load in 2020 deprivation data 
