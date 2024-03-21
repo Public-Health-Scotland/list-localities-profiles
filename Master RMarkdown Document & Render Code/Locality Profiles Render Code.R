@@ -20,7 +20,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Specify HSCP here
 ## NOTE - make sure that the formatting of the partnership's name matches the lookup
-HSCP <- "Orkney Islands"
+HSCP <- "Fife"
 
 # Below creates locality list of all the localities in a chosen HSCP
 lookup <- read_in_localities()
