@@ -212,25 +212,43 @@ zones <- merge(zones, lookup_dz, by = "datazone2011")
 # subset for Locality
 zones <- subset(zones, hscp_locality == LOCALITY)
 
+#Get latitude and longitdue co-ordinates for each datazone, find min and max.
+zones_coord <-
+  zones %>%
+  sf::st_coordinates() %>%
+  as_tibble() %>%
+  select("long" = X, "lat" = Y) %>%
+  summarise(min_long = min(long),
+            max_long = max(long),
+            min_lat = min(lat),
+            max_lat = max(lat))
+
+#Get min and max longitude for locality
+min_long <- zones_coord$min_long
+max_long <- zones_coord$max_long
+min_lat <- zones_coord$min_lat
+max_lat <- zones_coord$max_lat
+
 # get place names
 places <- read_csv(paste0("/conf/linkage/output/lookups/Unicode/Geography/",
                           "Shapefiles/Scottish Places/Places to Data",
                           " Zone Lookup.csv")) %>%
-  rename(datazone2011 = DataZone) %>% 
+  rename(datazone2011 = DataZone) %>%
   filter(datazone2011 %in% zones$datazone2011) %>%
+  #extra filter to remove place names with coordinates outwith locality
+  filter(Longitude >= min_long & Longitude <= max_long &
+           Latitude >= min_lat & Latitude <= max_lat) %>%
   group_by(name) %>%
   dplyr::summarise(Longitude = first(Longitude),
                    Latitude = first(Latitude),
                    type = first(type),
-                   datazone2011 = first(datazone2011)) %>% 
-  st_as_sf(coords = c("Longitude","Latitude"), remove = FALSE, crs = 4326) |> 
-  filter(name != 'Crossford')
-  
+                   datazone2011 = first(datazone2011)) %>%
+  st_as_sf(coords = c("Longitude","Latitude"), remove = FALSE, crs = 4326)
 
 
-# load in 2020 deprivation data 
+# load in 2020 deprivation data
 simd_map_data <- simd2020 %>%
-  filter(hscp_locality == LOCALITY) %>% 
+  filter(hscp_locality == LOCALITY) %>%
   dplyr::select(datazone2011, simd)
 
 # merge with shapefile
@@ -250,13 +268,15 @@ simd_cats <- c("SIMD 1",
                "SIMD 5")
 
 # plot
-simd_map <- ggplot() + 
-  geom_sf(data = zones, 
+simd_map <- ggplot() +
+  geom_sf(data = zones,
           aes(fill = factor(simd, levels = 1:5)), colour = "black") +
   scale_fill_manual(values = simd_col, labels = simd_cats, drop = FALSE) +
-  geom_sf_text(data = places, aes(label = name),
-               color = "black", size = 3.5) +
-  # 
+  geom_text_repel(data = places, aes(x = Longitude, y = Latitude,
+                                     label = name),
+                  color = "black", size = 3.5,
+                  max.overlaps = getOption("ggrepel.max.overlaps", default = 12)) +
+  #
   # scale_x_continuous(limits = c(min(zones_tidy$long), max(zones_tidy$long))) +
   # scale_y_continuous(limits = c(min(zones_tidy$lat), max(zones_tidy$lat))) +
   theme_void() +
