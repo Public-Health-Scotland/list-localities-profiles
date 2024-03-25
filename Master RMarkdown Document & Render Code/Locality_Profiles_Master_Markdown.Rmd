@@ -203,8 +203,7 @@ x <- x + 1
 \newline
 
 ```{r echo = FALSE}
-#knitr::include_graphics(map)
-htmltools::img(map)
+knitr::include_graphics(map, rel_path = FALSE)
 
 x <- x + 1
 ```
