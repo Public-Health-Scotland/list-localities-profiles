@@ -44,31 +44,33 @@ locality_list <- lookup %>%
 
 # 1. HSCP Services Map
 
-map <- glue::glue(lp_path,"Master RMarkdown Document & Render Code/Output/maps","/",HSCP,".png")
+map <- paste0(lp_path, "Master RMarkdown Document & Render Code/Output/maps/", HSCP, ".png")
+
+stopifnot(file.exists(map)) # Error if the file path doesn't exist.
 
 # 2. Loop through each locality to create the main body of the profiles and the summary table
 for (LOCALITY in locality_list) {
   ## 2a) Source in all the scripts for a given LOCALITY
-  
+
   # demographics
   source("Demographics/1. Demographics - Population.R")
   source("./Demographics/2. Demographics - SIMD.R")
-  
+
   # housing
   source("./Households/Households Code.R")
-  
+
   # services
   source("./Services/2. Services data manipulation & table.R")
-  
+
   # general health
   source("./General Health/3. General Health Outputs.R")
-  
+
   # lifestyle & risk factors
   source("./Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
-  
+
   # unscheduled care
   source("./Unscheduled Care/2. Unscheduled Care outputs.R")
-  
+
   # appendices
   source("./Master RMarkdown Document & Render Code/Tables for Appendix.R")
 
@@ -76,9 +78,9 @@ for (LOCALITY in locality_list) {
   detach(package:tidylog, unload = TRUE)
 
   ## 2b) Create the main body of the profiles
-  
+
   rmarkdown::render("./Master RMarkdown Document & Render Code/Locality_Profiles_Master_Markdown.Rmd",
-   output_file = paste0(LOCALITY, " - Locality Profile.docx"),
+    output_file = paste0(LOCALITY, " - Locality Profile.docx"),
     output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/")
   )
 

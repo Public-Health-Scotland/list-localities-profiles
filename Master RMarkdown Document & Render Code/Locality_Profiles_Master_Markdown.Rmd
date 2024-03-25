@@ -26,21 +26,21 @@ y <- 1 # tables
 # # demographics
 # source("Demographics/Scripts/1. Demographics - Population.R")
 # source("Demographics/Scripts/2. Demographics - SIMD.R")
-# 
+#
 # # housing
 # source("Households/Scripts/Households Code.R")
-# 
+#
 # # services
 # source("Services/Scripts/2. Services data manipulation & table.R")
 # # services map (uncomment this when testing out individual localities)
 # # source("Services/Scripts/3. Service HSCP map.R")
-# 
+#
 # # general health
 # source("General Health/Scripts/3. General Health Outputs.R")
-# 
+#
 # # lifestyle & risk factors
 # source("Lifestyle & Risk Factors/Scripts/2. Lifestyle & Risk Factors Outputs.R")
-# 
+#
 # # unscheduled care
 # source("Unscheduled Care/Scripts/2. Unscheduled Care outputs.R")
 #
@@ -203,8 +203,7 @@ x <- x + 1
 \newline
 
 ```{r echo = FALSE}
-#knitr::include_graphics(map)
-htmltools::img(map)
+knitr::include_graphics(map, rel_path = FALSE)
 
 x <- x + 1
 ```
