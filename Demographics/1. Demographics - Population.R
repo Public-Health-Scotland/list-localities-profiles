@@ -162,7 +162,7 @@ pop_pyramid <- ggplot(
   theme_profiles() + # guides(fill = FALSE)
   labs(
     y = "Population", x = "Age Group",
-    title = paste0(str_wrap(`LOCALITY`, 50), " population pyramid")
+    title = paste0(str_wrap(`LOCALITY`, 50), " population pyramid", pop_max_year)
   )
 
 

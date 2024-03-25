@@ -485,7 +485,7 @@ x <- x + 1
 
 Patient hospitalisations can provide some indication of how certain diseases have varying impacts on people's lives. In the latest time period available in `r LOCALITY`, the condition with the highest rate of hospitalisations was `r highest_hosp_disease$indicator`.
 
-#### Table `r y`: Patient hospitalisations by condition and geographical area, age-sex standardised rates per 100,000^3,4^.
+#### Table `r y`: Patient hospitalisations by condition and geographical area `r table8_year_title`, age-sex standardised rates per 100,000^3,4^.
 
 ```{r echo = FALSE}
 knitr::kable(disease_hosp_table, format = "markdown")

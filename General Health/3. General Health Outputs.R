@@ -407,7 +407,7 @@ disease_hosp_table <- disease_hosp %>%
     "Latest time period" = period_short
   )
 
-
+table8_year_title <- max(disease_hosp_table$`Latest time period`)
 
 ##### 2e Prescriptions for Anxiety, Depression and Psychosis #####
 
@@ -770,7 +770,7 @@ ltc_plot_right <-
 
 title <- ggdraw() +
   draw_label(paste0(
-    "Prevalence of Physical Long-Term Conditions in\n",
+    "Prevalence of Physical Long-Term Conditions 2022/23 in\n",
     `LOCALITY`, " Locality"
   ), size = 11, fontface = "bold")
 
@@ -904,7 +904,7 @@ ltc_scot_col <- tableGrob(top5ltc_scot[, 1],
 TOPltcs <- gtable_combine(ltc_loc_col, ltc_hscp_col, ltc_scot_col)
 
 title <- ggdraw() +
-  draw_label("Top 5 Physical Long-Term Conditions", size = 11, fontface = "bold")
+  draw_label("Top 5 Physical Long-Term Conditions 2022/23", size = 11, fontface = "bold")
 
 top5_ltc_table <- plot_grid(title, as_gtable(TOPltcs), nrow = 2, rel_heights = c(0.1, 1.2))
 
