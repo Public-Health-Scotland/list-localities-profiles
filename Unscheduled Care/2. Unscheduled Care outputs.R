@@ -74,7 +74,7 @@ populations22 <- read_in_dz_pops22()
 populations <- rbind(populations,populations22)
 
 
-pop_max_year <- max(populations$year)
+#pop_max_year <- max(populations$year)
 
 # compute age bands
 populations$"Pop0_17" <- rowSums(subset(populations, select = age0:age17))
