@@ -123,7 +123,7 @@ houses_ts <- ggplot(house_dat1, aes(x = year, y = total_dwellings, group = 1)) +
   scale_y_continuous(labels = scales::comma, limits = c(0, 1.1 * max(house_dat1$total_dwellings))) +
   labs(
     x = "Year", y = "Number of Dwellings",
-    title = paste0("Number of Dwellings by Year in ", str_wrap(`LOCALITY`, 40)),
+    title = paste0("Number of Dwellings by Year in ", str_wrap(`LOCALITY`, 40), max_year_housing),
     caption = "Source: Council Tax billing system (via NRS)"
   ) +
   theme(plot.title = element_text(size = 12))
