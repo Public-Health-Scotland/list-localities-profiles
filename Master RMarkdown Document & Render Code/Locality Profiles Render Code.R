@@ -44,7 +44,9 @@ locality_list <- lookup %>%
 
 # 1. HSCP Services Map
 
-map <- glue::glue(lp_path,"Master RMarkdown Document & Render Code/Output/maps","/",HSCP,".png")
+map <- paste0(lp_path, "Master RMarkdown Document & Render Code/Output/maps/", HSCP, ".png")
+
+stopifnot(file.exists(map)) # Error if the file path doesn't exist.
 
 # 2. Loop through each locality to create the main body of the profiles and the summary table
 for (LOCALITY in locality_list) {
