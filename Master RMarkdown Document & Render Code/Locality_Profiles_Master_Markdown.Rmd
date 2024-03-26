@@ -93,7 +93,7 @@ In `r pop_max_year`, the total population of `r LOCALITY` locality was `r total_
 
 \newline
 
-```{r echo = FALSE, fig.width = 6, fig.height = 3, warning = FALSE}
+```{r echo = FALSE, fig.width = 7, fig.height = 4, warning = FALSE}
 pop_pyramid
 
 x <- x + 1
@@ -109,7 +109,7 @@ Figure `r x` shows the historical population of `r LOCALITY`, along with the NRS
 #### Figure `r x`: Population time trend and projection.
 \newline
 
-```{r echo = FALSE, fig.width = 7, fig.height = 3, warning = FALSE}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 4, warning = FALSE}
 pop_ts_plot
 
 x <- x + 1
@@ -122,7 +122,7 @@ Figure `r x` shows how the population structure has changed between `r pop_min_y
 #### Figure `r x`: Change in population structure over the last five years.
 \newline
 
-```{r echo = FALSE, fig.width = 9, fig.height = 3.5, warning = FALSE}
+```{r echo = FALSE, fig.width = 9, fig.height = 4, warning = FALSE}
 hist_pop_change
 
 x <- x + 1
@@ -170,7 +170,7 @@ Source: Scottish Government, Public Health Scotland, National Records Scotland.
 #### Figure `r x`: Proportion of the population that reside in each 2020 SIMD quintile by domain in `r pop_max_year`.
 \newline
 
-```{r echo = FALSE, fig.width = 7, fig.height = 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 8, fig.height = 5, warning = FALSE}
 simd_domains
 
 x <- x + 1
@@ -248,7 +248,7 @@ The graph below shows the number of dwellings in `r LOCALITY` from `r min(house_
 #### Figure `r x`: Number of dwellings time trend.
 \newline
 
-```{r echo = FALSE, fig.width = 7, fig.height = 3, warning = FALSE}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 4, warning = FALSE}
 houses_ts
 
 x <- x + 1
@@ -381,7 +381,7 @@ The following chart shows a trend of death rates among 15-44 year olds per 100,0
 #### Figure `r x`: Deaths aged 15-44 years by geographical area and over time.
 \newline
 
-```{r echo = FALSE, fig.width = 7.5, fig.height = 4.2}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 4.2}
 deaths_15_44_time_trend
 
 x <- x + 1
@@ -461,7 +461,7 @@ For the period `r latest_period_cancer_reg`, there were **`r format_number_for_t
 #### Figure `r x`: Cancer registration rate over time and by area.
 \newline
 
-```{r echo = FALSE, fig.width = 7.5, fig.height = 3.7}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 3.7}
 cancer_reg_time_trend
 
 
@@ -471,7 +471,7 @@ x <- x + 1
 #### Figure `r x`: Early deaths from cancer (<75 years) over time and by area.
 \newline
 
-```{r echo = FALSE, fig.width = 7.5, fig.height = 3.7}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 3.7}
 early_deaths_cancer_time_trend
 
 x <- x + 1
@@ -501,7 +501,7 @@ In `r latest_period_adp_presc`, **`r format_number_for_text(adp_presc_latest)`%*
 #### Figure `r x`: Anxiety, depression, and psychosis prescriptions over time and by geographical area.
 \newline
 
-```{r echo = FALSE, fig.width = 7.5, fig.height = 3.8}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 3.8}
 adp_presc_time_trend
 
 x <- x + 1
@@ -552,7 +552,7 @@ Figure `r x + 1` then compares different areas, including the other localities i
 #### Figure `r x`: Alcohol-related hospital admission rates by area and over time.
 \newline
 
-```{r echo = FALSE, fig.width = 7.5, fig.height = 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 4.5, warning = FALSE}
 alcohol_hosp_time_trend
 
 x <- x + 1
@@ -576,7 +576,7 @@ Data on alcohol-specific deaths is available as 5-year aggregates. In `r LOCALIT
 #### Figure `r x`: Alcohol-specific deaths by area and over time.
 \newline
 
-```{r echo = FALSE, fig.width = 7.5, fig.height = 3.6, warning = FALSE}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 4.5, warning = FALSE}
 alcohol_deaths_time_trend
 
 x <- x + 1
@@ -602,7 +602,7 @@ A comparison of areas at the most recent time period  (`r latest_period_drug_hos
 #### Figure `r x`: Drug-related hospital admission rates by area and over time.
 \newline
 
-```{r echo = FALSE, fig.width = 8, fig.height = 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 4.5, warning = FALSE}
 drug_hosp_time_trend
 
 x <- x + 1
@@ -612,7 +612,7 @@ x <- x + 1
 
 #### Figure `r x`: Drug-related hospital admission rates by area for the latest time period available.
 
-```{r echo = FALSE, fig.width = 7.5, fig.height = 4.8, warning = FALSE}
+```{r echo = FALSE, fig.width = 8, fig.height = 4.8, warning = FALSE}
 drug_hosp_bar
 
 x <- x + 1
@@ -632,7 +632,7 @@ A trend of the percentage uptake of bowel screening among the eligible populatio
 #### Figure `r x`: Bowel screening uptake for eligible men and women, by area and over time. 
 \newline
 
-```{r echo = FALSE, fig.width = 7.5, fig.height = 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 4, warning = FALSE}
 bowel_screening_time_trend
 
 x <- x + 1
@@ -680,7 +680,7 @@ This section includes acute hospital data, delayed discharge bed days and A&E at
 #### Figure `r x`: Emergency admissions by geographical area
 \newline
 
-```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 4, warning = FALSE}
 EAs_loc_ts
 
 x <- x + 1
@@ -689,7 +689,7 @@ x <- x + 1
 #### Figure `r x`: Emergency admissions by age group
 \newline
 
-```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 4, warning = FALSE}
 EAs_age_ts
 
 x <- x + 1
@@ -702,7 +702,7 @@ x <- x + 1
 #### Figure `r x`: Unscheduled acute bed days by geographical area
 \newline
 
-```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 4, warning = FALSE}
 BDs_loc_ts
 
 x <- x + 1
@@ -711,7 +711,7 @@ x <- x + 1
 #### Figure `r x`: Unscheduled acute bed days by age group
 \newline
 
-```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 4, warning = FALSE}
 BDs_age_ts
 
 x <- x + 1
@@ -725,7 +725,7 @@ x <- x + 1
 #### Figure `r x`: A&E attendances by geographical area
 \newline
 
-```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 4, warning = FALSE}
 AandE_loc_ts
 
 x <- x + 1
@@ -734,7 +734,7 @@ x <- x + 1
 #### Figure `r x`: A&E attendances by age group
 \newline
 
-```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 4, warning = FALSE}
 AandE_age_ts
 
 x <- x + 1
@@ -748,7 +748,7 @@ x <- x + 1
 #### Figure `r x`: Emergency readmissions (28 days) by geographical area
 \newline
 
-```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 4, warning = FALSE}
 Read_loc_ts
 
 x <- x + 1
@@ -757,7 +757,7 @@ x <- x + 1
 #### Figure `r x`: Emergency readmissions (28 days) by age group
 \newline
 
-```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 4, warning = FALSE}
 Read_age_ts
 
 x <- x + 1
@@ -771,7 +771,7 @@ x <- x + 1
 #### Figure `r x`: Delayed discharge bed days in population aged 65+ by geographical area
 \newline
 
-```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 4, warning = FALSE}
 DD_loc_ts
 
 x <- x + 1
@@ -782,7 +782,7 @@ x <- x + 1
 #### Figure `r x`: Falls in population aged 65+ by geographical area
 \newline
 
-```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 4, warning = FALSE}
 Falls_loc_ts
 
 x <- x + 1
@@ -798,7 +798,7 @@ Information on the conditions included in PPAs is available in Appendix 3. In `r
 #### Figure `r x`: Potentially Preventable Admissions (PPAs) by geographical area
 \newline
 
-```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 4, warning = FALSE}
 PPA_loc_ts
 
 x <- x + 1
@@ -827,7 +827,7 @@ This section looks at mental health related unscheduled care indicators. For the
 #### Figure `r x`: Psychiatric patient hospitalisations by geographical area
 \newline
 
-```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 4.5, warning = FALSE}
 psych_hosp_time_trend
 
 x <- x + 1
@@ -841,7 +841,7 @@ x <- x + 1
 #### Figure `r x`: Unscheduled mental health specialty bed days by geographical area
 \newline
 
-```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 4, warning = FALSE}
 BDMH_loc_ts
 
 x <- x + 1
@@ -850,7 +850,7 @@ x <- x + 1
 #### Figure `r x`: Unscheduled mental health specialty bed days by age group
 \newline
 
-```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 4.5, warning = FALSE}
 BDMH_age_ts
 
 x <- x + 1
