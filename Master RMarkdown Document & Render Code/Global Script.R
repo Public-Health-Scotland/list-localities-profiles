@@ -150,19 +150,22 @@ read_in_localities <- function(dz_level = FALSE) {
 # The function pulls the latest "Scottish_Postcode_Directory_year_version.rds"
 
 read_in_postcodes <- function() {
-  fs::dir_ls(
-    glue(
-      "/conf/linkage/output/lookups/Unicode/Geography/",
-      "Scottish Postcode Directory/"
-    ),
-    regexp = glue(".rds$")
-  ) %>%
+  data <- fs::dir_ls(
+    path = "/conf/linkage/output/lookups/Unicode/Geography/Scottish Postcode Directory",
+    regexp = "\\.parquet$"
+  ) |>
     # Read in the most up to date lookup version
-    max() %>%
-    read_rds() %>%
-    clean_names() %>%
-    select(-c(hscp2019, hscp2019name, hb2019, hb2019name)) %>%
-    left_join(read_in_localities(dz_level = TRUE))
+    max() |>
+    arrow::read_parquet(col_select = -c(hscp2019, hscp2019name, hb2019, hb2019name))
+  
+  data <- dplyr::left_join(
+    data,
+    read_in_localities(dz_level = TRUE),
+    by = dplyr::join_by(datazone2011),
+    relationship = "many-to-one"
+    )
+
+  return(data)
 }
 
 
