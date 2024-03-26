@@ -118,29 +118,22 @@ theme_profiles <- function() {
 # if changed to dz_level = TRUE, this shows all the datazones in each locality (6976 rows)
 
 read_in_localities <- function(dz_level = FALSE) {
-  test <- data <- fs::dir_ls(
-    glue(
-      "/conf/linkage/output/lookups/Unicode/",
-      "Geography/HSCP Locality/"
-    ),
-    regexp = glue("HSCP Localities_DZ11_Lookup_.+?\\.rds$")
-  ) %>%
+  data <- fs::dir_ls(
+    path = "/conf/linkage/output/lookups/Unicode/Geography/HSCP Locality",
+    regexp = "HSCP Localities_DZ11_Lookup_.+?\\.rds$"
+  ) |>
     # Read in the most up to date lookup version
-    max() %>%
-    read_rds()
+    max() |>
+    readr::read_rds() |>
+    dplyr::select(datazone2011, hscp_locality, hscp2019name, hscp2019, hb2019name, hb2019) |>
+    dplyr::mutate(hscp_locality = sub("&", "and", hscp_locality, fixed = TRUE))
 
   if (!dz_level) {
-    data %>%
-      clean_names() %>%
-      mutate(hscp_locality = gsub("&", "and", hscp_locality)) %>%
-      select(hscp_locality, hscp2019name, hscp2019, hb2019name, hb2019) %>%
-      distinct()
-  } else if (dz_level) {
-    data %>%
-      clean_names() %>%
-      mutate(hscp_locality = gsub("&", "and", hscp_locality)) %>%
-      select(datazone2011, hscp_locality, hscp2019name, hscp2019, hb2019name, hb2019)
+    data <- data |>
+      dplyr::distinct(hscp_locality, hscp2019name, hscp2019, hb2019name, hb2019)
   }
+
+  return(data)
 }
 
 
