@@ -64,7 +64,7 @@ library(grid)
 
  - All years shown are calendar years unless otherwise specified.
  
- - Upper and lower 95% confidence intervals are shown throughout this document where available. In charts, these are displayed as shaded areas either side of trend lines, or as black error bars in bar charts. Confidence intervals show the range of possible values and a certainty that the true value falls within them.
+ - Upper and lower 95% confidence intervals are shown throughout this document where available. In charts, these are displayed as shaded areas on either side of trend lines or as black error bars in bar charts. Confidence intervals show the range of possible values and a certainty that the true value falls within them.
  
  - Definitions for the indicators shown are available in Appendix 1.
  
@@ -131,7 +131,7 @@ x <- x + 1
 ##### Page break
 
 ### Deprivation
-The following section explores the deprivation structure of `r LOCALITY` through the Scottish Index of Multiple Deprivation (SIMD). The SIMD ranks all datazones in Scotland by a number of factors; Access, Crime, Education, Employment, Health, Housing and Income. Based on these ranks, each datazone is then given an overall deprivation rank, which is used to split datazones into Deprivation Quintiles (Quintile 1 being the most deprived, and Quintile 5 the least). The most recent SIMD ranking was carried out in 2020. This section mainly focuses on the SIMD 2020 classifications, however the 2016 classifications are used to assess how deprivation has changed in `r LOCALITY` when compared to the rest of Scotland.
+The following section explores the deprivation structure of `r LOCALITY` through the Scottish Index of Multiple Deprivation (SIMD). The SIMD ranks all datazones in Scotland by a number of factors; Access, Crime, Education, Employment, Health, Housing and Income. Based on these ranks, each datazone is then given an overall deprivation rank, which is used to split datazones into Deprivation Quintiles (Quintile 1 being the most deprived, and Quintile 5 the least). The most recent SIMD ranking was carried out in 2020. This section mainly focuses on the SIMD 2020 classifications, however, the 2016 classifications are used to assess how deprivation has changed in `r LOCALITY` when compared to the rest of Scotland.
 
 Of the `r pop_max_year` population in `r LOCALITY`, **`r perc_bottom_quintile`%** live in the most deprived Quintile (SIMD 1), and **`r perc_top_quintile`%** live in the least deprived Quintile (SIMD 5). 
 
@@ -179,11 +179,11 @@ x <- x + 1
 
 ##### Page Break
 
-Figure `r x` presents a comparison between the 2016 SIMD ranking applied to 2016 population estimates, and the more recent 2020 SIMD ranking applied to `r pop_max_year` population estimates. The percentages of the population living within each SIMD quintile by domain were calculated using the 2016 and 2020 SIMD datazone classifications respectively. The differences in these percentages are plotted in Figure 6. Negative values on the y-axis indicate a decrease in percent of the population living within a quintile, while positive values indicate an increase in percent of the population living within a quintile. **Please note that quintiles have been weighted by the Scottish population so, any local changes in SIMD quintile do not necessarily indicate a difference in deprivation, but rather a difference in deprivation in comparison to the rest of Scotland.**
+Figure `r x` presents a comparison between the 2016 SIMD ranking applied to 2016 population estimates, and the more recent 2020 SIMD ranking applied to `r pop_max_year` population estimates. The percentages of the population living within each SIMD quintile by domain were calculated using the 2016 and 2020 SIMD datazone classifications respectively. The differences in these percentages are plotted in Figure `r x`. Negative values on the y-axis indicate a decrease in the percent of the population living within a quintile, while positive values indicate an increase in the percent of the population living within a quintile. **Please note that quintiles have been weighted by the Scottish population so, any local changes in SIMD quintile do not necessarily indicate a difference in deprivation, but rather a difference in deprivation in comparison to the rest of Scotland.**
 
 \newline
 
-#### Figure `r x`: Percentage population in 2016 and `r pop_max_year` living in the 2016 and the 2020 SIMD quintiles by domain.
+#### Figure `r x`: Percentage of population in 2016 and `r pop_max_year` living in the 2016 and the 2020 SIMD quintiles by domain.
 
 \newline
 
@@ -238,7 +238,7 @@ In `r latest_year_access_dep`, `r format_number_for_text(access_dep_latest)`% of
 For the most recent time period available, `r LOCALITY` Locality had:
 
  - **`r n_houses`** dwellings, of which: **`r perc_occupied`%** were occupied and **`r perc_second_homes`%** were second homes.
- - **`r perc_single_discount`%** of dwellers received a single occupant council tax discount, and **`r perc_exempt`%** were exempt from council tax entirely.
+ - **`r perc_single_discount`%** of dwellers received a single-occupant council tax discount, and **`r perc_exempt`%** were exempt from council tax entirely.
  - **`r perc_houses_AC`%** of houses were within council tax bands A to C, and **`r perc_houses_FH`%** were in bands F to H.
 
 \newline
@@ -254,7 +254,7 @@ houses_ts
 x <- x + 1
 ```
 
-Of the total number of dwellings in `r max_year_housing`, `r perc_single_discount`% (`r n_single_discount` households) were occupied by an individual receiving a single occupant council tax discount. Furthermore, `r perc_exempt`% (`r n_exempt` households) were occupied and exempt from council tax. 
+Of the total number of dwellings in `r max_year_housing`, `r perc_single_discount`% (`r n_single_discount` households) were occupied by an individual receiving a single-occupant council tax discount. Furthermore, `r perc_exempt`% (`r n_exempt` households) were occupied and exempt from council tax. 
 
 There were `r n_second_homes` dwellings classed as a second home in `r max_year_housing`, these dwellings made up `r perc_second_homes`% of the households in `r LOCALITY`.
 
@@ -324,14 +324,14 @@ life_exp_text <- if (is.na(avg_life_exp_latest_male)) {
 life_exp_text2 <- if (is.na(avg_life_exp_latest_male)) {
   "No data available for life expectancy at locality level."
 } else {
-  paste0("In the latest time period available from ", latest_period_life_exp_loc, " (5-year aggregate), the average life expectancy in ", LOCALITY, " locality was ", avg_life_exp_latest_male, " years of age for men, and ", avg_life_exp_latest_fem, " years of age for women. A 10-year time trend can be seen in figure ", x, ".")
+  paste0("In the latest time period available from ", latest_period_life_exp_loc, " (5-year aggregate), the average life expectancy in ", LOCALITY, " locality was ", avg_life_exp_latest_male, " years of age for men and ", avg_life_exp_latest_fem, " years of age for women. A 10-year time trend can be seen in Figure ", x, ".")
 }
 ```
 
 + `r life_exp_text`
 + A death rate for ages 15 to 44 of **`r format_number_for_text(deaths_15_44_latest)`** deaths per 100,000 age-sex standardised population. This is `r deaths_15_44_diff_scot` than Scotland (`r format_number_for_text(scot_deaths_15_44)` deaths per 100,000)^4^.
 + **`r format_number_for_text(ltc_percent_total_latest)`%** of the locality's population with at least one long-term physical health condition. This is `r ltc_diff_scot` than Scotland (`r format_number_for_text(ltc_perc_scot)`%).
-+ A cancer registration rate of **`r format_number_for_text(cancer_reg_rate_latest)`** registrations per 100,000 age-sex standardised population (compared to `r format_number_for_text(scot_cancer)` in Scotland), and an early deaths (<75 years) from cancer rate of **`r format_number_for_text(early_deaths_cancer_rate_latest)`** per 100,000 age-sex standardised population (compared to `r format_number_for_text(scot_cancer_deaths)` in Scotland)^4^.
++ A cancer registration rate of **`r format_number_for_text(cancer_reg_rate_latest)`** registrations per 100,000 age-sex standardised population (compared to `r format_number_for_text(scot_cancer)` in Scotland), and early deaths (<75 years) from cancer rate of **`r format_number_for_text(early_deaths_cancer_rate_latest)`** per 100,000 age-sex standardised population (compared to `r format_number_for_text(scot_cancer_deaths)` in Scotland)^4^.
 + **`r format_number_for_text(adp_presc_latest)`%** of the population being prescribed medication for anxiety, depression, or psychosis. This is a `r adp_presc_diff_scot` proportion than Scotland (`r format_number_for_text(scot_adp_presc)`%).
 
 \newline
@@ -376,7 +376,7 @@ Source: ScotPHO
 \newline
 
 ### Deaths, aged 15-44
-The following chart shows a trend of death rates among 15-44 year olds per 100,000 age-sex standardised population^4^ by area. In the most recent aggregate time period available (`r latest_period_deaths_15_44`), the mortality rate in `r LOCALITY` locality was **`r format_number_for_text(deaths_15_44_latest)`** deaths per 100,000 population. 
+The following chart shows a trend of death rates among 15-44 year olds per 100,000 age-sex standardised population^4^ by area. In the most recent aggregate time period available (`r latest_period_deaths_15_44`), the mortality rate in the `r LOCALITY` locality was **`r format_number_for_text(deaths_15_44_latest)`** deaths per 100,000 population. 
 
 #### Figure `r x`: Deaths aged 15-44 years by geographical area and over time.
 \newline
@@ -415,7 +415,7 @@ waffles
 
 \newline
 
-The co-occurrence of two or more conditions, known as multimorbidity, is broken down in table `r y`, distinguishing between age groups. Overall, **`r format_number_for_text(ltc_multimorbidity_un65_perc)`**% of those under the age of 65 have more than one LTC, compared to **`r format_number_for_text(ltc_multimorbidity_ov65_perc)`**% of those aged over 65.
+The co-occurrence of two or more conditions, known as multimorbidity, is broken down in Table `r y`, distinguishing between age groups. Overall, **`r format_number_for_text(ltc_multimorbidity_un65_perc)`**% of those under the age of 65 have more than one LTC, compared to **`r format_number_for_text(ltc_multimorbidity_ov65_perc)`**% of those aged over 65.
 
 #### Table `r y`: Multimorbidity of physical long-term conditions by age group in `r latest_year_ltc`.
 \newline
@@ -430,9 +430,9 @@ Source: Source Linkage Files
 ##### Page break
 **Most common physical Long-Term Conditions (LTCs)**
 
-Below is a breakdown of the physical LTCs, for the financial year `r latest_year_ltc`. Figure `r x` shows the prevalence of different LTCs in each age group in `r LOCALITY` locality, and Table `r y` illustrates the top 5 physical LTCs across all ages at locality, partnership, and Scotland level.
+Below is a breakdown of the physical LTCs, for the financial year `r latest_year_ltc`. Figure `r x` shows the prevalence of different LTCs in each age group in the `r LOCALITY` locality, and Table `r y` illustrates the top 5 physical LTCs across all ages at locality, partnership, and Scotland levels.
 
-#### Figure `r x`: Percentage people with each physical LTC, split by age group.
+#### Figure `r x`: Percentage of people with each physical LTC, split by age group.
 \newline
 
 ```{r echo = FALSE, fig.width = 7.5, fig.height = 3.8}
@@ -455,7 +455,7 @@ y <- y + 1
 Source: Source Linkage Files
 
 ### Cancer
-For the period `r latest_period_cancer_reg`, there were **`r format_number_for_text(cancer_reg_total_latest)`** new cancer registrations per year on average (**`r format_number_for_text(cancer_reg_rate_latest)`** registrations per 100,000 age-sex standardised population) in `r LOCALITY` locality. For the period `r latest_period_early_deaths_cancer`, there were also **`r format_number_for_text(early_deaths_cancer_rate_latest)`** early deaths per 100,000 from cancer in the locality, this is a **`r format_number_for_text(cancer_deaths_perc_change)`%** `r cancer_deaths_changeword` compared to the rate 10 years prior.
+For the period `r latest_period_cancer_reg`, there were **`r format_number_for_text(cancer_reg_total_latest)`** new cancer registrations per year on average (**`r format_number_for_text(cancer_reg_rate_latest)`** registrations per 100,000 age-sex standardised population) in the `r LOCALITY` locality. For the period `r latest_period_early_deaths_cancer`, there were also **`r format_number_for_text(early_deaths_cancer_rate_latest)`** early deaths per 100,000 from cancer in the locality, this is a **`r format_number_for_text(cancer_deaths_perc_change)`%** `r cancer_deaths_changeword` compared to the rate 10 years prior.
 
 
 #### Figure `r x`: Cancer registration rate over time and by area.
@@ -512,7 +512,7 @@ x <- x + 1
 
 In `r latest_period_adp_presc`, `r LOCALITY` had a `r adp_presc_diff_scot` proportion of the population being prescribed medication for anxiety, depression, and psychosis compared to the rest of Scotland (`r format_number_for_text(adp_presc_latest)`% compared to `r format_number_for_text(scot_adp_presc)`%).
 
-#### Figure `r x`: Percentage population prescribed medication for anxiety, depression, and psychosis by area for the latest time period available.
+#### Figure `r x`: Percentage of population prescribed medication for anxiety, depression, and psychosis by area for the latest time period available.
 \newline
 
 ```{r echo = FALSE, fig.width = 7.5, fig.height = 4.8}
@@ -528,14 +528,14 @@ adp_presc_bar
 
 **Summary**
 
-Mental and physical wellbeing has close ties with people’s lifestyles and behaviours. Financial security, employment and location are influences that often have a bearing on these choices. Issues can develop when alcohol, smoking or drug use shape lives. This section provides data on drug-related hospital admissions, alcohol-related hospital admissions, alcohol-specific deaths and bowel screening uptake, to give an overview of some of the lifestyles and behaviours for `r LOCALITY` locality. These can give an idea of quality of life and prosperity.
+Mental and physical well-being has close ties with people’s lifestyles and behaviours. Financial security, employment and location are influences that often have a bearing on these choices. Issues can develop when alcohol, smoking or drug use shape lives. This section provides data on drug-related hospital admissions, alcohol-related hospital admissions, alcohol-specific deaths and bowel screening uptake, to give an overview of some of the lifestyles and behaviours for the `r LOCALITY` locality. These can give an idea of quality of life and prosperity.
 
 For the most recent time period available^3^, `r LOCALITY` had:
 
 - **`r format_number_for_text(alcohol_hosp_latest)`** alcohol-related hospital admissions per 100,000 age-sex standardised population. This is `r alcohol_hosp_diff_scot` than Scotland (`r  format_number_for_text(scot_alcohol_hosp)` admissions per 100,000)^4^.
 - **`r format_number_for_text(alcohol_deaths_latest)`** alcohol-specific deaths per 100,000 age-sex standardised population. This is `r alcohol_deaths_diff_scot` than Scotland (`r  format_number_for_text(scot_alcohol_deaths)` deaths per 100,000)^4^.
 - **`r format_number_for_text(drug_hosp_latest)`** drug-related hospital admissions per 100,000 age-sex standardised population. This is `r drug_hosp_diff_scot` than Scotland (`r format_number_for_text(scot_drug_hosp)` admissions per 100,000)^4^.
-- **`r format_number_for_text(bowel_screening_latest)`%** uptake of bowel screening among eligible population, compared to `r format_number_for_text(scot_bowel_screening)`% in Scotland.
+- **`r format_number_for_text(bowel_screening_latest)`%** uptake of bowel screening among the eligible population, compared to `r format_number_for_text(scot_bowel_screening)`% in Scotland.
 
 \newline
 
@@ -595,9 +595,9 @@ x <- x + 1
 
 ### Drug-related Hospital Admissions
 
-There were **`r format_number_for_text(drug_hosp_latest)`** drug-related hospital admissions per 100,000 age-sex standardised population^4^ in `r LOCALITY` locality in the time period `r latest_period_drug_hosp` (3-year financial year aggregate). This is a `r format_number_for_text(drug_hosp_change)`% `r drug_hosp_change_word` since `r earliest_period_drug_hosp`. A trend of the change in drug-related hospital admissions for the locality and comparable areas is shown in figure `r x` from `r earliest_period_drug_hosp` onward.
+There were **`r format_number_for_text(drug_hosp_latest)`** drug-related hospital admissions per 100,000 age-sex standardised population^4^ in `r LOCALITY` locality in the time period `r latest_period_drug_hosp` (3-year financial year aggregate). This is a `r format_number_for_text(drug_hosp_change)`% `r drug_hosp_change_word` since `r earliest_period_drug_hosp`. A trend of the change in drug-related hospital admissions for the locality and comparable areas is shown in Figure `r x` from `r earliest_period_drug_hosp` onward.
 
-A comparison of areas at the most recent time period  (`r latest_period_drug_hosp` aggregated financial years) is available in figure `r x + 1` This shows `r LOCALITY` locality has a `r drug_hosp_diff_scot` rate of drug-related hospital admissions than Scotland (`r format_number_for_text(scot_drug_hosp)` admissions per 100,000).
+A comparison of areas at the most recent time period  (`r latest_period_drug_hosp` aggregated financial years) is available in Figure `r x + 1` This shows `r LOCALITY` locality has a `r drug_hosp_diff_scot` rate of drug-related hospital admissions than Scotland (`r format_number_for_text(scot_drug_hosp)` admissions per 100,000).
 
 #### Figure `r x`: Drug-related hospital admission rates by area and over time.
 \newline
@@ -624,7 +624,7 @@ x <- x + 1
 
 Bowel screening is offered every two years to eligible men and women aged between 50-74 years old. Eligible people are posted a test kit which is completed at home. Since 1st April 2013, those aged 75 and over can also self-refer and opt into screening.
 
-A trend of the percentage uptake of bowel screening among the eligible population is shown the locality and comparable areas. Data is presented as 3-year aggregates. The `r latest_period_bowel_screening` uptake rate for `r LOCALITY` is **`r format_number_for_text(bowel_screening_latest)`%**. This is a `r format_number_for_text(bowel_screening_change)`% `r bowel_screening_change_word` since `r earliest_period_bowel_screening`. As can be seen in figure `r x + 1`, in the latest estimate, the uptake in `r LOCALITY` was `r bowel_screening_diff_scot` than the uptake in Scotland overall (`r format_number_for_text(scot_bowel_screening)`%).
+A trend of the percentage uptake of bowel screening among the eligible population is shown for `r LOCALITY` and comparable areas. Data is presented as 3-year aggregates. The `r latest_period_bowel_screening` uptake rate for `r LOCALITY` is **`r format_number_for_text(bowel_screening_latest)`%**. This is a `r format_number_for_text(bowel_screening_change)`% `r bowel_screening_change_word` since `r earliest_period_bowel_screening`. As can be seen in Figure `r x + 1`, in the latest estimate, the uptake in `r LOCALITY` was `r bowel_screening_diff_scot` than the uptake in Scotland overall (`r format_number_for_text(scot_bowel_screening)`%).
 
 
 ##### Page break
@@ -668,7 +668,7 @@ This section includes acute hospital data, delayed discharge bed days and A&E at
  
  - **`r latest_falls_loc`** emergency hospital admissions from falls per 100,000 population aged over 65, compared to `r scot_falls` in Scotland. 
  
- - **`r latest_read_loc`** emergency readmissions (28 day) per 1,000 discharges, compared to `r scot_read` in Scotland. 
+ - **`r latest_read_loc`** emergency readmissions (28 days) per 1,000 discharges, compared to `r scot_read` in Scotland. 
  
  - **`r latest_ppa_loc`** potentially preventable hospital admissions per 100,000 population, compared to `r scot_ppa` in Scotland. 
 
@@ -768,7 +768,7 @@ x <- x + 1
 
 ### Delayed Discharge Bed Days
 
-#### Figure `r x`: Delayed discharge bed days in population aged 65+ by geographical area
+#### Figure `r x`: Delayed discharge bed days in the population aged 65+ by geographical area
 \newline
 
 ```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
@@ -779,7 +779,7 @@ x <- x + 1
 
 ### Emergency admissions from a fall
 
-#### Figure `r x`: Falls in population aged 65+ by geographical area
+#### Figure `r x`: Falls in the population aged 65+ by geographical area
 \newline
 
 ```{r echo = FALSE, fig.width = 7.6, fig.height = 4, warning = FALSE}
@@ -815,7 +815,7 @@ x <- x + 1
 
 **Summary**
 
-This section looks at mental health related unscheduled care indicators. For the most recent time period available, `r LOCALITY` had:
+This section looks at mental health-related unscheduled care indicators. For the most recent time period available, `r LOCALITY` had:
 
  - **`r psych_hosp_latest`** psychiatric patient hospitalisations per 100,000, compared to `r scot_psych_hosp` in Scotland^4^.
  - **`r latest_bed_days_mh_loc`** unscheduled mental health specialty bed days per 100,000, compared to `r scot_bed_days_mh` in Scotland. 
@@ -863,13 +863,13 @@ x <- x + 1
 
 1. Population projections are not currently provided by NRS at the locality level. To explore how the population in `r LOCALITY` is expected to change in the future, the percent changes in population projection to 2025 for `r HSCP` by age group and gender were calculated from the NRS Local Authority Population Projections. These percent changes were then applied to the `r LOCALITY` 2018 mid-year population estimates (also split by age group and gender) to obtain population projection estimates for `r LOCALITY`, based on the projections for the HSCP and the current population structure of the locality.
 
-2. Care Home Data included in the Services Map and Table was sourced from the [Care Inspectorate](https://www.careinspectorate.com/images/documents/5713/MDSF_data_31%20May%202020.csv). [GP Practice](https://www.opendata.nhs.scot/dataset/gp-practice-contact-details-and-list-sizes) data from October 2021, and [Hospital](https://www.opendata.nhs.scot/dataset/hospital-codes) and [A&E](https://www.opendata.nhs.scot/dataset/nhs-scotland-accident-emergency-sites) data was sourced from Public Health Scotland Open Data. Only services that are within the physical boundary of the HSCP or Locality are included in the map and table, so there may be services outside `r HSCP` which people may use but are not shown. Information on access deprivation was taken from [ScotPHO](https://scotland.shinyapps.io/ScotPHO_profiles_tool/).
+2. Care Home Data included in the Services Map and Table was sourced from the [Care Inspectorate](https://www.careinspectorate.com/images/documents/5713/MDSF_data_31%20May%202020.csv). [GP Practice](https://www.opendata.nhs.scot/dataset/gp-practice-contact-details-and-list-sizes) data from October 2021, and [Hospital](https://www.opendata.nhs.scot/dataset/hospital-codes) and [A&E](https://www.opendata.nhs.scot/dataset/nhs-scotland-accident-emergency-sites) data was sourced from Public Health Scotland Open Data. Only services that are within the physical boundary of the HSCP or Locality are included in the map and table, so there may be services outside `r HSCP` that people may use but are not shown. Information on access deprivation was taken from [ScotPHO](https://scotland.shinyapps.io/ScotPHO_profiles_tool/).
 
 3. Sourced from [ScotPHO](https://scotland.shinyapps.io/ScotPHO_profiles_tool/). There may be more recent data available for the indicators elsewhere.
 
 4. Data taken from ScotPHO is often reported using the European Age-Sex Standardised Rate per 100,000. This allows for comparisons across different areas to be made. For more information on how these rates are calculated, please refer to [www.isdscotland.org/Products-and-Services/GPD-Support/Population/Standard-Populations/](https://www.isdscotland.org/Products-and-Services/GPD-Support/Population/Standard-Populations/)
 
-5. Physical long-term conditions data comes from the Source Linkage Files, and the conditions are identified using ICD-9 and ICD-10 codes in the diagnosis fields. Please note that the Source Linkage Files data only contains information on people who have had contact with the NHS through either inpatient admissions, outpatient attendances, daycase attendances, A&E attendances or through prescribed items, the data does not show all service users in Scotland who have been diagnosed with an LTC as not all of these individuals will have used these services. Also note that LTC rates are based on an adjusted population indicator in the Source Linkage Files so that population sizes are closer to the official estimates.
+5. Physical long-term conditions data comes from the Source Linkage Files, and the conditions are identified using ICD-9 and ICD-10 codes in the diagnosis fields. Please note that the Source Linkage Files data only contains information on people who have had contact with the NHS through either inpatient admissions, outpatient attendances, daycase attendances, A&E attendances or through prescribed items, the data does not show all service users in Scotland who have been diagnosed with an LTC as not all of these individuals will have used these services. Also, note that LTC rates are based on an adjusted population indicator in the Source Linkage Files so that population sizes are closer to the official estimates.
 
 
 ##### Page Break
