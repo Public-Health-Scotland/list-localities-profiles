@@ -89,7 +89,7 @@ house_dat1 <- house_dat %>%
     tax_discount = sum(dwellings_with_a_single_adult_council_tax_discount)
   ) %>%
   dplyr::ungroup() %>%
-  dplyr::mutate_at(.vars = 3:7, .funs = funs(perc = 100 * . / total_dwellings))
+  dplyr::mutate(dplyr::across(3:7, list(perc = ~ 100 * .x / total_dwellings)))
 
 
 ## 2b) Text objects ----
@@ -135,10 +135,7 @@ house_table <- house_dat1 %>%
     year, total_dwellings, occupied_dwellings, vacant_dwellings,
     tax_discount, tax_exempt, second_homes
   ) %>%
-  mutate_at(
-    .vars = 2:7,
-    .funs = funs(format(., big.mark = ","))
-  )
+  mutate(across(2:7, ~ format(.x, big.mark = ",")))
 
 
 ######################## Section 3 - Council Tax Band Data ############################
