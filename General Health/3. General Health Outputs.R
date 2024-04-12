@@ -823,7 +823,7 @@ top5ltc_loc <- ltc_totals %>%
   select(-hscp_locality, -hscp2019name, -people, -slf_adj_pop) %>%
   gather() %>%
   arrange(desc(value)) %>%
-  top_n(5, value) %>%
+  slice_max(n = 5, order_by = value) %>%
   mutate(topltc = key, percent = round_half_up((value / ltc_pops_total_loc) * 100, 2)) %>%
   select(-key, -value) %>%
   left_join(ltc_cols) %>%
@@ -840,7 +840,7 @@ top5ltc_hscp <- ltc_totals %>%
   select(-hscp2019name, -people, -slf_adj_pop) %>%
   gather() %>%
   arrange(desc(value)) %>%
-  top_n(5, value) %>%
+  slice_max(n = 5, order_by = value) %>%
   mutate(topltc = key, percent = round_half_up((value / ltc_pops_total_hscp) * 100, 2)) %>%
   select(-key, -value) %>%
   left_join(ltc_cols) %>%
@@ -858,7 +858,7 @@ top5ltc_scot <- ltc_scot %>%
   select(-area, -total_ltc) %>%
   gather() %>%
   arrange(desc(value)) %>%
-  top_n(5, value) %>%
+  slice_max(n = 5, order_by = value) %>%
   mutate(topltc = key, percent = round_half_up((value / ltc_pops_total_scot) * 100, 2)) %>%
   select(-key, -value) %>%
   left_join(ltc_cols) %>%
