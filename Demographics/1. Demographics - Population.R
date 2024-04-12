@@ -82,14 +82,14 @@ pops <- pop_raw_data %>%
 # Aggregate and add partnership + Scotland totals
 pops <- pops %>%
   group_by(year, sex, hscp2019name, hscp_locality) %>%
-  summarise_all(sum) %>%
+  summarise(across(everything(), sum)) %>%
   ungroup() %>%
   # Add a partnership total
   bind_rows(
     pops %>%
       select(-hscp_locality) %>%
       group_by(year, hscp2019name, sex) %>%
-      summarise_all(sum) %>%
+      summarise(across(everything(), sum)) %>%
       ungroup() %>%
       mutate(hscp_locality = "Partnership Total")
   ) %>%
@@ -98,7 +98,7 @@ pops <- pops %>%
     pops %>%
       select(-hscp_locality, -hscp2019name) %>%
       group_by(year, sex) %>%
-      summarise_all(sum) %>%
+      summarise(across(everything(), sum)) %>%
       ungroup() %>%
       mutate(hscp_locality = "Scotland Total", hscp2019name = "Scotland")
   )

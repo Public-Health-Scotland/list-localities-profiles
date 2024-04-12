@@ -482,7 +482,7 @@ latest_year_ltc <- distinct(ltc, year) %>% as.character()
 ltc_scot <- ltc %>%
   select(-year, -hscp2019name, -hscp_locality, -slf_adj_pop) %>%
   group_by(total_ltc, age_group) %>%
-  summarise_all(sum) %>%
+  summarise(across(everything(), sum)) %>%
   ungroup()
 
 
@@ -621,7 +621,7 @@ ltc2 <- ltc %>%
   select(-year) %>%
   mutate(age_group = if_else(age_group == "Under 65", "Under 65", "65+")) %>%
   group_by(hscp2019name, hscp_locality, age_group, total_ltc) %>%
-  summarise_all(sum) %>%
+  summarise(across(everything(), sum)) %>%
   ungroup()
 
 ltc_multimorbidity <- ltc2 %>%
@@ -678,7 +678,7 @@ ltc_types <- ltc2 %>%
   select(-hscp2019name, -total_ltc, -people) %>%
   filter(hscp_locality == LOCALITY) %>%
   group_by(hscp_locality, age_group) %>%
-  summarise_all(sum) %>%
+  summarise(across(everything(), sum)) %>%
   gather(key = "key", value = "value", c(`Arthritis`:`Renal failure`))
 
 # Create negative values for chart
@@ -795,7 +795,7 @@ ltc_totals <- ltc2 %>%
   filter(total_ltc != 0) %>%
   select(-hscp2019name, -total_ltc, -age_group) %>%
   group_by(hscp_locality) %>%
-  summarise_all(sum) %>%
+  summarise(across(everything(), sum)) %>%
   ungroup()
 
 ltc_totals <- left_join(ltc_totals, select(lookup, hscp_locality, hscp2019name)) # join df with lookup2
@@ -808,7 +808,7 @@ ltc_pops_total_hscp <- sum(filter(slf_pops, hscp2019name == HSCP)$slf_adj_pop)
 # Colour lookup for table
 ltc_cols <- ltc_scot %>%
   select(3:17) %>%
-  summarise_all(sum) %>%
+  summarise(across(everything(), sum)) %>%
   gather() %>%
   rename(topltc = key) %>%
   arrange(desc(value)) %>%
@@ -834,7 +834,7 @@ top5ltc_loc <- ltc_totals %>%
 top5ltc_hscp <- ltc_totals %>%
   select(-hscp_locality) %>%
   group_by(hscp2019name) %>%
-  summarise_all(sum) %>%
+  summarise(across(everything(), sum)) %>%
   ungroup() %>%
   filter(hscp2019name == HSCP) %>%
   select(-hscp2019name, -people, -slf_adj_pop) %>%
@@ -853,7 +853,7 @@ top5ltc_scot <- ltc_scot %>%
   filter(total_ltc != 0) %>%
   select(-age_group, -people) %>%
   group_by(area) %>%
-  summarise_all(sum) %>%
+  summarise(across(everything(), sum)) %>%
   ungroup() %>%
   select(-area, -total_ltc) %>%
   gather() %>%

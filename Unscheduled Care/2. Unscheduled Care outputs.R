@@ -92,7 +92,7 @@ pops <- populations %>%
   ) %>%
   mutate(financial_year = paste0(year, "/", substr(year + 1, 3, 4))) %>%
   group_by(financial_year, year, hb2019name, hscp2019name, hscp_locality) %>%
-  summarise_all(sum) %>%
+  summarise(across(everything(), sum)) %>%
   ungroup()
 
 
@@ -108,7 +108,7 @@ pop_areas <- pops %>%
       select(-hscp_locality, -hb2019name) %>%
       filter(hscp2019name == HSCP) %>%
       group_by(financial_year, year, hscp2019name) %>%
-      summarise_all(sum) %>%
+      summarise(across(everything(), sum)) %>%
       ungroup() %>%
       rename(location = hscp2019name)
   ) %>%
@@ -118,7 +118,7 @@ pop_areas <- pops %>%
       select(-hscp_locality, -hscp2019name) %>%
       filter(hb2019name == HB) %>%
       group_by(financial_year, year, hb2019name) %>%
-      summarise_all(sum) %>%
+      summarise(across(everything(), sum)) %>%
       ungroup() %>%
       rename(location = hb2019name)
   ) %>%
@@ -127,7 +127,7 @@ pop_areas <- pops %>%
     pops %>%
       select(-hscp_locality, -hscp2019name, -hb2019name) %>%
       group_by(financial_year, year) %>%
-      summarise_all(sum) %>%
+      summarise(across(everything(), sum)) %>%
       ungroup() %>%
       mutate(location = "Scotland")
   ) %>%

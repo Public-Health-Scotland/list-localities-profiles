@@ -156,7 +156,7 @@ house_raw_dat2 <- read_excel(paste0(filepath, "Data ", ext_year, "/council_tax.x
 house_dat2 <- house_raw_dat2 %>%
   filter(data_zone_code %in% lookup$datazone2011) %>%
   select(5:14) %>%
-  summarise_all(.funs = sum)
+  summarise(across(everything(), sum))
 
 
 ## 3b) Plots & tables ----
