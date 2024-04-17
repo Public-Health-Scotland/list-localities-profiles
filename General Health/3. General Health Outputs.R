@@ -679,7 +679,11 @@ ltc_types <- ltc2 %>%
   filter(hscp_locality == LOCALITY) %>%
   group_by(hscp_locality, age_group) %>%
   summarise(across(everything(), sum)) %>%
-  gather(key = "key", value = "value", c(`Arthritis`:`Renal failure`))
+  pivot_longer(
+    cols = c("Arthritis":"Renal failure"),
+    names_to = "key",
+    values_to = "value"
+  )
 
 # Create negative values for chart
 ltc_types_temp <- ltc_types %>%
@@ -809,7 +813,7 @@ ltc_pops_total_hscp <- sum(filter(slf_pops, hscp2019name == HSCP)$slf_adj_pop)
 ltc_cols <- ltc_scot %>%
   select(3:17) %>%
   summarise(across(everything(), sum)) %>%
-  gather() %>%
+  pivot_longer(cols = everything(), names_to = "key", values_to = "value") %>%
   rename(topltc = key) %>%
   arrange(desc(value)) %>%
   mutate(colours = c(palette, c(
@@ -821,7 +825,7 @@ ltc_cols <- ltc_scot %>%
 top5ltc_loc <- ltc_totals %>%
   filter(hscp_locality == LOCALITY) %>%
   select(-hscp_locality, -hscp2019name, -people, -slf_adj_pop) %>%
-  gather() %>%
+  pivot_longer(cols = everything(), names_to = "key", values_to = "value") %>%
   arrange(desc(value)) %>%
   slice_max(n = 5, order_by = value) %>%
   mutate(topltc = key, percent = round_half_up((value / ltc_pops_total_loc) * 100, 2)) %>%
@@ -838,7 +842,7 @@ top5ltc_hscp <- ltc_totals %>%
   ungroup() %>%
   filter(hscp2019name == HSCP) %>%
   select(-hscp2019name, -people, -slf_adj_pop) %>%
-  gather() %>%
+  pivot_longer(cols = everything(), names_to = "key", values_to = "value") %>%
   arrange(desc(value)) %>%
   slice_max(n = 5, order_by = value) %>%
   mutate(topltc = key, percent = round_half_up((value / ltc_pops_total_hscp) * 100, 2)) %>%
@@ -856,7 +860,7 @@ top5ltc_scot <- ltc_scot %>%
   summarise(across(everything(), sum)) %>%
   ungroup() %>%
   select(-area, -total_ltc) %>%
-  gather() %>%
+  pivot_longer(cols = everything(), names_to = "key", values_to = "value") %>%
   arrange(desc(value)) %>%
   slice_max(n = 5, order_by = value) %>%
   mutate(topltc = key, percent = round_half_up((value / ltc_pops_total_scot) * 100, 2)) %>%

@@ -472,7 +472,12 @@ data_res <- data_res %>%
 # Next pull all these variables together so we have multiple rows per patient
 # which shows every year they were resident.
 data_res <- data_res %>%
-  gather(key = resident_year, value = residents, r1996_1997:r2021_2022)
+  pivot_longer(
+    cols = c("r1996_1997":"r2021_2022"),
+    names_to = "resident_year",
+    values_to = "residents"
+  )
+
 # Correct the resident year variable so it has the format 1997/1998
 data_res <- data_res %>%
   mutate(year = paste0(substr(resident_year, 2, 5), "/", substr(resident_year, 7, 11)))
