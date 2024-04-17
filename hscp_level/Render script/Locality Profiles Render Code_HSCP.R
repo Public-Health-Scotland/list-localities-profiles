@@ -15,7 +15,7 @@ Sys.umask("006")
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 #Source in functions code
-source(paste0(lp_path, "Master RMarkdown Document & Render Code/Global Script.R"))
+source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ##Specify HSCP here
 ## NOTE - make sure that the formatting of the partnership's name matches the lookup  
@@ -56,8 +56,8 @@ other_locs <- lookup %>%
   ## 2a) Source in all the scripts for a given LOCALITY
   
   #demographics
-  source(paste0(lp_path, "Demographics/Scripts/HSCP level/1. Demographics - Population.R"))
-  source(paste0(lp_path, "Demographics/Scripts/HSCP level/2. Demographics - SIMD.R"))
+  source("hscp_level/Demographics/1. Demographics - Population.R")
+  source("hscp_level/Demographics/2. Demographics - SIMD.R")
   
   #housing
   source(paste0(lp_path, "Households/Scripts/HSCP level/Households code.R"))
