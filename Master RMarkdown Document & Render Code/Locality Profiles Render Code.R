@@ -28,8 +28,8 @@ lookup <- read_in_localities()
 HSCP_list <- unique(lookup$hscp2019name)
 
 # Create list of localities in chosen HSCP
-locality_list <- lookup %>%
-  filter(hscp2019name == HSCP) %>%
+locality_list <- lookup |> 
+  filter(hscp2019name == HSCP) |> 
   pull(hscp_locality)
 
 
