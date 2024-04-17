@@ -436,19 +436,19 @@ other_locs_total_pop <- pops %>%
   ungroup() %>%
   mutate(total_pop = format(total_pop, big.mark = ",")) %>%
   arrange(hscp_locality) %>%
-  spread(hscp_locality, total_pop)
+  pivot_wider(names_from = hscp_locality, values_from = total_pop)
 
 # gender ratio
 other_locs_gender_ratio <- pops %>%
   filter(year == max(year)) %>%
   inner_join(other_locs, by = "hscp_locality") %>%
   select(hscp_locality, sex, total_pop) %>%
-  spread(sex, total_pop) %>%
+  pivot_wider(names_from = sex, values_from = total_pop) %>%
   mutate(ratio = round_half_up(`F` / `M`, 2)) %>%
   mutate(ratio = paste0("1:", ratio)) %>%
   arrange(hscp_locality) %>%
   select(hscp_locality, ratio) %>%
-  spread(hscp_locality, ratio)
+  pivot_wider(names_from = hscp_locality, values_from = ratio)
 
 # over 65 %
 other_locs_over65 <- pops %>%
@@ -459,7 +459,7 @@ other_locs_over65 <- pops %>%
   mutate(over65_percent = round_half_up(over65 / total_pop * 100, 1)) %>%
   arrange(hscp_locality) %>%
   select(hscp_locality, over65_percent) %>%
-  spread(hscp_locality, over65_percent)
+  pivot_wider(names_from = hscp_locality, values_from = over65_percent)
 
 
 ## HSCP objects

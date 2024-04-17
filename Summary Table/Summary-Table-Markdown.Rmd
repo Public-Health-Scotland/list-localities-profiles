@@ -74,7 +74,7 @@ otherloc_names <- paste0(other_locs$hscp_locality, "\nLocality") %>%
   strwrap(width = case_when(n_loc < 4 ~ 20, n_loc == 4 ~ 15, n_loc > 4 ~ 8), simplify = FALSE)
 otherloc_names <- sapply(otherloc_names, paste, collapse = "\n")
 otherloc_names <- data.frame(loc_number = 2:n_loc, otherloc_names) %>%
-  spread(key = loc_number, value = otherloc_names)
+  pivot_wider(names_from = loc_number, values_from = otherloc_names)
 
 # Set HSCP name object
 hscp_name <- paste0(HSCP, "\nHSCP") %>%

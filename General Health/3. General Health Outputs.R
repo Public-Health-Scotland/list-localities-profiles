@@ -216,7 +216,7 @@ life_exp_table <- life_exp %>%
   ) %>%
   arrange(area_name) %>%
   select(-area_type) %>%
-  spread(area_name, measure)
+  pivot_wider(names_from = area_name, values_from = measure)
 
 
 # Table breaking down intermediate zones
@@ -235,7 +235,7 @@ life_exp_table <- life_exp %>%
   ) %>%
   arrange(area_name) %>%
   select(-area_type) %>%
-  spread(area_name, measure)
+  pivot_wider(names_from = area_name, values_from = measure)
 
 
 ## Numbers for text
@@ -401,7 +401,7 @@ highest_hosp_disease <- disease_hosp %>%
 
 disease_hosp_table <- disease_hosp %>%
   select(indicator, period_short, area_name, measure) %>%
-  spread(area_name, measure) %>%
+  pivot_wider(names_from = area_name, values_from = measure) %>%
   rename(
     "Disease" = indicator,
     "Latest time period" = period_short
@@ -651,7 +651,7 @@ ltc_multimorbidity <- ltc2 %>%
 
 ltc_multimorbidity_table <- ltc_multimorbidity %>%
   select(age_group, total_ltc, percent) %>%
-  spread(age_group, percent) %>%
+  pivot_wider(names_from = age_group, values_from = percent) %>%
   rename(
     " " = total_ltc,
     "Proportion under 65 (%)" = "Under 65",
@@ -941,7 +941,7 @@ other_locs_summary_table <- function(data, latest_year) {
     arrange(hscp_locality) %>%
     select(hscp_locality, measure) %>%
     mutate(measure = round_half_up(measure, 1)) %>%
-    spread(hscp_locality, measure)
+    pivot_wider(names_from = hscp_locality, values_from = measure)
 }
 
 hscp_scot_summary_table <- function(data, latest_year, area) {
@@ -1002,7 +1002,7 @@ other_locs_ltc <- inner_join(ltc, other_locs) %>%
   mutate(percent = round_half_up(ltc_people / slf_adj_pop * 100, 1)) %>%
   arrange(hscp_locality) %>%
   select(hscp_locality, percent) %>%
-  spread(key = hscp_locality, value = percent)
+  pivot_wider(names_from = hscp_locality, values_from = percent)
 
 
 # 2. HSCP
