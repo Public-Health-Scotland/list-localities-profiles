@@ -60,23 +60,29 @@ other_locs <- lookup %>%
   source("hscp_level/Demographics/2. Demographics - SIMD.R")
   
   #housing
-  source(paste0(lp_path, "Households/Scripts/HSCP level/Households code.R"))
+  source("hscp_level/Households/HSCP level/Households code.R")
   
   #services
   source(paste0(lp_path, "Services/Scripts/HSCP level/2. Services data manipulation & table.R"))
+  source("hscp_level/Services/") # Nothing in this folder
 
   #general health
-  source(paste0(lp_path, "General Health/Scripts/HSCP level/3. General Health Outputs.R"))
-  
+  source("hscp_level/General Health/1. Convert GH ScotPHO data to RDS.R")
+  source("hscp_level/General Health/2. General Health SLF Data.R")
+  source("hscp_level/General Health/3. General Health Outputs.R")
+
   #lifestyle & risk factors
-  source(paste0(lp_path, "Lifestyle & Risk Factors/Scripts/HSCP level/2. Lifestyle & Risk Factors Outputs.R"))
+  source("hscp_level/Lifestyle and risk/HSCP level/1. Convert LRF ScotPHO data to RDS.R")
+  source("hscp_level/Lifestyle and risk/HSCP level/2. Lifestyle & Risk Factors Outputs.R")
   
   #unscheduled care
-  source(paste0(lp_path, "Unscheduled Care/Scripts/HSCP level/2. Unscheduled Care outputs.R"))
-  
+  source("hscp_level/unschedule care/1. Unscheduled Care data extraction.R")
+  source("hscp_level/unschedule care/2. Unscheduled Care outputs.R")
+
   #appendices
   source(paste0(lp_path, "Master RMarkdown Document & Render Code/Tables for Appendix.R"))
-  
+  source("hscp_level/Master RMarkdown Document & Render Code/Tables for Appendix.R")  # Not in the hscp_level folder
+
   # Remove tidylog package which messes up outputs
   detach(package:tidylog, unload=TRUE)
 
