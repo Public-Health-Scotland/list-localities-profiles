@@ -11,8 +11,6 @@ library(tidyverse)
 library(janitor)
 library(data.table)
 library(glue)
-library(magrittr)
-library(lubridate)
 
 
 #### Colours & Formatting ####
