@@ -141,27 +141,27 @@ pop_breakdown <- pops %>%
 pop_pyramid <- ggplot(
   pop_breakdown,
   aes(
-    x = factor(Age, levels = unique(pop_breakdown$Age)),
+    y = factor(Age, levels = unique(pop_breakdown$Age)),
     fill = Gender
   )
 ) +
   geom_col(
     data = subset(pop_breakdown, Gender == "Male"),
-    aes(y = Population)
+    aes(x = Population)
   ) +
   geom_col(
     data = subset(pop_breakdown, Gender == "Female"),
-    aes(y = Population * (-1))
+    aes(x = Population * (-1))
   ) +
-  scale_y_continuous(
+  scale_x_continuous(
     labels = abs,
     limits = max(pop_breakdown$Population) * c(-1, 1)
   ) +
-  coord_flip() +
   scale_fill_manual(values = palette) +
   theme_profiles() + # guides(fill = FALSE)
   labs(
-    y = "Population", x = "Age Group",
+    x = "Population",
+    y = "Age Group",
     title = paste0(str_wrap(`LOCALITY`, 50), " population pyramid ", pop_max_year)
   )
 

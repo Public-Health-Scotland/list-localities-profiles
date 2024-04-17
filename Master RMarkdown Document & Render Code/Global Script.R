@@ -405,20 +405,21 @@ scotpho_bar_chart <- function(data, chart_title, xaxis_title) {
     arrange(area_name)
 
   ggplot(data_for_plot) +
-    aes(x = area_name, fill = area_type, weight = measure) +
+    aes(y = area_name, fill = area_type, weight = measure) +
     geom_bar(colour = "white") +
     scale_fill_manual(values = palette) +
-    coord_flip() +
     theme_profiles() +
-    theme(axis.text.y = element_text(colour = if_else(data_for_plot$text_col == 1, "red", "black"))) +
+    theme(axis.text.x = element_text(colour = if_else(data_for_plot$text_col == 1, "red", "black"))) +
     labs(
       title = chart_title,
-      y = xaxis_title,
-      x = " ", fill = " ",
+      x = xaxis_title,
+      y = " ", fill = " ",
       caption = "Source: ScotPHO"
     ) +
-    geom_errorbar(aes(ymin = lower_confidence_interval, ymax = upper_confidence_interval),
-      width = 0.2, position = position_dodge(width = 1)
+    geom_errorbar(
+      aes(xmin = lower_confidence_interval, xmax = upper_confidence_interval),
+      width = 0.2,
+      position = position_dodge(width = 1)
     ) #+
   # guides(linetype = "none", shape = "none",  colour = "none",
   #        fill = guide_legend(nrow= 2, byrow=TRUE))
@@ -440,20 +441,21 @@ scotpho_bar_chart_HSCP <- function(data, chart_title, xaxis_title) {
     arrange(area_name)
 
   ggplot(data_for_plot) +
-    aes(x = area_name, fill = area_type, weight = measure) +
+    aes(y = area_name, fill = area_type, weight = measure) +
     geom_bar(colour = "white") +
     scale_fill_manual(values = palette) +
-    coord_flip() +
     theme_profiles() +
-    theme(axis.text.y = element_text(colour = if_else(data_for_plot$text_col == 1, "red", "black"))) +
+    theme(axis.text.x = element_text(colour = if_else(data_for_plot$text_col == 1, "red", "black"))) +
     labs(
       title = chart_title,
-      y = xaxis_title,
-      x = " ", fill = " ",
+      x = xaxis_title,
+      y = " ", fill = " ",
       caption = "Source: ScotPHO"
     ) +
-    geom_errorbar(aes(ymin = lower_confidence_interval, ymax = upper_confidence_interval),
-      width = 0.2, position = position_dodge(width = 1)
+    geom_errorbar(
+      aes(xmin = lower_confidence_interval, xmax = upper_confidence_interval),
+      width = 0.2,
+      position = position_dodge(width = 1)
     ) #+
   # guides(linetype = "none", shape = "none",  colour = "none",
   #        fill = guide_legend(nrow= 2, byrow=TRUE))

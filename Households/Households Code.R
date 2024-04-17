@@ -169,11 +169,19 @@ pal_ctb <- phsstyles::phs_colours(c(
   "phs-purple-30", "phs-purple-50", "phs-purple-80", "phs-purple"
 ))
 
-ctb_plot <- ggplot(ctb, aes(fill = factor(variable, levels = rev(variable)), y = value, x = 1)) +
+ctb_plot <- ctb %>%
+  ggplot(aes(
+    fill = factor(variable, levels = rev(variable)),
+    x = value,
+    y = 1
+  )) +
   geom_col(position = "fill", colour = "black", size = 0.5) +
   theme_classic() +
-  coord_flip() +
-  labs(x = "", y = "Proportion of Households", caption = "Source: Scottish Assessors’ Association (via NRS)") +
+  labs(
+    y = "",
+    x = "Proportion of Households",
+    caption = "Source: Scottish Assessors’ Association (via NRS)"
+  ) +
   scale_fill_manual(
     name = "Council Tax Band",
     labels = (paste("Band", LETTERS[8:1])),

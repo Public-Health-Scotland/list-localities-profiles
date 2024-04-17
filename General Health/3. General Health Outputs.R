@@ -179,8 +179,7 @@ life_exp_trend <- life_exp %>%
   filter(area_name == LOCALITY & area_type == "Locality" & year >= max(year) - 10) %>%
   mutate(period_short = str_wrap(period_short, width = 10)) %>%
   mutate(measure = round_half_up(measure, 1)) %>%
-  ggplot() +
-  aes(x = period_short, group = sex, y = measure, linetype = sex, shape = sex) +
+  ggplot(aes(x = period_short, group = sex, y = measure, linetype = sex, shape = sex)) +
   geom_line(aes(colour = sex), size = 1) +
   geom_point(aes(colour = sex), size = 2) +
   scale_colour_manual(values = palette) +
@@ -188,7 +187,8 @@ life_exp_trend <- life_exp %>%
   expand_limits(y = 0) +
   labs(
     title = paste0("Average Life Expectancy in ", str_wrap(`LOCALITY`, 40)),
-    x = "Year Groups (5-year aggregates)", y = "Average Life Expectancy (in years)",
+    x = "Year Groups (5-year aggregates)",
+    y = "Average Life Expectancy (in years)",
     caption = "Source: ScotPHO"
   ) +
   theme(plot.margin = unit(c(0, 0, 0, 1), "cm")) +
@@ -727,50 +727,47 @@ lims.ov65 <- case_when(
   max(ltc_types$percent) > 24 ~ 30
 )
 
-ltc_plot_left <-
-  ggplot(filter(ltc_types, age_group == "Under 65"), aes(x = key, y = percent, label = round_half_up(percent, 1))) +
-  geom_point(stat = "identity", colour = palette[1], size = 3) +
-  geom_segment(aes(y = 0, x = key, yend = percent, xend = key), size = 0.4) +
-  labs(x = "", y = "People under 65 with\nthe condition (%)", title = "UNDER 65") +
-  scale_y_continuous(breaks = seq(-100, 0, 2), labels = paste0(as.character(seq(100, 0, -2)))) +
-  expand_limits(y = lims.un65) +
+ltc_plot_left <- ltc_types %>%
+  filter(age_group == "Under 65") %>%
+  ggplot(aes(y = key, x = percent, label = round_half_up(percent, 1))) +
+  geom_point(colour = palette[1], size = 3) +
+  geom_segment(aes(x = 0, y = key, xend = percent, yend = key), size = 0.4) +
+  labs(y = "", x = "People under 65 with\nthe condition (%)", title = "UNDER 65") +
+  scale_x_continuous(breaks = seq(-100, 0, 2), labels = paste0(as.character(seq(100, 0, -2)))) +
+  expand_limits(x = lims.un65) +
   theme_profiles() +
   theme(
     title = element_text(colour = palette[1]),
     plot.margin = unit(c(0.5, 0, 0, 0), "cm"),
-    axis.title.y = element_blank(),
-    axis.text.y = element_blank(),
-    axis.ticks.y = element_blank()
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
   ) +
-  scale_x_discrete(limits = rev(levels(as.factor(ltc_types$key)))) +
-  coord_flip()
-
-ltc_axis <-
-  ltc_types %>%
+  scale_y_discrete(limits = rev(levels(as.factor(ltc_types$key)))) +
+  ltc_axis <- ltc_types %>%
   filter(age_group == "Under 65") %>%
-  ggplot(aes(key, 0, label = key)) +
+  ggplot(aes(y = key, x = 0, label = key)) +
   geom_text() +
-  coord_flip() +
-  scale_x_discrete(limits = rev(levels(as.factor(ltc_types$key)))) +
+  scale_y_discrete(limits = rev(levels(as.factor(ltc_types$key)))) +
   theme_void()
 
-ltc_plot_right <-
-  ggplot(filter(ltc_types, age_group == "65+"), aes(x = key, y = percent, label = round_half_up(percent, 1))) +
-  geom_point(stat = "identity", colour = palette[2], size = 3) +
-  geom_segment(aes(y = 0, x = key, yend = percent, xend = key), size = 0.4) +
-  labs(x = "", y = "People over 65 with\nthe condition (%)", title = "OVER 65") +
-  scale_y_continuous(breaks = seq(0, 100, 2)) +
-  expand_limits(y = lims.ov65) +
+ltc_plot_right <- ltc_types %>%
+  filter(age_group == "65+") %>%
+  ggplot(aes(y = key, x = percent, label = round_half_up(percent, 1))) +
+  geom_point(colour = palette[2], size = 3) +
+  geom_segment(aes(x = 0, y = key, xend = percent, yend = key), size = 0.4) +
+  labs(y = "", x = "People over 65 with\nthe condition (%)", title = "OVER 65") +
+  scale_x_continuous(breaks = seq(0, 100, 2)) +
+  expand_limits(x = lims.ov65) +
   theme_profiles() +
   theme(
     plot.margin = unit(c(0.5, 0, 0, 0), "cm"),
-    axis.title.y = element_blank(),
-    axis.text.y = element_blank(),
-    axis.ticks.y = element_blank(),
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
     title = element_text(colour = palette[2])
   ) +
-  scale_x_discrete(limits = rev(levels(as.factor(ltc_types$key)))) +
-  coord_flip()
+  scale_y_discrete(limits = rev(levels(as.factor(ltc_types$key))))
 
 title <- ggdraw() +
   draw_label(paste0(
