@@ -202,7 +202,7 @@ x <- x + 1
 
 \newline
 
-```{r echo = FALSE}
+```{r echo = FALSE, fig.cap= 'A map of the health and social care partnership including a breakdown on localities with the locations of all the GP practices, care homes, emergency depertments and minor injury units.'}
 knitr::include_graphics(map, rel_path = FALSE)
 
 x <- x + 1
