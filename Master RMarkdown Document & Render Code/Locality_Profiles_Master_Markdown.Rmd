@@ -409,7 +409,7 @@ x <- x + 1
 
 In the financial year `r latest_year_ltc`, in `r LOCALITY` Locality, it is estimated that **`r format_number_for_text(ltc_percent_total_latest)`%** of the population had at least one physical long-term condition (LTC). These include: cardiovascular, neurodegenerative, and respiratory conditions, as well as other organ conditions (namely liver disease and renal failure), arthritis, cancer, diabetes, and epilepsy. *Please note that estimates for this section are based on people who had contact with NHS services - see footnotes for further information and caveats on identifying LTCs.^5^*
 
-```{r echo = FALSE, fig.width = 9, fig.height = 3.5}
+```{r echo = FALSE, fig.width = 9, fig.height = 3.5, fig.cap = "Infographic split by age group showing the number of people out of ten that have at least one LTC. The age groups shown are under 65, 65-74, 75-84, and over 85.", fig.alt = "Infographic split by age group showing the number of people out of ten that have at least one LTC. The age groups shown are under 65, 65-74, 75-84, and over 85."}
 waffles
 ```
 
