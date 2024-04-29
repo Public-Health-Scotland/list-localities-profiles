@@ -16,44 +16,43 @@ options(kableExtra.auto_format = FALSE)
 ## Project file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
-#Line below for testing only
-#LOCALITY <- "Orkney East"
+# Line below for testing only
+# LOCALITY <- "Orkney East"
 
 # Figure and table number objects
-x <- 1 #figures
-y <- 1 #tables
+x <- 1 # figures
+y <- 1 # tables
 
-#demographics
+# demographics
 # source(paste0(lp_path, "Demographics/Scripts/1. Demographics - Population.R"))
 # source(paste0(lp_path, "Demographics/Scripts/2. Demographics - SIMD.R"))
-# 
+#
 # #housing
 # source(paste0(lp_path, "Households/Scripts/Households Code.R"))
-# 
+#
 # #services
 # source(paste0(lp_path, "Services/Scripts/2. Services data manipulation & table.R"))
 # #services map (uncomment this when testing out individual localities)
 # #source(paste0(lp_path, "Services/Scripts/3. Service HSCP map.R"))
-# 
+#
 # #general health
 # source(paste0(lp_path, "General Health/Scripts/3. General Health Outputs.R"))
-# 
+#
 # #lifestyle & risk factors
 # source(paste0(lp_path, "Lifestyle & Risk Factors/Scripts/2. Lifestyle & Risk Factors Outputs.R"))
-# 
+#
 # #unscheduled care
 # source(paste0(lp_path, "Unscheduled Care/Scripts/2. Unscheduled Care outputs.R"))
-# 
+#
 # #appendices
 # source(paste0(lp_path, "Master RMarkdown Document & Render Code/Tables for Appendix.R"))
 
-library(tidyverse) 
+library(tidyverse)
 library(knitr)
 library(gridExtra)
 library(grid)
 
-#detach(package:tidylog, unload=TRUE)
-
+# detach(package:tidylog, unload=TRUE)
 ```
 
 #####Page break
@@ -95,10 +94,9 @@ In `r pop_max_year`, the total population of `r HSCP` HSCP was `r total_populati
 \newline
 
 ```{r echo = FALSE, fig.width=6, fig.height= 3, warning = F}
-
 pop_pyramid
 
-x <- x +1
+x <- x + 1
 ```
 
 <!-- Population over time -->
@@ -114,7 +112,7 @@ Figure `r x` shows the historical population of `r HSCP`, along with the NRS pop
 ```{r echo = FALSE, fig.width= 7, fig.height= 3, warning = F}
 pop_ts_plot
 
-x <- x +1
+x <- x + 1
 ```
 
 \newline
@@ -127,7 +125,7 @@ Figure `r x` shows how the population structure has changed between `r pop_min_y
 ```{r echo = FALSE, fig.width= 7, fig.height= 3.5, warning = F}
 hist_pop_change
 
-x <- x +1
+x <- x + 1
 ```
 
 ##### Page break
@@ -155,11 +153,14 @@ Table `r y` details the percentage of the locality's 2016 population living in t
 \newline
 
 ```{r echo = FALSE}
-knitr::kable(simd_diff_overall, 
-             col.names = c("**Quintile**", "**Percent of 2016 Population (SIMD 2016 Ranking)**",
-                           "**Percent of 2021 Population (SIMD 2020 Ranking)**", "**Difference**"),
-             align = c('l','r','r','r'), 
-             format = "markdown")
+knitr::kable(simd_diff_overall,
+  col.names = c(
+    "**Quintile**", "**Percent of 2016 Population (SIMD 2016 Ranking)**",
+    "**Percent of 2021 Population (SIMD 2020 Ranking)**", "**Difference**"
+  ),
+  align = c("l", "r", "r", "r"),
+  format = "markdown"
+)
 
 y <- y + 1
 ```
@@ -189,7 +190,7 @@ Figure `r x` presents a comparison between the 2016 SIMD ranking applied to 2016
 ```{r echo = FALSE, fig.width= 7.5, fig.height= 7, warning = F}
 simd_diff_plot
 
-x <- x+1
+x <- x + 1
 ```
 
 ##### Page break
@@ -263,10 +264,13 @@ There were `r n_second_homes` dwellings classed as a second home in `r max_year_
 \newline
 										
 ```{r echo = FALSE}
-knitr::kable(house_table, 
-             col.names = c("**Year**", "**Total Dwellings**", "**Occupied Dwellings**", 
-                           "**Vacant Dwellings**", "**Single Occupant Tax Discount**", "**Council Tax Exempt Dwellings**", "**Second Homes**"),
-             align = c('l','r','r','r','r','r','r'), format = "markdown")
+knitr::kable(house_table,
+  col.names = c(
+    "**Year**", "**Total Dwellings**", "**Occupied Dwellings**",
+    "**Vacant Dwellings**", "**Single Occupant Tax Discount**", "**Council Tax Exempt Dwellings**", "**Second Homes**"
+  ),
+  align = c("l", "r", "r", "r", "r", "r", "r"), format = "markdown"
+)
 
 y <- y + 1
 ```
@@ -281,17 +285,20 @@ The proportion of households within each council tax band are displayed in the c
 ```{r echo = FALSE, fig.width= 7, fig.height= 2, warning = F}
 ctb_plot
 
-x <- x+1
+x <- x + 1
 ```
 
 ####Table `r y`: Percentage of households by council tax band for `r HSCP` in `r max_year_housing`.
 \newline
 
 ```{r echo = FALSE}
-knitr::kable(ctb_table, 
-             col.names = c("**Tax Band**", "**A**","**B**", "**C**",
-                           "**D**","**E**", "**F**","**G**","**H**"),
-             align = c('l',rep('r', 8)), format = "markdown")
+knitr::kable(ctb_table,
+  col.names = c(
+    "**Tax Band**", "**A**", "**B**", "**C**",
+    "**D**", "**E**", "**F**", "**G**", "**H**"
+  ),
+  align = c("l", rep("r", 8)), format = "markdown"
+)
 
 y <- y + 1
 ```
@@ -308,20 +315,17 @@ Source: Scottish Assessors’ Association (via NRS)
 For the most recent time period available^3^, `r HSCP` HSCP had:
 
 ```{r echo=FALSE}
-
-life_exp_text <-  if(is.na(avg_life_exp_latest_male)) {
-"No data available for life expectancy."
+life_exp_text <- if (is.na(avg_life_exp_latest_male)) {
+  "No data available for life expectancy."
 } else {
-    paste0("An average life expectancy of **", avg_life_exp_latest_male,"** years for males and **", avg_life_exp_latest_fem,"** years for females, compared to the national average of ", scot_life_exp_male, " and ", scot_life_exp_fem, " years of age respectively.")
+  paste0("An average life expectancy of **", avg_life_exp_latest_male, "** years for males and **", avg_life_exp_latest_fem, "** years for females, compared to the national average of ", scot_life_exp_male, " and ", scot_life_exp_fem, " years of age respectively.")
 }
 
-life_exp_text2 <- if(is.na(avg_life_exp_latest_male)) {
-"No data available for life expectancy at HSCP level."
+life_exp_text2 <- if (is.na(avg_life_exp_latest_male)) {
+  "No data available for life expectancy at HSCP level."
 } else {
-    paste0("In the latest time period available from ", latest_period_life_exp_loc," (5-year aggregate), the average life expectancy in ", HSCP," locality was ", avg_life_exp_latest_male," years of age for men, and ",avg_life_exp_latest_fem, " years of age for women. A 10-year time trend can be seen in figure ",x,".")
+  paste0("In the latest time period available from ", latest_period_life_exp_loc, " (5-year aggregate), the average life expectancy in ", HSCP, " locality was ", avg_life_exp_latest_male, " years of age for men, and ", avg_life_exp_latest_fem, " years of age for women. A 10-year time trend can be seen in figure ", x, ".")
 }
-
-
 ```
 
 + `r life_exp_text`
@@ -340,10 +344,13 @@ life_exp_text2 <- if(is.na(avg_life_exp_latest_male)) {
 \newline
 
 ```{r echo=FALSE, fig.width = 6, fig.height= 3.5}
-if(HSCP %in% check_missing_data_scotpho(life_exp)$area_name){print("No data available for this HSCP")} else {life_exp_trend}
-  
-x <- x + 1
+if (HSCP %in% check_missing_data_scotpho(life_exp)$area_name) {
+  print("No data available for this HSCP")
+} else {
+  life_exp_trend
+}
 
+x <- x + 1
 ```
 
 
@@ -896,7 +903,5 @@ knitr::kable(dates_extract, col.names = c("**Section**", "**Indicator**", "**Dat
 
 
 ```{r echo = FALSE, fig.width= 7, fig.height= 10, warning = F}
-
 knitr::kable(ppa_def, format = "markdown")
-
 ```
