@@ -6,277 +6,320 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo=TRUE, comment = NA)
+knitr::opts_chunk$set(echo = TRUE, comment = NA)
 
 
-#Lines below for testing only:
-#LOCALITY <- "Falkirk West"
-#LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
-#LOCALITY <- "Mid-Argyll, Kintyre and Islay"
-#LOCALITY <- "City of Dunfermline"
-#LOCALITY <- "Barra"
-#LOCALITY <- "Whalsay and Skerries"
-#HSCP <- 'Moray' 
+# Lines below for testing only:
+# LOCALITY <- "Falkirk West"
+# LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
+# LOCALITY <- "Mid-Argyll, Kintyre and Islay"
+# LOCALITY <- "City of Dunfermline"
+# LOCALITY <- "Barra"
+# LOCALITY <- "Whalsay and Skerries"
+# HSCP <- "Moray"
 ## Project file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 # #demographics
 # source(paste0(lp_path, "Demographics/Scripts/1. Demographics - Population.R"))
 # source(paste0(lp_path, "Demographics/Scripts/2. Demographics - SIMD.R"))
-# 
+#
 # #housing
 # source(paste0(lp_path, "Households/Scripts/Households Code.R"))
-# 
+#
 # #general health
 # source(paste0(lp_path, "General Health/Scripts/3. General Health Outputs.R"))
-# 
+#
 # #lifestyle & risk factors
 # source(paste0(lp_path, "Lifestyle & Risk Factors/Scripts/2. Lifestyle & Risk Factors Outputs.R"))
-# 
+#
 # #unscheduled care
 # source(paste0(lp_path, "Unscheduled Care/Scripts/2. Unscheduled Care outputs.R"))
 
-library(tidyverse) 
+library(tidyverse)
 library(knitr)
 library(gridExtra)
 library(grid)
 
-#detach(package:tidylog, unload=TRUE)
-
+# detach(package:tidylog, unload=TRUE)
 ```
 
 ## Summary Table (1)
 
 ```{r echo=FALSE, fig.width = 11.5, fig.height= 6}
+## The summary table is built using table grob, which generates a picture of a table and allows for
+# more personalised formatting than regular table functions.
 
-##The summary table is built using table grob, which generates a picture of a table and allows for 
-  #more personalised formatting than regular table functions.
+## The table is built as follows:
+# Column headers and formatting are made into a table
+# The formatting for each column is defined, this includes text size and font, colours for headers and colours for rows.
+# Then, each section is built as its own table, to be merged with other sections once these are ready.
+# Within each section, tables are built column by column, allowing us to assign predefined formats to each column,
+# and then these are merged into a table for that section.
 
-##The table is built as follows:
-#Column headers and formatting are made into a table
-#The formatting for each column is defined, this includes text size and font, colours for headers and colours for rows. 
-#Then, each section is built as its own table, to be merged with other sections once these are ready.
-#Within each section, tables are built column by column, allowing us to assign predefined formats to each column, 
-  #and then these are merged into a table for that section.
-
-##Detailed guidance can be found at the following lines:
-  #Lines 157 to 203 - The chunk which builds the demographics table, also some guidance on how to remove unwanted indicators
-  #Lines 251 to 257 - How to combine the sections and draw the final table
+## Detailed guidance can be found at the following lines:
+# Lines 157 to 203 - The chunk which builds the demographics table, also some guidance on how to remove unwanted indicators
+# Lines 251 to 257 - How to combine the sections and draw the final table
 
 
 ### 1. TABLE HEADERS -----------------------------------------------------
 
-#Set locality name object (with automatic wrapping)
-#loc_name <- paste0(LOCALITY, "\nLocality") %>% 
- # strwrap(width = case_when(n_loc < 4 ~ 20, n_loc == 4 ~ 15, n_loc > 4 ~ 8), simplify = FALSE)
-#loc_name <- sapply(loc_name, paste, collapse = "\n")
+# Set locality name object (with automatic wrapping)
+# loc_name <- paste0(LOCALITY, "\nLocality") %>%
+# strwrap(width = case_when(n_loc < 4 ~ 20, n_loc == 4 ~ 15, n_loc > 4 ~ 8), simplify = FALSE)
+# loc_name <- sapply(loc_name, paste, collapse = "\n")
 
-#Set other localities df
-otherloc_names <- paste0(other_locs$hscp_locality, "\nLocality") %>% 
+# Set other localities df
+otherloc_names <- paste0(other_locs$hscp_locality, "\nLocality") %>%
   strwrap(width = case_when(n_loc < 4 ~ 20, n_loc == 4 ~ 15, n_loc > 4 ~ 8), simplify = FALSE)
 otherloc_names <- sapply(otherloc_names, paste, collapse = "\n")
-otherloc_names <- data.frame(loc_number = c(1:n_loc), otherloc_names) %>% 
+otherloc_names <- data.frame(loc_number = c(1:n_loc), otherloc_names) %>%
   spread(key = loc_number, value = otherloc_names)
 
-#Set HSCP name object
-hscp_name <- paste0(HSCP, "\nHSCP") %>% 
+# Set HSCP name object
+hscp_name <- paste0(HSCP, "\nHSCP") %>%
   strwrap(width = if_else(n_loc < 3, 30, 12), simplify = FALSE)
 hscp_name <- sapply(hscp_name, paste, collapse = "\n")
 
 
-#set different text sizes depending on number of localities
-sizes <- case_when(n_loc < 4 ~ 11,
-                   n_loc == 4 ~ 10.5,
-                   n_loc == 5  ~ 10,
-                   between(n_loc, 6, 7) ~ 9.5,
-                   n_loc == 8 ~ 9.2,
-                   n_loc == 9 ~ 8.5)
+# set different text sizes depending on number of localities
+sizes <- case_when(
+  n_loc < 4 ~ 11,
+  n_loc == 4 ~ 10.5,
+  n_loc == 5 ~ 10,
+  between(n_loc, 6, 7) ~ 9.5,
+  n_loc == 8 ~ 9.2,
+  n_loc == 9 ~ 8.5
+)
 
 sizes <- if_else(HSCP == "Clackmannanshire & Stirling", 10, sizes)
 sizes <- if_else(HSCP == "South Ayrshire", 9, sizes)
 
-col_indicator <- tableGrob("Indicators", theme=ttheme_default(core=list(bg_params = list(fill = "grey50"), 
-                                                             fg_params=list(col = "white", fontface=2, fontsize = sizes))))
+col_indicator <- tableGrob("Indicators", theme = ttheme_default(core = list(
+  bg_params = list(fill = "grey50"),
+  fg_params = list(col = "white", fontface = 2, fontsize = sizes)
+)))
 
-col_datatype <- tableGrob("Data\nType", theme=ttheme_default(core=list(bg_params = list(fill = "grey50"), 
-                                                           fg_params=list(col = "white", fontface=2, fontsize = sizes))))
+col_datatype <- tableGrob("Data\nType", theme = ttheme_default(core = list(
+  bg_params = list(fill = "grey50"),
+  fg_params = list(col = "white", fontface = 2, fontsize = sizes)
+)))
 
-col_time <- tableGrob("Time\nPeriod", theme=ttheme_default(core=list(bg_params = list(fill = "grey50"), 
-                                                           fg_params=list(col = "white", fontface=2, fontsize = sizes))))
+col_time <- tableGrob("Time\nPeriod", theme = ttheme_default(core = list(
+  bg_params = list(fill = "grey50"),
+  fg_params = list(col = "white", fontface = 2, fontsize = sizes)
+)))
 
-#col_loc <- tableGrob(loc_name, theme=ttheme_default(core=list(bg_params = list(fill = "#3F3685"), 
-                                                           #  fg_params=list(col = "white", fontface=2, fontsize = sizes))))
+# col_loc <- tableGrob(loc_name, theme=ttheme_default(core=list(bg_params = list(fill = "#3F3685"),
+#  fg_params=list(col = "white", fontface=2, fontsize = sizes))))
 
-col_otherlocs <- tableGrob(otherloc_names, rows = NULL, cols = NULL, 
-                       theme=ttheme_default(core=list(bg_params = list(fill = "#9B4393"), 
-                                                      fg_params=list(col = "white", fontface=2, fontsize = sizes))))
+col_otherlocs <- tableGrob(otherloc_names,
+  rows = NULL, cols = NULL,
+  theme = ttheme_default(core = list(
+    bg_params = list(fill = "#9B4393"),
+    fg_params = list(col = "white", fontface = 2, fontsize = sizes)
+  ))
+)
 
-col_hscp <- tableGrob(hscp_name,theme=ttheme_default(core=list(bg_params = list(fill = "#0078D4"), 
-                                                             fg_params=list(col = "white", fontface=2, fontsize = sizes))))
+col_hscp <- tableGrob(hscp_name, theme = ttheme_default(core = list(
+  bg_params = list(fill = "#0078D4"),
+  fg_params = list(col = "white", fontface = 2, fontsize = sizes)
+)))
 
-col_scot <- tableGrob("Scotland", theme=ttheme_default(core=list(bg_params = list(fill = "#83BB26"), 
-                                                              fg_params=list(col = "white", fontface=2, fontsize = sizes))))
+col_scot <- tableGrob("Scotland", theme = ttheme_default(core = list(
+  bg_params = list(fill = "#83BB26"),
+  fg_params = list(col = "white", fontface = 2, fontsize = sizes)
+)))
 
 
 Headings <- gtable_combine(col_indicator, col_datatype, col_time, col_otherlocs, col_hscp, col_scot)
-#grid.draw(LP.headings)
-
+# grid.draw(LP.headings)
 ```
 
 ```{r echo=FALSE, fig.width = 11.5, fig.height= 6}
-
 ### 2. TABLE BODY -----------------------------------------------------
 
 ### Set themes for each column
 
-theme_grey <- ttheme_default(core=list(bg_params = list(fill="grey90"),
-                                       fg_params = list(fontsize = sizes)),
-                             colhead=list(bg_params = list(fill = "white"), 
-                                          fg_params=list(fontface=2, fontsize = sizes)))
+theme_grey <- ttheme_default(
+  core = list(
+    bg_params = list(fill = "grey90"),
+    fg_params = list(fontsize = sizes)
+  ),
+  colhead = list(
+    bg_params = list(fill = "white"),
+    fg_params = list(fontface = 2, fontsize = sizes)
+  )
+)
 
-#theme_loc <- ttheme_default(core=list(bg_params = list(fill = "#C5C3DA"),
-                                     #  fg_params = list(fontsize = sizes)),
-                            # colhead=list(bg_params = list(fill = "white"), 
-                                        #  fg_params=list(fontface=2,fontsize = sizes)))
+# theme_loc <- ttheme_default(core=list(bg_params = list(fill = "#C5C3DA"),
+#  fg_params = list(fontsize = sizes)),
+# colhead=list(bg_params = list(fill = "white"),
+#  fg_params=list(fontface=2,fontsize = sizes)))
 
-theme_hscp <- ttheme_default(core=list(bg_params = list(fill = "#B3D7F2"),
-                                       fg_params = list(fontsize = sizes)),
-                             colhead=list(bg_params = list(fill = "white"), 
-                                          fg_params=list(fontface=2, fontsize = sizes)))
+theme_hscp <- ttheme_default(
+  core = list(
+    bg_params = list(fill = "#B3D7F2"),
+    fg_params = list(fontsize = sizes)
+  ),
+  colhead = list(
+    bg_params = list(fill = "white"),
+    fg_params = list(fontface = 2, fontsize = sizes)
+  )
+)
 
-theme_scot <- ttheme_default(core=list(bg_params = list(fill = "#DAEBBE"),
-                                       fg_params = list(fontsize = sizes)),
-                             colhead=list(bg_params = list(fill = "white"), 
-                                          fg_params=list(fontface=2,fontsize = sizes)))
+theme_scot <- ttheme_default(
+  core = list(
+    bg_params = list(fill = "#DAEBBE"),
+    fg_params = list(fontsize = sizes)
+  ),
+  colhead = list(
+    bg_params = list(fill = "white"),
+    fg_params = list(fontface = 2, fontsize = sizes)
+  )
+)
 
-theme_otherlocs <- ttheme_default(core=list(bg_params = list(fill = "#E1C7DF"),
-                                       fg_params = list(fontsize = sizes)),
-                                  colhead=list(bg_params = list(fill = "white"), 
-                                               fg_params=list(fontface=2, fontsize = sizes)))
+theme_otherlocs <- ttheme_default(
+  core = list(
+    bg_params = list(fill = "#E1C7DF"),
+    fg_params = list(fontsize = sizes)
+  ),
+  colhead = list(
+    bg_params = list(fill = "white"),
+    fg_params = list(fontface = 2, fontsize = sizes)
+  )
+)
 
-##Each section is built seperately as its own table and then merged.
+## Each section is built seperately as its own table and then merged.
 
 ## 2a. Demographics ----
 
-##Build each column of the summary table one at a time: indicators, followed by data type, time period, values for the locality, values for the other localities in the HSCP, values for the HSCP overall, and values for Scotland.
-  # NOTE: WITHIN EACH COLUMN, THE ROWS MUST ALWAYS BE INPUT IN THE SAME ORDER 
+## Build each column of the summary table one at a time: indicators, followed by data type, time period, values for the locality, values for the other localities in the HSCP, values for the HSCP overall, and values for Scotland.
+# NOTE: WITHIN EACH COLUMN, THE ROWS MUST ALWAYS BE INPUT IN THE SAME ORDER
 
-##List the indicators in the order that they will appear in the table
-indicators <- c("Total population", 
-                "Gender ratio male to female", 
-                "Population over 65", 
-                "Population in least deprived SIMD quintile", 
-                "Population in most deprived SIMD quintile")
-#List what data type they are
+## List the indicators in the order that they will appear in the table
+indicators <- c(
+  "Total population",
+  "Gender ratio male to female",
+  "Population over 65",
+  "Population in least deprived SIMD quintile",
+  "Population in most deprived SIMD quintile"
+)
+# List what data type they are
 datatype <- c("count", "ratio", "%", "%", "%")
-#Enter the time periods available
+# Enter the time periods available
 time <- c(pop_max_year, pop_max_year, pop_max_year, "2020", "2020")
 
-#Values
-#Each value for an indicator is stored into an object in the relevant R script for that section
-#Then they are combined into vectors in the same order as listed above, and be added to the table
-#loc_values <- c(total_population, paste0("1:", gender_ratio), over65, perc_top_quintile, perc_bottom_quintile)
+# Values
+# Each value for an indicator is stored into an object in the relevant R script for that section
+# Then they are combined into vectors in the same order as listed above, and be added to the table
+# loc_values <- c(total_population, paste0("1:", gender_ratio), over65, perc_top_quintile, perc_bottom_quintile)
 other_loc_values <- rbind(other_locs_total_pop, other_locs_gender_ratio, other_locs_over65, other_locs_simd)
 hscp_values <- c(hscp_total_pop, hscp_gender_ratio, hscp_over65, hscp_simd_top, hscp_simd_bottom)
 scot_values <- c(scot_total_pop, scot_gender_ratio, scot_over65, 20, 20)
 
- #For other localities, the values are stored in dataframes with a value for each other locality in the HSCP (in alphabetical order), and combined using rbind() instead of c().
+# For other localities, the values are stored in dataframes with a value for each other locality in the HSCP (in alphabetical order), and combined using rbind() instead of c().
 
-##How to remove an indicator - all you have to do is remove the indicator name from the c() list of indicators, and remove their corresponding datatype and time in their respective lists, and lastly, remove the relevant object from loc_values, hscp_values, scot_values, and other_loc_values
-##Example:
-  #If you want to remove the indicator for over 65 population
-  #Remove "Population over 65" from indicators
-  #Remove one of the "%" from datatype
-  #Remove one of the pop_max_year objects
-  #Remove over65 from loc_values,  hscp_over65 from hscp_values, scot_over65 from scot_values, and lastly remove other_locs_over65 from other_loc_values
+## How to remove an indicator - all you have to do is remove the indicator name from the c() list of indicators, and remove their corresponding datatype and time in their respective lists, and lastly, remove the relevant object from loc_values, hscp_values, scot_values, and other_loc_values
+## Example:
+# If you want to remove the indicator for over 65 population
+# Remove "Population over 65" from indicators
+# Remove one of the "%" from datatype
+# Remove one of the pop_max_year objects
+# Remove over65 from loc_values,  hscp_over65 from hscp_values, scot_over65 from scot_values, and lastly remove other_locs_over65 from other_loc_values
 
-col_indicator <- tableGrob(indicators, cols = "Demographics", theme= theme_grey)
-col_datatype <- tableGrob(datatype, cols = "", theme= theme_grey)
-col_time <- tableGrob(time, cols = "", theme= theme_grey)
-#col_loc <- tableGrob(loc_values, cols = "", theme= theme_loc)
-col_hscp <- tableGrob(hscp_values, cols = "", theme=theme_hscp)
-col_scot <- tableGrob(scot_values, cols = "", theme= theme_scot)
-col_otherlocs <- tableGrob(other_loc_values, rows = NULL, cols = rep("", n_loc-1), theme= theme_otherlocs)
-#In each column above the title is left blank as "", except for the indicator column, as this is where the title for the section is inserted.
+col_indicator <- tableGrob(indicators, cols = "Demographics", theme = theme_grey)
+col_datatype <- tableGrob(datatype, cols = "", theme = theme_grey)
+col_time <- tableGrob(time, cols = "", theme = theme_grey)
+# col_loc <- tableGrob(loc_values, cols = "", theme= theme_loc)
+col_hscp <- tableGrob(hscp_values, cols = "", theme = theme_hscp)
+col_scot <- tableGrob(scot_values, cols = "", theme = theme_scot)
+col_otherlocs <- tableGrob(other_loc_values, rows = NULL, cols = rep("", n_loc - 1), theme = theme_otherlocs)
+# In each column above the title is left blank as "", except for the indicator column, as this is where the title for the section is inserted.
 
-#Below combines all the columns into one table
+# Below combines all the columns into one table
 Demographics <- gtable_combine(col_indicator, col_datatype, col_time, col_otherlocs, col_hscp, col_scot)
-#Use the line below to get a preview of what this will look like, make sure this is commented out when you run the table.
-#grid.draw(Demographics)
+# Use the line below to get a preview of what this will look like, make sure this is commented out when you run the table.
+# grid.draw(Demographics)
 
 
 ## 2b. Housing ----
 
-indicators <- c("Total number of households", 
-                "Households with single occupant tax discount", 
-                "Households in Council Tax Band A-C", 
-                "Households in Council Tax Band F-H")
+indicators <- c(
+  "Total number of households",
+  "Households with single occupant tax discount",
+  "Households in Council Tax Band A-C",
+  "Households in Council Tax Band F-H"
+)
 
 datatype <- c("count", "%", "%", "%")
 
 time <- c(max_year_housing, max_year_housing, max_year_housing, max_year_housing)
 
-#Values
-#loc_values <- c(n_houses, perc_single_discount, perc_houses_AC, perc_houses_FH)
+# Values
+# loc_values <- c(n_houses, perc_single_discount, perc_houses_AC, perc_houses_FH)
 other_loc_values <- rbind(other_locs_n_houses, other_locs_perc_discount, other_locs_perc_housesAC, other_locs_perc_housesFH)
-hscp_values <-  c(hscp_n_houses, hscp_perc_discount, hscp_perc_housesAC, hscp_perc_housesFH)
+hscp_values <- c(hscp_n_houses, hscp_perc_discount, hscp_perc_housesAC, hscp_perc_housesFH)
 scot_values <- c(scot_n_houses, scot_perc_discount, scot_perc_housesAC, scot_perc_housesFH)
 
-col_indicator <- tableGrob(indicators, cols = "Housing", theme= theme_grey)
-col_datatype <- tableGrob(datatype, cols = "", theme= theme_grey)
-col_time <- tableGrob(time, cols = "", theme= theme_grey)
-#col_loc <- tableGrob(loc_values, cols = "", theme= theme_loc)
-col_hscp <- tableGrob(hscp_values, cols = "", theme=theme_hscp)
-col_scot <- tableGrob(scot_values, cols = "", theme= theme_scot)
-col_otherlocs <- tableGrob(other_loc_values, rows = NULL, cols = rep("", n_loc-1), theme= theme_otherlocs)
+col_indicator <- tableGrob(indicators, cols = "Housing", theme = theme_grey)
+col_datatype <- tableGrob(datatype, cols = "", theme = theme_grey)
+col_time <- tableGrob(time, cols = "", theme = theme_grey)
+# col_loc <- tableGrob(loc_values, cols = "", theme= theme_loc)
+col_hscp <- tableGrob(hscp_values, cols = "", theme = theme_hscp)
+col_scot <- tableGrob(scot_values, cols = "", theme = theme_scot)
+col_otherlocs <- tableGrob(other_loc_values, rows = NULL, cols = rep("", n_loc - 1), theme = theme_otherlocs)
 
 Housing <- gtable_combine(col_indicator, col_datatype, col_time, col_otherlocs, col_hscp, col_scot)
 
 
 ## 2c. General Health ----
 
-indicators <- c("Male average life expectancy in years",
-                "Female average life expectancy in years",
-                "Deaths aged 15-44 per 100,000",
-                "Population with long-term condition",
-                "Cancer registrations per 100,000",
-                "Anxiety, depression & psychosis prescriptions")
+indicators <- c(
+  "Male average life expectancy in years",
+  "Female average life expectancy in years",
+  "Deaths aged 15-44 per 100,000",
+  "Population with long-term condition",
+  "Cancer registrations per 100,000",
+  "Anxiety, depression & psychosis prescriptions"
+)
 
 datatype <- c("mean", "mean", "rate", "%", "rate", "%")
 
-time <- c(paste0(latest_period_life_exp_loc, "*"),
-          paste0(latest_period_life_exp_loc, "*"),
-          latest_period_deaths_15_44,
-          latest_year_ltc,
-          latest_period_cancer_reg,
-          latest_period_adp_presc)
+time <- c(
+  paste0(latest_period_life_exp_loc, "*"),
+  paste0(latest_period_life_exp_loc, "*"),
+  latest_period_deaths_15_44,
+  latest_year_ltc,
+  latest_period_cancer_reg,
+  latest_period_adp_presc
+)
 
-#Values
+# Values
 
-#loc_values <- round_half_up(c(avg_life_exp_latest_male, avg_life_exp_latest_fem, deaths_15_44_latest, ltc_percent_total_latest, cancer_reg_rate_latest, adp_presc_latest), 1)
+# loc_values <- round_half_up(c(avg_life_exp_latest_male, avg_life_exp_latest_fem, deaths_15_44_latest, ltc_percent_total_latest, cancer_reg_rate_latest, adp_presc_latest), 1)
 other_loc_values <- rbind(other_locs_life_exp_male, other_locs_life_exp_fem, other_locs_deaths_15_44, other_locs_ltc, other_locs_cancer, other_locs_adp)
-hscp_values<- c(hscp_life_exp_male, hscp_life_exp_fem, hscp_deaths_15_44, hscp_ltc, hscp_cancer, hscp_adp)
+hscp_values <- c(hscp_life_exp_male, hscp_life_exp_fem, hscp_deaths_15_44, hscp_ltc, hscp_cancer, hscp_adp)
 scot_values <- c(scot_life_exp_male, scot_life_exp_fem, scot_deaths_15_44, scot_ltc, scot_cancer, scot_adp_presc)
 
 
 col_indicator <- tableGrob(indicators, cols = "General Health", theme = theme_grey)
-col_datatype <- tableGrob(datatype, cols = "", theme= theme_grey)
-col_time <- tableGrob(time, cols = "", theme= theme_grey)
-#col_loc <- tableGrob(loc_values, cols = "", theme= theme_loc)
-col_hscp <- tableGrob(hscp_values, cols = "", theme=theme_hscp)
-col_scot <- tableGrob(scot_values, cols = "", theme= theme_scot)
-col_otherlocs <- tableGrob(other_loc_values, rows = NULL, cols = rep("", n_loc-1), theme= theme_otherlocs)
+col_datatype <- tableGrob(datatype, cols = "", theme = theme_grey)
+col_time <- tableGrob(time, cols = "", theme = theme_grey)
+# col_loc <- tableGrob(loc_values, cols = "", theme= theme_loc)
+col_hscp <- tableGrob(hscp_values, cols = "", theme = theme_hscp)
+col_scot <- tableGrob(scot_values, cols = "", theme = theme_scot)
+col_otherlocs <- tableGrob(other_loc_values, rows = NULL, cols = rep("", n_loc - 1), theme = theme_otherlocs)
 
 General_Health <- gtable_combine(col_indicator, col_datatype, col_time, col_otherlocs, col_hscp, col_scot)
 
-##Once you have your tables built for each section, you can combine them along with the column headers to create the final summary table
+## Once you have your tables built for each section, you can combine them along with the column headers to create the final summary table
 
-##Combine tables with headers
+## Combine tables with headers
 Summary_Table1 <- gtable_rbind(Headings, Demographics, Housing, General_Health)
 
-#The line below inserts the table you just created above into the Word document
+# The line below inserts the table you just created above into the Word document
 grid.draw(Summary_Table1)
-
 ```
 
 ######*At HSCP and Scotland level, the time period is a 3-year aggregate (`r latest_period_life_exp_otherareas`)
@@ -286,93 +329,99 @@ grid.draw(Summary_Table1)
 ## Summary Table (2)
 
 ```{r echo=FALSE, fig.width = 11.5, fig.height= 6}
-
 ## 2d. Lifestyle & Risk Factors ----
 
-indicators <- c("Alcohol-related hospital admissions per 100,000", 
-                "Alcohol-specific mortality per 100,000", 
-                "Drug-related hospital admissions per 100,000",
-                "Bowel screening uptake")
+indicators <- c(
+  "Alcohol-related hospital admissions per 100,000",
+  "Alcohol-specific mortality per 100,000",
+  "Drug-related hospital admissions per 100,000",
+  "Bowel screening uptake"
+)
 
 datatype <- c("rate", "rate", "rate", "%")
 
-time <- c(latest_period_alcohol_hosp, 
-          latest_period_alcohol_deaths, 
-          str_wrap(latest_period_drug_hosp, 9), 
-          latest_period_bowel_screening)
+time <- c(
+  latest_period_alcohol_hosp,
+  latest_period_alcohol_deaths,
+  str_wrap(latest_period_drug_hosp, 9),
+  latest_period_bowel_screening
+)
 
-#Values
-#loc_values <- round_half_up(c(alcohol_hosp_latest, alcohol_deaths_latest, drug_hosp_latest, bowel_screening_latest), 1)
+# Values
+# loc_values <- round_half_up(c(alcohol_hosp_latest, alcohol_deaths_latest, drug_hosp_latest, bowel_screening_latest), 1)
 other_loc_values <- bind_rows(other_locs_alcohol_hosp, other_locs_alcohol_deaths, other_locs_drug_hosp, other_locs_bowel_screening)
-hscp_values<- c(hscp_alcohol_hosp, hscp_alcohol_deaths, hscp_drug_hosp, hscp_bowel_screening)
+hscp_values <- c(hscp_alcohol_hosp, hscp_alcohol_deaths, hscp_drug_hosp, hscp_bowel_screening)
 scot_values <- c(scot_alcohol_hosp, scot_alcohol_deaths, scot_drug_hosp, scot_bowel_screening)
 
 
-col_indicator <- tableGrob(indicators, cols = "Lifestyle & Risk Factors", theme=theme_grey)
+col_indicator <- tableGrob(indicators, cols = "Lifestyle & Risk Factors", theme = theme_grey)
 col_datatype <- tableGrob(datatype, cols = "", theme = theme_grey)
-col_time <- tableGrob(time, cols = "", theme= theme_grey)
-#col_loc <- tableGrob(loc_values, cols = "", theme = theme_loc)
+col_time <- tableGrob(time, cols = "", theme = theme_grey)
+# col_loc <- tableGrob(loc_values, cols = "", theme = theme_loc)
 col_hscp <- tableGrob(hscp_values, cols = "", theme = theme_hscp)
 col_scot <- tableGrob(scot_values, cols = "", theme = theme_scot)
-col_otherlocs <- tableGrob(other_loc_values, rows = NULL, cols = rep("", n_loc-1), theme = theme_otherlocs)
+col_otherlocs <- tableGrob(other_loc_values, rows = NULL, cols = rep("", n_loc - 1), theme = theme_otherlocs)
 
 Lifestyle_Risks <- gtable_combine(col_indicator, col_datatype, col_time, col_otherlocs, col_hscp, col_scot)
 
 
 ## 2e. Unscheduled Care ----
 
-indicators <- c("Emergency admissions per 100,000", 
-                "Unscheduled bed days per 100,000", 
-                "A&E attendances per 100,000",  
-                "Delayed discharges (65+) per 100,000",  
-                "Potentially Preventable Admissions per 100,000")
+indicators <- c(
+  "Emergency admissions per 100,000",
+  "Unscheduled bed days per 100,000",
+  "A&E attendances per 100,000",
+  "Delayed discharges (65+) per 100,000",
+  "Potentially Preventable Admissions per 100,000"
+)
 datatype <- c("rate", "rate", "rate", "rate", "rate")
 time <- c(max_fy, max_fy, max_fy, max_fy, max_fy)
 
-#Values
-#loc_values <- c(latest_emergency_adm_loc, latest_bed_days_loc, latest_ae_att_loc, latest_dd_loc, latest_ppa_loc) 
+# Values
+# loc_values <- c(latest_emergency_adm_loc, latest_bed_days_loc, latest_ae_att_loc, latest_dd_loc, latest_ppa_loc)
 other_loc_values <- bind_rows(other_loc_emergency_adm, other_loc_bed_days, other_loc_ae_att, other_loc_dd, other_loc_ppa)
-hscp_values<- c(hscp_emergency_adm, hscp_bed_days, hscp_ae_att, hscp_dd, hscp_ppa) 
-scot_values <- c(scot_emergency_adm, scot_bed_days, scot_ae_att, scot_dd, scot_ppa) 
+hscp_values <- c(hscp_emergency_adm, hscp_bed_days, hscp_ae_att, hscp_dd, hscp_ppa)
+scot_values <- c(scot_emergency_adm, scot_bed_days, scot_ae_att, scot_dd, scot_ppa)
 
-col_indicator <- tableGrob(indicators, cols = "Hospital & Community Care", theme=theme_grey)
+col_indicator <- tableGrob(indicators, cols = "Hospital & Community Care", theme = theme_grey)
 col_datatype <- tableGrob(datatype, cols = "", theme = theme_grey)
-col_time <- tableGrob(time, cols = "", theme= theme_grey)
-#col_loc <- tableGrob(loc_values, cols = "", theme = theme_loc)
+col_time <- tableGrob(time, cols = "", theme = theme_grey)
+# col_loc <- tableGrob(loc_values, cols = "", theme = theme_loc)
 col_hscp <- tableGrob(hscp_values, cols = "", theme = theme_hscp)
 col_scot <- tableGrob(scot_values, cols = "", theme = theme_scot)
-col_otherlocs <- tableGrob(other_loc_values, rows = NULL, cols = rep("", n_loc-1), theme = theme_otherlocs)
+col_otherlocs <- tableGrob(other_loc_values, rows = NULL, cols = rep("", n_loc - 1), theme = theme_otherlocs)
 
 Unscheduled_Care <- gtable_combine(col_indicator, col_datatype, col_time, col_otherlocs, col_hscp, col_scot)
 
 ## 2f. Unscheduled Care Mental Health ----
 
-indicators <- c("Psychiatric patient hospitalisations per 100,000", 
-                "Unscheduled bed days per 100,000")
+indicators <- c(
+  "Psychiatric patient hospitalisations per 100,000",
+  "Unscheduled bed days per 100,000"
+)
 datatype <- c("rate", "rate")
 time <- c(str_wrap(latest_period_psych_hosp, 9), max_fy)
 
-#Values
-#loc_values <- c(psych_hosp_latest, latest_bed_days_mh_loc) 
-other_loc_values <- bind_rows(other_locs_psych_hosp, other_loc_bed_days_mh) 
-hscp_values <- c(hscp_psych_hosp, hscp_bed_days_mh) 
-scot_values <- c(scot_psych_hosp, scot_bed_days_mh) 
+# Values
+# loc_values <- c(psych_hosp_latest, latest_bed_days_mh_loc)
+other_loc_values <- bind_rows(other_locs_psych_hosp, other_loc_bed_days_mh)
+hscp_values <- c(hscp_psych_hosp, hscp_bed_days_mh)
+scot_values <- c(scot_psych_hosp, scot_bed_days_mh)
 
-col_indicator <- tableGrob(indicators, cols = "Hospital Care (Mental Health)", theme=theme_grey)
+col_indicator <- tableGrob(indicators, cols = "Hospital Care (Mental Health)", theme = theme_grey)
 col_datatype <- tableGrob(datatype, cols = "", theme = theme_grey)
-col_time <- tableGrob(time, cols = "", theme= theme_grey)
-#col_loc <- tableGrob(loc_values, cols = "", theme = theme_loc)
+col_time <- tableGrob(time, cols = "", theme = theme_grey)
+# col_loc <- tableGrob(loc_values, cols = "", theme = theme_loc)
 col_hscp <- tableGrob(hscp_values, cols = "", theme = theme_hscp)
 col_scot <- tableGrob(scot_values, cols = "", theme = theme_scot)
-col_otherlocs <- tableGrob(other_loc_values, rows = NULL, cols = rep("", n_loc-1), theme = theme_otherlocs)
+col_otherlocs <- tableGrob(other_loc_values, rows = NULL, cols = rep("", n_loc - 1), theme = theme_otherlocs)
 
 UC_Mental_Health <- gtable_combine(col_indicator, col_datatype, col_time, col_otherlocs, col_hscp, col_scot)
 
 
-##Combine tables with headers
+## Combine tables with headers
 Summary_Table2 <- gtable_rbind(Headings, Lifestyle_Risks, Unscheduled_Care, UC_Mental_Health)
 
-#The line below inserts the table you just created above into the Word document
+# The line below inserts the table you just created above into the Word document
 grid.draw(Summary_Table2)
-
 ```

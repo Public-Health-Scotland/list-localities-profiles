@@ -15,15 +15,15 @@ options(kableExtra.auto_format = FALSE)
 
 Sys.umask(mode = "002")
 
-#Line below for testing only
+# Line below for testing only
 HSCP <- "Highland"
 
 
 source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Lifestyle & Risk Factors/Scripts/HSCP level/2. Lifestyle & Risk Factors Outputs.R")
 
 
-x <- 1 #object for figure numbers
-y <- 1 #object for table numbers
+x <- 1 # object for figure numbers
+y <- 1 # object for table numbers
 ```
 
 #####Page break

@@ -13,24 +13,24 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 options(kableExtra.auto_format = FALSE)
 
-#Line below for testing only
-#LOCALITY <- "Falkirk West"
-#LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
-#LOCALITY <- "Ayr North and Former Coalfield Communities"
-#LOCALITY <- "Helensburgh and Lomond"
-#LOCALITY <- "City of Dunfermline"
-#LOCALITY <- "Skye, Lochalsh and West Ross"
+# Line below for testing only
+# LOCALITY <- "Falkirk West"
+# LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
+# LOCALITY <- "Ayr North and Former Coalfield Communities"
+# LOCALITY <- "Helensburgh and Lomond"
+# LOCALITY <- "City of Dunfermline"
+# LOCALITY <- "Skye, Lochalsh and West Ross"
 
-HSCP <- 'Moray'
-#LOCALITY <- HSCP
+HSCP <- "Moray"
+# LOCALITY <- HSCP
 
 
 
 source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/General Health/Scripts/HSCP level/3. General Health Outputs.R")
 
 
-x <- 1 #object for figure numbers
-y <- 1 #object for table numbers
+x <- 1 # object for figure numbers
+y <- 1 # object for table numbers
 ```
 
 
@@ -45,19 +45,17 @@ y <- 1 #object for table numbers
 **For the most recent time periods available^3^, `r HSCP` HSCP had:**
 
 ```{r echo=FALSE}
-
-life_exp_text <-  if(is.na(avg_life_exp_latest_male)) {
-"No data available for life expectancy."
+life_exp_text <- if (is.na(avg_life_exp_latest_male)) {
+  "No data available for life expectancy."
 } else {
-    paste0("An average life expectancy of **", avg_life_exp_latest_male,"** years for males and **", avg_life_exp_latest_fem,"** years for females, compared to the national average of ", scot_life_exp_male, " and ", scot_life_exp_fem, " years of age respectively.")
+  paste0("An average life expectancy of **", avg_life_exp_latest_male, "** years for males and **", avg_life_exp_latest_fem, "** years for females, compared to the national average of ", scot_life_exp_male, " and ", scot_life_exp_fem, " years of age respectively.")
 }
 
-life_exp_text2 <- if(is.na(avg_life_exp_latest_male)) {
-"No data available for life expectancy at HSCP level."
+life_exp_text2 <- if (is.na(avg_life_exp_latest_male)) {
+  "No data available for life expectancy at HSCP level."
 } else {
-    paste0("In the latest time period available from ", latest_period_life_exp_loc," (5-year aggregate), the average life expectancy in ", HSCP," HSCP was ", avg_life_exp_latest_male," years of age for men, and ",avg_life_exp_latest_fem, " years of age for women. A 10-year time trend can be seen in figure ",x,".")
+  paste0("In the latest time period available from ", latest_period_life_exp_loc, " (5-year aggregate), the average life expectancy in ", HSCP, " HSCP was ", avg_life_exp_latest_male, " years of age for men, and ", avg_life_exp_latest_fem, " years of age for women. A 10-year time trend can be seen in figure ", x, ".")
 }
-
 ```
 
 + `r life_exp_text`
@@ -76,10 +74,13 @@ life_exp_text2 <- if(is.na(avg_life_exp_latest_male)) {
 \newline
 
 ```{r echo=FALSE, fig.width = 6, fig.height= 3.5}
-if(HSCP %in% check_missing_data_scotpho(life_exp)$area_name){print("No data available for this HSCP")} else {life_exp_trend}
-  
-x <- x + 1
+if (HSCP %in% check_missing_data_scotpho(life_exp)$area_name) {
+  print("No data available for this HSCP")
+} else {
+  life_exp_trend
+}
 
+x <- x + 1
 ```
 
 
