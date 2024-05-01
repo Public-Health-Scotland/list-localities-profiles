@@ -38,7 +38,7 @@ locality_list <- lookup %>%
 #num_outputs <- length(demo_list(LOCALITY[[1]]))
 
 # Create an empty list to store dataframes for each output
-excel_output <- vector("list", length = 13)
+excel_output <- vector("list", length = 22)
 
 #excel_output <- list()
 
@@ -55,6 +55,9 @@ for (LOCALITY in locality_list) {
   # unscheduled care
   source("./Unscheduled Care/2. Unscheduled Care outputs.R")
   
+  # general health
+  source("General Health/General Health Outputs.R")
+  
   # Define data frames and their corresponding sheet names
   df <- list(
     "Ch1_Population_Estimates" = pops[pops$hscp_locality == LOCALITY,],
@@ -69,7 +72,16 @@ for (LOCALITY in locality_list) {
     "Emergency_Admissions" = emergency_adm_areas[emergency_adm_areas$location == LOCALITY],
     "Emergency_Admissions_Age " = emergency_adm_age[emergency_adm_age$hscp_locality == LOCALITY],
     "Unscheduled_Bed_Days" = bed_days_areas[bed_days_areas$location == LOCALITY],
-    "Unscheduled_Bed_Days_Age" = bed_days_age[bed_days_age$hscp_locality ==LOCALITY]#,
+    "Unscheduled_Bed_Days_Age" = bed_days_age[bed_days_age$hscp_locality ==LOCALITY],
+    "Life_Expectancy" = life_exp[life_exp$area_name == LOCALITY],
+    "Deaths_Aged_15_44" = deaths_15_44[deaths_15_44$area_name == LOCALITY],
+    "Cancer_Registrations" = cancer_reg[cancer_reg$area_name == LOCALITY],
+    "Early_Deaths_Cancer" = early_deaths_cancer[early_deaths_cancer$area_name == LOCALITY],
+    "Asthma_Hospitalisations" = asthma_hosp[asthma_hosp$area_name == LOCALITY],
+    "CHD_Hospitalisations" = chd_hosp[chd_hosp&area_name == LOCALITY],
+    "COPD_Hospitalisations" = copd_hosp[copd_hosp$area_name == LOCALITY],
+    "Anxiety_Depression_Psychosis_Prescritpions" = adp_presc[adp_presc$area_name == LOCALITY],
+    "Long_Term_Conditions" = ltc[ltc$hscp_locality == LOCALITY]#,
     #readmissions_areas,
    # readmissions_age,
     #ae_att_areas,
