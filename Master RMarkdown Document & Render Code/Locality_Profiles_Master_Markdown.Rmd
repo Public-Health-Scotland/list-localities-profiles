@@ -93,7 +93,7 @@ In `r pop_max_year`, the total population of `r LOCALITY` locality was `r total_
 
 \newline
 
-```{r echo = FALSE, fig.width = 7, fig.height = 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 7, fig.height = 4, warning = FALSE, fig.alt = "A bar chart showing the population distribution of the locality grouped by age and sex"}
 pop_pyramid
 
 x <- x + 1
@@ -109,7 +109,7 @@ Figure `r x` shows the historical population of `r LOCALITY`, along with the NRS
 #### Figure `r x`: Population time trend and projection.
 \newline
 
-```{r echo = FALSE, fig.width = 7.5, fig.height = 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 7.5, fig.height = 4, warning = FALSE, fig.alt= "A figure showing the trend in population over time"}
 pop_ts_plot
 
 x <- x + 1
@@ -122,7 +122,7 @@ Figure `r x` shows how the population structure has changed between `r pop_min_y
 #### Figure `r x`: Change in population structure over the last five years.
 \newline
 
-```{r echo = FALSE, fig.width = 9, fig.height = 4, warning = FALSE}
+```{r echo = FALSE, fig.width = 9, fig.height = 4, warning = FALSE, fig.alt= "A bar chart showing the percentage change in population structure, split by age and sex, over the last five years"}
 hist_pop_change
 
 x <- x + 1
