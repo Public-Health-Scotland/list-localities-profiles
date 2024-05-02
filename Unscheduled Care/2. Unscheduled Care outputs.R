@@ -92,7 +92,7 @@ pops <- populations %>%
   ) %>%
   mutate(financial_year = paste0(year, "/", substr(year + 1, 3, 4))) %>%
   group_by(financial_year, year, hb2019name, hscp2019name, hscp_locality) %>%
-  summarise_all(sum) %>%
+  summarise(across(everything(), sum)) %>%
   ungroup()
 
 
@@ -108,7 +108,7 @@ pop_areas <- pops %>%
       select(-hscp_locality, -hb2019name) %>%
       filter(hscp2019name == HSCP) %>%
       group_by(financial_year, year, hscp2019name) %>%
-      summarise_all(sum) %>%
+      summarise(across(everything(), sum)) %>%
       ungroup() %>%
       rename(location = hscp2019name)
   ) %>%
@@ -118,7 +118,7 @@ pop_areas <- pops %>%
       select(-hscp_locality, -hscp2019name) %>%
       filter(hb2019name == HB) %>%
       group_by(financial_year, year, hb2019name) %>%
-      summarise_all(sum) %>%
+      summarise(across(everything(), sum)) %>%
       ungroup() %>%
       rename(location = hb2019name)
   ) %>%
@@ -127,7 +127,7 @@ pop_areas <- pops %>%
     pops %>%
       select(-hscp_locality, -hscp2019name, -hb2019name) %>%
       group_by(financial_year, year) %>%
-      summarise_all(sum) %>%
+      summarise(across(everything(), sum)) %>%
       ungroup() %>%
       mutate(location = "Scotland")
   ) %>%
@@ -363,7 +363,7 @@ other_loc_emergency_adm <- emergency_adm %>%
   mutate(data = round_half_up(adm / pop * 100000)) %>%
   mutate(data = format(data, big.mark = ",")) %>%
   select(hscp_locality, data) %>%
-  spread(hscp_locality, data)
+  pivot_wider(names_from = hscp_locality, values_from = data)
 
 
 
@@ -441,7 +441,7 @@ other_loc_bed_days <- bed_days %>%
   mutate(data = round_half_up(bed_days / pop * 100000)) %>%
   mutate(data = format(data, big.mark = ",")) %>%
   select(hscp_locality, data) %>%
-  spread(hscp_locality, data)
+  pivot_wider(names_from = hscp_locality, values_from = data)
 
 
 # 2b. Unscheduled bed days - Mental Health ----
@@ -520,7 +520,7 @@ other_loc_bed_days_mh <- bed_days_mh %>%
   mutate(data = round_half_up(bed_days / pop * 100000)) %>%
   mutate(data = format(data, big.mark = ",")) %>%
   select(hscp_locality, data) %>%
-  spread(hscp_locality, data)
+  pivot_wider(names_from = hscp_locality, values_from = data)
 
 
 # 3. A&E Attendances ----
@@ -598,7 +598,7 @@ other_loc_ae_att <- ae_attendances %>%
   mutate(data = round_half_up(attendances / pop * 100000)) %>%
   mutate(data = format(data, big.mark = ",")) %>%
   select(hscp_locality, data) %>%
-  spread(hscp_locality, data)
+  pivot_wider(names_from = hscp_locality, values_from = data)
 
 
 # 4. Delayed Discharges ----
@@ -667,7 +667,7 @@ other_loc_dd <- delayed_disch %>%
   mutate(data = round_half_up(dd_bed_days / pop * 100000)) %>%
   mutate(data = format(data, big.mark = ",")) %>%
   select(hscp_locality, data) %>%
-  spread(hscp_locality, data)
+  pivot_wider(names_from = hscp_locality, values_from = data)
 
 
 
@@ -871,7 +871,7 @@ scot_read <- readmissions_areas %>%
 #          total_deaths = replace_na(total_deaths, 0)) %>%
 #   mutate(data = as.character(round_half_up(100*(1 - total_bddys/total_deaths/182.5), 1))) %>%
 #   select(hscp_locality, data) %>%
-#   spread(hscp_locality, data)
+#   pivot_wider(names_from = hscp_locality, values_from = data)
 
 
 
@@ -971,7 +971,7 @@ other_loc_ppa <- ppa %>%
   mutate(data = round_half_up(admissions / pop * 100000)) %>%
   mutate(data = format(data, big.mark = ",")) %>%
   select(hscp_locality, data) %>%
-  spread(hscp_locality, data)
+  pivot_wider(names_from = hscp_locality, values_from = data)
 
 
 # 9. Psychiatric hospital admissions (ScotPHO) ----
@@ -1016,7 +1016,7 @@ other_locs_psych_hosp <- psych_hosp %>%
   arrange(hscp_locality) %>%
   select(hscp_locality, measure) %>%
   mutate(measure = as.character(round_half_up(measure, 1))) %>%
-  spread(hscp_locality, measure)
+  pivot_wider(names_from = hscp_locality, values_from = measure)
 
 hscp_psych_hosp <- round_half_up(filter(psych_hosp, year == max(year) &
   (area_name == HSCP & area_type == "HSCP"))$measure, 1)

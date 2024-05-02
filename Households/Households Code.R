@@ -89,7 +89,7 @@ house_dat1 <- house_dat %>%
     tax_discount = sum(dwellings_with_a_single_adult_council_tax_discount)
   ) %>%
   dplyr::ungroup() %>%
-  dplyr::mutate_at(.vars = 3:7, .funs = funs(perc = 100 * . / total_dwellings))
+  dplyr::mutate(dplyr::across(3:7, list(perc = ~ 100 * .x / total_dwellings)))
 
 
 ## 2b) Text objects ----
@@ -135,10 +135,7 @@ house_table <- house_dat1 %>%
     year, total_dwellings, occupied_dwellings, vacant_dwellings,
     tax_discount, tax_exempt, second_homes
   ) %>%
-  mutate_at(
-    .vars = 2:7,
-    .funs = funs(format(., big.mark = ","))
-  )
+  mutate(across(2:7, ~ format(.x, big.mark = ",")))
 
 
 ######################## Section 3 - Council Tax Band Data ############################
@@ -156,7 +153,7 @@ house_raw_dat2 <- read_excel(paste0(filepath, "Data ", ext_year, "/council_tax.x
 house_dat2 <- house_raw_dat2 %>%
   filter(data_zone_code %in% lookup$datazone2011) %>%
   select(5:14) %>%
-  summarise_all(.funs = sum)
+  summarise(across(everything(), sum))
 
 
 ## 3b) Plots & tables ----
@@ -196,7 +193,7 @@ ctb_plot <- ggplot(ctb, aes(fill = factor(variable, levels = rev(variable)), y =
 ctb_table <- ctb %>%
   mutate(percent = paste0(format_number_for_text(100 * value / sum(value)), "%")) %>%
   select(-value) %>%
-  spread(variable, percent) %>%
+  pivot_wider(names_from = variable, values_from = percent) %>%
   mutate(`Tax Band` = "Percent of households") %>%
   select(`Tax Band`,
     A = council_tax_band_a, B = council_tax_band_b,
@@ -268,12 +265,12 @@ other_locs_n_houses <- house_dat_otherlocs %>%
   mutate(tot_dwellings_chr = formatC(total_dwellings, format = "d", big.mark = ",")) %>%
   arrange(hscp_locality) %>%
   select(hscp_locality, tot_dwellings_chr) %>%
-  spread(hscp_locality, tot_dwellings_chr)
+  pivot_wider(names_from = hscp_locality, values_from = tot_dwellings_chr)
 
 other_locs_perc_discount <- house_dat_otherlocs %>%
   select(hscp_locality, tax_discount_perc) %>%
   arrange(hscp_locality) %>%
-  spread(hscp_locality, tax_discount_perc)
+  pivot_wider(names_from = hscp_locality, values_from = tax_discount_perc)
 
 
 house_dat2_otherlocs <- house_raw_dat2 %>%
@@ -296,12 +293,12 @@ house_dat2_otherlocs <- house_raw_dat2 %>%
 other_locs_perc_housesAC <- house_dat2_otherlocs %>%
   arrange(hscp_locality) %>%
   select(hscp_locality, perc_houses_AC) %>%
-  spread(hscp_locality, perc_houses_AC)
+  pivot_wider(names_from = hscp_locality, values_from = perc_houses_AC)
 
 other_locs_perc_housesFH <- house_dat2_otherlocs %>%
   arrange(hscp_locality) %>%
   select(hscp_locality, perc_houses_FH) %>%
-  spread(hscp_locality, perc_houses_FH)
+  pivot_wider(names_from = hscp_locality, values_from = perc_houses_FH)
 
 rm(house_dat2_otherlocs, house_dat_otherlocs, other_locs_dz)
 

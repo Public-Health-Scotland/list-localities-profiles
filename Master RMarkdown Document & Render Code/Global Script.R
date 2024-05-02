@@ -515,19 +515,20 @@ fy <- function(date) {
   )
 }
 
-# reformat partnerhsip names # 1
+# reformat partnership names # 1
 
 ptsp <- function(partnership) {
-  recode(partnership,
-    "Borders" = "Scottish Borders",
-    "Orkney" = "Orkney Islands",
-    "Shetland" = "Shetland Islands",
-    "Edinburgh City" = "Edinburgh",
-    "City of Edinburgh" = "Edinburgh",
-    "Perth & Kinross" = "Perth and Kinross",
-    "Clackmannanshire" = "Clackmannanshire and Stirling",
-    "Stirling" = "Clackmannanshire and Stirling",
-    "Na h-Eileanan Siar" = "Western Isles"
+  case_match(partnership,
+    "Borders" ~ "Scottish Borders",
+    "Orkney" ~ "Orkney Islands",
+    "Shetland" ~ "Shetland Islands",
+    "Edinburgh City" ~ "Edinburgh",
+    "City of Edinburgh" ~ "Edinburgh",
+    "Perth & Kinross" ~ "Perth and Kinross",
+    "Clackmannanshire" ~ "Clackmannanshire and Stirling",
+    "Stirling" ~ "Clackmannanshire and Stirling",
+    "Na h-Eileanan Siar" ~ "Western Isles",
+    .default = partnership
   )
 }
 

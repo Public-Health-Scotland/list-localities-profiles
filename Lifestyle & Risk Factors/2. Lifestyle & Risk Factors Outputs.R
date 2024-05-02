@@ -354,7 +354,7 @@ other_locs_summary_table <- function(data, latest_year) {
     arrange(hscp_locality) %>%
     select(hscp_locality, measure) %>%
     mutate(measure = round_half_up(measure, 1)) %>%
-    spread(hscp_locality, measure)
+    pivot_wider(names_from = hscp_locality, values_from = measure)
 }
 
 # 1. Other locs
