@@ -11,43 +11,43 @@ rm(list = ls())
 # system unmask function so files have read-write permissions
 Sys.umask("006")
 
-#Set file path
+# Set file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 #Source in functions code
 source("Master RMarkdown Document & Render Code/Global Script.R")
 
-##Specify HSCP here
-## NOTE - make sure that the formatting of the partnership's name matches the lookup  
+## Specify HSCP here
+## NOTE - make sure that the formatting of the partnership's name matches the lookup
 HSCP <- "Western Isles"
 
-#Below creates locality list of all the localities in a chosen HSCP
-lookup <- read_in_localities() 
+# Below creates locality list of all the localities in a chosen HSCP
+lookup <- read_in_localities()
 
-#HSCP_list <- unique(lookup$hscp2019name)
+# HSCP_list <- unique(lookup$hscp2019name)
 
-#Create list of localities in chosen HSCP
-#locality_list <- lookup %>% 
- # filter(hscp2019name == HSCP) %>% 
- # pull(hscp_locality)
+# Create list of localities in chosen HSCP
+# locality_list <- lookup %>%
+# filter(hscp2019name == HSCP) %>%
+# pull(hscp_locality)
 
-other_locs <- lookup %>% 
-  select(hscp_locality, hscp2019name) %>% 
-  filter(hscp2019name == HSCP) %>% 
+other_locs <- lookup %>%
+  select(hscp_locality, hscp2019name) %>%
+  filter(hscp2019name == HSCP) %>%
   arrange(hscp_locality)
 
 
-##Loop to create the profiles for all the localities in the list
+## Loop to create the profiles for all the localities in the list
 
 ## There are several stages to the profiles:
-    # 1. Producing the HSCP services map (this takes a while to run so it is produced separately)
-    # 2. Looping through each locality in the HSCP doing the following:
-          #2a. Run each section script for that locality
-          #2b. Run the Rmd for the main body of the profiles
-          #2c. Run the Rmd for the summary tables
+# 1. Producing the HSCP services map (this takes a while to run so it is produced separately)
+# 2. Looping through each locality in the HSCP doing the following:
+# 2a. Run each section script for that locality
+# 2b. Run the Rmd for the main body of the profiles
+# 2c. Run the Rmd for the summary tables
 
 # 1. HSCP Services Map
-#source(paste0(lp_path, "Services/Scripts/3. Service HSCP map.R"))
+# source(paste0(lp_path, "Services/Scripts/3. Service HSCP map.R"))
 
 
 # 2. Loop through each locality to create the main body of the profiles and the summary table

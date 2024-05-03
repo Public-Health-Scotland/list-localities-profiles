@@ -13,21 +13,21 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 options(kableExtra.auto_format = FALSE)
 
-#Line below for testing only
-#LOCALITY <-  "Skye, Lochalsh and West Ross"
-#LOCALITY <- "Falkirk West"
-#LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
-#LOCALITY <- "Ayr North and Former Coalfield Communities"
-#LOCALITY <- "Helensburgh and Lomond"
-#LOCALITY <- "City of Dunfermline"
-#LOCALITY <-  "Inverness"
+# Line below for testing only
+# LOCALITY <-  "Skye, Lochalsh and West Ross"
+# LOCALITY <- "Falkirk West"
+# LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
+# LOCALITY <- "Ayr North and Former Coalfield Communities"
+# LOCALITY <- "Helensburgh and Lomond"
+# LOCALITY <- "City of Dunfermline"
+# LOCALITY <-  "Inverness"
 HSCP <- "Moray"
 
 source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Unscheduled Care/Scripts/HSCP level/2. Unscheduled Care outputs.R")
 
 
-x <- 1 #object for figure numbers
-y <- 1 #object for table numbers
+x <- 1 # object for figure numbers
+y <- 1 # object for table numbers
 ```
 
 
