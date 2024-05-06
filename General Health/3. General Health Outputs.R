@@ -10,10 +10,10 @@
 ############# 1) PACKAGES, DIRECTORY, LOOKUPS, DATA IMPORT + CLEANING #############
 
 ## load packages
-#library(readxl)
+# library(readxl)
 library(tidyverse)
-#library(reshape2)
-#library(knitr)
+# library(reshape2)
+# library(knitr)
 library(janitor)
 library(cowplot)
 library(gridExtra)
@@ -25,7 +25,7 @@ library(phsstyles)
 
 
 # Determine locality (for testing only)
-#LOCALITY <- "Inverness"
+# LOCALITY <- "Inverness"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
 # LOCALITY <- "Mid-Argyll, Kintyre and Islay"
 # LOCALITY <- "City of Dunfermline"

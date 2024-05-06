@@ -30,15 +30,16 @@ fy <- "202223"
 lookup <- read_in_localities(dz_level = TRUE)
 
 # Read in SLF individual level file
-#slf <- read.fst(paste0(
+# slf <- read.fst(paste0(
 #  "/conf/hscdiip/01-Source-linkage-files/",
 #  "source-individual-file-", fy, ".fst"
-#)) %>%
+# )) %>%
 #  select(-locality, -hscp2019, -hb2019)
 
 slf <- slfhelper::read_slf_individual("2223",
-                                      col_select = c("year","datazone2011","hscp2018","age","keep_population",ltc_vars),
-                                      as_data_frame = TRUE)
+  col_select = c("year", "datazone2011", "hscp2018", "age", "keep_population", ltc_vars),
+  as_data_frame = TRUE
+)
 
 # Compute total LTCs
 slf$"total_ltc" <- rowSums(subset(slf, select = arth:refailure))

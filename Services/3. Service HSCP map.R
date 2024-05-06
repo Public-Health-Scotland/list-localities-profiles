@@ -21,14 +21,14 @@ library(janitor)
 library(leaflet)
 library(dplyr)
 library(htmlwidgets)
-#library(mapview)
+# library(mapview)
 library(knitr)
 library(gridExtra)
 library(grid)
 library(data.table)
 
 ## Select HCSP (for testing only)
-#HSCP <- "Aberdeenshire"
+# HSCP <- "Aberdeenshire"
 
 ## Set file path
 # lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
@@ -46,13 +46,13 @@ source("Services/2. Services data manipulation & table.R")
 ###### 5. Read in locality shape files ######
 
 shp <- sf::read_sf("/conf/linkage/output/lookups/Unicode/Geography/Shapefiles/HSCP Locality (Datazone2011 Base)/HSCP_Locality.shp")
-shp <- sf::st_transform(shp,4326)
+shp <- sf::st_transform(shp, 4326)
 
-shp <- shp |> 
-  dplyr::mutate(hscp_locality = gsub("&", "and", HSCP_Local)) |> 
+shp <- shp |>
+  dplyr::mutate(hscp_locality = gsub("&", "and", HSCP_Local)) |>
   merge(lookup2, by = "hscp_locality")
 
-shp_hscp <- shp |> 
+shp_hscp <- shp |>
   filter(hscp2019name == HSCP)
 
 ###### 6. Mapping Code ######
@@ -84,10 +84,10 @@ addLegendCustom <- function(map, colors, labels, sizes, opacity = 1) {
     sizes, "px;margin-top: 4px;line-height: ", sizes, "px;'>",
     labels, "</div>"
   )
-  
+
   return(addLegend(map,
-                   colors = colorAdditions,
-                   labels = labelAdditions, opacity = opacity
+    colors = colorAdditions,
+    labels = labelAdditions, opacity = opacity
   ))
 }
 
@@ -97,8 +97,8 @@ service_map <-
   addProviderTiles(providers$OpenStreetMap) %>%
   # Locality shapefiles
   addPolygons(
-    #data = shp_hscp,
-    fillColor = ~loc.cols(shp_hscp$hscp_locality),
+    # data = shp_hscp,
+    fillColor = ~ loc.cols(shp_hscp$hscp_locality),
     fillOpacity = 0.5,
     color = "#2e2e30",
     stroke = T,
@@ -134,9 +134,9 @@ service_map <-
 ## Screenshot the map
 # It gets saved in the Services folder and inserted in the R Markdown document
 # Every time the R Markdown is run, the previous map is overwritten.
-#mapshot(service_map, file = paste0(lp_path, "/Services/map.png"))
+# mapshot(service_map, file = paste0(lp_path, "/Services/map.png"))
 
-#htmlwidgets::saveWidget(service_map, "./Services/service_map.html")
+# htmlwidgets::saveWidget(service_map, "./Services/service_map.html")
 
 
 # remove unnecessary objects
