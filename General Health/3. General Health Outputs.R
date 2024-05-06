@@ -179,7 +179,7 @@ life_exp_trend <- life_exp %>%
   filter(area_name == LOCALITY & area_type == "Locality" & year >= max(year) - 10) %>%
   mutate(period_short = str_wrap(period_short, width = 10)) %>%
   mutate(measure = round_half_up(measure, 1)) %>%
-  ggplot(aes(x = period_short, group = sex, y = measure, linetype = sex, shape = sex)) +
+  ggplot(aes(x = period_short, y = measure, group = sex, linetype = sex, shape = sex)) +
   geom_line(aes(colour = sex), size = 1) +
   geom_point(aes(colour = sex), size = 2) +
   scale_colour_manual(values = palette) +
@@ -729,10 +729,10 @@ lims.ov65 <- case_when(
 
 ltc_plot_left <- ltc_types %>%
   filter(age_group == "Under 65") %>%
-  ggplot(aes(y = key, x = percent, label = round_half_up(percent, 1))) +
+  ggplot(aes(x = percent, y = key, label = round_half_up(percent, 1))) +
   geom_point(colour = palette[1], size = 3) +
   geom_segment(aes(x = 0, y = key, xend = percent, yend = key), size = 0.4) +
-  labs(y = "", x = "People under 65 with\nthe condition (%)", title = "UNDER 65") +
+  labs(x = "People under 65 with\nthe condition (%)", y = "", title = "UNDER 65") +
   scale_x_continuous(breaks = seq(-100, 0, 2), labels = paste0(as.character(seq(100, 0, -2)))) +
   expand_limits(x = lims.un65) +
   theme_profiles() +
@@ -746,17 +746,17 @@ ltc_plot_left <- ltc_types %>%
   scale_y_discrete(limits = rev(levels(as.factor(ltc_types$key)))) +
   ltc_axis <- ltc_types %>%
   filter(age_group == "Under 65") %>%
-  ggplot(aes(y = key, x = 0, label = key)) +
+  ggplot(aes(x = 0, y = key, label = key)) +
   geom_text() +
   scale_y_discrete(limits = rev(levels(as.factor(ltc_types$key)))) +
   theme_void()
 
 ltc_plot_right <- ltc_types %>%
   filter(age_group == "65+") %>%
-  ggplot(aes(y = key, x = percent, label = round_half_up(percent, 1))) +
+  ggplot(aes(x = percent, y = key, label = round_half_up(percent, 1))) +
   geom_point(colour = palette[2], size = 3) +
   geom_segment(aes(x = 0, y = key, xend = percent, yend = key), size = 0.4) +
-  labs(y = "", x = "People over 65 with\nthe condition (%)", title = "OVER 65") +
+  labs(x = "People over 65 with\nthe condition (%)", y = "", title = "OVER 65") +
   scale_x_continuous(breaks = seq(0, 100, 2)) +
   expand_limits(x = lims.ov65) +
   theme_profiles() +

@@ -413,7 +413,8 @@ scotpho_bar_chart <- function(data, chart_title, xaxis_title) {
     labs(
       title = chart_title,
       x = xaxis_title,
-      y = " ", fill = " ",
+      y = " ", 
+      fill = " ",
       caption = "Source: ScotPHO"
     ) +
     geom_errorbar(

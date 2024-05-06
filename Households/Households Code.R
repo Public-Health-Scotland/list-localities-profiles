@@ -178,8 +178,9 @@ ctb_plot <- ctb %>%
   geom_col(position = "fill", colour = "black", size = 0.5) +
   theme_classic() +
   labs(
-    y = "",
     x = "Proportion of Households",
+    y = "",
+   
     caption = "Source: Scottish Assessors’ Association (via NRS)"
   ) +
   scale_fill_manual(
