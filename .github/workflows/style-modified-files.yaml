@@ -74,11 +74,13 @@ jobs:
           if [[ ${#FILES_TO_COMMIT[@]} -gt 0 ]]; then
             git config --local user.name "$GITHUB_ACTOR"
             git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
-      
+            # Checkout the PR branch
+            git checkout ${{ github.head_ref }}  
             # Use double quotes around the array expansion to handle spaces
             git commit "${FILES_TO_COMMIT[@]}" -m "Style code (GHA)"
             git pull --ff-only
-            git push origin
+            # Push changes to the 'replace_coord_flip' branch 
+            git push origin ${{ github.head_ref }} 
           else
             echo "No changes to commit."
           fi
