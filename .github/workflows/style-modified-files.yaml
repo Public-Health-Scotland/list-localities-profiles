@@ -7,6 +7,10 @@ on:
 jobs:
   style_check:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -55,8 +59,6 @@ jobs:
             ${{ runner.os }}-
 
       - name: Style modified R files
-        env:  # Set the GITHUB_TOKEN so it can 'see' the private repo
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
         run: |
           files <- gh::gh("GET https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files")
           changed_files <- purrr::map_chr(files, "filename")
@@ -68,7 +70,7 @@ jobs:
       - name: Commit and push changes
         run: |
           # Create an array to properly handle filenames with spaces or special characters
-          IFS=$'\n' read -r -d '' -a FILES_TO_COMMIT < <(git diff-index --name-only ${{ github.sha }} | egrep --ignore-case '\.(R|[qR]md|Rmarkdown|Rnw|Rprofile)$' && printf '\0')
+          IFS=$'\n' read -r -d '' -a FILES_TO_COMMIT < <(git diff-index --name-only ${{ github.sha }} | egrep --ignore-case '\.(R|[qR]md|Rmarkdown|Rnw)$' && printf '\0')
       
           if [[ ${#FILES_TO_COMMIT[@]} -gt 0 ]]; then
             git config --local user.name "$GITHUB_ACTOR"
