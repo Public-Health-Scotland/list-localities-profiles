@@ -1,0 +1,49 @@
+# Aggregate and calculate confidence interval
+summarise_iz_to_locality <- function(data, iz_lookup) {
+  iz_data <- data |>
+    inner_join(iz_lookup, by = c("area_code" = "intermediate_zone"))
+
+  if (anyNA(iz_data$numerator)) {
+    locality_data <- iz_data |>
+      group_by(indicator, year, period, area_name = hscp_locality, definition, data_source) |>
+      summarise(
+        measure = sum(measure),
+        area_type = "HSC locality",
+        .groups = "drop"
+      )
+  } else {
+    locality_data <- iz_data |>
+      mutate(weighted_measure = numerator * measure / 100000) %>%
+      group_by(indicator, year, period, area_name = hscp_locality, definition, data_source) |>
+      summarise(
+        numerator = sum(numerator),
+        denominator = sum(numerator / measure * 100000), # Adjust for per 100,000
+        measure = sum(weighted_measure) / sum(numerator) * 100000, # Adjust for per 100,000
+        se = sqrt(sum(numerator * (measure - lower_confidence_interval)^2 / (denominator - 1)) +
+          sum(numerator * (upper_confidence_interval - measure)^2 / (denominator - 1))),
+        lower_confidence_interval = measure - 1.96 * se,
+        upper_confidence_interval = measure + 1.96 * se,
+        area_type = "HSC locality",
+        .groups = "drop"
+      ) |>
+      select(!denominator, !se)
+  }
+
+  new_data <- data |>
+    filter(area_type == "HSC locality") |>
+    bind_rows(locality_data)
+
+  return(new_data)
+}
+
+clean_scotpho_dat <- function(data) {
+  data %>%
+    summarise_iz_to_locality(iz_lookup = iz_lookup) |>
+    filter(area_type != "Council area" & area_type != "Intermediate zone") %>%
+    mutate(area_name = gsub("&", "and", area_name)) %>%
+    mutate(area_name = if_else(area_name == "Renfrewshire West", "West Renfrewshire", area_name)) %>%
+    mutate(
+      area_type = if_else(area_type == "HSC partnership", "HSCP", area_type),
+      area_type = if_else(area_type == "HSC locality", "Locality", area_type)
+    )
+}
