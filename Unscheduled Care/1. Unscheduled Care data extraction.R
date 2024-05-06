@@ -15,7 +15,7 @@ ext_year <- 2023
 latest_msg_folder <- "2023-12 December"
 
 # Set locality profiles file path
-lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 ## Packages
 library(tidyverse)
