@@ -20,7 +20,7 @@ lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality
 ## Packages
 library(tidyverse)
 library(janitor)
-library(tidylog)
+# library(tidylog)
 library(magrittr)
 library(lubridate)
 library(scales)

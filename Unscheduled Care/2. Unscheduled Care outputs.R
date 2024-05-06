@@ -16,7 +16,7 @@ import_folder <- paste0(lp_path, "Unscheduled Care/DATA ", ext_year, "/")
 ## Packages
 library(tidyverse)
 library(janitor)
-library(tidylog)
+# library(tidylog)
 library(magrittr)
 library(lubridate)
 library(scales)

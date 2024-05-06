@@ -20,7 +20,7 @@ library(gridExtra)
 library(grid)
 library(png)
 
-library(tidylog)
+# library(tidylog)
 library(phsstyles)
 
 
