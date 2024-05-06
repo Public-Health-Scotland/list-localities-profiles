@@ -56,6 +56,8 @@ map <- paste0(lp_path, "Master RMarkdown Document & Render Code/Output/maps/", H
 
 stopifnot(file.exists(map)) # Error if the file path doesn't exist.
 
+loop_env <- ls()
+
 # 2. Loop through each locality to create the main body of the profiles and the summary table
 for (LOCALITY in locality_list) {
   ## 2a) Source in all the scripts for a given LOCALITY
@@ -97,4 +99,9 @@ for (LOCALITY in locality_list) {
     output_file = paste0(LOCALITY, " - Summary Table.docx"),
     output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/Summary Tables/")
   )
+
+  # Clean up the environment before starting the next loop
+  rm(list = setdiff(ls(), loop_env))
+  # Make sure memory is freed
+  gc()
 }
