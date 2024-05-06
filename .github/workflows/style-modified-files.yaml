@@ -67,12 +67,15 @@ jobs:
 
       - name: Commit and push changes
         run: |
-          if FILES_TO_COMMIT=($(git diff-index --name-only ${{ github.sha }} \
-              | egrep --ignore-case '\.(R|[qR]md|Rmarkdown|Rnw|Rprofile)$'))
-          then
+          # Create an array to properly handle filenames with spaces or special characters
+          IFS=$'\n' read -r -d '' -a FILES_TO_COMMIT < <(git diff-index --name-only ${{ github.sha }} | egrep --ignore-case '\.(R|[qR]md|Rmarkdown|Rnw|Rprofile)$' && printf '\0')
+      
+          if [[ ${#FILES_TO_COMMIT[@]} -gt 0 ]]; then
             git config --local user.name "$GITHUB_ACTOR"
             git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
-            git commit ${FILES_TO_COMMIT[*]} -m "Style code (GHA)"
+      
+            # Use double quotes around the array expansion to handle spaces
+            git commit "${FILES_TO_COMMIT[@]}" -m "Style code (GHA)"
             git pull --ff-only
             git push origin
           else
