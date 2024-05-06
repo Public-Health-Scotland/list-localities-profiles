@@ -12,6 +12,9 @@ jobs:
         with:
           fetch-depth: 0  # Fetch full history for accurate diff
 
+      - name: Delete .Rprofile (if present)
+        run: if [ -f .Rprofile ]; then rm .Rprofile; fi
+
       - name: Install R 
         uses: r-lib/actions/setup-r@v2
 
