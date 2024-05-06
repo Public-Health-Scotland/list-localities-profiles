@@ -1,3 +1,4 @@
+if (!("GITHUB_ACTIONS" %in% Sys.getenv())) {
 # Set environment variables to point to installations of geospatial libraries ----
 
 ## Amend 'LD_LIBRARY_PATH' ----
@@ -23,4 +24,4 @@ Sys.setenv("GDAL_DATA" = "/usr/gdal34/share/gdal")
 
 dyn.load("/usr/gdal34/lib/libgdal.so")
 dyn.load("/usr/geos310/lib64/libgeos_c.so", local = FALSE)
-
+}
