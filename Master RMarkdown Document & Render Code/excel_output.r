@@ -56,7 +56,7 @@ for (LOCALITY in locality_list) {
   source("./Unscheduled Care/2. Unscheduled Care outputs.R")
   
   # general health
-  source("General Health/General Health Outputs.R")
+  source("./General Health/3. General Health Outputs.R")
   
   # Define data frames and their corresponding sheet names
   df <- list(
