@@ -743,7 +743,7 @@ ltc_plot_left <- ltc_types %>%
     axis.text.x = element_blank(),
     axis.ticks.x = element_blank()
   ) +
-  scale_y_discrete(limits = rev(levels(as.factor(ltc_types$key)))) +
+  scale_y_discrete(limits = rev(levels(as.factor(ltc_types$key)))) 
   ltc_axis <- ltc_types %>%
   filter(age_group == "Under 65") %>%
   ggplot(aes(x = 0, y = key, label = key)) +
