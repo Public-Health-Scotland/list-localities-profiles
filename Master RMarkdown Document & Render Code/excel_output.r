@@ -38,7 +38,7 @@ locality_list <- lookup %>%
 #num_outputs <- length(demo_list(LOCALITY[[1]]))
 
 # Create an empty list to store dataframes for each output
-excel_output <- vector("list", length = 32)
+excel_output <- vector("list", length = 37)
 
 #excel_output <- list()
 
@@ -57,6 +57,12 @@ for (LOCALITY in locality_list) {
   
   # general health
   source("./General Health/3. General Health Outputs.R")
+  
+  # housing
+  source("./Households/Households Code.R")
+  
+  # services
+  source("./Services/2. Services data manipulation & table.R")
   
   # Define data frames and their corresponding sheet names
   df <- list(
@@ -91,7 +97,14 @@ for (LOCALITY in locality_list) {
     "Preventable_admission_PPA" = ppa_areas[ppa_areas$location == LOCALITY,],#Need to add Scotland & HB to this
     "psych_admissions" = psych_hosp[psych_hosp$area_name == LOCALITY,],#Need to add Scotland & HB to this
     "MH_bed_days" = bed_days_mh_areas[bed_days_mh_areas$location == LOCALITY,],
-    "bed_days_mh_age" =  bed_days_mh_age[bed_days_mh_age$hscp_locality ==LOCALITY,]
+    "bed_days_mh_age" =  bed_days_mh_age[bed_days_mh_age$hscp_locality ==LOCALITY,],
+    "Housing_Data" = house_dat1,
+    "Housing_Council_Tax_Band" = house_dat2,
+    "Care_Home" = markers_care_home[markers_care_home$hscp_locality == LOCALITY],
+    "Emergency_Dep" = markers_emergency_dep[markers_emergency_dep$hscp_locality == LOCALITY],
+    "GP" = markers_gp[markers_gp$hscp_locality == LOCALITY],
+    "Minor_Injuries_Unit" = markers_miu[markers_miu$hscp_locality == LOCALITY]
+
     
   )
 
