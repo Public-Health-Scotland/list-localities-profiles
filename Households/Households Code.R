@@ -159,7 +159,7 @@ house_dat2 <- house_raw_dat2 %>%
 ## 3b) Plots & tables ----
 
 ctb <- house_dat2 %>%
-  select((council_tax_band_a:council_tax_band_h)) %>%
+  select(council_tax_band_a:council_tax_band_h) %>%
   melt()
 
 variable <- ctb$variable
@@ -169,23 +169,18 @@ pal_ctb <- phsstyles::phs_colours(c(
   "phs-purple-30", "phs-purple-50", "phs-purple-80", "phs-purple"
 ))
 
-ctb_plot <- ctb %>%
+ctb_plot <- ctb %>% 
   ggplot(aes(
-    fill = factor(variable, levels = rev(variable)),
     x = value,
-    y = 1
+    y = 1,
+    fill = factor(variable, levels = rev(variable))
   )) +
-  geom_col(position = "fill", colour = "black", size = 0.5) +
+  geom_col(position = "fill", colour = "black", size = 0.5, orientation = "y") +
   theme_classic() +
-  labs(
-    x = "Proportion of Households",
-    y = "",
-   
-    caption = "Source: Scottish Assessors’ Association (via NRS)"
-  ) +
+  labs(x = "Proportion of Households", y = "", caption = "Source: Scottish Assessors’ Association (via NRS)") +
   scale_fill_manual(
     name = "Council Tax Band",
-    labels = (paste("Band", LETTERS[8:1])),
+    labels = paste("Band", LETTERS[8:1]),
     values = pal_ctb,
     drop = FALSE,
     guide = guide_legend(reverse = TRUE)
