@@ -58,6 +58,12 @@ for (LOCALITY in locality_list) {
   # general health
   source("./General Health/3. General Health Outputs.R")
   
+  # housing
+  source("./Households/Households Code.R")
+  
+  # services
+  source("./Services/2. Services data manipulation & table.R")
+  
   # Define data frames and their corresponding sheet names
   df <- list(
     "Ch1_Population_Estimates" = pops[pops$hscp_locality == LOCALITY,],
@@ -81,7 +87,15 @@ for (LOCALITY in locality_list) {
     "CHD_Hospitalisations" = chd_hosp[chd_hosp&area_name == LOCALITY],
     "COPD_Hospitalisations" = copd_hosp[copd_hosp$area_name == LOCALITY],
     "Anxiety_Depression_Psychosis_Prescritpions" = adp_presc[adp_presc$area_name == LOCALITY],
-    "Long_Term_Conditions" = ltc[ltc$hscp_locality == LOCALITY]#,
+    "Long_Term_Conditions" = ltc[ltc$hscp_locality == LOCALITY],
+    "Housing_Data" = house_dat1,
+    "Housing_Council_Tax_Band" = house_dat2,
+    "Care_Home" = markers_care_home[markers_care_home$hscp_locality == LOCALITY],
+    "Emergency_Dep" = markers_emergency_dep[markers_emergency_dep$hscp_locality == LOCALITY],
+    "GP" = markers_gp[markers_gp$hscp_locality == LOCALITY],
+    "Minor_Injuries_Unit" = markers_miu[markers_miu$hscp_locality == LOCALITY]
+    
+    
     #readmissions_areas,
    # readmissions_age,
     #ae_att_areas,
