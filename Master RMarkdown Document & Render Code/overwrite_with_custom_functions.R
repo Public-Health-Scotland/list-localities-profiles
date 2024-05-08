@@ -21,7 +21,7 @@ summarise_iz_to_locality <- function(data, iz_lookup) {
     locality_data <- iz_data |>
       group_by(indicator, year, period, area_name = hscp_locality, definition, data_source) |>
       summarise(
-        measure = sum(measure),
+        measure = mean(measure),
         area_type = "HSC locality",
         .groups = "drop"
       )
