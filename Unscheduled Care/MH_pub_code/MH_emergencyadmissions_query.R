@@ -55,7 +55,7 @@ smr_mh_emergency_adm <- smr4_extract %>%
   mutate(month_num = month(discharge_date)) %>%
   mutate(year = year(discharge_date)) %>%
   mutate(AdDate = make_datetime(year, month_num, 1)) %>%
-  mutate(financial_year = fy(AdDate)) %>% # creates variable for fin year
+  mutate(financial_year = phsmethods::extract_fin_year(AdDate)) %>% # creates variable for fin year
   drop_na(financial_year) %>%
   filter(admission_type %in% c("30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "20", "21", "22", "18")) %>% # emergency admissions only
   mutate(main_con = substr(main_condition, 1, 3)) %>%

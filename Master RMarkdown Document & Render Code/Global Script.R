@@ -496,25 +496,6 @@ age_group_2 <- function(age) {
   )
 }
 
-# reformat for financial year # 1
-
-fy <- function(date) {
-  case_when(
-    date %within% interval(dmy(01042012), dmy(31032013)) ~ "2012/13",
-    date %within% interval(dmy(01042013), dmy(31032014)) ~ "2013/14",
-    date %within% interval(dmy(01042014), dmy(31032015)) ~ "2014/15",
-    date %within% interval(dmy(01042015), dmy(31032016)) ~ "2015/16",
-    date %within% interval(dmy(01042016), dmy(31032017)) ~ "2016/17",
-    date %within% interval(dmy(01042017), dmy(31032018)) ~ "2017/18",
-    date %within% interval(dmy(01042018), dmy(31032019)) ~ "2018/19",
-    date %within% interval(dmy(01042019), dmy(31032020)) ~ "2019/20",
-    date %within% interval(dmy(01042020), dmy(31032021)) ~ "2020/21",
-    date %within% interval(dmy(01042021), dmy(31032022)) ~ "2021/22",
-    date %within% interval(dmy(01042022), dmy(31032023)) ~ "2022/23",
-    date %within% interval(dmy(01042023), dmy(31032024)) ~ "2023/24"
-  )
-}
-
 # reformat partnership names # 1
 
 ptsp <- function(partnership) {

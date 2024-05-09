@@ -40,7 +40,7 @@ library(fst)
 
 # Set date limit for financial year
 # If in quarter 1
-max_fy <- ifelse(quarter(Sys.Date()) == "1L", fy(Sys.Date()), fy(ymd(Sys.Date()) - years(1)))
+max_fy <- ifelse(quarter(Sys.Date()) == "1L", phsmethods::extract_fin_year(Sys.Date()), phsmethods::extract_fin_year(ymd(Sys.Date()) - years(1)))
 
 ########################## SECTION 2: Lookups & Populations ###############################
 
