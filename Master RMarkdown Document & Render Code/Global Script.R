@@ -474,14 +474,14 @@ check_missing_data_scotpho <- function(data) {
 
 # Reformat age groups to specific strings shown i.e. add spaces
 age_group_1 <- function(age_group) {
-  ifelse(age_group %in% c("<18", "0-17"), "0 - 17",
-    ifelse(age_group %in% c("18-24", "25-29", "30-34", "35-39", "40-44"), "18 - 44",
-      ifelse(age_group %in% c("45-49", "50-54", "55-59", "60-64"), "45 - 64",
-        ifelse(age_group %in% c("65-69", "70-74"), "65 - 74",
-          ifelse(age_group %in% c("75-79", "80-84", "85-89", "90-94", "95-99", "Over 100", "100+"), "75+", "NA")
-        )
-      )
-    )
+  dplyr::case_match(
+    age_group,
+    c("<18", "0-17") ~ "0 - 17",
+    c("18-24", "25-29", "30-34", "35-39", "40-44") ~ "18 - 44",
+    c("45-49", "50-54", "55-59", "60-64") ~ "45 - 64",
+    c("65-69", "70-74") ~ "65 - 74",
+    c("75-79", "80-84", "85-89", "90-94", "95-99", "Over 100", "100+") ~ "75+",
+    .default = "NA"
   )
 }
 
