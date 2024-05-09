@@ -534,21 +534,22 @@ ptsp <- function(partnership) {
 }
 
 hbres <- function(hbres_currentdate) {
-  case_when(
-    hbres_currentdate == "S08000015" ~ "NHS Ayrshire & Arran",
-    hbres_currentdate == "S08000016" ~ "NHS Borders",
-    hbres_currentdate == "S08000017" ~ "NHS Dumfries & Galloway",
-    hbres_currentdate == "S08000029" ~ "NHS Fife",
-    hbres_currentdate == "S08000019" ~ "NHS Forth Valley",
-    hbres_currentdate == "S08000020" ~ "NHS Grampian",
-    hbres_currentdate == "S08000031" ~ "NHS Greater Glasgow & Clyde",
-    hbres_currentdate == "S08000022" ~ "NHS Highland",
-    hbres_currentdate == "S08000032" ~ "NHS Lanarkshire",
-    hbres_currentdate == "S08000024" ~ "NHS Lothian",
-    hbres_currentdate == "S08000025" ~ "NHS Orkney",
-    hbres_currentdate == "S08000026" ~ "NHS Shetland",
-    hbres_currentdate == "S08000030" ~ "NHS Tayside",
-    hbres_currentdate == "S08000028" ~ "NHS Western Isles",
-    TRUE ~ "Other"
+  dplyr::case_match(
+    hbres_currentdate,
+    "S08000015" ~ "NHS Ayrshire & Arran",
+    "S08000016" ~ "NHS Borders",
+    "S08000017" ~ "NHS Dumfries & Galloway",
+    "S08000029" ~ "NHS Fife",
+    "S08000019" ~ "NHS Forth Valley",
+    "S08000020" ~ "NHS Grampian",
+    "S08000031" ~ "NHS Greater Glasgow & Clyde",
+    "S08000022" ~ "NHS Highland",
+    "S08000032" ~ "NHS Lanarkshire",
+    "S08000024" ~ "NHS Lothian",
+    "S08000025" ~ "NHS Orkney",
+    "S08000026" ~ "NHS Shetland",
+    "S08000030" ~ "NHS Tayside",
+    "S08000028" ~ "NHS Western Isles",
+    .default = "Other"
   )
 }
