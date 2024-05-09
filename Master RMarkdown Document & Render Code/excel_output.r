@@ -38,7 +38,7 @@ locality_list <- lookup %>%
 #num_outputs <- length(demo_list(LOCALITY[[1]]))
 
 # Create an empty list to store dataframes for each output
-excel_output <- vector("list", length = 37)
+excel_output <- vector("list", length = 38)
 
 #excel_output <- list()
 
@@ -100,12 +100,11 @@ for (LOCALITY in locality_list) {
     "bed_days_mh_age" =  bed_days_mh_age[bed_days_mh_age$hscp_locality ==LOCALITY,],
     "Housing_Data" = house_dat1,
     "Housing_Council_Tax_Band" = house_dat2,
-    "Care_Home" = markers_care_home[markers_care_home$hscp_locality == LOCALITY],
-    "Emergency_Dep" = markers_emergency_dep[markers_emergency_dep$hscp_locality == LOCALITY],
-    "GP" = markers_gp[markers_gp$hscp_locality == LOCALITY],
-    "Minor_Injuries_Unit" = markers_miu[markers_miu$hscp_locality == LOCALITY]
+    "Care_Home" = markers_care_home[markers_care_home$hscp_locality == LOCALITY,],
+    "Emergency_Dep" = markers_emergency_dep[markers_emergency_dep$hscp_locality == LOCALITY,],
+    "GP" = markers_gp[markers_gp$hscp_locality == LOCALITY,],
+    "Minor_Injuries_Unit" = markers_miu[markers_miu$hscp_locality == LOCALITY,]
 
-    
   )
 
   # Loop over each dataframe in the df list to add locality and append to the output list
@@ -131,6 +130,8 @@ names(excel_output) <- names(df)
 
 excel_names <- names(df)
 
+
+
 # Loop over each combined dataframe
 for (i in seq_along(excel_output)) {
   # Get the current combined dataframe
@@ -146,9 +147,18 @@ for (i in seq_along(excel_output)) {
   openxlsx::writeData(wb, sheet = dataframe_name, x = output)
 }
 
+index_data <- data.frame(Sheet_name = excel_names)
+
+excel_output <- c(index_data, excel_output)
+
+openxlsx::addWorksheet(wb, sheetName = "Index")
+
+openxlsx::writeData(wb, sheet = 'Index', x = index_data)
+
 
 # Save the workbook to a file
 openxlsx::saveWorkbook(wb, "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/background data/output.xlsx", overwrite = TRUE)
+
 
 
 #SDC Check 
