@@ -173,7 +173,7 @@ ctb_plot <- ggplot(ctb, aes(fill = factor(variable, levels = rev(variable)), y =
   geom_col(position = "fill", colour = "black", size = 0.5) +
   theme_classic() +
   coord_flip() +
-  labs(x = "", y = "Proportion of Households", caption = "Source: Scottish Assessors’ Association (via NRS)") +
+  labs(x = "", y = "Proportion of Households", caption = "Source: Scottish Assessors' Association (via NRS)") +
   scale_fill_manual(
     name = "Council Tax Band",
     labels = (paste("Band", LETTERS[8:1])),
