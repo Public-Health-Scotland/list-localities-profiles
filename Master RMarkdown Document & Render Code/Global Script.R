@@ -487,11 +487,11 @@ age_group_1 <- function(age_group) {
 
 # Bin ages in the required size for unscheduled care indicators
 age_group_2 <- function(age) {
-  case_when(
-    between(age, 0, 17) ~ "0 - 17",
-    between(age, 18, 44) ~ "18 - 44",
-    between(age, 45, 64) ~ "45 - 64",
-    between(age, 65, 74) ~ "65 - 74",
+  dplyr::case_when(
+    dplyr::between(age, 0, 17) ~ "0 - 17",
+    dplyr::between(age, 18, 44) ~ "18 - 44",
+    dplyr::between(age, 45, 64) ~ "45 - 64",
+    dplyr::between(age, 65, 74) ~ "65 - 74",
     age >= 75 ~ "75+"
   )
 }
@@ -518,7 +518,8 @@ fy <- function(date) {
 # reformat partnership names # 1
 
 ptsp <- function(partnership) {
-  case_match(partnership,
+  dplyr::case_match(
+    partnership,
     "Borders" ~ "Scottish Borders",
     "Orkney" ~ "Orkney Islands",
     "Shetland" ~ "Shetland Islands",
