@@ -10,13 +10,13 @@
 ext_year <- 2023
 
 # Set locality profiles file path
-lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 import_folder <- paste0(lp_path, "Unscheduled Care/DATA ", ext_year, "/")
 
 ## Packages
 library(tidyverse)
 library(janitor)
-library(tidylog)
+# library(tidylog)
 library(magrittr)
 library(lubridate)
 library(scales)
@@ -26,14 +26,14 @@ library(haven)
 library(fst)
 
 
-### for testing run global script and locality placeholder below 
+### for testing run global script and locality placeholder below
 
 ## Functions
-#source("./Master RMarkdown Document & Render Code/Global Script.R")
+# source("./Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Define locality
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
-#LOCALITY <- "Inverness"
+# LOCALITY <- "Inverness"
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
 # LOCALITY <- "Whalsay and Skerries"
 # LOCALITY <- "North Perthshire"
@@ -71,10 +71,10 @@ populations <- read_in_dz_pops()
 
 populations22 <- read_in_dz_pops22()
 
-populations <- rbind(populations,populations22)
+populations <- rbind(populations, populations22)
 
 
-#pop_max_year <- max(populations$year)
+# pop_max_year <- max(populations$year)
 
 # compute age bands
 populations$"Pop0_17" <- rowSums(subset(populations, select = age0:age17))
