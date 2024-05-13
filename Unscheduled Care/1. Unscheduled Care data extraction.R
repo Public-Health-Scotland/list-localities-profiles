@@ -15,12 +15,12 @@ ext_year <- 2023
 latest_msg_folder <- "2023-12 December"
 
 # Set locality profiles file path
-lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 ## Packages
 library(tidyverse)
 library(janitor)
-library(tidylog)
+# library(tidylog)
 library(magrittr)
 library(lubridate)
 library(scales)
@@ -35,9 +35,9 @@ library(arrow)
 source("./Master RMarkdown Document & Render Code/Global Script.R")
 
 # Read/write permissions
-#Sys.umask("006")
+# Sys.umask("006")
 
-#Sys.getenv("R_ZIPCMD", "zip")
+# Sys.getenv("R_ZIPCMD", "zip")
 
 # Folder to export to
 exportfolder <- paste0(lp_path, "Unscheduled Care/DATA ", ext_year, "/")
@@ -88,7 +88,7 @@ msg_mh_beddays_raw <- read_parquet(paste0(
 
 msg_emergency_adm <- msg_emerg_adm_raw %>%
   mutate(age_group = age_group_1(age_group)) %>%
-  mutate(financial_year = fy(month)) %>%
+  mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
   mutate(hscp_locality = gsub("&", "and", locality)) %>%
   # join with localities lookup to get hscp
   left_join(localities, by = "hscp_locality") %>%
@@ -103,7 +103,7 @@ msg_emergency_adm <- msg_emerg_adm_raw %>%
 
 msg_bed_days <- msg_beddays_raw %>%
   mutate(age_group = age_group_1(age_group)) %>%
-  mutate(financial_year = fy(month)) %>%
+  mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
   mutate(hscp_locality = gsub("&", "and", locality)) %>%
   # join with localities lookup to get hscp
   left_join(localities, by = "hscp_locality") %>%
@@ -118,7 +118,7 @@ msg_bed_days <- msg_beddays_raw %>%
 
 msg_bed_days_mh <- msg_mh_beddays_raw %>%
   mutate(age_group = age_group_1(age_group)) %>%
-  mutate(financial_year = fy(month)) %>%
+  mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
   mutate(hscp_locality = gsub("&", "and", locality)) %>%
   # join with localities lookup to get hscp
   left_join(localities, by = "hscp_locality") %>%
@@ -133,7 +133,7 @@ msg_bed_days_mh <- msg_mh_beddays_raw %>%
 
 msg_ae <- msg_ae_raw %>%
   mutate(age_group = age_group_1(age_group)) %>%
-  mutate(financial_year = fy(month)) %>%
+  mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
   mutate(hscp_locality = gsub("&", "and", locality)) %>%
   # join with localities lookup to get hscp
   left_join(localities, by = "hscp_locality") %>%
@@ -149,7 +149,7 @@ msg_ae <- msg_ae_raw %>%
 
 msg_dd <- msg_dd_raw %>%
   mutate(age_group = age_group_1(age_group)) %>%
-  mutate(financial_year = fy(month)) %>%
+  mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
   mutate(hscp_locality = gsub("&", "and", locality)) %>%
   # this data set has some data with partnership but no locality, need to tidy names
   mutate(hscp2019name = gsub("&", "and", council)) %>%
@@ -280,7 +280,7 @@ smr_falls <- smr1_extract %>%
   arrange(datazone2011) %>%
   left_join(datazones, by = "datazone2011") %>%
   mutate(age_group = age_group_2(age)) %>%
-  mutate(financial_year = fy(discharge_date)) %>%
+  mutate(financial_year = phsmethods::extract_fin_year(discharge_date)) %>%
   drop_na(financial_year) %>%
   group_by(financial_year, hscp2019name, hscp_locality, age_group) %>%
   summarise(admissions = n()) %>%
@@ -338,7 +338,7 @@ smr_readmissions <- read_dataframe %>%
       unit = "day"
     ) <= 28, 1, 0)) %>%
   mutate(read_28 = if_else(is.na(read_28), 0, read_28)) %>%
-  mutate(financial_year = fy(discharge_date)) %>%
+  mutate(financial_year = phsmethods::extract_fin_year(discharge_date)) %>%
   drop_na(financial_year) %>%
   group_by(financial_year, hscp2019name, hscp_locality, age_group) %>%
   summarise(
@@ -457,7 +457,7 @@ rm(smr1_extract_read, read_dt, read_table, read_dataframe)
 #   arrange(postcode) %>%
 #   left_join(postcodes, by = "postcode") %>%
 #   select(link_no,date_of_death:external,hb2019,hb2019name,hscp2019,hscp2019name,hscp_locality) %>%
-#   mutate(financial_death = fy(date_of_death)) %>% # add financial year for death date
+#   mutate(financial_death = phsmethods::extract_fin_year(date_of_death)) %>% # add financial year for death date
 #   drop_na(financial_death) %>%
 #   mutate(month = month(date_of_death)) %>%
 #   mutate(year = year(date_of_death)) %>%
@@ -589,7 +589,7 @@ ppa <- ppa_id %>%
   arrange(datazone2011) %>%
   left_join(datazones, by = "datazone2011") %>%
   arrange(link_no, cis_marker) %>%
-  mutate(financial_year = fy(dod)) %>%
+  mutate(financial_year = phsmethods::extract_fin_year(dod)) %>%
   drop_na(financial_year) %>%
   mutate(age_group = age_group_2(age)) %>%
   mutate(admissions = 1) %>%
@@ -644,7 +644,7 @@ ppa <- ppa_id %>%
 #   mutate(month_num = month(admission_date)) %>% # use admission date for dates to allign with emergency ADMISSIONS
 #   mutate(year = year(admission_date)) %>%
 #   mutate(AdDate = make_datetime(year,month_num,1)) %>%
-#   mutate(financial_year = fy(AdDate)) %>%
+#   mutate(financial_year = phsmethods::extract_fin_year(AdDate)) %>%
 #   drop_na(financial_year) %>%
 #   filter(admission_type %in% c('30','31','32','33','34','35','36','37','38','39','20','21','22','18')) %>% # emergency admission only (frist ep)
 #   mutate(main_con = substr(main_condition,1,3)) %>%
