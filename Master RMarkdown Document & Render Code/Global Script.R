@@ -413,7 +413,7 @@ scotpho_bar_chart <- function(data, chart_title, xaxis_title) {
     labs(
       title = chart_title,
       x = xaxis_title,
-      y = " ", 
+      y = " ",
       fill = " ",
       caption = "Source: ScotPHO"
     ) +
@@ -477,24 +477,24 @@ check_missing_data_scotpho <- function(data) {
 
 # Reformat age groups to specific strings shown i.e. add spaces
 age_group_1 <- function(age_group) {
-  ifelse(age_group %in% c("<18", "0-17"), "0 - 17",
-    ifelse(age_group %in% c("18-24", "25-29", "30-34", "35-39", "40-44"), "18 - 44",
-      ifelse(age_group %in% c("45-49", "50-54", "55-59", "60-64"), "45 - 64",
-        ifelse(age_group %in% c("65-69", "70-74"), "65 - 74",
-          ifelse(age_group %in% c("75-79", "80-84", "85-89", "90-94", "95-99", "Over 100", "100+"), "75+", "NA")
-        )
-      )
-    )
+  dplyr::case_match(
+    age_group,
+    c("<18", "0-17") ~ "0 - 17",
+    c("18-24", "25-29", "30-34", "35-39", "40-44") ~ "18 - 44",
+    c("45-49", "50-54", "55-59", "60-64") ~ "45 - 64",
+    c("65-69", "70-74") ~ "65 - 74",
+    c("75-79", "80-84", "85-89", "90-94", "95-99", "Over 100", "100+") ~ "75+",
+    .default = "NA"
   )
 }
 
 # Bin ages in the required size for unscheduled care indicators
 age_group_2 <- function(age) {
-  case_when(
-    between(age, 0, 17) ~ "0 - 17",
-    between(age, 18, 44) ~ "18 - 44",
-    between(age, 45, 64) ~ "45 - 64",
-    between(age, 65, 74) ~ "65 - 74",
+  dplyr::case_when(
+    dplyr::between(age, 0, 17) ~ "0 - 17",
+    dplyr::between(age, 18, 44) ~ "18 - 44",
+    dplyr::between(age, 45, 64) ~ "45 - 64",
+    dplyr::between(age, 65, 74) ~ "65 - 74",
     age >= 75 ~ "75+"
   )
 }
@@ -502,7 +502,8 @@ age_group_2 <- function(age) {
 # reformat partnership names # 1
 
 ptsp <- function(partnership) {
-  case_match(partnership,
+  dplyr::case_match(
+    partnership,
     "Borders" ~ "Scottish Borders",
     "Orkney" ~ "Orkney Islands",
     "Shetland" ~ "Shetland Islands",
@@ -517,21 +518,22 @@ ptsp <- function(partnership) {
 }
 
 hbres <- function(hbres_currentdate) {
-  case_when(
-    hbres_currentdate == "S08000015" ~ "NHS Ayrshire & Arran",
-    hbres_currentdate == "S08000016" ~ "NHS Borders",
-    hbres_currentdate == "S08000017" ~ "NHS Dumfries & Galloway",
-    hbres_currentdate == "S08000029" ~ "NHS Fife",
-    hbres_currentdate == "S08000019" ~ "NHS Forth Valley",
-    hbres_currentdate == "S08000020" ~ "NHS Grampian",
-    hbres_currentdate == "S08000031" ~ "NHS Greater Glasgow & Clyde",
-    hbres_currentdate == "S08000022" ~ "NHS Highland",
-    hbres_currentdate == "S08000032" ~ "NHS Lanarkshire",
-    hbres_currentdate == "S08000024" ~ "NHS Lothian",
-    hbres_currentdate == "S08000025" ~ "NHS Orkney",
-    hbres_currentdate == "S08000026" ~ "NHS Shetland",
-    hbres_currentdate == "S08000030" ~ "NHS Tayside",
-    hbres_currentdate == "S08000028" ~ "NHS Western Isles",
-    TRUE ~ "Other"
+  dplyr::case_match(
+    hbres_currentdate,
+    "S08000015" ~ "NHS Ayrshire & Arran",
+    "S08000016" ~ "NHS Borders",
+    "S08000017" ~ "NHS Dumfries & Galloway",
+    "S08000029" ~ "NHS Fife",
+    "S08000019" ~ "NHS Forth Valley",
+    "S08000020" ~ "NHS Grampian",
+    "S08000031" ~ "NHS Greater Glasgow & Clyde",
+    "S08000022" ~ "NHS Highland",
+    "S08000032" ~ "NHS Lanarkshire",
+    "S08000024" ~ "NHS Lothian",
+    "S08000025" ~ "NHS Orkney",
+    "S08000026" ~ "NHS Shetland",
+    "S08000030" ~ "NHS Tayside",
+    "S08000028" ~ "NHS Western Isles",
+    .default = "Other"
   )
 }
