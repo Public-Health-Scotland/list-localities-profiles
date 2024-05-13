@@ -274,7 +274,7 @@ knitr::kable(house_table,
 
 y <- y + 1
 ```
-Source: Scottish Assessors’ Association (via NRS)
+Source: Scottish Assessors' Association (via NRS)
 \newline
 
 The proportion of households within each council tax band are displayed in the chart below, figures are shown in Table `r y`.
@@ -302,7 +302,7 @@ knitr::kable(ctb_table,
 
 y <- y + 1
 ```
-Source: Scottish Assessors’ Association (via NRS)
+Source: Scottish Assessors' Association (via NRS)
 
 ##### Page break
 
@@ -528,7 +528,7 @@ adp_presc_bar
 
 **Summary**
 
-Mental and physical well-being has close ties with people’s lifestyles and behaviours. Financial security, employment and location are influences that often have a bearing on these choices. Issues can develop when alcohol, smoking or drug use shape lives. This section provides data on drug-related hospital admissions, alcohol-related hospital admissions, alcohol-specific deaths and bowel screening uptake, to give an overview of some of the lifestyles and behaviours for the `r LOCALITY` locality. These can give an idea of quality of life and prosperity.
+Mental and physical well-being has close ties with people's lifestyles and behaviours. Financial security, employment and location are influences that often have a bearing on these choices. Issues can develop when alcohol, smoking or drug use shape lives. This section provides data on drug-related hospital admissions, alcohol-related hospital admissions, alcohol-specific deaths and bowel screening uptake, to give an overview of some of the lifestyles and behaviours for the `r LOCALITY` locality. These can give an idea of quality of life and prosperity.
 
 For the most recent time period available^3^, `r LOCALITY` had:
 
