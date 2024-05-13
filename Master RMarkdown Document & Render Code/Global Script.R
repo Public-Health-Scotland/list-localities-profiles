@@ -150,13 +150,13 @@ read_in_postcodes <- function() {
     # Read in the most up to date lookup version
     max() |>
     arrow::read_parquet(col_select = -c(hscp2019, hscp2019name, hb2019, hb2019name))
-  
+
   data <- dplyr::left_join(
     data,
     read_in_localities(dz_level = TRUE),
     by = dplyr::join_by(datazone2011),
     relationship = "many-to-one"
-    )
+  )
 
   return(data)
 }
@@ -207,9 +207,9 @@ read_in_dz_pops22 <- function() {
       ca2018, ca2011,
       hscp2019, hscp2019name, hscp2018, hscp2016, hb2019, hb2019name, hb2018, hb2014
     )) %>%
-    left_join(read_in_localities(dz_level = TRUE)) |> 
-    filter(year == '2021') |> 
-    select(-year) |> 
+    left_join(read_in_localities(dz_level = TRUE)) |>
+    filter(year == "2021") |>
+    select(-year) |>
     mutate(year = 2022)
 }
 
@@ -405,20 +405,22 @@ scotpho_bar_chart <- function(data, chart_title, xaxis_title) {
     arrange(area_name)
 
   ggplot(data_for_plot) +
-    aes(x = area_name, fill = area_type, weight = measure) +
+    aes(y = area_name, fill = area_type, weight = measure) +
     geom_bar(colour = "white") +
     scale_fill_manual(values = palette) +
-    coord_flip() +
     theme_profiles() +
-    theme(axis.text.y = element_text(colour = if_else(data_for_plot$text_col == 1, "red", "black"))) +
+    theme(axis.text.x = element_text(colour = if_else(data_for_plot$text_col == 1, "red", "black"))) +
     labs(
       title = chart_title,
-      y = xaxis_title,
-      x = " ", fill = " ",
+      x = xaxis_title,
+      y = " ", 
+      fill = " ",
       caption = "Source: ScotPHO"
     ) +
-    geom_errorbar(aes(ymin = lower_confidence_interval, ymax = upper_confidence_interval),
-      width = 0.2, position = position_dodge(width = 1)
+    geom_errorbar(
+      aes(xmin = lower_confidence_interval, xmax = upper_confidence_interval),
+      width = 0.2,
+      position = position_dodge(width = 1)
     ) #+
   # guides(linetype = "none", shape = "none",  colour = "none",
   #        fill = guide_legend(nrow= 2, byrow=TRUE))
@@ -440,20 +442,21 @@ scotpho_bar_chart_HSCP <- function(data, chart_title, xaxis_title) {
     arrange(area_name)
 
   ggplot(data_for_plot) +
-    aes(x = area_name, fill = area_type, weight = measure) +
+    aes(y = area_name, fill = area_type, weight = measure) +
     geom_bar(colour = "white") +
     scale_fill_manual(values = palette) +
-    coord_flip() +
     theme_profiles() +
-    theme(axis.text.y = element_text(colour = if_else(data_for_plot$text_col == 1, "red", "black"))) +
+    theme(axis.text.x = element_text(colour = if_else(data_for_plot$text_col == 1, "red", "black"))) +
     labs(
       title = chart_title,
-      y = xaxis_title,
-      x = " ", fill = " ",
+      x = xaxis_title,
+      y = " ", fill = " ",
       caption = "Source: ScotPHO"
     ) +
-    geom_errorbar(aes(ymin = lower_confidence_interval, ymax = upper_confidence_interval),
-      width = 0.2, position = position_dodge(width = 1)
+    geom_errorbar(
+      aes(xmin = lower_confidence_interval, xmax = upper_confidence_interval),
+      width = 0.2,
+      position = position_dodge(width = 1)
     ) #+
   # guides(linetype = "none", shape = "none",  colour = "none",
   #        fill = guide_legend(nrow= 2, byrow=TRUE))
