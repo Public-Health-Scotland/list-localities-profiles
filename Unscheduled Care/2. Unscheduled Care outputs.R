@@ -39,8 +39,12 @@ library(fst)
 # LOCALITY <- "North Perthshire"
 
 # Set date limit for financial year
-# If in quarter 1
-max_fy <- ifelse(quarter(Sys.Date()) == "1L", fy(Sys.Date()), fy(ymd(Sys.Date()) - years(1)))
+# Unless we're in Q4 use the previous FY as the max
+max_fy <- ifelse(
+  quarter(Sys.Date(), fiscal_start = 4) != 4,
+  phsmethods::extract_fin_year(Sys.Date() - years(1)),
+  phsmethods::extract_fin_year(Sys.Date())
+)
 
 ########################## SECTION 2: Lookups & Populations ###############################
 
