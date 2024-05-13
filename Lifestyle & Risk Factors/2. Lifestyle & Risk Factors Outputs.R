@@ -15,7 +15,7 @@
 
 ## load packages
 library(readxl)
-library(tidyverse)#review and either load in global or only specific 
+library(tidyverse) # review and either load in global or only specific
 library(reshape2)
 library(janitor)
 library(png)
@@ -23,11 +23,11 @@ library(cowplot)
 library(knitr)
 library(gridExtra)
 library(grid)
-library(tidylog)
+# library(tidylog)
 library(phsstyles)
 
 # Determine locality (for testing only)
-#LOCALITY <- "Falkirk West"
+# LOCALITY <- "Falkirk West"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
 # LOCALITY <- "Mid-Argyll, Kintyre and Islay"
 # LOCALITY <- "City of Dunfermline"
@@ -40,7 +40,7 @@ ext_year <- 2023
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 # Source in functions code
-#source("Master RMarkdown Document & Render Code/Global Script.R")
+# source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ### Geographical lookups and objects ----
 
@@ -98,7 +98,7 @@ bowel_screening <- readRDS(paste0(lp_path, "Lifestyle & Risk Factors/Data ", ext
 
 check_missing_data_scotpho(bowel_screening)
 
-###check if there is any drug death data 
+### check if there is any drug death data
 
 ############################### 2) OUTPUTS ####################################
 
@@ -133,8 +133,8 @@ drug_hosp_bar <- drug_hosp %>%
 
 drug_hosp_bar
 
-###review piping style for consistency 
-## Numbers for text 
+### review piping style for consistency
+## Numbers for text
 
 drug_hosp_latest <- filter(
   drug_hosp,
@@ -408,4 +408,3 @@ scot_bowel_screening <- round_half_up(scot_bowel_screening, 1)
 # detach(package:reshape2, unload=TRUE)
 # detach(package:janitor, unload=TRUE)
 # detach(package:ggthemes, unload=TRUE)
-detach(package:tidylog, unload = TRUE)
