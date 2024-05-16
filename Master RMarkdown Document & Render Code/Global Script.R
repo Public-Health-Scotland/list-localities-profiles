@@ -150,13 +150,13 @@ read_in_postcodes <- function() {
     # Read in the most up to date lookup version
     max() |>
     arrow::read_parquet(col_select = -c(hscp2019, hscp2019name, hb2019, hb2019name))
-  
+
   data <- dplyr::left_join(
     data,
     read_in_localities(dz_level = TRUE),
     by = dplyr::join_by(datazone2011),
     relationship = "many-to-one"
-    )
+  )
 
   return(data)
 }
@@ -207,9 +207,9 @@ read_in_dz_pops22 <- function() {
       ca2018, ca2011,
       hscp2019, hscp2019name, hscp2018, hscp2016, hb2019, hb2019name, hb2018, hb2014
     )) %>%
-    left_join(read_in_localities(dz_level = TRUE)) |> 
-    filter(year == '2021') |> 
-    select(-year) |> 
+    left_join(read_in_localities(dz_level = TRUE)) |>
+    filter(year == "2021") |>
+    select(-year) |>
     mutate(year = 2022)
 }
 
@@ -405,20 +405,22 @@ scotpho_bar_chart <- function(data, chart_title, xaxis_title) {
     arrange(area_name)
 
   ggplot(data_for_plot) +
-    aes(x = area_name, fill = area_type, weight = measure) +
+    aes(y = area_name, fill = area_type, weight = measure) +
     geom_bar(colour = "white") +
     scale_fill_manual(values = palette) +
-    coord_flip() +
     theme_profiles() +
-    theme(axis.text.y = element_text(colour = if_else(data_for_plot$text_col == 1, "red", "black"))) +
+    theme(axis.text.x = element_text(colour = if_else(data_for_plot$text_col == 1, "red", "black"))) +
     labs(
       title = chart_title,
-      y = xaxis_title,
-      x = " ", fill = " ",
+      x = xaxis_title,
+      y = " ",
+      fill = " ",
       caption = "Source: ScotPHO"
     ) +
-    geom_errorbar(aes(ymin = lower_confidence_interval, ymax = upper_confidence_interval),
-      width = 0.2, position = position_dodge(width = 1)
+    geom_errorbar(
+      aes(xmin = lower_confidence_interval, xmax = upper_confidence_interval),
+      width = 0.2,
+      position = position_dodge(width = 1)
     ) #+
   # guides(linetype = "none", shape = "none",  colour = "none",
   #        fill = guide_legend(nrow= 2, byrow=TRUE))
@@ -440,20 +442,21 @@ scotpho_bar_chart_HSCP <- function(data, chart_title, xaxis_title) {
     arrange(area_name)
 
   ggplot(data_for_plot) +
-    aes(x = area_name, fill = area_type, weight = measure) +
+    aes(y = area_name, fill = area_type, weight = measure) +
     geom_bar(colour = "white") +
     scale_fill_manual(values = palette) +
-    coord_flip() +
     theme_profiles() +
-    theme(axis.text.y = element_text(colour = if_else(data_for_plot$text_col == 1, "red", "black"))) +
+    theme(axis.text.x = element_text(colour = if_else(data_for_plot$text_col == 1, "red", "black"))) +
     labs(
       title = chart_title,
-      y = xaxis_title,
-      x = " ", fill = " ",
+      x = xaxis_title,
+      y = " ", fill = " ",
       caption = "Source: ScotPHO"
     ) +
-    geom_errorbar(aes(ymin = lower_confidence_interval, ymax = upper_confidence_interval),
-      width = 0.2, position = position_dodge(width = 1)
+    geom_errorbar(
+      aes(xmin = lower_confidence_interval, xmax = upper_confidence_interval),
+      width = 0.2,
+      position = position_dodge(width = 1)
     ) #+
   # guides(linetype = "none", shape = "none",  colour = "none",
   #        fill = guide_legend(nrow= 2, byrow=TRUE))
@@ -474,79 +477,63 @@ check_missing_data_scotpho <- function(data) {
 
 # Reformat age groups to specific strings shown i.e. add spaces
 age_group_1 <- function(age_group) {
-  ifelse(age_group %in% c("<18", "0-17"), "0 - 17",
-    ifelse(age_group %in% c("18-24", "25-29", "30-34", "35-39", "40-44"), "18 - 44",
-      ifelse(age_group %in% c("45-49", "50-54", "55-59", "60-64"), "45 - 64",
-        ifelse(age_group %in% c("65-69", "70-74"), "65 - 74",
-          ifelse(age_group %in% c("75-79", "80-84", "85-89", "90-94", "95-99", "Over 100", "100+"), "75+", "NA")
-        )
-      )
-    )
+  dplyr::case_match(
+    age_group,
+    c("<18", "0-17") ~ "0 - 17",
+    c("18-24", "25-29", "30-34", "35-39", "40-44") ~ "18 - 44",
+    c("45-49", "50-54", "55-59", "60-64") ~ "45 - 64",
+    c("65-69", "70-74") ~ "65 - 74",
+    c("75-79", "80-84", "85-89", "90-94", "95-99", "Over 100", "100+") ~ "75+",
+    .default = "NA"
   )
 }
 
 # Bin ages in the required size for unscheduled care indicators
 age_group_2 <- function(age) {
-  case_when(
-    between(age, 0, 17) ~ "0 - 17",
-    between(age, 18, 44) ~ "18 - 44",
-    between(age, 45, 64) ~ "45 - 64",
-    between(age, 65, 74) ~ "65 - 74",
+  dplyr::case_when(
+    dplyr::between(age, 0, 17) ~ "0 - 17",
+    dplyr::between(age, 18, 44) ~ "18 - 44",
+    dplyr::between(age, 45, 64) ~ "45 - 64",
+    dplyr::between(age, 65, 74) ~ "65 - 74",
     age >= 75 ~ "75+"
   )
 }
 
-# reformat for financial year # 1
-
-fy <- function(date) {
-  case_when(
-    date %within% interval(dmy(01042012), dmy(31032013)) ~ "2012/13",
-    date %within% interval(dmy(01042013), dmy(31032014)) ~ "2013/14",
-    date %within% interval(dmy(01042014), dmy(31032015)) ~ "2014/15",
-    date %within% interval(dmy(01042015), dmy(31032016)) ~ "2015/16",
-    date %within% interval(dmy(01042016), dmy(31032017)) ~ "2016/17",
-    date %within% interval(dmy(01042017), dmy(31032018)) ~ "2017/18",
-    date %within% interval(dmy(01042018), dmy(31032019)) ~ "2018/19",
-    date %within% interval(dmy(01042019), dmy(31032020)) ~ "2019/20",
-    date %within% interval(dmy(01042020), dmy(31032021)) ~ "2020/21",
-    date %within% interval(dmy(01042021), dmy(31032022)) ~ "2021/22",
-    date %within% interval(dmy(01042022), dmy(31032023)) ~ "2022/23",
-    date %within% interval(dmy(01042023), dmy(31032024)) ~ "2023/24"
-  )
-}
-
-# reformat partnerhsip names # 1
+# reformat partnership names # 1
 
 ptsp <- function(partnership) {
-  recode(partnership,
-    "Borders" = "Scottish Borders",
-    "Orkney" = "Orkney Islands",
-    "Shetland" = "Shetland Islands",
-    "Edinburgh City" = "Edinburgh",
-    "City of Edinburgh" = "Edinburgh",
-    "Perth & Kinross" = "Perth and Kinross",
-    "Clackmannanshire" = "Clackmannanshire and Stirling",
-    "Stirling" = "Clackmannanshire and Stirling",
-    "Na h-Eileanan Siar" = "Western Isles"
+  dplyr::case_match(
+    partnership,
+    "Borders" ~ "Scottish Borders",
+    "Orkney" ~ "Orkney Islands",
+    "Shetland" ~ "Shetland Islands",
+    "Edinburgh City" ~ "Edinburgh",
+    "City of Edinburgh" ~ "Edinburgh",
+    "Perth & Kinross" ~ "Perth and Kinross",
+    "Clackmannanshire" ~ "Clackmannanshire and Stirling",
+    "Stirling" ~ "Clackmannanshire and Stirling",
+    "Na h-Eileanan Siar" ~ "Western Isles",
+    .default = partnership
   )
 }
 
 hbres <- function(hbres_currentdate) {
-  case_when(
-    hbres_currentdate == "S08000015" ~ "NHS Ayrshire & Arran",
-    hbres_currentdate == "S08000016" ~ "NHS Borders",
-    hbres_currentdate == "S08000017" ~ "NHS Dumfries & Galloway",
-    hbres_currentdate == "S08000029" ~ "NHS Fife",
-    hbres_currentdate == "S08000019" ~ "NHS Forth Valley",
-    hbres_currentdate == "S08000020" ~ "NHS Grampian",
-    hbres_currentdate == "S08000031" ~ "NHS Greater Glasgow & Clyde",
-    hbres_currentdate == "S08000022" ~ "NHS Highland",
-    hbres_currentdate == "S08000032" ~ "NHS Lanarkshire",
-    hbres_currentdate == "S08000024" ~ "NHS Lothian",
-    hbres_currentdate == "S08000025" ~ "NHS Orkney",
-    hbres_currentdate == "S08000026" ~ "NHS Shetland",
-    hbres_currentdate == "S08000030" ~ "NHS Tayside",
-    hbres_currentdate == "S08000028" ~ "NHS Western Isles",
-    TRUE ~ "Other"
+  dplyr::case_match(
+    hbres_currentdate,
+    "S08000015" ~ "NHS Ayrshire & Arran",
+    "S08000016" ~ "NHS Borders",
+    "S08000017" ~ "NHS Dumfries & Galloway",
+    "S08000029" ~ "NHS Fife",
+    "S08000019" ~ "NHS Forth Valley",
+    "S08000020" ~ "NHS Grampian",
+    "S08000031" ~ "NHS Greater Glasgow & Clyde",
+    "S08000022" ~ "NHS Highland",
+    "S08000032" ~ "NHS Lanarkshire",
+    "S08000024" ~ "NHS Lothian",
+    "S08000025" ~ "NHS Orkney",
+    "S08000026" ~ "NHS Shetland",
+    "S08000030" ~ "NHS Tayside",
+    "S08000028" ~ "NHS Western Isles",
+    .default = "Other"
   )
 }

@@ -28,8 +28,8 @@ lookup <- read_in_localities()
 HSCP_list <- unique(lookup$hscp2019name)
 
 # Create list of localities in chosen HSCP
-locality_list <- lookup |> 
-  filter(hscp2019name == HSCP) |> 
+locality_list <- lookup |>
+  filter(hscp2019name == HSCP) |>
   pull(hscp_locality)
 
 
@@ -75,7 +75,7 @@ for (LOCALITY in locality_list) {
   source("./Master RMarkdown Document & Render Code/Tables for Appendix.R")
 
   # Remove tidylog package which messes up outputs
-  detach(package:tidylog, unload = TRUE)
+  # detach(package:tidylog, unload = TRUE)
 
   ## 2b) Create the main body of the profiles
 

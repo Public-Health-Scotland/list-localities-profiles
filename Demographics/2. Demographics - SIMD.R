@@ -348,7 +348,7 @@ pop_16_20 <- pop_raw_data %>%
   ungroup() %>%
   mutate(simd_rank_year = if_else(year == 2016, "pop_16", "pop_20")) %>%
   select(-year) %>%
-  spread(simd_rank_year, pop)
+  pivot_wider(names_from = simd_rank_year, values_from = pop)
 
 ## Data wrangling
 simd2016_dom <- simd2016_dom %>%
@@ -492,7 +492,7 @@ other_locs_simd <- pop_data %>%
   filter(simd2020v2_sc_quintile == 1 | simd2020v2_sc_quintile == 5) %>%
   arrange(hscp_locality) %>%
   select(hscp_locality, simd2020v2_sc_quintile, perc) %>%
-  spread(hscp_locality, perc) %>%
+  pivot_wider(names_from = hscp_locality, values_from = perc) %>%
   arrange(desc(simd2020v2_sc_quintile)) %>%
   select(-simd2020v2_sc_quintile)
 

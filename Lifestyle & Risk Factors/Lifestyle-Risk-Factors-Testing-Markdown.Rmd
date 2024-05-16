@@ -45,7 +45,7 @@ y <- 1 # object for table numbers
 
 ### Summary
 
-Mental and physical wellbeing has close ties with people’s lifestyles and behaviours. Financial security, employment and location are influences that often have a bearing on these choices. Issues can develop when alcohol, smoking or drug use shape lives. This section provides data on drug-related hospital admissions, alcohol-related hospital admissions, alcohol-specific deaths and bowel screening uptake, to give an overview of some of the lifestyles and behaviours for `r LOCALITY` locality. These can give an idea of quality of life and prosperity.
+Mental and physical wellbeing has close ties with people's lifestyles and behaviours. Financial security, employment and location are influences that often have a bearing on these choices. Issues can develop when alcohol, smoking or drug use shape lives. This section provides data on drug-related hospital admissions, alcohol-related hospital admissions, alcohol-specific deaths and bowel screening uptake, to give an overview of some of the lifestyles and behaviours for `r LOCALITY` locality. These can give an idea of quality of life and prosperity.
 
 
 \newline

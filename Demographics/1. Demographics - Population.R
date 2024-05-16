@@ -27,7 +27,7 @@ library(broom)
 library(phsstyles)
 
 # Source in global functions/themes script
-#source("./Master RMarkdown Document & Render Code/Global Script.R")
+# source("./Master RMarkdown Document & Render Code/Global Script.R")
 
 ## File path
 filepath <- "./RMarkdown/Locality Profiles/Demographics/"
@@ -82,14 +82,14 @@ pops <- pop_raw_data %>%
 # Aggregate and add partnership + Scotland totals
 pops <- pops %>%
   group_by(year, sex, hscp2019name, hscp_locality) %>%
-  summarise_all(sum) %>%
+  summarise(across(everything(), sum)) %>%
   ungroup() %>%
   # Add a partnership total
   bind_rows(
     pops %>%
       select(-hscp_locality) %>%
       group_by(year, hscp2019name, sex) %>%
-      summarise_all(sum) %>%
+      summarise(across(everything(), sum)) %>%
       ungroup() %>%
       mutate(hscp_locality = "Partnership Total")
   ) %>%
@@ -98,7 +98,7 @@ pops <- pops %>%
     pops %>%
       select(-hscp_locality, -hscp2019name) %>%
       group_by(year, sex) %>%
-      summarise_all(sum) %>%
+      summarise(across(everything(), sum)) %>%
       ungroup() %>%
       mutate(hscp_locality = "Scotland Total", hscp2019name = "Scotland")
   )
@@ -141,27 +141,27 @@ pop_breakdown <- pops %>%
 pop_pyramid <- ggplot(
   pop_breakdown,
   aes(
-    x = factor(Age, levels = unique(pop_breakdown$Age)),
+    y = factor(Age, levels = unique(pop_breakdown$Age)),
     fill = Gender
   )
 ) +
   geom_col(
     data = subset(pop_breakdown, Gender == "Male"),
-    aes(y = Population)
+    aes(x = Population)
   ) +
   geom_col(
     data = subset(pop_breakdown, Gender == "Female"),
-    aes(y = Population * (-1))
+    aes(x = Population * (-1))
   ) +
-  scale_y_continuous(
+  scale_x_continuous(
     labels = abs,
     limits = max(pop_breakdown$Population) * c(-1, 1)
   ) +
-  coord_flip() +
   scale_fill_manual(values = palette) +
   theme_profiles() + # guides(fill = FALSE)
   labs(
-    y = "Population", x = "Age Group",
+    x = "Population",
+    y = "Age Group",
     title = paste0(str_wrap(`LOCALITY`, 50), " population pyramid ", pop_max_year)
   )
 
@@ -436,19 +436,19 @@ other_locs_total_pop <- pops %>%
   ungroup() %>%
   mutate(total_pop = format(total_pop, big.mark = ",")) %>%
   arrange(hscp_locality) %>%
-  spread(hscp_locality, total_pop)
+  pivot_wider(names_from = hscp_locality, values_from = total_pop)
 
 # gender ratio
 other_locs_gender_ratio <- pops %>%
   filter(year == max(year)) %>%
   inner_join(other_locs, by = "hscp_locality") %>%
   select(hscp_locality, sex, total_pop) %>%
-  spread(sex, total_pop) %>%
+  pivot_wider(names_from = sex, values_from = total_pop) %>%
   mutate(ratio = round_half_up(`F` / `M`, 2)) %>%
   mutate(ratio = paste0("1:", ratio)) %>%
   arrange(hscp_locality) %>%
   select(hscp_locality, ratio) %>%
-  spread(hscp_locality, ratio)
+  pivot_wider(names_from = hscp_locality, values_from = ratio)
 
 # over 65 %
 other_locs_over65 <- pops %>%
@@ -459,7 +459,7 @@ other_locs_over65 <- pops %>%
   mutate(over65_percent = round_half_up(over65 / total_pop * 100, 1)) %>%
   arrange(hscp_locality) %>%
   select(hscp_locality, over65_percent) %>%
-  spread(hscp_locality, over65_percent)
+  pivot_wider(names_from = hscp_locality, values_from = over65_percent)
 
 
 ## HSCP objects
