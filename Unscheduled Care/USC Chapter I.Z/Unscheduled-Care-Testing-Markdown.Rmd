@@ -1,0 +1,204 @@
+---
+title: ''
+output:
+  word_document:
+    reference_docx: //conf/LIST_analytics/Orkney/Analysts/CF/IZ_profiles/Master RMarkdown Document & Render Code/Locality_Profiles_Report_Template.docx
+  html_document:
+    df_print: paged
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(kableExtra.auto_format = FALSE)
+
+#Line below for testing only
+LOCALITY <- "Whisky Isles"
+
+# Source in global functions/themes script
+source("/conf/LIST_analytics/Orkney/Analysts/CF/IZ_profiles/Master RMarkdown Document & Render Code/Global Script.R") 
+
+source("/conf/LIST_analytics/Orkney/Analysts/CF/IZ_profiles/Unscheduled Care/2. Unscheduled Care outputs.R")
+
+# - **`r latest_dd_loc`** delayed discharge bed days per 100,000 population aged over 65, compared to `r scot_dd` in Scotland. 
+
+x <- 1 #object for figure numbers
+y <- 1 #object for table numbers
+```
+
+
+## Hospital and Community Care
+
+###Summary
+
+This section includes acute hospital data, delayed discharge bed days and A&E attendances.
+
+**For the most recent time periods available, `r LOCALITY` had:**
+
+ - **`r latest_emergency_adm_loc`** emergency hospital admissions per 100,000 population, compared to `r scot_emergency_adm` in Scotland. 
+ 
+ - **`r latest_bed_days_loc`** unscheduled acute specialty bed days per 100,000 population, compared to `r scot_bed_days` in Scotland.  
+ 
+ - **`r latest_ae_att_loc`** A&E attendances per 100,000 population, compared to `r scot_ae_att` in Scotland. 
+ 
+ - **`r latest_falls_loc`** emergency hospital admissions from falls per 100,000 population aged over 65, compared to `r scot_falls` in Scotland. 
+ 
+ - **`r latest_read_loc`** emergency readmissions (28 day) per 1,000 discharges, compared to `r scot_read` in Scotland. 
+ 
+ - **`r latest_ppa_loc`** potentially preventable hospital admissions per 100,000 population, compared to `r scot_ppa` in Scotland. 
+
+
+#####Pagebreak
+
+### Emergency Admissions
+
+####Figure `r x`: Emergency admissions by geographical area
+\newline
+
+```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = F}
+EAs_loc_ts
+
+x <- x + 1
+```
+
+####Figure `r x`: Emergency admissions by age group
+\newline
+
+```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = F}
+EAs_age_ts
+
+x <- x + 1
+```
+
+##### Page break
+
+### Unscheduled Acute Bed Days
+
+####Figure `r x`: Unscheduled acute bed days by geographical area
+\newline
+
+```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = F}
+BDs_loc_ts
+
+x <- x + 1
+```
+
+####Figure `r x`: Unscheduled acute bed days by age group
+\newline
+
+```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = F}
+BDs_age_ts
+
+x <- x + 1
+```
+
+
+##### Page break
+
+### A&E Attendances
+
+####Figure `r x`: A&E attendances by geographical area
+\newline
+
+```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = F}
+AandE_loc_ts
+
+x <- x + 1
+```
+
+####Figure `r x`: A&E attendances by age group
+\newline
+
+```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = F}
+AandE_age_ts
+
+x <- x + 1
+```
+
+
+##### Page break
+
+### Emergency Readmissions (28 days)
+
+####Figure `r x`: Emergency readmissions (28 days) by geographical area
+\newline
+
+```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = F}
+Read_loc_ts
+
+x <- x + 1
+```
+
+####Figure `r x`: Emergency readmissions (28 days) by age group
+\newline
+
+```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = F}
+Read_age_ts
+
+x <- x + 1
+```
+
+
+##### Page break
+
+### Delayed Discharge Bed Days
+
+####Figure `r x`: Delayed discharge bed days in population aged 65+ by geographical area
+\newline
+
+```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = F}
+#DD_loc_ts
+
+x <- x + 1
+```
+
+### Emergency admissions from a fall
+
+####Figure `r x`: Falls in population aged 65+ by geographical area
+\newline
+
+```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = F}
+Falls_loc_ts
+
+x <- x + 1
+```
+
+
+##### Page break
+
+### Potentially Preventable Admissions (PPAs)
+
+Information conditions included in PPAs is available in Appendix 3. In `r max_fy`, **`r latest_ppa_65plus`%** of PPAs in `r LOCALITY` were amongst those aged 65 and over, and **`r latest_ppa_under65`%** were amongst those aged under 65. 
+
+####Figure `r x`: PPAs by geographical area
+\newline
+
+```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = F}
+PPA_loc_ts
+
+x <- x + 1
+```
+\newline
+
+
+##### Page break
+
+### Unscheduled Mental Health Specialty Bed Days
+
+####Figure `r x`: Unscheduled mental health specialty bed days by geographical area
+\newline
+
+```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = F}
+BDMH_loc_ts
+
+x <- x + 1
+```
+
+####Figure `r x`: Unscheduled mental health specialty bed days by age group
+\newline
+
+```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = F}
+BDMH_age_ts
+
+x <- x + 1
+```
