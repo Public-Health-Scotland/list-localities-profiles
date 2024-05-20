@@ -20,7 +20,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Specify HSCP here
 ## NOTE - make sure that the formatting of the partnership's name matches the lookup
-HSCP <- "Fife"
+HSCP <- "South Lanarkshire"
 
 # Below creates locality list of all the localities in a chosen HSCP
 lookup <- read_in_localities()
@@ -55,41 +55,62 @@ for (LOCALITY in locality_list) {
   ## 2a) Source in all the scripts for a given LOCALITY
 
   # demographics
-  source("Demographics/1. Demographics - Population.R")
-  source("./Demographics/2. Demographics - SIMD.R")
-
-  # housing
-  source("./Households/Households Code.R")
-
-  # services
-  source("./Services/2. Services data manipulation & table.R")
-
-  # general health
-  source("./General Health/3. General Health Outputs.R")
-
-  # lifestyle & risk factors
-  source("./Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
+  # source("Demographics/1. Demographics - Population.R")
+  # source("./Demographics/2. Demographics - SIMD.R")
+  # 
+  # # housing
+  # source("./Households/Households Code.R")
+  # 
+  # # services
+  # source("./Services/2. Services data manipulation & table.R")
+  # 
+  # # general health
+  # source("./General Health/3. General Health Outputs.R")
+  # 
+  # # lifestyle & risk factors
+  # source("./Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
 
   # unscheduled care
   source("./Unscheduled Care/2. Unscheduled Care outputs.R")
 
   # appendices
-  source("./Master RMarkdown Document & Render Code/Tables for Appendix.R")
-
-  # Remove tidylog package which messes up outputs
-  # detach(package:tidylog, unload = TRUE)
-
-  ## 2b) Create the main body of the profiles
-
-  rmarkdown::render("./Master RMarkdown Document & Render Code/Locality_Profiles_Master_Markdown.Rmd",
-    output_file = paste0(LOCALITY, " - Locality Profile.docx"),
-    output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/")
-  )
-
-  ## 2c) Create the summary tables
-  rmarkdown::render("Summary Table/Summary-Table-Markdown.Rmd",
-    output_file = paste0(LOCALITY, " - Summary Table.docx"),
-    output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/Summary Tables/")
+  # source("./Master RMarkdown Document & Render Code/Tables for Appendix.R")
+  # 
+  # # Remove tidylog package which messes up outputs
+  # # detach(package:tidylog, unload = TRUE)
+  # 
+  # ## 2b) Create the main body of the profiles
+  # 
+  # rmarkdown::render("./Master RMarkdown Document & Render Code/Locality_Profiles_Master_Markdown.Rmd",
+  #   output_file = paste0(LOCALITY, " - Locality Profile.docx"),
+  #   output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/")
+  # )
+  # 
+  # ## 2c) Create the summary tables
+  # rmarkdown::render("Summary Table/Summary-Table-Markdown.Rmd",
+  #   output_file = paste0(LOCALITY, " - Summary Table.docx"),
+  #   output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/Summary Tables/")
+  # )
+  
+  list(
+  "Emergency_Admissions" = emergency_adm_areas[emergency_adm_areas$location == LOCALITY,],
+  "Emergency_Admissions_Age " = emergency_adm_age[emergency_adm_age$hscp_locality == LOCALITY,],
+  "Unscheduled_Bed_Days" = bed_days_areas[bed_days_areas$location == LOCALITY,],
+  "Unscheduled_Bed_Days_Age" = bed_days_age[bed_days_age$hscp_locality ==LOCALITY,],
+  "Readmissions" = readmissions_areas[readmissions_areas$location == LOCALITY,],
+  "Readmissions_Age"= readmissions_age,
+  "AE_attendances" = ae_att_areas[ae_att_areas$location == LOCALITY,],
+  "AE_attendances_Age" =  ae_att_age[ae_att_age$hscp_locality ==LOCALITY,],
+  "Delayed_Discharge" =  delayed_disch_areas[delayed_disch_areas$location == LOCALITY,],
+  "Fall_Admissions" = falls_areas[falls_areas$location == LOCALITY,], #Need to add Scotland & HB to this 
+  "Preventable_admission_PPA" = ppa_areas[ppa_areas$location == LOCALITY,]#Need to add Scotland & HB to this
+  ) |> 
+  writexl::write_xlsx(
+    path = fs::path(
+      lp_path,
+      "South_Lan_USC",
+      paste0("emergency_adm_age_", LOCALITY, ".xlsx")
+    )
   )
   
   # Clean up the environment by restoring it to the 'pre-loop' state.
