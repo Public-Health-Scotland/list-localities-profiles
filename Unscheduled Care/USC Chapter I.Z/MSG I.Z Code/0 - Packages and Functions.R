@@ -2,16 +2,15 @@
 
 # Things that might need to be changed each run ----
 
-# The month reporting on, in [a-z]{3}[0-9]{2} format
-reporting_month_string <- "mar22"
 # Earliest date for data presentation
-earliest_date <- lubridate::ymd("2017-04-01")
+earliest_date <- lubridate::make_date(year = 2017, month = 4, day = 01)
 # End of the reporting month in date format
-reporting_month_date <- lubridate::ymd("2022-03-31")
+reporting_month_date <- lubridate::make_date(year = 2023, month = 3, day = 31)
 # Data output folder
-data_folder <- "./Unscheduled Care/MSG Breakdowns IZ/"
-# Folder where your copy of the code is stored
-code_folder <- ""
+lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+data_folder <- file.path(lp_path, "Unscheduled Care/MSG_iz_breakdowns")
+dir.create(data_folder, showWarnings = FALSE, recursive = TRUE)
+
 
 # Packages required for MSG scripts ----
 
@@ -53,14 +52,6 @@ find_latest_file <- function(directory, regexp) {
 
 # Exterior file paths ----
 
-# Indicator 4 breakdowns
-# ind_4_breakdowns <-
-#   fs::path("/conf/LIST_analytics/MSG/2022-10 October/Breakdowns/4-Delayed-Discharge-Breakdowns.rds")
-# Latest MSG template
-# latest_template <-
-# find_latest_file("/conf/irf/03-Integration-Indicators/02-MSG/02-Templates/",
-#                regexp = "Integration-performance-indicators-v\\d\\.\\d+?\\.xlsx"
-# )
 # Locality lookup (searches for most recent)
 locality_lookup_path <-
   find_latest_file("/conf/linkage/output/lookups/Unicode/Geography/HSCP Locality/",
@@ -71,9 +62,6 @@ postcode_lookup_path <-
   find_latest_file("/conf/linkage/output/lookups/Unicode/Geography/Scottish Postcode Directory/",
     regexp = "Scottish_Postcode_Directory_.+?\\.parquet"
   )
-# Indicator 5 location (for dashboard)
-# ind_5_path <-
-#  fs::path("/conf/irf/03-Integration-Indicators/02-MSG/01-Data/05-EoL/Final figures.sav")
 
 # Lookups for template/breakdown data ----
 
@@ -89,7 +77,10 @@ dz_lookup <- readRDS(locality_lookup_path) %>%
   clean_names() %>%
   dplyr::select(ca2019name, ca2011)
 
-council_lookup <- read_csv("/conf/linkage/output/lookups/Unicode/Geography/Scottish Postcode Directory/Codes and Names/Archive/Council Area 2019 Lookup.csv") %>%
+council_lookup <- read_csv(
+  "/conf/linkage/output/lookups/Unicode/Geography/Scottish Postcode Directory/Codes and Names/Archive/Council Area 2019 Lookup.csv",
+  show_col_types = FALSE
+) %>%
   clean_names() %>%
   rename(ca2019 = "council_area2019code")
 
