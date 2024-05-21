@@ -4,7 +4,7 @@
 
 # The month reporting on, in [a-z]{3}[0-9]{2} format
 reporting_month_string <- "mar22"
-# Earliest date for data presentation 
+# Earliest date for data presentation
 earliest_date <- lubridate::ymd("2017-04-01")
 # End of the reporting month in date format
 reporting_month_date <- lubridate::ymd("2022-03-31")
@@ -52,7 +52,7 @@ find_latest_file <- function(directory, regexp) {
     ) %>%
     dplyr::pull(.data$path) %>%
     magrittr::extract(1)
-  
+
   if (!is.na(latest_file_path)) {
     return(latest_file_path)
   } else {
@@ -64,25 +64,25 @@ find_latest_file <- function(directory, regexp) {
 # Exterior file paths ----
 
 # Indicator 4 breakdowns
-ind_4_breakdowns <- 
-  fs::path("/conf/LIST_analytics/MSG/2022-10 October/Breakdowns/4-Delayed-Discharge-Breakdowns.rds")
+# ind_4_breakdowns <-
+#   fs::path("/conf/LIST_analytics/MSG/2022-10 October/Breakdowns/4-Delayed-Discharge-Breakdowns.rds")
 # Latest MSG template
-#latest_template <- 
-  #find_latest_file("/conf/irf/03-Integration-Indicators/02-MSG/02-Templates/",
-   #                regexp = "Integration-performance-indicators-v\\d\\.\\d+?\\.xlsx"
- # )
+# latest_template <-
+# find_latest_file("/conf/irf/03-Integration-Indicators/02-MSG/02-Templates/",
+#                regexp = "Integration-performance-indicators-v\\d\\.\\d+?\\.xlsx"
+# )
 # Locality lookup (searches for most recent)
-locality_lookup_path <- 
+locality_lookup_path <-
   find_latest_file("/conf/linkage/output/lookups/Unicode/Geography/HSCP Locality/",
-                   regexp = "HSCP Localities_DZ11_Lookup_\\d+?\\.rds"
+    regexp = "HSCP Localities_DZ11_Lookup_\\d+?\\.rds"
   )
 # Postcode lookup (searches for most recent)
-postcode_lookup_path <- 
+postcode_lookup_path <-
   find_latest_file("/conf/linkage/output/lookups/Unicode/Geography/Scottish Postcode Directory/",
-                   regexp = "Scottish_Postcode_Directory_.+?\\.rds"
+    regexp = "Scottish_Postcode_Directory_.+?\\.rds"
   )
 # Indicator 5 location (for dashboard)
-#ind_5_path <- 
+# ind_5_path <-
 #  fs::path("/conf/irf/03-Integration-Indicators/02-MSG/01-Data/05-EoL/Final figures.sav")
 
 # Lookups for template/breakdown data ----
@@ -110,12 +110,12 @@ council_lookup <- read_csv("/conf/linkage/output/lookups/Unicode/Geography/Scott
 main_age_groups <- function(dataset, age_variable) {
   agerecoded <-
     dplyr::mutate(dataset,
-                  age_groups = dplyr::case_when(
-                    {{ age_variable }} == "<18" ~ "<18",
-                    {{ age_variable }} %in% c("65-69", "70-74", "75-79", "80-84", "85-89", "90-94", "95-99", "100+") ~ "65+",
-                    {{ age_variable }} %in% c("18-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "60-64") ~ "18-64",
-                    {{ age_variable }} %in% c(999, NA) ~ "Unknown"
-                  )
+      age_groups = dplyr::case_when(
+        {{ age_variable }} == "<18" ~ "<18",
+        {{ age_variable }} %in% c("65-69", "70-74", "75-79", "80-84", "85-89", "90-94", "95-99", "100+") ~ "65+",
+        {{ age_variable }} %in% c("18-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "60-64") ~ "18-64",
+        {{ age_variable }} %in% c(999, NA) ~ "Unknown"
+      )
     )
   return(agerecoded)
 }
@@ -137,27 +137,27 @@ ind_4_ages <- function(dataset, age_groups) {
 # Do not use if you need different age groups.
 five_year_groups <- function(dataset, age_variable) {
   agerecoded <- dplyr::mutate(dataset,
-                              age_groups = dplyr::case_when(
-                                {{ age_variable }} < 18 ~ "<18",
-                                dplyr::between({{ age_variable }}, 18, 24) ~ "18-24",
-                                dplyr::between({{ age_variable }}, 25, 29) ~ "25-29",
-                                dplyr::between({{ age_variable }}, 30, 34) ~ "30-34",
-                                dplyr::between({{ age_variable }}, 35, 39) ~ "35-39",
-                                dplyr::between({{ age_variable }}, 40, 44) ~ "40-44",
-                                dplyr::between({{ age_variable }}, 45, 49) ~ "45-49",
-                                dplyr::between({{ age_variable }}, 50, 54) ~ "50-54",
-                                dplyr::between({{ age_variable }}, 55, 59) ~ "55-59",
-                                dplyr::between({{ age_variable }}, 60, 64) ~ "60-64",
-                                dplyr::between({{ age_variable }}, 65, 69) ~ "65-69",
-                                dplyr::between({{ age_variable }}, 70, 74) ~ "70-74",
-                                dplyr::between({{ age_variable }}, 75, 79) ~ "75-79",
-                                dplyr::between({{ age_variable }}, 80, 84) ~ "80-84",
-                                dplyr::between({{ age_variable }}, 85, 89) ~ "85-89",
-                                dplyr::between({{ age_variable }}, 90, 94) ~ "90-94",
-                                dplyr::between({{ age_variable }}, 95, 99) ~ "95-99",
-                                {{ age_variable }} >= 100 ~ "100+",
-                                {{ age_variable }} == (999 | NA) ~ "Unknown"
-                              )
+    age_groups = dplyr::case_when(
+      {{ age_variable }} < 18 ~ "<18",
+      dplyr::between({{ age_variable }}, 18, 24) ~ "18-24",
+      dplyr::between({{ age_variable }}, 25, 29) ~ "25-29",
+      dplyr::between({{ age_variable }}, 30, 34) ~ "30-34",
+      dplyr::between({{ age_variable }}, 35, 39) ~ "35-39",
+      dplyr::between({{ age_variable }}, 40, 44) ~ "40-44",
+      dplyr::between({{ age_variable }}, 45, 49) ~ "45-49",
+      dplyr::between({{ age_variable }}, 50, 54) ~ "50-54",
+      dplyr::between({{ age_variable }}, 55, 59) ~ "55-59",
+      dplyr::between({{ age_variable }}, 60, 64) ~ "60-64",
+      dplyr::between({{ age_variable }}, 65, 69) ~ "65-69",
+      dplyr::between({{ age_variable }}, 70, 74) ~ "70-74",
+      dplyr::between({{ age_variable }}, 75, 79) ~ "75-79",
+      dplyr::between({{ age_variable }}, 80, 84) ~ "80-84",
+      dplyr::between({{ age_variable }}, 85, 89) ~ "85-89",
+      dplyr::between({{ age_variable }}, 90, 94) ~ "90-94",
+      dplyr::between({{ age_variable }}, 95, 99) ~ "95-99",
+      {{ age_variable }} >= 100 ~ "100+",
+      {{ age_variable }} == (999 | NA) ~ "Unknown"
+    )
   )
   return(agerecoded)
 }
@@ -228,13 +228,12 @@ monthly_beddays <- function(data,
                             earliest_date = NA,
                             latest_date = NA,
                             pivot_longer = TRUE) {
-  
   # Create a vector of years from the first to last
   years <- c(lubridate::year(earliest_date):lubridate::year(latest_date))
-  
+
   # Create a vector of month names
   month_names <- lubridate::month(1:12, label = T)
-  
+
   # Use purrr to create a list of intervals these will be
   # date1 -> date1 + 1 month
   # for every month in the time period we're looking at
@@ -258,14 +257,14 @@ monthly_beddays <- function(data,
       rep(month_names, length(years)),
       "_", sort(rep(years, 12)), "_beddays"
     ))
-  
+
   # Remove any months which are after the latest_date
   month_intervals <- month_intervals[map_lgl(
     month_intervals,
     ~ latest_date > lubridate::int_start(.)
   )]
-  
-  
+
+
   # Use the list of intervals to create new varaibles for each month
   # and work out the beddays
   data <- data %>%
@@ -273,37 +272,39 @@ monthly_beddays <- function(data,
     bind_cols(map_dfc(month_intervals, function(month_interval) {
       # Use intersect to find the overlap between the month of interest
       # and the stay, then use time_length to measure the length in days
-      time_length(intersect(
-        # use int_shift to move the interval forward by one day
-        # This is so we count the last day (and not the first), which is
-        # the correct methodology
-        int_shift(interval(
-          data %>%
-            pull(admission_date),
-          data %>%
-            pull(discharge_date)
+      time_length(
+        intersect(
+          # use int_shift to move the interval forward by one day
+          # This is so we count the last day (and not the first), which is
+          # the correct methodology
+          int_shift(
+            interval(
+              data %>%
+                pull(admission_date),
+              data %>%
+                pull(discharge_date)
+            ),
+            by = days(1)
+          ),
+          month_interval
         ),
-        by = days(1)
-        ),
-        month_interval
-      ),
-      unit = "days"
+        unit = "days"
       )
     }))
-  
+
   names(month_intervals) <- stringr::str_replace(
     names(month_intervals),
     "_beddays", "_admissions"
   )
-  
+
   data <- data %>%
     # map_dfc will return a single dataframe with all the others bound by column
     bind_cols(map_dfc(month_intervals, function(month_interval) {
       if_else(data %>%
-                pull(discharge_date) %>%
-                floor_date(unit = "month") == int_start(month_interval),
-              1L,
-              NA_integer_
+        pull(discharge_date) %>%
+        floor_date(unit = "month") == int_start(month_interval),
+      1L,
+      NA_integer_
       )
     }))
   # Default behaviour
@@ -321,7 +322,7 @@ monthly_beddays <- function(data,
         names_ptypes = list(
           month = factor(
             levels = as.vector(lubridate::month(1:12,
-                                                label = TRUE
+              label = TRUE
             )),
             ordered = TRUE
           ),
@@ -333,6 +334,6 @@ monthly_beddays <- function(data,
         values_drop_na = TRUE
       )
   }
-  
+
   return(data)
 }

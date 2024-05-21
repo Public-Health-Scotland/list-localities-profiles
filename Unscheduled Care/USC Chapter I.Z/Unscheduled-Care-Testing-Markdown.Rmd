@@ -12,18 +12,18 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 options(kableExtra.auto_format = FALSE)
 
-#Line below for testing only
+# Line below for testing only
 LOCALITY <- "Whisky Isles"
 
 # Source in global functions/themes script
-source("/conf/LIST_analytics/Orkney/Analysts/CF/IZ_profiles/Master RMarkdown Document & Render Code/Global Script.R") 
+source("/conf/LIST_analytics/Orkney/Analysts/CF/IZ_profiles/Master RMarkdown Document & Render Code/Global Script.R")
 
 source("/conf/LIST_analytics/Orkney/Analysts/CF/IZ_profiles/Unscheduled Care/2. Unscheduled Care outputs.R")
 
-# - **`r latest_dd_loc`** delayed discharge bed days per 100,000 population aged over 65, compared to `r scot_dd` in Scotland. 
+# - **`r latest_dd_loc`** delayed discharge bed days per 100,000 population aged over 65, compared to `r scot_dd` in Scotland.
 
-x <- 1 #object for figure numbers
-y <- 1 #object for table numbers
+x <- 1 # object for figure numbers
+y <- 1 # object for table numbers
 ```
 
 
@@ -147,7 +147,7 @@ x <- x + 1
 \newline
 
 ```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = F}
-#DD_loc_ts
+# DD_loc_ts
 
 x <- x + 1
 ```
