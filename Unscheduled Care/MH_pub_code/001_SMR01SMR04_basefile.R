@@ -80,7 +80,7 @@ future_date <- "2029-01-01"
 # set it up so that a pop up appears to enter user name and password
 suppressWarnings(channel <- dbConnect(odbc(),
   dsn = "SMRA",
-  uid = .rs.askForPassword("SMRA Username:"),
+  uid = Sys.getenv("USER"),
   pwd = .rs.askForPassword("SMRA Password:")
 ))
 

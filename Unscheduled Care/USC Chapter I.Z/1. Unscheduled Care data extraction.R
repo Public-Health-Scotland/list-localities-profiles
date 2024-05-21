@@ -215,7 +215,7 @@ channel <- suppressWarnings(
   dbConnect(
     drv = odbc::odbc(),
     dsn = "SMRA",
-    uid = rstudioapi::showPrompt(title = "Username", message = "Username:"),
+    uid = Sys.getenv("USER"),
     pwd = .rs.askForPassword("What is your LDAP password?"),
     port = "1527",
     host = "nssstats01.csa.scot.nhs.uk",

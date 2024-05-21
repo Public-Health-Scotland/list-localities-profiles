@@ -17,7 +17,7 @@ last_date <- reporting_month_date
 channel <- suppressWarnings(
   dbConnect(odbc(),
     dsn = "SMRA",
-    uid = .rs.askForPassword("What is your user ID?"),
+    uid = Sys.getenv("USER"),
     pwd = .rs.askForPassword("What is your LDAP password?")
   )
 )
@@ -130,7 +130,7 @@ list_output <- smr01_final %>%
   summarise(admissions = sum(admissions)) %>%
   rename(council = "council_area2019name", intzone2011 = "intzone2011", month = "month_year") %>%
   ungroup() %>%
-  tibble::as.tibble() %>%
+  tibble::as_tibble() %>%
   mutate(
     age_group = as.character(age_group),
     month = dmy(month)

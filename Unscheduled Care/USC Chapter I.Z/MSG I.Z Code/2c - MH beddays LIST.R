@@ -17,7 +17,7 @@ last_date <- reporting_month_date
 channel <- suppressWarnings(
   dbConnect(odbc(),
     dsn = "SMRA",
-    uid = .rs.askForPassword("What is your user ID?"),
+    uid = Sys.getenv("USER"),
     pwd = .rs.askForPassword("What is your LDAP password?")
   )
 )
