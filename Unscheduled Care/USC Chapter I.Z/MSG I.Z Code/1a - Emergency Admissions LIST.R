@@ -137,7 +137,4 @@ list_output <- smr01_final %>%
   )
 
 # Save LIST breakdown file
-# Take your pick of format
-# write_sav(list_final, path(data_folder, "1a-Admissions-breakdown.sav"), compress = TRUE)
-# write_rds(list_final, path(data_folder, "1a-Admissions-breakdown.rds"), compress = "gz")
 arrow::write_parquet(list_output, path(data_folder, "1a-Admissions-breakdown.parquet"))

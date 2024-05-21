@@ -237,6 +237,4 @@ list_output <- beddays %>%
   mutate(age_group = as.character(age_group))
 
 # save LIST output
-# write_sav(list_output, path(data_folder, "2c-MH-Beddays-breakdown.sav"), compress = TRUE)
-# write_rds(list_output, path(data_folder, "2c-MH-Beddays-breakdown.rds"), compress = "gz")
 arrow::write_parquet(list_output, path(data_folder, "2c-MH-Beddays-breakdown.parquet"))

@@ -16,7 +16,6 @@ code_folder <- ""
 # Packages required for MSG scripts ----
 
 library(odbc) # connecting to SMRA
-library(haven) # reading & writing .sav files
 library(here)
 library(tidyverse) # data manipulation etc.
 library(janitor) # tidy up names
@@ -27,8 +26,6 @@ library(lubridate) # working with dates
 library(openxlsx) # reading & writing excel files
 library(tidylog) # detailed output
 library(glue) # combining text
-library(fst) # fast data frame storage
-library(labelled) # manipulation of metadata
 library(fs)
 library(purrr) # mapping functions
 library(readxl)

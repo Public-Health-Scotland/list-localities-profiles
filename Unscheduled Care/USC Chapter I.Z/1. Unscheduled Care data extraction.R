@@ -26,8 +26,6 @@ library(lubridate)
 library(scales)
 library(broom)
 library(reshape2)
-library(haven)
-library(fst)
 library(odbc)
 
 ## Functions
