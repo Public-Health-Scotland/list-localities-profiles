@@ -40,6 +40,9 @@ locality_list <- lookup |>
   filter(hscp2019name == HSCP) |>
   pull(hscp_locality)
 
+# We don't want to create a profile doc for 'other areas'
+locality_list <- locality_list[locality_list != "Other areas"]
+
 
 ## Loop to create the profiles for all the localities in the list
 
