@@ -26,6 +26,7 @@ library(fs)
 library(readxl)
 library(writexl)
 library(phsmethods)
+library(arrow)
 
 find_latest_file <- function(directory, regexp) {
   latest_file_path <-
@@ -68,7 +69,7 @@ locality_lookup_path <-
 # Postcode lookup (searches for most recent)
 postcode_lookup_path <-
   find_latest_file("/conf/linkage/output/lookups/Unicode/Geography/Scottish Postcode Directory/",
-    regexp = "Scottish_Postcode_Directory_.+?\\.rds"
+    regexp = "Scottish_Postcode_Directory_.+?\\.parquet"
   )
 # Indicator 5 location (for dashboard)
 # ind_5_path <-
@@ -76,9 +77,8 @@ postcode_lookup_path <-
 
 # Lookups for template/breakdown data ----
 
-postcode_lookup <- readRDS(postcode_lookup_path) %>%
-  clean_names() %>%
-  dplyr::select(ca2019, hb2019, datazone2011, pc7) %>%
+postcode_lookup <- read_parquet(postcode_lookup_path,
+                                col_select = c(ca2019, hb2019, datazone2011, pc7)) %>%
   rename(dr_postcode = "pc7")
 
 locality_lookup <- readRDS(locality_lookup_path) %>%
