@@ -16,24 +16,16 @@ code_folder <- ""
 # Packages required for MSG scripts ----
 
 library(odbc) # connecting to SMRA
-library(here)
 library(tidyverse) # data manipulation etc.
 library(janitor) # tidy up names
 library(magrittr) # for double pipe operator
 library(data.table)
 library(dtplyr) # Use lazy data tables for quick aggregation
-library(lubridate) # working with dates
-library(openxlsx) # reading & writing excel files
-library(tidylog) # detailed output
 library(glue) # combining text
 library(fs)
-library(purrr) # mapping functions
 library(readxl)
 library(writexl)
-library(readr) # Reading of *.rds files
-library(stringr) # String manipulation
 library(phsmethods)
-library(tictoc)
 
 find_latest_file <- function(directory, regexp) {
   latest_file_path <-
