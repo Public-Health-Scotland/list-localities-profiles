@@ -47,22 +47,26 @@ localities <- read_in_localitiesiz(dz_level = T)
 
 ########################## SECTION 2: MSG Data ###############################
 
-# Read in MSG data
-msg_emerg_adm_raw <- arrow::read_parquet("./Unscheduled Care/MSG Breakdowns IZ/1a-Admissions-breakdown.parquet")
+# Set data paths
+msg_emerg_adm_raw <- path(lp_path, "Unscheduled Care/MSG_iz_breakdowns/1a-Admissions-breakdown.parquet")
+stopifnot(file_exists(msg_emerg_adm_raw))
 
-msg_beddays_raw <- arrow::read_parquet("./Unscheduled Care/MSG Breakdowns IZ/2a-Acute-Beddays-breakdown.parquet")
+msg_beddays_raw <- path(lp_path, "Unscheduled Care/MSG_iz_breakdowns/2a-Acute-Beddays-breakdown.parquet")
+stopifnot(file_exists(msg_beddays_raw))
 
-msg_ae_raw <- arrow::read_parquet("./Unscheduled Care/MSG Breakdowns IZ/3-A&E-Breakdowns.parquet")
+msg_ae_raw <- path(lp_path, "Unscheduled Care/MSG_iz_breakdowns/3-A&E-Breakdowns.parquet")
+stopifnot(file_exists(msg_ae_raw))
 
 # msg_dd_raw <- arrow::read_parquet("./Unscheduled Care/MSG Breakdowns IZ/4-Delayed-Discharge-Breakdowns.parquet")
 
-msg_mh_beddays_raw <- arrow::read_parquet("./Unscheduled Care/MSG Breakdowns IZ/2c-MH-Beddays-breakdown.parquet")
+msg_mh_beddays_raw <- path(lp_path, "Unscheduled Care/MSG_iz_breakdowns/2c-MH-Beddays-breakdown.parquet")
+stopifnot(file_exists(msg_mh_beddays_raw))
 
 
 # 1. Emergency Admissions ----
 # _________________________________________________________________________
 
-msg_emergency_adm <- msg_emerg_adm_raw %>%
+msg_emergency_adm <- read_parquet(msg_emerg_adm_raw) %>%
   mutate(age_group = age_group_1(age_group)) %>%
   mutate(financial_year = fy(month)) %>%
   # mutate(hscp_locality = gsub("&", "and", locality)) %>%
@@ -78,7 +82,7 @@ msg_emergency_adm <- msg_emerg_adm_raw %>%
 # 2a. Unscheduled bed days ----
 # _________________________________________________________________________
 
-msg_bed_days <- msg_beddays_raw %>%
+msg_bed_days <- read_parquet(msg_beddays_raw) %>%
   mutate(age_group = age_group_1(age_group)) %>%
   mutate(financial_year = fy(month)) %>%
   # mutate(hscp_locality = gsub("&", "and", locality)) %>%
@@ -94,7 +98,7 @@ msg_bed_days <- msg_beddays_raw %>%
 # 2b. Unscheduled bed days - Mental Health ----
 # _________________________________________________________________________
 
-msg_bed_days_mh <- msg_mh_beddays_raw %>%
+msg_bed_days_mh <- read_parquet(msg_mh_beddays_raw) %>%
   mutate(age_group = age_group_1(age_group)) %>%
   mutate(financial_year = fy(month)) %>%
   # mutate(hscp_locality = gsub("&", "and", locality)) %>%
@@ -110,7 +114,7 @@ msg_bed_days_mh <- msg_mh_beddays_raw %>%
 # 3. A&E Attendances ----
 # _________________________________________________________________________
 
-msg_ae <- msg_ae_raw %>%
+msg_ae <- read_parquet(msg_ae_raw) %>%
   select(-locality) |>
   mutate(age_group = age_group_1(age_group)) %>%
   mutate(financial_year = fy(month)) %>%
