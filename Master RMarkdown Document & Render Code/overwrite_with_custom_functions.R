@@ -44,7 +44,7 @@ summarise_iz_to_locality <- function(data, iz_lookup) {
   }
 
   new_data <- data |>
-    filter(area_type == "HSC locality") |>
+    filter(area_type %in% c("HSC locality","Scotland","HSC partnership","Health board")) |>
     bind_rows(locality_data)
 
   return(new_data)
@@ -61,3 +61,4 @@ clean_scotpho_dat <- function(data) {
       area_type = if_else(area_type == "HSC locality", "Locality", area_type)
     )
 }
+
