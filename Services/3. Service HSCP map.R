@@ -18,38 +18,41 @@
 library(tidyverse)
 library(readxl)
 library(janitor)
-library(leaflet)
 library(dplyr)
 library(htmlwidgets)
-# library(mapview)
 library(knitr)
 library(gridExtra)
 library(grid)
 library(data.table)
+library(sf)
+library(ggrepel)
+library(ggmap)
 
 ## Select HCSP (for testing only)
-# HSCP <- "Aberdeenshire"
+#HSCP <- "Aberdeenshire"
 
 ## Set file path
-# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+
+#lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 # Source in functions code (for testing only)
-# source("Master RMarkdown Document & Render Code/Global Script.R")
+#source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Select a locality based on the HSCP (for source code "2. Services Outputs" to run - it does not matter which one is chosen)
-LOCALITY <- as.character(filter(read_in_localities(), hscp2019name == HSCP)[1, 1])
+#LOCALITY <- as.character(filter(read_in_localities(), hscp2019name == HSCP)[1, 1])
 
 # Source the data manipulation script for services
-source("Services/2. Services data manipulation & table.R")
+#source("Services/2. Services data manipulation & table.R")
 
 
 ###### 5. Read in locality shape files ######
 
 shp <- sf::read_sf("/conf/linkage/output/lookups/Unicode/Geography/Shapefiles/HSCP Locality (Datazone2011 Base)/HSCP_Locality.shp")
-shp <- sf::st_transform(shp, 4326)
+shp <- sf::st_transform(shp, 4326) %>%
+  select(hscp_local, HSCP_name, Shape_Leng, Shape_Area, geometry)
 
 shp <- shp |>
-  dplyr::mutate(hscp_locality = gsub("&", "and", HSCP_Local)) |>
+  dplyr::mutate(hscp_locality = gsub("&", "and", hscp_local)) |>
   merge(lookup2, by = "hscp_locality")
 
 shp_hscp <- shp |>
@@ -60,84 +63,102 @@ shp_hscp <- shp |>
 # Create colour palettes for different numbers of localities
 
 if (n_loc < 5) {
-  col_palette <- c("dodgerblue2", "deeppink2", "purple", "navy")
+  col_palette <- c("#3F3685", "#9B4393", "#0078D4", "#83BB26")
 } else if (n_loc %in% c(5, 6)) {
-  col_palette <- c("dodgerblue2", "deeppink2", "purple", "navy", "forestgreen", "darksalmon")
+  col_palette <- c("#3F3685", "#9B4393", "#0078D4", "#83BB26", "#948DA3", "#1E7F84")
 } else if (n_loc == 7) {
-  col_palette <- c("deeppink2", "navy", "forestgreen", "darksalmon", "dodgerblue2", "purple", "cadetblue")
+  col_palette <- c("#3F3685", "#9B4393", "#0078D4", "#83BB26", "#948DA3", "#1E7F84", "#6B5C85")
 } else if (n_loc == 8) {
-  col_palette <- c("forestgreen", "dodgerblue2", "deeppink2", "cadetblue", "darksalmon", "purple", "olivedrab3", "navy")
+  col_palette <- c("#3F3685", "#9B4393", "#0078D4", "#83BB26", "#948DA3", "#1E7F84", "#6B5C85", "#C73918")
 } else if (n_loc == 9) {
-  col_palette <- c("dodgerblue2", "deeppink2", "cadetblue", "darksalmon", "purple", "forestgreen", "olivedrab3", "navy", "orchid3")
+  col_palette <- c("#3F3685", "#9B4393", "#0078D4", "#83BB26", "#948DA3", "#1E7F84", "#6B5C85", "#C73918", "orchid3")
 }
 
 
 
-loc.cols <- colorFactor(col_palette, shp_hscp$hscp_locality)
+#Get latitude and longitdue co-ordinates for each datazone, find min and max.
+zones_coord <-
+  shp_hscp %>%
+  sf::st_coordinates() %>%
+  as_tibble() %>%
+  select("long" = X, "lat" = Y) %>%
+  summarise(min_long = min(long),
+            max_long = max(long),
+            min_lat = min(lat),
+            max_lat = max(lat))
 
-loc.cols(shp_hscp$hscp_locality)
-## Create function for adding circle markers
-addLegendCustom <- function(map, colors, labels, sizes, opacity = 1) {
-  colorAdditions <- paste0(colors, "; border-radius: 50%; width:", sizes, "px; height:", sizes, "px")
-  labelAdditions <- paste0(
-    "<div style='display: inline-block;height: ",
-    sizes, "px;margin-top: 4px;line-height: ", sizes, "px;'>",
-    labels, "</div>"
-  )
+#Get min and max longitude for locality, add a 0.01 extra to add a border to map.
+min_long <- zones_coord$min_long -0.01
+max_long <- zones_coord$max_long +0.01
+min_lat <- zones_coord$min_lat -0.01
+max_lat <- zones_coord$max_lat +0.01
 
-  return(addLegend(map,
-    colors = colorAdditions,
-    labels = labelAdditions, opacity = opacity
-  ))
-}
+#get datazones in HSCP
+hscp_loc <- read.csv("/conf/linkage/output/lookups/Unicode/Geography/HSCP Locality/HSCP Localities_DZ11_Lookup_20230804.csv") %>%
+  select(datazone2011, hscp2019name) %>%
+  filter(hscp2019name == HSCP)
 
-## Create Map
-service_map <-
-  leaflet(shp_hscp) %>%
-  addProviderTiles(providers$OpenStreetMap) %>%
-  # Locality shapefiles
-  addPolygons(
-    # data = shp_hscp,
-    fillColor = ~ loc.cols(shp_hscp$hscp_locality),
-    fillOpacity = 0.5,
-    color = "#2e2e30",
-    stroke = T,
-    weight = 2,
-    label = ~hscp_locality,
-    group = "Locality"
-  ) %>%
-  addLegend("bottomright", pal = loc.cols, values = shp_hscp$hscp_locality, title = "Locality", opacity = 0.7, group = "Locality") %>%
-  # Markers
-  addCircleMarkers(
-    lng = markers_care_home$longitude, lat = markers_care_home$latitude, group = "Care Home",
-    color = "black", radius = 3.5, weight = 1, opacity = 1, fillOpacity = 1, fillColor = "#c9c9c9"
-  ) %>%
-  addCircleMarkers(
-    lng = markers_gp$longitude, lat = markers_gp$latitude, group = "GP practices",
-    color = "black", radius = 3.5, weight = 1, opacity = 1, fillOpacity = 1, fillColor = "red"
-  ) %>%
-  addCircleMarkers(
-    lng = markers_emergency_dep$longitude, lat = markers_emergency_dep$latitude, group = "Emergency departments",
-    color = "black", radius = 3.5, weight = 1, opacity = 1, fillOpacity = 1, fillColor = "gold"
-  ) %>%
-  addCircleMarkers(
-    lng = markers_miu$longitude, lat = markers_miu$latitude, group = "MIU",
-    color = "black", radius = 3.5, weight = 1, opacity = 1, fillOpacity = 1, fillColor = "chartreuse"
-  ) %>%
-  # Custom markers legend
-  addLegendCustom(colors = "red", labels = "GP practices", sizes = 10) %>%
-  addLegendCustom(colors = "#c9c9c9", labels = "Care Home", sizes = 10) %>%
-  addLegendCustom(colors = "gold", labels = "ED", sizes = 10) %>%
-  addLegendCustom(colors = "chartreuse", labels = "MIU", sizes = 10)
+# get place names
+places <- read_csv(paste0("/conf/linkage/output/lookups/Unicode/Geography/",
+                          "Shapefiles/Scottish Places/Places to Data",
+                          " Zone Lookup.csv")) %>%
+  rename(datazone2011 = DataZone) %>%
+  filter(datazone2011 %in% hscp_loc$datazone2011) %>%
+  #extra filter to remove place names with coordinates outwith locality
+  filter(Longitude >= min_long & Longitude <= max_long &
+           Latitude >= min_lat & Latitude <= max_lat) %>%
+  group_by(name) %>%
+  dplyr::summarise(Longitude = first(Longitude),
+                   Latitude = first(Latitude),
+                   type = first(type)) %>%
+  st_as_sf(coords = c("Longitude","Latitude"), remove = FALSE, crs = 4326) %>%
+  filter(!grepl('_', name)) %>% #filter incorrect name types and remove smaller places
+  filter(type != "hamlet" & type != "village")
 
+#get map background from stadia maps, enter registration key, filter for max and min long/lat
+ggmap::register_stadiamaps("9df464d8-f4b5-4211-b5e7-8277403f7935")
+service_map2 <- get_stadiamap(bbox = c(min_long, min_lat,
+                                       max_long, max_lat),
+                              maptype="stamen_terrain_background")
 
-## Screenshot the map
-# It gets saved in the Services folder and inserted in the R Markdown document
-# Every time the R Markdown is run, the previous map is overwritten.
-# mapshot(service_map, file = paste0(lp_path, "/Services/map.png"))
+ggmap(service_map2)
 
-# htmlwidgets::saveWidget(service_map, "./Services/service_map.html")
+#check if services markers exist for locality
+gp <- nrow(markers_gp)
+ch <- nrow(markers_care_home)
+ed <- nrow(markers_emergency_dep)
+miu <- nrow(markers_miu)
 
+#add locality polygons and service markers to map
+service2 <- ggmap(service_map2) +
+  geom_sf(data = shp_hscp, mapping = aes(fill = hscp_local), colour = "black", alpha = 0.5, inherit.aes = FALSE) +
+  labs(fill = 'Locality')
+if (gp > 0) {service2 <- service2 + geom_point(data = markers_gp, aes(x = longitude, y = latitude, colour = "GP Practice"), size = 2,shape = 21, stroke = 0.5,
+                                               fill = "red")}
+if (ch > 0) {service2 <- service2 + geom_point(data = markers_care_home, aes(x = longitude, y = latitude, colour = "Care Home"), size = 2, shape = 22, stroke = 0.5,
+                                               fill = "yellow")}
+if (ed > 0) {service2 <- service2 + geom_point(data = markers_emergency_dep, aes(x = longitude, y = latitude, colour = "Emergency Department"), size = 2, shape = 23, stroke = 0.5,
+                                               fill = "blue")}
+if (miu > 0) {service2 <- service2 + geom_point(data = markers_miu, aes(x = longitude, y = latitude, colour = "Minor Injury Unit"), size = 2, shape = 24, stroke = 0.5,
+                                                fill = "green")}
+#create final service map
+service_map <- service2 +
+  scale_color_manual(values = c("GP Practice" = "black", "Care Home" = "black", "Emergency Department" = "black",
+                                "Minor Injury Unit" = "black")) +
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values = col_palette) +
+  geom_text_repel(data = places, aes(x = Longitude, y = Latitude,
+                                     label = name),
+                  color = "black", size = 3.5,
+                  max.overlaps = getOption("ggrepel.max.overlaps", default = 18)) +
+  theme(axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank(),
+        rect = element_blank(),
+        axis.title.y=element_blank(),
+        axis.title.x=element_blank()) +
+  labs(caption = "Source: ScotPHO, Public Health Scotland")
+#plot(service_map)
 
 # remove unnecessary objects
 rm(
