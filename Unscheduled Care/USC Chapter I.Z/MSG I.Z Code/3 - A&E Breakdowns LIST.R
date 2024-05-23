@@ -52,7 +52,7 @@ iz_lkp <- read_in_localitiesiz2(dz_level = T)
 # temp_ae <- bind_rows(old_admissions, new_admissions) %>%
 temp_ae <- admissions %>%
   # Get locality names
-  left_join(., iz_lkp, by = c("datazone2011")) %>%
+  left_join(iz_lkp, by = c("datazone2011")) %>%
   # Define empty localities as unknown
   mutate(hscp_locality = replace_na(hscp_locality, "Unknown")) %>%
   relocate(hscp_locality, .before = datazone2011) %>%
@@ -78,6 +78,4 @@ final_output <- temp_ae %>%
   mutate(age_group = if_else(is.na(age_group), "", age_group))
 
 # save out R breakdown file
-# write_rds(final_output, "Data/3-A&E-Breakdowns.rds", compress = "gz")
-
-arrow::write_parquet(final_output, path(data_folder, "3-A&E-Breakdowns.parquet"))
+write_parquet(final_output, path(data_folder, "3-A&E-Breakdowns.parquet"))
