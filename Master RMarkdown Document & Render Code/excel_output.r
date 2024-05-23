@@ -149,7 +149,9 @@ SDC <- list( #"Long_Term_Conditions" = ltc[ltc$hscp_locality == LOCALITY,],
 "Fall_Admissions" = falls_areas[falls_areas$location == LOCALITY,], 
 "MH_bed_days" = bed_days_mh_areas[bed_days_mh_areas$location == LOCALITY,],
 "bed_days_mh_age" =  bed_days_mh_age[bed_days_mh_age$hscp_locality ==LOCALITY,])
+) 
 
+#write function or loop to check and flag small numbers in each dataframe 
 
 
 
