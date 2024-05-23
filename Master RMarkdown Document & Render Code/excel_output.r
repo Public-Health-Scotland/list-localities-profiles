@@ -119,67 +119,42 @@ for (LOCALITY in locality_list) {
     excel_output[[i]] <- rbind(excel_output[[i]], output) #append(excel_output[[i]], output)
     
   }
- 
+
   
 }
 
+wb <- openxlsx::createWorkbook()
 
-writexl::write_excel(
-  x = append(
-    list("Index" = tibble(Sheet_name = names(df))),
-    df
-  ),
-  path = "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/background data/output.xlsx"
-)
+names(excel_output) <- names(df)
+
+excel_names <- names(df)
 
 
 
-#SDC Check 
+# Loop over each combined dataframe
+for (i in seq_along(excel_output)) {
+  # Get the current combined dataframe
+  output <- excel_output[[i]]
+  
+  # Get the dataframe name
+  dataframe_name <-  excel_names[[i]]
+  
+  # Create a new sheet with the dataframe name as the sheet name
+  openxlsx::addWorksheet(wb, sheetName = dataframe_name)
+  
+  # Write the combined dataframe to the current sheet
+  openxlsx::writeData(wb, sheet = dataframe_name, x = output)
+}
 
-SDC <- list( #"Long_Term_Conditions" = ltc[ltc$hscp_locality == LOCALITY,],
-"Emergency_Admissions" = emergency_adm_areas[emergency_adm_areas$location == LOCALITY,],
-"Emergency_Admissions_Age " = emergency_adm_age[emergency_adm_age$hscp_locality == LOCALITY,],
-"Unscheduled_Bed_Days" = bed_days_areas[bed_days_areas$location == LOCALITY,],
-"Unscheduled_Bed_Days_Age" = bed_days_age[bed_days_age$hscp_locality ==LOCALITY,],
-"Readmissions" = readmissions_areas[readmissions_areas$location == LOCALITY,],
-"Readmissions_Age"= readmissions_age,
-"AE_attendances" = ae_att_areas[ae_att_areas$location == LOCALITY,],
-"AE_attendances_Age" =  ae_att_age[ae_att_age$hscp_locality ==LOCALITY,],
-"Delayed_Discharge" =  delayed_disch_areas[delayed_disch_areas$location == LOCALITY,],
-"Fall_Admissions" = falls_areas[falls_areas$location == LOCALITY,], 
-"MH_bed_days" = bed_days_mh_areas[bed_days_mh_areas$location == LOCALITY,],
-"bed_days_mh_age" =  bed_days_mh_age[bed_days_mh_age$hscp_locality ==LOCALITY,])
-) 
+index_data <- data.frame(Sheet_name = excel_names)
 
-#write function or loop to check and flag small numbers in each dataframe 
+excel_output <- c(index_data, excel_output)
+
+openxlsx::addWorksheet(wb, sheetName = "Index")
+
+openxlsx::writeData(wb, sheet = 'Index', x = index_data)
 
 
+# Save the workbook to a file
+openxlsx::saveWorkbook(wb, "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/background data/output.xlsx", overwrite = TRUE)
 
-
-# housing
-#source("./Households/Households Code.R")
-
-# services
-# source("./Services/2. Services data manipulation & table.R")
-
-# general health
-# source("./General Health/3. General Health Outputs.R")
-
-# lifestyle & risk factors
-# source("./Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
-
-# unscheduled care
-# source("./Unscheduled Care/2. Unscheduled Care outputs.R")
-
-# Remove tidylog package which messes up outputs
-#detach(package:tidylog, unload = TRUE)
-
-# Define data frames and their corresponding sheet names
-
-## 2b) save and append to master excel output 
-
-#append_to_master_excel("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/background data/Data Demographics.xlsx", demo_list)
-##add front end function
-##tidy up file path, or function for creating workbook 
-##use readxl::readsheets 
-#existing_data <- openxlsx::getSheetNames("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/background data/Data Demographics.xlsx")
