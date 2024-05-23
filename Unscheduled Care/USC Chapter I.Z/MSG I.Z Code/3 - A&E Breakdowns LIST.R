@@ -60,9 +60,6 @@ temp_ae <- admissions %>%
   mutate(month = dmy(glue("01-{month_num}-{cal_year}"))) %>%
   select(month, council, age_group, ref_source, area_treated, location, location_name, hscp_locality, intzone2011, attendances, admissions, number_meeting_target)
 
-# save out temp file
-arrow::write_parquet(temp_ae, path(data_folder, "A&E_temp.rds"))
-
 # aggregate to get breakdown file
 final_output <- temp_ae %>%
   # Convert to lazy data table for quick aggregate

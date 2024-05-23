@@ -63,8 +63,6 @@ lookup <- admissions |>
   select(datazone2011, intzone_2011) |>
   unique()
 
-# Save temp file
-arrow::write_parquet(admissions, path(data_folder, "SMR01E_temp.parquet"))
 
 # Calculate beddays - run beddays function to count days based on month
 beddays <- admissions %>%
@@ -81,8 +79,6 @@ beddays <- admissions %>%
   # rename columns
   rename(council = "council_area2019name", age = "age_in_years", intzone2011 = "intzone_2011")
 
-# Save temp file
-arrow::write_parquet(beddays, path(data_folder, "SMR01E_temp_beddays.parquet"))
 
 #### 5. LIST breakdown file ----
 

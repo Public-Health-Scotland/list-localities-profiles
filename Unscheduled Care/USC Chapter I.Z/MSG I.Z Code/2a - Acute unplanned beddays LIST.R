@@ -81,10 +81,6 @@ smr01_final <- as_tibble(smr_table) %>%
   left_join(locality_lookup, by = "datazone2011") %>%
   left_join(council_lookup, by = "ca2019")
 
-# save temp file
-arrow::write_parquet(smr01_final, path(data_folder, "SMR01_temp_ep.parquet"))
-
-# smr01_final <- arrow::read_parquet("./Unscheduled Care/MSG Breakdowns IZ/SMR01_temp_ep.parquet")
 
 # remove working files
 rm(smr01_extract, smr_cis, smr_dt, smr_table)

@@ -93,8 +93,6 @@ smr01_final <- as.data.frame(smr_table) %>%
   # format month variable
   mutate(month_year = format(discharge_date, "%b-%y"))
 
-# Save temp output
-arrow::write_parquet(smr01_final, path(data_folder, "SMR01_temp.parquet"))
 
 #### 6. LIST breakdown file ----
 

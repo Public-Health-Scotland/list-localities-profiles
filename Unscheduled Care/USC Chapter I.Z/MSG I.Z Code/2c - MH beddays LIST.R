@@ -162,8 +162,6 @@ smr04_no_dups <- dups_7 %>%
   # remove variables not needed
   select(-(ad_flag:duplicate7))
 
-# Save temp file
-arrow::write_parquet(smr04_no_dups, path(data_folder, "SMR04_temp.parquet"))
 
 #### 5. Calculate beddays ----
 
@@ -197,9 +195,6 @@ beddays <- smr04_no_dups %>%
   left_join(lookup, by = "datazone2011") |>
   # rename columns
   rename(council = "council_area2019name", age = "age_in_years", intzone2011 = "intzone_2011")
-
-# Save temp file
-arrow::write_parquet(beddays, path(data_folder, "SMR04_temp_beddays.parquet"))
 
 #### 7. LIST breakdown file ----
 
