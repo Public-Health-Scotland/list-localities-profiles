@@ -20,7 +20,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Specify HSCP here
 ## NOTE - make sure that the formatting of the partnership's name matches the lookup
-HSCP <- "Fife"
+HSCP <- "Angus"
 
 # Below creates locality list of all the localities in a chosen HSCP
 lookup <- read_in_localities()
@@ -44,9 +44,9 @@ locality_list <- lookup |>
 
 # 1. HSCP Services Map
 
-map <- paste0(lp_path, "Master RMarkdown Document & Render Code/Output/maps/", HSCP, ".png")
+#map <- paste0(lp_path, "Master RMarkdown Document & Render Code/Output/maps/", HSCP, ".png")
 
-stopifnot(file.exists(map)) # Error if the file path doesn't exist.
+#stopifnot(file.exists(map)) # Error if the file path doesn't exist.
 
 # 2. Loop through each locality to create the main body of the profiles and the summary table
 for (LOCALITY in locality_list) {
@@ -61,7 +61,8 @@ for (LOCALITY in locality_list) {
 
   # services
   source("./Services/2. Services data manipulation & table.R")
-
+  source("./Services/3. Service HSCP map.R")
+#plot(service_map)
   # general health
   source("./General Health/3. General Health Outputs.R")
 
@@ -80,13 +81,13 @@ for (LOCALITY in locality_list) {
   ## 2b) Create the main body of the profiles
 
   rmarkdown::render("./Master RMarkdown Document & Render Code/Locality_Profiles_Master_Markdown.Rmd",
-    output_file = paste0(LOCALITY, " - Locality Profile.docx"),
+    output_file = paste0(LOCALITY, " - Locality Profile_test_tc.docx"),
     output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/")
   )
 
   ## 2c) Create the summary tables
   rmarkdown::render("Summary Table/Summary-Table-Markdown.Rmd",
-    output_file = paste0(LOCALITY, " - Summary Table.docx"),
+    output_file = paste0(LOCALITY, " - Summary Table_test_tc.docx"),
     output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/Summary Tables/")
   )
 }
