@@ -124,40 +124,13 @@ for (LOCALITY in locality_list) {
 }
 
 
-wb <- openxlsx::createWorkbook()
-
-names(excel_output) <- names(df)
-
-excel_names <- names(df)
-
-
-
-# Loop over each combined dataframe
-for (i in seq_along(excel_output)) {
-  # Get the current combined dataframe
-  output <- excel_output[[i]]
-  
-  # Get the dataframe name
-  dataframe_name <-  excel_names[[i]]
-  
-  # Create a new sheet with the dataframe name as the sheet name
-  openxlsx::addWorksheet(wb, sheetName = dataframe_name)
-  
-  # Write the combined dataframe to the current sheet
-  openxlsx::writeData(wb, sheet = dataframe_name, x = output)
-}
-
-index_data <- data.frame(Sheet_name = excel_names)
-
-excel_output <- c(index_data, excel_output)
-
-openxlsx::addWorksheet(wb, sheetName = "Index")
-
-openxlsx::writeData(wb, sheet = 'Index', x = index_data)
-
-
-# Save the workbook to a file
-openxlsx::saveWorkbook(wb, "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/background data/output.xlsx", overwrite = TRUE)
+writexl::write_excel(
+  x = append(
+    list("Index" = tibble(Sheet_name = names(df))),
+    df
+  ),
+  path = "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/background data/output.xlsx"
+)
 
 
 
