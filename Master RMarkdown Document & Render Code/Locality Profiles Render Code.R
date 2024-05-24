@@ -6,6 +6,7 @@ library(tidyverse)
 library(knitr)
 library(markdown)
 library(rmarkdown)
+library(fs)
 
 rm(list = ls())
 
@@ -19,11 +20,6 @@ lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality
 source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Source custom localities function to overwrite the standard
-iz_lookup <- arrow::read_parquet(fs::path(
-  lp_path,
-  "custom_lookups/forres_and_lossiemouth_iz_april_2022.parquet"
-))
-
 source("Master RMarkdown Document & Render Code/overwrite_with_custom_functions.R")
 
 ## Specify HSCP here

@@ -43,7 +43,11 @@ custom_lookup |>
 
 # Make IZ lookup
 custom_lookup |>
-  distinct(intermediate_zone, iz_name, hscp_locality = sub_area) |>
+  distinct(
+    intzone2011 = intermediate_zone,
+    intzone2011name = iz_name,
+    hscp_locality = sub_area
+  ) |>
   # Write out as a parquet file
   arrow::write_parquet(
     fs::path(
