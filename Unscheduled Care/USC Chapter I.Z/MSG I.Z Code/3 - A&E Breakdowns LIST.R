@@ -24,41 +24,56 @@ col_names <- c(
 
 years <- c("1718", "1819", "1920", "2021", "2122", "2223")
 
-# For the below to work all the data for the years (above) must be in the same 
+# For the below to work all the data for the years (above) must be in the same
 # `data_folder`. It also must be named: `MSG-MonthlyUpdate-Breakdowns-{year}.zip`
 admissions <- map(
   years,
-    \(year) {
-      read_csv(
-        # Read directly from zip file from BOXI
-        path(data_folder, "AE", glue("MSG-MonthlyUpdate-Breakdowns-{year}.zip")),
-        # Data starts on row 4
-        skip = 4,
-        # Apply old column names to the new data
-        col_names = col_names,
-        # Define column types (n = numeric, c = character)
-        col_types = "nnccccccccnnn",
-        lazy = TRUE
-      ) |> 
-        # Remove empty councils
-        filter(council != "" | !is.na(council))
-    }
-) |> 
+  \(year) {
+    read_csv(
+      # Read directly from zip file from BOXI
+      path(data_folder, "AE", glue("MSG-MonthlyUpdate-Breakdowns-{year}.zip")),
+      # Data starts on row 4
+      skip = 4,
+      # Apply old column names to the new data
+      col_names = col_names,
+      # Define column types (n = numeric, c = character)
+      col_types = "nnccccccccnnn",
+      lazy = TRUE
+    ) |>
+      # Remove empty councils
+      filter(council != "" | !is.na(council))
+  }
+) |>
   list_rbind()
-
-iz_lkp <- read_in_localitiesiz2(dz_level = T)
 
 # Bind rows of old data and new data together
 # temp_ae <- bind_rows(old_admissions, new_admissions) %>%
 temp_ae <- admissions %>%
   # Get locality names
-  left_join(iz_lkp, by = c("datazone2011")) %>%
+  left_join(
+    read_in_iz(dz_all = TRUE), 
+    by = "datazone2011"
+    ) %>%
+  mutate(
   # Define empty localities as unknown
-  mutate(hscp_locality = replace_na(hscp_locality, "Unknown")) %>%
-  relocate(hscp_locality, .before = datazone2011) %>%
+    hscp_locality = replace_na(hscp_locality, "Unknown"),
   # Turn month into a date
-  mutate(month = dmy(glue("01-{month_num}-{cal_year}"))) %>%
-  select(month, council, age_group, ref_source, area_treated, location, location_name, hscp_locality, intzone2011, attendances, admissions, number_meeting_target)
+    month = make_date(year = cal_year, month = month_num, day = 1)
+  ) %>%
+  select(
+    month,
+    council,
+    age_group,
+    ref_source,
+    area_treated,
+    location,
+    location_name,
+    hscp_locality,
+    intzone2011,
+    attendances,
+    admissions,
+    number_meeting_target
+  )
 
 # aggregate to get breakdown file
 final_output <- temp_ae %>%
