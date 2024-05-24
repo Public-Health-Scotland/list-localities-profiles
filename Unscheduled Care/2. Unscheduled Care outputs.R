@@ -12,6 +12,7 @@ ext_year <- 2023
 # Set locality profiles file path
 # lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 import_folder <- paste0(lp_path, "Unscheduled Care/DATA ", ext_year, "/")
+import_folder_moray <- path(lp_path, "Unscheduled Care", paste("Moray Data", ext_year))
 
 ## Packages
 library(tidyverse)
@@ -294,7 +295,7 @@ area_trend_usc <- function(data_for_plot, plot_title, yaxis_title, source) {
 # 1. Emergency Admissions ----
 # _________________________________________________________________________
 
-emergency_adm <- arrow::read_parquet(paste0(import_folder, "emergency_admissions_msg.parquet")) %>%
+emergency_adm <- arrow::read_parquet(path(import_folder_moray, "emergency_admissions_msg.parquet")) %>%
   filter(financial_year <= max_fy)
 
 # Plotting by age
@@ -371,7 +372,7 @@ other_loc_emergency_adm <- emergency_adm %>%
 # 2a. Unscheduled bed days ----
 # _________________________________________________________________________
 
-bed_days <- arrow::read_parquet(paste0(import_folder, "bed_days_msg.parquet")) %>%
+bed_days <- arrow::read_parquet(path(import_folder_moray, "bed_days_msg.parquet")) %>%
   filter(financial_year <= max_fy)
 
 # Plotting by age
@@ -448,7 +449,7 @@ other_loc_bed_days <- bed_days %>%
 # 2b. Unscheduled bed days - Mental Health ----
 # _________________________________________________________________________
 
-bed_days_mh <- arrow::read_parquet(paste0(import_folder, "bed_days_mh_msg.parquet")) %>%
+bed_days_mh <- arrow::read_parquet(path(import_folder_moray, "bed_days_mh_msg.parquet")) %>%
   filter(financial_year <= max_fy)
 
 # Plotting by age
@@ -527,7 +528,7 @@ other_loc_bed_days_mh <- bed_days_mh %>%
 # 3. A&E Attendances ----
 # _________________________________________________________________________
 
-ae_attendances <- arrow::read_parquet(paste0(import_folder, "ae_attendances_msg.parquet")) %>%
+ae_attendances <- arrow::read_parquet(path(import_folder_moray, "ae_attendances_msg.parquet")) %>%
   filter(financial_year <= max_fy)
 
 # Plotting by age
@@ -605,7 +606,7 @@ other_loc_ae_att <- ae_attendances %>%
 # 4. Delayed Discharges ----
 # _________________________________________________________________________
 
-delayed_disch <- arrow::read_parquet(paste0(import_folder, "delayed_discharges_msg.parquet")) %>%
+delayed_disch <- arrow::read_parquet(path(import_folder, "delayed_discharges_msg.parquet")) %>%
   filter(financial_year <= max_fy) %>%
   filter(age_group %in% c("65 - 74", "75+")) %>%
   group_by(financial_year, hscp2019name, hscp_locality) %>%
@@ -675,7 +676,7 @@ other_loc_dd <- delayed_disch %>%
 # 5. Fall Admissions ----
 # _________________________________________________________________________
 
-falls <- arrow::read_parquet(paste0(import_folder, "falls_smr.parquet")) %>%
+falls <- arrow::read_parquet(path(import_folder_moray, "falls_smr.parquet")) %>%
   filter(financial_year <= max_fy) %>%
   filter(age_group %in% c("65 - 74", "75+"))
 
@@ -718,7 +719,7 @@ scot_falls <- falls_areas %>%
 # 6. Readmissions (28 days) ----
 # _________________________________________________________________________
 
-readmissions <- arrow::read_parquet(paste0(import_folder, "readmissions_smr.parquet")) %>%
+readmissions <- arrow::read_parquet(path(import_folder_moray, "readmissions_smr.parquet")) %>%
   filter(financial_year <= max_fy)
 
 # Plotting by age
@@ -879,7 +880,7 @@ scot_read <- readmissions_areas %>%
 # 8. Potentially Preventable Admissions ----
 # _______________________________________________________________________________________________________
 
-ppa <- arrow::read_parquet(paste0(import_folder, "ppa_smr.parquet")) %>%
+ppa <- arrow::read_parquet(path(import_folder_moray, "ppa_smr.parquet")) %>%
   filter(financial_year <= max_fy)
 
 # % PPAs in locality under and over 65
@@ -978,7 +979,7 @@ other_loc_ppa <- ppa %>%
 # 9. Psychiatric hospital admissions (ScotPHO) ----
 # ___________________________________________________________________________
 
-psych_hosp <- read_csv(paste0(import_folder, "scotpho_data_extract_psychiatric_admissions.csv")) %>%
+psych_hosp <- read_csv(path(import_folder, "scotpho_data_extract_psychiatric_admissions.csv")) %>%
   clean_scotpho_dat() %>%
   mutate(period_short = gsub("to", "-", substr(period, 1, 18)))
 
