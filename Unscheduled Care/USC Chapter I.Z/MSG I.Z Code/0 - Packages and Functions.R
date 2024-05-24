@@ -8,7 +8,7 @@ earliest_date <- lubridate::make_date(year = 2017, month = 4, day = 01)
 reporting_month_date <- lubridate::make_date(year = 2023, month = 3, day = 31)
 # Data output folder
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
-data_folder <- file.path(lp_path, "Unscheduled Care/MSG_iz_breakdowns")
+data_folder <- file.path(lp_path, "Unscheduled Care/Moray Data 2023")
 dir.create(data_folder, showWarnings = FALSE, recursive = TRUE)
 
 
@@ -66,7 +66,8 @@ postcode_lookup_path <-
 # Lookups for template/breakdown data ----
 
 postcode_lookup <- read_parquet(postcode_lookup_path,
-                                col_select = c(ca2019, hb2019, datazone2011, pc7)) %>%
+  col_select = c(ca2019, hb2019, datazone2011, pc7)
+) %>%
   rename(dr_postcode = "pc7")
 
 locality_lookup <- readRDS(locality_lookup_path) %>%

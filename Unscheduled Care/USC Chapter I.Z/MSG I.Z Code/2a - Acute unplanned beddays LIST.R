@@ -137,4 +137,4 @@ list_final <- smr01_beddays %>%
   )
 
 # Save LIST breakdown file
-arrow::write_parquet(list_final, path(data_folder, "2a-Acute-Beddays-breakdown.parquet"))
+arrow::write_parquet(list_final, path(data_folder, "2a-Acute-Beddays-breakdown.parquet"), compression = "zstd")

@@ -75,4 +75,4 @@ final_output <- temp_ae %>%
   mutate(age_group = if_else(is.na(age_group), "", age_group))
 
 # save out R breakdown file
-write_parquet(final_output, path(data_folder, "3-A&E-Breakdowns.parquet"))
+write_parquet(final_output, path(data_folder, "3-A&E-Breakdowns.parquet"), compression = "zstd")
