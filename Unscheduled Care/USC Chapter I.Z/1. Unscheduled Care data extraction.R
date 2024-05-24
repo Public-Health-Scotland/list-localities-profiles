@@ -31,7 +31,7 @@ source("Master RMarkdown Document & Render Code/overwrite_with_custom_functions.
 
 
 # Folder to export to
-exportfolder <- paste0(lp_path, "DATA ", ext_year, "/")
+exportfolder <- path(lp_path, "Unscheduled Care", paste("Moray Data", ext_year))
 
 
 ## Lookups ----
@@ -42,24 +42,25 @@ postcodes <- read_in_postcodes() %>%
 
 # Localities/Datazones
 datazones <- read_in_localities(dz_level = T)
-localities <- read_in_localitiesiz(dz_level = T)
+localities <- read_in_iz(dz_all = T) |>
+  select(-datazone2011) |>
+  distinct(intzone2011, .keep_all = TRUE)
+
 
 
 ########################## SECTION 2: MSG Data ###############################
 
 # Set data paths
-msg_emerg_adm_raw <- path(lp_path, "Unscheduled Care/MSG_iz_breakdowns/1a-Admissions-breakdown.parquet")
+msg_emerg_adm_raw <- path(exportfolder, "1a-Admissions-breakdown.parquet")
 stopifnot(file_exists(msg_emerg_adm_raw))
 
-msg_beddays_raw <- path(lp_path, "Unscheduled Care/MSG_iz_breakdowns/2a-Acute-Beddays-breakdown.parquet")
+msg_beddays_raw <- path(exportfolder, "2a-Acute-Beddays-breakdown.parquet")
 stopifnot(file_exists(msg_beddays_raw))
 
-msg_ae_raw <- path(lp_path, "Unscheduled Care/MSG_iz_breakdowns/3-A&E-Breakdowns.parquet")
+msg_ae_raw <- path(exportfolder, "3-A&E-Breakdowns.parquet")
 stopifnot(file_exists(msg_ae_raw))
 
-# msg_dd_raw <- arrow::read_parquet("./Unscheduled Care/MSG Breakdowns IZ/4-Delayed-Discharge-Breakdowns.parquet")
-
-msg_mh_beddays_raw <- path(lp_path, "Unscheduled Care/MSG_iz_breakdowns/2c-MH-Beddays-breakdown.parquet")
+msg_mh_beddays_raw <- path(exportfolder, "2c-MH-Beddays-breakdown.parquet")
 stopifnot(file_exists(msg_mh_beddays_raw))
 
 
@@ -68,7 +69,7 @@ stopifnot(file_exists(msg_mh_beddays_raw))
 
 msg_emergency_adm <- read_parquet(msg_emerg_adm_raw) %>%
   mutate(age_group = age_group_1(age_group)) %>%
-  mutate(financial_year = fy(month)) %>%
+  mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
   # mutate(hscp_locality = gsub("&", "and", locality)) %>%
 
   # join with localities lookup to get hscp
@@ -84,7 +85,7 @@ msg_emergency_adm <- read_parquet(msg_emerg_adm_raw) %>%
 
 msg_bed_days <- read_parquet(msg_beddays_raw) %>%
   mutate(age_group = age_group_1(age_group)) %>%
-  mutate(financial_year = fy(month)) %>%
+  mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
   # mutate(hscp_locality = gsub("&", "and", locality)) %>%
 
   # join with localities lookup to get hscp
@@ -100,7 +101,7 @@ msg_bed_days <- read_parquet(msg_beddays_raw) %>%
 
 msg_bed_days_mh <- read_parquet(msg_mh_beddays_raw) %>%
   mutate(age_group = age_group_1(age_group)) %>%
-  mutate(financial_year = fy(month)) %>%
+  mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
   # mutate(hscp_locality = gsub("&", "and", locality)) %>%
 
   # join with localities lookup to get hscp
@@ -117,7 +118,7 @@ msg_bed_days_mh <- read_parquet(msg_mh_beddays_raw) %>%
 msg_ae <- read_parquet(msg_ae_raw) %>%
   select(-locality) |>
   mutate(age_group = age_group_1(age_group)) %>%
-  mutate(financial_year = fy(month)) %>%
+  mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
   # mutate(hscp_locality = gsub("&", "and", locality)) %>%
 
   # join with localities lookup to get hscp
@@ -128,43 +129,21 @@ msg_ae <- read_parquet(msg_ae_raw) %>%
   ungroup()
 
 
-
-# 4. Delayed Discharges ----
-# _________________________________________________________________________
-
-# msg_dd <- msg_dd_raw %>%
-# mutate(age_group = age_group_1(age_group)) %>%
-# mutate(financial_year = fy(month)) %>%
-# mutate(hscp_locality = gsub("&", "and", locality)) %>%
-
-# this data set has some data with partnership but no locality, need to tidy names
-# mutate(hscp2019name = gsub("&", "and", council)) %>%
-# mutate(hscp2019name = ptsp(hscp2019name)) %>%
-
-#  group_by(financial_year, hscp2019name, hscp_locality, age_group, reason_for_delay) %>%
-#  summarise(dd_people = n(),
-#            dd_bed_days = sum(delayed_bed_days)) %>%
-# ungroup()
-
-
 ## Save Data ----
 # _________________________________________________________________________
 
-
 # Emergency admissions
-saveRDS(msg_emergency_adm, "./Unscheduled Care/DATA 2022/emergency_admissions_msg.rds")
+write_parquet(msg_emergency_adm, path(exportfolder, "emergency_admissions_msg.parquet"), compression = "zstd")
 
 # Bed days
-saveRDS(msg_bed_days, "./Unscheduled Care/DATA 2022/bed_days_msg.rds")
+write_parquet(msg_bed_days, path(exportfolder, "bed_days_msg.parquet"), compression = "zstd")
 
 # Bed days MH
-saveRDS(msg_bed_days_mh, "./Unscheduled Care/DATA 2022/bed_days_mh_msg.rds")
+write_parquet(msg_bed_days_mh, path(exportfolder, "bed_days_mh_msg.parquet"), compression = "zstd")
 
 # A&E
-saveRDS(msg_ae, "./Unscheduled Care/DATA 2022/ae_attendances_msg.rds")
+write_parquet(msg_ae, path(exportfolder, "ae_attendances_msg.parquet"), compression = "zstd")
 
-# Delayed discharges
-# saveRDS(msg_dd, paste0(exportfolder, "delayed_discharges_msg.rds"))
 
 
 
@@ -270,7 +249,7 @@ smr_falls <- smr1_extract %>%
   arrange(intzone2011) %>%
   left_join(localities, by = "intzone2011") %>%
   mutate(age_group = age_group_2(age)) %>%
-  mutate(financial_year = fy(discharge_date)) %>%
+  mutate(financial_year = phsmethods::extract_fin_year(discharge_date)) %>%
   drop_na(financial_year) %>%
   group_by(financial_year, hscp2019name, hscp_locality, age_group) %>%
   summarise(admissions = n()) %>%
@@ -328,7 +307,7 @@ smr_readmissions <- read_dataframe %>%
       unit = "day"
     ) <= 28, 1, 0)) %>%
   mutate(read_28 = if_else(is.na(read_28), 0, read_28)) %>%
-  mutate(financial_year = fy(discharge_date)) %>%
+  mutate(financial_year = phsmethods::extract_fin_year(discharge_date)) %>%
   drop_na(financial_year) %>%
   group_by(financial_year, hscp2019name, hscp_locality, age_group) %>%
   summarise(
@@ -447,7 +426,7 @@ rm(smr1_extract_read, read_dt, read_table, read_dataframe)
 #   arrange(postcode) %>%
 #   left_join(postcodes, by = "postcode") %>%
 #   select(link_no,date_of_death:external,hb2019,hb2019name,hscp2019,hscp2019name,hscp_locality) %>%
-#   mutate(financial_death = fy(date_of_death)) %>% # add financial year for death date
+#   mutate(financial_death = phsmethods::extract_fin_year(date_of_death)) %>% # add financial year for death date
 #   drop_na(financial_death) %>%
 #   mutate(month = month(date_of_death)) %>%
 #   mutate(year = year(date_of_death)) %>%
@@ -579,7 +558,7 @@ ppa <- ppa_id %>%
   arrange(intzone2011) %>%
   left_join(localities, by = "intzone2011") %>%
   arrange(link_no, cis_marker) %>%
-  mutate(financial_year = fy(dod)) %>%
+  mutate(financial_year = phsmethods::extract_fin_year(dod)) %>%
   drop_na(financial_year) %>%
   mutate(age_group = age_group_2(age)) %>%
   mutate(admissions = 1) %>%
@@ -634,7 +613,7 @@ ppa <- ppa_id %>%
 #   mutate(month_num = month(admission_date)) %>% # use admission date for dates to allign with emergency ADMISSIONS
 #   mutate(year = year(admission_date)) %>%
 #   mutate(AdDate = make_datetime(year,month_num,1)) %>%
-#   mutate(financial_year = fy(AdDate)) %>%
+#   mutate(financial_year = phsmethods::extract_fin_year(AdDate)) %>%
 #   drop_na(financial_year) %>%
 #   filter(admission_type %in% c('30','31','32','33','34','35','36','37','38','39','20','21','22','18')) %>% # emergency admission only (frist ep)
 #   mutate(main_con = substr(main_condition,1,3)) %>%
@@ -663,10 +642,10 @@ ppa <- ppa_id %>%
 # _________________________________________________________________________
 
 # Falls
-saveRDS(smr_falls, "./Unscheduled Care/DATA 2022/falls_smr.rds")
+write_parquet(smr_falls, path(exportfolder, "falls_smr.parquet"), compression = "zstd")
 
 # Readmissions
-saveRDS(smr_readmissions, "./Unscheduled Care/DATA 2022/readmissions_smr.rds")
+write_parquet(smr_readmissions, path(exportfolder, "readmissions_smr.parquet"), compression = "zstd")
 
 # PPA
-saveRDS(ppa, "./Unscheduled Care/DATA 2022/ppa_smr.rds")
+write_parquet(ppa, path(exportfolder, "ppa_smr.parquet"), compression = "zstd")
