@@ -45,7 +45,7 @@ library(ggmap)
 #source("Services/2. Services data manipulation & table.R")
 
 
-###### 5. Read in locality shape files ######
+###### 2. Read in locality shape files ######
 
 shp <- sf::read_sf("/conf/linkage/output/lookups/Unicode/Geography/Shapefiles/HSCP Locality (Datazone2011 Base)/HSCP_Locality.shp")
 shp <- sf::st_transform(shp, 4326) %>%
@@ -58,7 +58,7 @@ shp <- shp |>
 shp_hscp <- shp |>
   filter(hscp2019name == HSCP)
 
-###### 6. Mapping Code ######
+###### 3. Formatting Code ######
 
 # Create colour palettes for different numbers of localities
 
@@ -74,9 +74,7 @@ if (n_loc < 5) {
   col_palette <- c("#3F3685", "#9B4393", "#0078D4", "#83BB26", "#948DA3", "#1E7F84", "#6B5C85", "#C73918", "orchid3")
 }
 
-
-
-#Get latitude and longitdue co-ordinates for each datazone, find min and max.
+# Get latitude and longitude co-ordinates for each data locality, find min and max.
 zones_coord <-
   shp_hscp %>%
   sf::st_coordinates() %>%
@@ -87,18 +85,18 @@ zones_coord <-
             min_lat = min(lat),
             max_lat = max(lat))
 
-#Get min and max longitude for locality, add a 0.01 extra to add a border to map.
+# Get min and max longitude for locality, add a 0.01 extra to add a border to map.
 min_long <- zones_coord$min_long -0.01
 max_long <- zones_coord$max_long +0.01
 min_lat <- zones_coord$min_lat -0.01
 max_lat <- zones_coord$max_lat +0.01
 
-#get datazones in HSCP
+#get data zones in HSCP
 hscp_loc <- read.csv("/conf/linkage/output/lookups/Unicode/Geography/HSCP Locality/HSCP Localities_DZ11_Lookup_20230804.csv") %>%
   select(datazone2011, hscp2019name) %>%
   filter(hscp2019name == HSCP)
 
-# get place names
+# get place names of cities, towns and villages within locality
 places <- read_csv(paste0("/conf/linkage/output/lookups/Unicode/Geography/",
                           "Shapefiles/Scottish Places/Places to Data",
                           " Zone Lookup.csv")) %>%
@@ -115,21 +113,25 @@ places <- read_csv(paste0("/conf/linkage/output/lookups/Unicode/Geography/",
   filter(!grepl('_', name)) %>% #filter incorrect name types and remove smaller places
   filter(type != "hamlet" & type != "village")
 
-#get map background from stadia maps, enter registration key, filter for max and min long/lat
-ggmap::register_stadiamaps("9df464d8-f4b5-4211-b5e7-8277403f7935")
+#3. Upload map for locality
+locality_map_id <- read_csv("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Services/locality_map_id.csv")
+MAP_ID <- locality_map_id$id
+# upload map background from stadia maps, enter registration key, filter for max and min long/lat
+ggmap::register_stadiamaps(MAP_ID)
 service_map2 <- get_stadiamap(bbox = c(min_long, min_lat,
                                        max_long, max_lat),
                               maptype="stamen_terrain_background")
 
-ggmap(service_map2)
+#preview map
+#ggmap(service_map2)
 
-#check if services markers exist for locality
+# check if services markers exist for locality
 gp <- nrow(markers_gp)
 ch <- nrow(markers_care_home)
 ed <- nrow(markers_emergency_dep)
 miu <- nrow(markers_miu)
 
-#add locality polygons and service markers to map
+# add locality polygons and service markers to map where services are located
 service2 <- ggmap(service_map2) +
   geom_sf(data = shp_hscp, mapping = aes(fill = hscp_local), colour = "black", alpha = 0.5, inherit.aes = FALSE) +
   labs(fill = 'Locality')
@@ -141,7 +143,11 @@ if (ed > 0) {service2 <- service2 + geom_point(data = markers_emergency_dep, aes
                                                fill = "blue")}
 if (miu > 0) {service2 <- service2 + geom_point(data = markers_miu, aes(x = longitude, y = latitude, colour = "Minor Injury Unit"), size = 2, shape = 24, stroke = 0.5,
                                                 fill = "green")}
-#create final service map
+
+# preview HSCP map with service markers added and localities outlined
+#plot(service2)
+
+# create final service map
 service_map <- service2 +
   scale_color_manual(values = c("GP Practice" = "black", "Care Home" = "black", "Emergency Department" = "black",
                                 "Minor Injury Unit" = "black")) +
@@ -157,7 +163,9 @@ service_map <- service2 +
         rect = element_blank(),
         axis.title.y=element_blank(),
         axis.title.x=element_blank()) +
-  labs(caption = "Source: ScotPHO, Public Health Scotland")
+  labs(caption = "Source: Public Health Scotland")
+
+# preview final service map
 #plot(service_map)
 
 # remove unnecessary objects
