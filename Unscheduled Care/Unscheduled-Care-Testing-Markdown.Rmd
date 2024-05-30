@@ -20,8 +20,8 @@ options(kableExtra.auto_format = FALSE)
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
 # LOCALITY <- "Helensburgh and Lomond"
 # LOCALITY <- "City of Dunfermline"
-LOCALITY <-  "Inverness"
-#LOCALITY <- "East Dunbartonshire West"
+LOCALITY <- "Inverness"
+# LOCALITY <- "East Dunbartonshire West"
 
 source("~/localities/Master RMarkdown Document & Render Code/Global Script.R")
 

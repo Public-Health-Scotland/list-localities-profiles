@@ -91,7 +91,7 @@ for (LOCALITY in locality_list) {
     output_file = paste0(LOCALITY, " - Summary Table.docx"),
     output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/Summary Tables/")
   )
-  
+
   # Clean up the environment by restoring it to the 'pre-loop' state.
   rm(list = setdiff(ls(), loop_env))
   # Force garbage collection to free up memory

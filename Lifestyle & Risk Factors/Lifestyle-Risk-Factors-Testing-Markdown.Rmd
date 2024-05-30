@@ -24,12 +24,12 @@ LOCALITY <- "Falkirk West"
 
 source("~/localities/Master RMarkdown Document & Render Code/Global Script.R")
 
-#For testing - CF directory
+# For testing - CF directory
 source("~/localities/Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
 
-#KH testing directory 
+# KH testing directory
 
-#source("~/list-localities-profiles/Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
+# source("~/list-localities-profiles/Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
 
 
 
