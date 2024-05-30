@@ -9,13 +9,11 @@ query_smr4 <- paste(
   "FROM ANALYSIS.SMR04_PI WHERE (DISCHARGE_DATE >= TO_DATE('2016-04-01','YYYY-MM-DD'))"
 )
 
-channel <- suppressWarnings(
-  dbConnect(
-    drv = odbc::odbc(),
-    dsn = "SMRA",
-    uid = rstudioapi::showPrompt(title = "Username", message = "Username:"),
-    pwd = .rs.askForPassword("What is your LDAP password?")
-  )
+channel <- odbc::dbConnect(
+  drv = odbc::odbc(),
+  dsn = "SMRA",
+  uid = Sys.getenv("USER"),
+  pwd = rstudioapi::askForPassword("Enter LDAP password:")
 )
 
 smr4_extract <- as_tibble(dbGetQuery(channel,
