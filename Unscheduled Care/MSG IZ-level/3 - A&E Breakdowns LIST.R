@@ -51,13 +51,13 @@ admissions <- map(
 temp_ae <- admissions %>%
   # Get locality names
   left_join(
-    read_in_iz(dz_all = TRUE), 
+    read_in_iz(dz_all = TRUE),
     by = "datazone2011"
-    ) %>%
+  ) %>%
   mutate(
-  # Define empty localities as unknown
+    # Define empty localities as unknown
     hscp_locality = replace_na(hscp_locality, "Unknown"),
-  # Turn month into a date
+    # Turn month into a date
     month = make_date(year = cal_year, month = month_num, day = 1)
   ) %>%
   select(

@@ -42,13 +42,13 @@ read_in_iz <- function(dz_all = FALSE) {
       dplyr::left_join(
         read_in_localities(dz_level = TRUE),
         by = dplyr::join_by(datazone2011)
-      ) |> 
+      ) |>
       dplyr::mutate(
         hscp_locality = dplyr::if_else(is.na(hscp_locality.y), hscp_locality.x, hscp_locality.y),
         .keep = "unused"
-      ) 
+      )
   }
-  
+
   return(iz_lookup)
 }
 
@@ -85,7 +85,7 @@ summarise_iz_to_locality <- function(data, iz_lookup = read_in_iz(dz_all = FALSE
   }
 
   new_data <- data |>
-    filter(area_type %in% c("HSC locality","Scotland","HSC partnership","Health board")) |>
+    filter(area_type %in% c("HSC locality", "Scotland", "HSC partnership", "Health board")) |>
     bind_rows(locality_data)
 
   return(new_data)
@@ -102,4 +102,3 @@ clean_scotpho_dat <- function(data) {
       area_type = if_else(area_type == "HSC locality", "Locality", area_type)
     )
 }
-
