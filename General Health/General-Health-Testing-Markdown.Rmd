@@ -20,7 +20,7 @@ LOCALITY <- "Inverness"
 # LOCALITY <- "Helensburgh and Lomond"
 # LOCALITY <- "City of Dunfermline"
 # LOCALITY <- "Skye, Lochalsh and West Ross"
-#LOCALITY <- "East Dunbartonshire West"
+# LOCALITY <- "East Dunbartonshire West"
 
 
 source("~/localities/Master RMarkdown Document & Render Code/Global Script.R")

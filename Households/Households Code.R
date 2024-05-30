@@ -169,7 +169,7 @@ pal_ctb <- phsstyles::phs_colours(c(
   "phs-purple-30", "phs-purple-50", "phs-purple-80", "phs-purple"
 ))
 
-ctb_plot <- ctb %>% 
+ctb_plot <- ctb %>%
   ggplot(aes(
     x = value,
     y = 1,
