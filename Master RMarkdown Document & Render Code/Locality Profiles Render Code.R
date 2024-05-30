@@ -48,6 +48,8 @@ locality_list <- lookup |>
 
 #stopifnot(file.exists(map)) # Error if the file path doesn't exist.
 
+loop_env <- c(ls(), "loop_env")
+
 # 2. Loop through each locality to create the main body of the profiles and the summary table
 for (LOCALITY in locality_list) {
   ## 2a) Source in all the scripts for a given LOCALITY
@@ -90,4 +92,9 @@ for (LOCALITY in locality_list) {
     output_file = paste0(LOCALITY, " - Summary Table_test_tc.docx"),
     output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/Summary Tables/")
   )
+
+  # Clean up the environment by restoring it to the 'pre-loop' state.
+  rm(list = setdiff(ls(), loop_env))
+  # Force garbage collection to free up memory
+  gc()
 }
