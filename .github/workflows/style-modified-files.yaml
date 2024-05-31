@@ -67,22 +67,7 @@ jobs:
         shell: Rscript {0}
 
       - name: Commit and push changes
-        run: |
-          # Create an array to properly handle filenames with spaces or special characters
-          IFS=$'\n' read -r -d '' -a FILES_TO_COMMIT < <(git diff-index --name-only ${{ github.sha }} | egrep --ignore-case '\.(R|[qR]md|Rmarkdown|Rnw)$' && printf '\0')
-      
-          if [[ ${#FILES_TO_COMMIT[@]} -gt 0 ]]; then
-            git config --local user.name "$GITHUB_ACTOR"
-            git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
-            # Checkout the PR branch
-            git stash
-            git checkout ${{ github.head_ref }}
-            git stash pop
-            # Use double quotes around the array expansion to handle spaces
-            git commit "${FILES_TO_COMMIT[@]}" -m "Style code (GHA)"
-            git pull --ff-only
-            # Push changes to the 'replace_coord_flip' branch 
-            git push origin ${{ github.head_ref }} 
-          else
-            echo "No changes to commit."
-          fi
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Style code"
+          file_pattern: '*.R *.Rmarkdown'
