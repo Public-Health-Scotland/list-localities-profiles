@@ -28,7 +28,7 @@ jobs:
         shell: Rscript {0}
 
       - name: Install styler and other packages
-        run: pak::pak(c("styler", "purrr", "gh"))
+        run: pak::pkg_install(pkg = c("styler", "purrr", "gh"), dependencies = TRUE)
         shell: Rscript {0}
 
       - name: Enable styler cache
