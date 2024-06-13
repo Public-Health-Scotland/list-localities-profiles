@@ -15,9 +15,10 @@
 2.  Create a new data folder and update variables in a handful of places to reflect this.
 3.  Run the MSG code in the Unscheduled Care folder to get MSG data at IZ-level.
 4.  Run the `Unscheduled Care 1` script to produce the data files needed.
-5.  Run the `General Health 1` script to produce the data files needed.
+5.  Run the `General Health 2` script to produce the data files needed.
 6.  Run the full indicators as usual.
 
+Either run using unscheduled care or general health method
 ## Notes
 
 - Some data has to be re-extracted from the underlying databases, in these cases the data will be more recent (and likely slightly different) to the data in the 'main' profiles for the same HSCP.
