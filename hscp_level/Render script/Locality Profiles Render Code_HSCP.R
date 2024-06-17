@@ -70,7 +70,6 @@ other_locs <- lookup %>%
   source("hscp_level/General Health/3. General Health Outputs.R")
 
   #lifestyle & risk factors
-  source("hscp_level/Lifestyle and risk/HSCP level/1. Convert LRF ScotPHO data to RDS.R")
   source("hscp_level/Lifestyle and risk/HSCP level/2. Lifestyle & Risk Factors Outputs.R")
   
   #unscheduled care
