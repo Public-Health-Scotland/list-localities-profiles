@@ -80,7 +80,7 @@ other_locs <- lookup %>%
   source("hscp_level/unschedule care/2. Unscheduled Care outputs.R")
 
   #appendices
-  source("hscp_level/Master RMarkdown Document & Render Code/Tables for Appendix.R")  # Not in the hscp_level folder
+  source("Master RMarkdown Document & Render Code/Tables for Appendix.R")
 
   # Remove tidylog package which messes up outputs
   detach(package:tidylog, unload=TRUE)
