@@ -73,7 +73,6 @@ other_locs <- lookup %>%
   source("hscp_level/Lifestyle and risk/HSCP level/2. Lifestyle & Risk Factors Outputs.R")
   
   #unscheduled care
-  source("hscp_level/unschedule care/1. Unscheduled Care data extraction.R")
   source("hscp_level/unschedule care/2. Unscheduled Care outputs.R")
 
   #appendices
