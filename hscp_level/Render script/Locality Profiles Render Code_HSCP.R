@@ -67,8 +67,6 @@ other_locs <- lookup %>%
   source("hscp_level/Services/") # Nothing in this folder
 
   #general health
-  source("hscp_level/General Health/1. Convert GH ScotPHO data to RDS.R")
-  source("hscp_level/General Health/2. General Health SLF Data.R")
   source("hscp_level/General Health/3. General Health Outputs.R")
 
   #lifestyle & risk factors
