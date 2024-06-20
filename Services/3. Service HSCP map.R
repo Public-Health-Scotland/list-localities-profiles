@@ -118,12 +118,12 @@ locality_map_id <- read_csv("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/R
 MAP_ID <- locality_map_id$id
 # upload map background from stadia maps, enter registration key, filter for max and min long/lat
 ggmap::register_stadiamaps(MAP_ID)
-service_map2 <- get_stadiamap(bbox = c(min_long, min_lat,
+service_map_background <- get_stadiamap(bbox = c(min_long, min_lat,
                                        max_long, max_lat),
                               maptype="stamen_terrain_background")
 
 #preview map
-#ggmap(service_map2)
+#ggmap(service_map_background)
 
 # check if services markers exist for locality
 gp <- nrow(markers_gp)
@@ -132,7 +132,7 @@ ed <- nrow(markers_emergency_dep)
 miu <- nrow(markers_miu)
 
 # add locality polygons and service markers to map where services are located
-service2 <- ggmap(service_map2) +
+service2 <- ggmap(service_map_background) +
   geom_sf(data = shp_hscp, mapping = aes(fill = hscp_local), colour = "black", alpha = 0.5, inherit.aes = FALSE) +
   labs(fill = 'Locality')
 if (gp > 0) {service2 <- service2 + geom_point(data = markers_gp, aes(x = longitude, y = latitude, colour = "GP Practice"), size = 2,shape = 21, stroke = 0.5,
