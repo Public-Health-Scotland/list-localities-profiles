@@ -21,9 +21,9 @@ LOCALITY <- Loc
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 
-source("~/list-localities-profiles/Master RMarkdown Document & Render Code/Global Script.R")
-source("~/list-localities-profiles/Services/2. Services data manipulation & table.R")
-source("~/list-localities-profiles/Services/3. Service HSCP map.R")
+source("Master RMarkdown Document & Render Code/Global Script.R")
+source("Services/2. Services data manipulation & table.R")
+source("Services/3. Service HSCP map.R")
 
 x <- 1 # object for figure numbers
 y <- 1 # object for table numbers
