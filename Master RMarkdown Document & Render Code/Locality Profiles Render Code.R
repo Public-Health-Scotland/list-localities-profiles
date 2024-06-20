@@ -64,7 +64,6 @@ for (LOCALITY in locality_list) {
   # services
   source("./Services/2. Services data manipulation & table.R")
   source("./Services/3. Service HSCP map.R")
-#plot(service_map)
   # general health
   source("./General Health/3. General Health Outputs.R")
 
