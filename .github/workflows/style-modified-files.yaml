@@ -1,0 +1,73 @@
+name: Style Modified Files
+
+on:
+  pull_request_target: # Triggers when code is pushed to a PR's target branch
+    types: [opened, synchronize, reopened]
+
+jobs:
+  style_check:
+    runs-on: ubuntu-latest
+    permissions: write-all
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch full history for accurate diff
+
+      - name: Delete .Rprofile (if present)
+        run: if [ -f .Rprofile ]; then rm .Rprofile; fi
+
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+        
+      - name: Install pak (will install any system deps too)
+        run: install.packages("pak")
+        shell: Rscript {0}
+
+      - name: Install styler and other packages
+        run: pak::pkg_install(pkg = c("styler", "purrr", "gh"), dependencies = TRUE)
+        shell: Rscript {0}
+
+      - name: Enable styler cache
+        run: styler::cache_activate()
+        shell: Rscript {0}
+
+      - name: Determine cache location
+        id: styler-location
+        run: |
+          cat(
+            "location=",
+            styler::cache_info(format = "tabular")$location,
+            "\n",
+            file = Sys.getenv("GITHUB_OUTPUT"),
+            append = TRUE,
+            sep = ""
+          )
+        shell: Rscript {0}
+
+      - name: Cache styler
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.styler-location.outputs.location }}
+          key: ${{ runner.os }}-styler-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-styler-
+            ${{ runner.os }}-
+
+      - name: Style modified R files
+        run: |
+          files <- gh::gh("GET https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files")
+          changed_files <- purrr::map_chr(files, "filename")
+          all_files <- list.files(recursive = TRUE)
+          exclusions_list <- as.list(setdiff(all_files, changed_files))
+          styler::style_dir(exclude_files = exclusions_list)
+        shell: Rscript {0}
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Style code"
+          file_pattern: '*.R *.Rmarkdown'

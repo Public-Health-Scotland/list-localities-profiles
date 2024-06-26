@@ -28,8 +28,8 @@ lookup <- read_in_localities()
 HSCP_list <- unique(lookup$hscp2019name)
 
 # Create list of localities in chosen HSCP
-locality_list <- lookup %>%
-  filter(hscp2019name == HSCP) %>%
+locality_list <- lookup |>
+  filter(hscp2019name == HSCP) |>
   pull(hscp_locality)
 
 
@@ -47,6 +47,8 @@ locality_list <- lookup %>%
 map <- paste0(lp_path, "Master RMarkdown Document & Render Code/Output/maps/", HSCP, ".png")
 
 stopifnot(file.exists(map)) # Error if the file path doesn't exist.
+
+loop_env <- c(ls(), "loop_env")
 
 # 2. Loop through each locality to create the main body of the profiles and the summary table
 for (LOCALITY in locality_list) {
@@ -75,7 +77,7 @@ for (LOCALITY in locality_list) {
   source("./Master RMarkdown Document & Render Code/Tables for Appendix.R")
 
   # Remove tidylog package which messes up outputs
-  detach(package:tidylog, unload = TRUE)
+  # detach(package:tidylog, unload = TRUE)
 
   ## 2b) Create the main body of the profiles
 
@@ -89,4 +91,9 @@ for (LOCALITY in locality_list) {
     output_file = paste0(LOCALITY, " - Summary Table.docx"),
     output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/Summary Tables/")
   )
+
+  # Clean up the environment by restoring it to the 'pre-loop' state.
+  rm(list = setdiff(ls(), loop_env))
+  # Force garbage collection to free up memory
+  gc()
 }

@@ -10,22 +10,22 @@
 ############# 1) PACKAGES, DIRECTORY, LOOKUPS, DATA IMPORT + CLEANING #############
 
 ## load packages
-#library(readxl)
+# library(readxl)
 library(tidyverse)
-#library(reshape2)
-#library(knitr)
+# library(reshape2)
+# library(knitr)
 library(janitor)
 library(cowplot)
 library(gridExtra)
 library(grid)
 library(png)
 
-library(tidylog)
+# library(tidylog)
 library(phsstyles)
 
 
 # Determine locality (for testing only)
-#LOCALITY <- "Inverness"
+# LOCALITY <- "Inverness"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
 # LOCALITY <- "Mid-Argyll, Kintyre and Islay"
 # LOCALITY <- "City of Dunfermline"
@@ -35,10 +35,10 @@ library(phsstyles)
 ext_year <- 2023
 
 # Set file path
-lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 # Source in functions code
-#source("Master RMarkdown Document & Render Code/Global Script.R")
+# source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ### Geographical lookups and objects ----
 
@@ -179,8 +179,7 @@ life_exp_trend <- life_exp %>%
   filter(area_name == LOCALITY & area_type == "Locality" & year >= max(year) - 10) %>%
   mutate(period_short = str_wrap(period_short, width = 10)) %>%
   mutate(measure = round_half_up(measure, 1)) %>%
-  ggplot() +
-  aes(x = period_short, group = sex, y = measure, linetype = sex, shape = sex) +
+  ggplot(aes(x = period_short, y = measure, group = sex, linetype = sex, shape = sex)) +
   geom_line(aes(colour = sex), size = 1) +
   geom_point(aes(colour = sex), size = 2) +
   scale_colour_manual(values = palette) +
@@ -188,7 +187,8 @@ life_exp_trend <- life_exp %>%
   expand_limits(y = 0) +
   labs(
     title = paste0("Average Life Expectancy in ", str_wrap(`LOCALITY`, 40)),
-    x = "Year Groups (5-year aggregates)", y = "Average Life Expectancy (in years)",
+    x = "Year Groups (5-year aggregates)",
+    y = "Average Life Expectancy (in years)",
     caption = "Source: ScotPHO"
   ) +
   theme(plot.margin = unit(c(0, 0, 0, 1), "cm")) +
@@ -216,7 +216,7 @@ life_exp_table <- life_exp %>%
   ) %>%
   arrange(area_name) %>%
   select(-area_type) %>%
-  spread(area_name, measure)
+  pivot_wider(names_from = area_name, values_from = measure)
 
 
 # Table breaking down intermediate zones
@@ -235,7 +235,7 @@ life_exp_table <- life_exp %>%
   ) %>%
   arrange(area_name) %>%
   select(-area_type) %>%
-  spread(area_name, measure)
+  pivot_wider(names_from = area_name, values_from = measure)
 
 
 ## Numbers for text
@@ -401,7 +401,7 @@ highest_hosp_disease <- disease_hosp %>%
 
 disease_hosp_table <- disease_hosp %>%
   select(indicator, period_short, area_name, measure) %>%
-  spread(area_name, measure) %>%
+  pivot_wider(names_from = area_name, values_from = measure) %>%
   rename(
     "Disease" = indicator,
     "Latest time period" = period_short
@@ -482,7 +482,7 @@ latest_year_ltc <- distinct(ltc, year) %>% as.character()
 ltc_scot <- ltc %>%
   select(-year, -hscp2019name, -hscp_locality, -slf_adj_pop) %>%
   group_by(total_ltc, age_group) %>%
-  summarise_all(sum) %>%
+  summarise(across(everything(), sum)) %>%
   ungroup()
 
 
@@ -621,7 +621,7 @@ ltc2 <- ltc %>%
   select(-year) %>%
   mutate(age_group = if_else(age_group == "Under 65", "Under 65", "65+")) %>%
   group_by(hscp2019name, hscp_locality, age_group, total_ltc) %>%
-  summarise_all(sum) %>%
+  summarise(across(everything(), sum)) %>%
   ungroup()
 
 ltc_multimorbidity <- ltc2 %>%
@@ -651,7 +651,7 @@ ltc_multimorbidity <- ltc2 %>%
 
 ltc_multimorbidity_table <- ltc_multimorbidity %>%
   select(age_group, total_ltc, percent) %>%
-  spread(age_group, percent) %>%
+  pivot_wider(names_from = age_group, values_from = percent) %>%
   rename(
     " " = total_ltc,
     "Proportion under 65 (%)" = "Under 65",
@@ -678,8 +678,12 @@ ltc_types <- ltc2 %>%
   select(-hscp2019name, -total_ltc, -people) %>%
   filter(hscp_locality == LOCALITY) %>%
   group_by(hscp_locality, age_group) %>%
-  summarise_all(sum) %>%
-  gather(key = "key", value = "value", c(`Arthritis`:`Renal failure`))
+  summarise(across(everything(), sum)) %>%
+  pivot_longer(
+    cols = c("Arthritis":"Renal failure"),
+    names_to = "key",
+    values_to = "value"
+  )
 
 # Create negative values for chart
 ltc_types_temp <- ltc_types %>%
@@ -723,13 +727,14 @@ lims.ov65 <- case_when(
   max(ltc_types$percent) > 24 ~ 30
 )
 
-ltc_plot_left <-
-  ggplot(filter(ltc_types, age_group == "Under 65"), aes(x = key, y = percent, label = round_half_up(percent, 1))) +
-  geom_point(stat = "identity", colour = palette[1], size = 3) +
-  geom_segment(aes(y = 0, x = key, yend = percent, xend = key), size = 0.4) +
-  labs(x = "", y = "People under 65 with\nthe condition (%)", title = "UNDER 65") +
-  scale_y_continuous(breaks = seq(-100, 0, 2), labels = paste0(as.character(seq(100, 0, -2)))) +
-  expand_limits(y = lims.un65) +
+ltc_plot_left <- ltc_types %>%
+  filter(age_group == "Under 65") %>%
+  ggplot(aes(x = percent, y = key, label = round_half_up(percent, 1))) +
+  geom_point(colour = palette[1], size = 3) +
+  geom_segment(aes(x = 0, y = key, xend = percent, yend = key), size = 0.4) +
+  labs(x = "People under 65 with\nthe condition (%)", y = "", title = "UNDER 65") +
+  scale_x_continuous(breaks = seq(-100, 0, 2), labels = paste0(seq(100, 0, -2))) +
+  expand_limits(x = lims.un65) +
   theme_profiles() +
   theme(
     title = element_text(colour = palette[1]),
@@ -738,35 +743,32 @@ ltc_plot_left <-
     axis.text.y = element_blank(),
     axis.ticks.y = element_blank()
   ) +
-  scale_x_discrete(limits = rev(levels(as.factor(ltc_types$key)))) +
-  coord_flip()
+  scale_y_discrete(limits = rev(levels(as.factor(ltc_types$key))))
 
-ltc_axis <-
-  ltc_types %>%
+ltc_axis <- ltc_types %>%
   filter(age_group == "Under 65") %>%
-  ggplot(aes(key, 0, label = key)) +
+  ggplot(aes(x = 0, y = key, label = key)) +
   geom_text() +
-  coord_flip() +
-  scale_x_discrete(limits = rev(levels(as.factor(ltc_types$key)))) +
+  scale_y_discrete(limits = rev(levels(as.factor(ltc_types$key)))) +
   theme_void()
 
-ltc_plot_right <-
-  ggplot(filter(ltc_types, age_group == "65+"), aes(x = key, y = percent, label = round_half_up(percent, 1))) +
-  geom_point(stat = "identity", colour = palette[2], size = 3) +
-  geom_segment(aes(y = 0, x = key, yend = percent, xend = key), size = 0.4) +
-  labs(x = "", y = "People over 65 with\nthe condition (%)", title = "OVER 65") +
-  scale_y_continuous(breaks = seq(0, 100, 2)) +
-  expand_limits(y = lims.ov65) +
+ltc_plot_right <- ltc_types %>%
+  filter(age_group == "65+") %>%
+  ggplot(aes(x = percent, y = key, label = round_half_up(percent, 1))) +
+  geom_point(colour = palette[2], size = 3) +
+  geom_segment(aes(x = 0, y = key, xend = percent, yend = key), size = 0.4) +
+  labs(x = "People over 65 with\nthe condition (%)", y = "", title = "OVER 65") +
+  scale_x_continuous(breaks = seq(0, 100, 2)) +
+  expand_limits(x = lims.ov65) +
   theme_profiles() +
   theme(
     plot.margin = unit(c(0.5, 0, 0, 0), "cm"),
-    axis.title.y = element_blank(),
-    axis.text.y = element_blank(),
-    axis.ticks.y = element_blank(),
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
     title = element_text(colour = palette[2])
   ) +
-  scale_x_discrete(limits = rev(levels(as.factor(ltc_types$key)))) +
-  coord_flip()
+  scale_y_discrete(limits = rev(levels(as.factor(ltc_types$key))))
 
 title <- ggdraw() +
   draw_label(paste0(
@@ -795,7 +797,7 @@ ltc_totals <- ltc2 %>%
   filter(total_ltc != 0) %>%
   select(-hscp2019name, -total_ltc, -age_group) %>%
   group_by(hscp_locality) %>%
-  summarise_all(sum) %>%
+  summarise(across(everything(), sum)) %>%
   ungroup()
 
 ltc_totals <- left_join(ltc_totals, select(lookup, hscp_locality, hscp2019name)) # join df with lookup2
@@ -808,8 +810,8 @@ ltc_pops_total_hscp <- sum(filter(slf_pops, hscp2019name == HSCP)$slf_adj_pop)
 # Colour lookup for table
 ltc_cols <- ltc_scot %>%
   select(3:17) %>%
-  summarise_all(sum) %>%
-  gather() %>%
+  summarise(across(everything(), sum)) %>%
+  pivot_longer(cols = everything(), names_to = "key", values_to = "value") %>%
   rename(topltc = key) %>%
   arrange(desc(value)) %>%
   mutate(colours = c(palette, c(
@@ -821,9 +823,9 @@ ltc_cols <- ltc_scot %>%
 top5ltc_loc <- ltc_totals %>%
   filter(hscp_locality == LOCALITY) %>%
   select(-hscp_locality, -hscp2019name, -people, -slf_adj_pop) %>%
-  gather() %>%
+  pivot_longer(cols = everything(), names_to = "key", values_to = "value") %>%
   arrange(desc(value)) %>%
-  top_n(5, value) %>%
+  slice_max(n = 5, order_by = value) %>%
   mutate(topltc = key, percent = round_half_up((value / ltc_pops_total_loc) * 100, 2)) %>%
   select(-key, -value) %>%
   left_join(ltc_cols) %>%
@@ -834,13 +836,13 @@ top5ltc_loc <- ltc_totals %>%
 top5ltc_hscp <- ltc_totals %>%
   select(-hscp_locality) %>%
   group_by(hscp2019name) %>%
-  summarise_all(sum) %>%
+  summarise(across(everything(), sum)) %>%
   ungroup() %>%
   filter(hscp2019name == HSCP) %>%
   select(-hscp2019name, -people, -slf_adj_pop) %>%
-  gather() %>%
+  pivot_longer(cols = everything(), names_to = "key", values_to = "value") %>%
   arrange(desc(value)) %>%
-  top_n(5, value) %>%
+  slice_max(n = 5, order_by = value) %>%
   mutate(topltc = key, percent = round_half_up((value / ltc_pops_total_hscp) * 100, 2)) %>%
   select(-key, -value) %>%
   left_join(ltc_cols) %>%
@@ -853,12 +855,12 @@ top5ltc_scot <- ltc_scot %>%
   filter(total_ltc != 0) %>%
   select(-age_group, -people) %>%
   group_by(area) %>%
-  summarise_all(sum) %>%
+  summarise(across(everything(), sum)) %>%
   ungroup() %>%
   select(-area, -total_ltc) %>%
-  gather() %>%
+  pivot_longer(cols = everything(), names_to = "key", values_to = "value") %>%
   arrange(desc(value)) %>%
-  top_n(5, value) %>%
+  slice_max(n = 5, order_by = value) %>%
   mutate(topltc = key, percent = round_half_up((value / ltc_pops_total_scot) * 100, 2)) %>%
   select(-key, -value) %>%
   left_join(ltc_cols) %>%
@@ -941,7 +943,7 @@ other_locs_summary_table <- function(data, latest_year) {
     arrange(hscp_locality) %>%
     select(hscp_locality, measure) %>%
     mutate(measure = round_half_up(measure, 1)) %>%
-    spread(hscp_locality, measure)
+    pivot_wider(names_from = hscp_locality, values_from = measure)
 }
 
 hscp_scot_summary_table <- function(data, latest_year, area) {
@@ -1002,7 +1004,7 @@ other_locs_ltc <- inner_join(ltc, other_locs) %>%
   mutate(percent = round_half_up(ltc_people / slf_adj_pop * 100, 1)) %>%
   arrange(hscp_locality) %>%
   select(hscp_locality, percent) %>%
-  spread(key = hscp_locality, value = percent)
+  pivot_wider(names_from = hscp_locality, values_from = percent)
 
 
 # 2. HSCP
