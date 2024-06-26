@@ -24,7 +24,7 @@ source("Master RMarkdown Document & Render Code/overwrite_with_custom_functions.
 
 ## Specify HSCP here
 ## NOTE - make sure that the formatting of the partnership's name matches the lookup
-HSCP <- "Moray"
+HSCP <- "South Ayrshire"
 
 # Below creates locality list of all the localities in a chosen HSCP
 lookup <- read_in_localities()
@@ -37,7 +37,7 @@ locality_list <- lookup |>
   pull(hscp_locality)
 
 # We don't want to create a profile doc for 'other areas'
-locality_list <- locality_list[locality_list != "Other areas"]
+#locality_list <- locality_list[locality_list != "Other areas"]
 
 
 ## Loop to create the profiles for all the localities in the list
@@ -104,3 +104,4 @@ for (LOCALITY in locality_list) {
   # Force garbage collection to free up memory
   gc()
 }
+
