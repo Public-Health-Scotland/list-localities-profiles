@@ -13,7 +13,7 @@
 
 1.  Get the new lookups in order.
 2.  Create a new data folder and update variables in a handful of places to reflect this.
-3.  Run the MSG code in the Unscheduled Care folder to get MSG data at IZ-level-change folder path- change folder in `MSG 0`.
+3.  Run the MSG code in the Unscheduled Care folder to get MSG data at IZ-level-change folder path- change folder in `MSG 0`. Also note you must make sure AE folder is in your new folder.
 4.  Run the `Unscheduled Care 1 IZ` and `Unscheduled care 2` script to produce the data files needed- change folder name.
 5.  Run the `General Health 2` and `General Health 3` script to produce the data files needed- change folder and variable names.
 6.  Run the full indicators as usual.
