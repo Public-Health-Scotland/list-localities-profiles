@@ -36,7 +36,7 @@ ext_year <- 2023
 
 # Set file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
-import_folder_southayrshire <- path(lp_path, "Unscheduled Care", paste("South Ayrshire Data", ext_year))
+import_folder_southayrshire <- path(lp_path, "General Health", paste("South Ayrshire Data", ext_year))
 # Source in functions code
 # source("Master RMarkdown Document & Render Code/Global Script.R")
 
