@@ -23,9 +23,9 @@ options(kableExtra.auto_format = FALSE)
 LOCALITY <-  "Inverness"
 #LOCALITY <- "East Dunbartonshire West"
 
-source("~/localities/Master RMarkdown Document & Render Code/Global Script.R")
+source("~/list-localities-profiles/Master RMarkdown Document & Render Code/Global Script.R")
 
-source("~/localities/Unscheduled Care/2. Unscheduled Care outputs.R")
+source("~/list-localities-profiles/Unscheduled Care/2. Unscheduled Care outputs.R")
 
 x <- 1 # object for figure numbers
 y <- 1 # object for table numbers
@@ -40,9 +40,9 @@ This section includes acute hospital data, delayed discharge bed days and A&E at
 
 **For the most recent time periods available, `r LOCALITY` had:**
 
- - **`r latest_emergency_adm_loc`** emergency hospital admissions per 100,000 population, compared to `r scot_emergency_adm` in Scotland. 
+ - **`r latest_emergency_adm_loc1`** emergency hospital admissions per 100,000 population, compared to `r scot_emergency_adm1` in Scotland. 
  
- - **`r latest_bed_days_loc`** unscheduled acute specialty bed days per 100,000 population, compared to `r scot_bed_days` in Scotland.  
+ - **`r latest_bed_days_loc1`** unscheduled acute specialty bed days per 100,000 population, compared to `r scot_bed_days1` in Scotland.  
  
  - **`r latest_ae_att_loc`** A&E attendances per 100,000 population, compared to `r scot_ae_att` in Scotland. 
  
@@ -58,6 +58,8 @@ This section includes acute hospital data, delayed discharge bed days and A&E at
 #####Pagebreak
 
 ### Emergency Admissions
+
+Figure `r x` presents the emergency admissions rate per 100,000 population in `r LOCALITY` from `r min_year_ea` to `r max_year_ea`. As presented Figure `r x`, the emergency admissions rate in `r LOCALITY` for `r max_year_ea` is `r latest_emergency_adm_loc1`, a `r percent_rate_change`% `r word_change_rate` since `r min_year_ea`. The HSCP rate is `r hscp_emergency_adm1` in `r max_year_ea`, a `r hscp_rate_change`% `r word_change_hscp` since `r min_year_ea` and the Scotland rate is `r scot_emergency_adm1`, a `r scot_rate_change`% `r word_change_scot` since `r min_year_ea`.
 
 ####Figure `r x`: Emergency admissions by geographical area
 \newline
@@ -80,6 +82,8 @@ x <- x + 1
 ##### Page break
 
 ### Unscheduled Acute Bed Days
+
+Figure `r x` presents the emergency admissions rate per 100,000 population in `r LOCALITY` from `r min_year_ubd` to `r max_year_ubd`. As presented in Figure `r x`, the emergency admissions rate in `r LOCALITY` for `r max_year_ubd` is `r latest_bed_days_loc1`, a `r rate_change_ubd`% `r word_change_ubd` since `r min_year_ubd`. The HSCP rate is `r hscp_bed_days1` in `r max_year_ubd`, a `r hscp_rate_ubd`% `r hscp_change_ubd` since `r min_year_ubd` and the Scotland rate is `r scot_bed_days1`, a `r scot_rate_ubd`% `r scot_change_ubd` since `r min_year_ubd`.
 
 ####Figure `r x`: Unscheduled acute bed days by geographical area
 \newline
