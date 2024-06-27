@@ -611,7 +611,9 @@ ae_att_age <- ae_attendances %>%
   summarise(attendances = sum(attendances)) %>%
   ungroup() %>%
   left_join(loc_pop_age1) %>%
-  mutate(data = round_half_up(attendances / pop * 100000))
+  mutate(data = round_half_up(attendances / pop * 100000))%>%
+  filter(!is.na(year))
+
 
 AandE_age_ts <- age_group_trend_usc(
   data_for_plot = ae_att_age,
@@ -626,7 +628,9 @@ ae_att_areas <- ae_attendances %>%
   rename(n = attendances) %>%
   aggregate_usc_area_data() %>%
   left_join(pop_areas_all_ages) %>%
-  mutate(data = round_half_up(n / pop * 100000))
+  mutate(data = round_half_up(n / pop * 100000))%>%
+  filter(!is.na(year))
+
 
 AandE_loc_ts <- area_trend_usc(
   data_for_plot = ae_att_areas,
@@ -637,29 +641,73 @@ AandE_loc_ts <- area_trend_usc(
 
 
 # Objects for text and summary table
+
+min_year_ae_area <- min(ae_att_areas$financial_year)
+max_year_ae_area <- max(ae_att_areas$financial_year)
+
+min_year_ae_age <- min(ae_att_age$financial_year)
+max_year_ae_age <- max(ae_att_age$financial_year)
+
+first_fy_rate_ae_areas <- filter(
+  ae_att_areas,
+  (financial_year == min(ae_att_areas$financial_year)) &
+    (location == LOCALITY & area_type == "Locality")
+)$data
+
 latest_ae_att_loc <- ae_att_areas %>%
   filter(
     location == LOCALITY,
     year == max(year)
   ) %>%
-  mutate(data = format(data, big.mark = ",")) %>%
-  pull(data)
+  mutate(data2 = format(data, big.mark = ",")) #%>%
+  #pull(data)
+
+latest_ae_att_loc1 <- latest_ae_att_loc %>% pull(data2)
+latest_ae_att_loc2 <- latest_ae_att_loc %>% pull(data)
+
+percent_rate_change_ae_areas <- round(abs(latest_ae_att_loc2 - first_fy_rate_ae_areas) / first_fy_rate_ae_areas * 100, digits = 1)
+word_change_rate_ae_areas <- if_else(latest_ae_att_loc2 > first_fy_rate_ae_areas,
+                            "increase", "decrease")
 
 hscp_ae_att <- ae_att_areas %>%
   filter(
     location == HSCP,
     year == max(year)
   ) %>%
-  mutate(data = format(data, big.mark = ",")) %>%
-  pull(data)
+  mutate(data2 = format(data, big.mark = ",")) #%>%
+  #pull(data)
+
+hscp_ae_att1 <- hscp_ae_att %>% pull(data2)
+hscp_ae_att2 <- hscp_ae_att %>% pull(data)
+
+first_fy_hscp_ae <- filter(ae_att_areas,
+                        (financial_year == min(ae_att_areas$financial_year)) &
+                          (area_type == "HSCP"))$data
+
+percent_rate_change_ae_areas_hscp <- round(abs(hscp_ae_att2 - first_fy_hscp_ae) / first_fy_hscp_ae * 100, digits = 1)
+word_change_rate_ae_areas_hscp <- if_else(hscp_ae_att2 > first_fy_hscp_ae,
+                                     "increase", "decrease")
 
 scot_ae_att <- ae_att_areas %>%
   filter(
     location == "Scotland",
     year == max(year)
   ) %>%
-  mutate(data = format(data, big.mark = ",")) %>%
-  pull(data)
+  mutate(data2 = format(data, big.mark = ",")) #%>%
+  #pull(data)
+
+scot_ae_att1 <- scot_ae_att %>% pull(data2)
+scot_ae_att2 <- scot_ae_att %>% pull(data)
+
+first_fy_scot_ae <- filter(ae_att_areas,
+                           (financial_year == min(ae_att_areas$financial_year)) &
+                             (location == "Scotland"))$data
+
+percent_rate_change_ae_areas_scot <- round(abs(scot_ae_att2 - first_fy_scot_ae) / first_fy_scot_ae * 100, digits = 1)
+word_change_rate_ae_areas_scot <- if_else(scot_ae_att2 > first_fy_scot_ae,
+                                          "increase", "decrease")
+
+
 
 other_loc_ae_att <- ae_attendances %>%
   group_by(financial_year, hscp_locality) %>%

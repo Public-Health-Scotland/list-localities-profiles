@@ -59,7 +59,7 @@ This section includes acute hospital data, delayed discharge bed days and A&E at
 
 ### Emergency Admissions
 
-Figure `r x` presents the emergency admissions rate per 100,000 population in `r LOCALITY` from `r min_year_ea` to `r max_year_ea`. As presented Figure `r x`, the emergency admissions rate in `r LOCALITY` for `r max_year_ea` is `r latest_emergency_adm_loc1`, a `r percent_rate_change`% `r word_change_rate` since `r min_year_ea`. The HSCP rate is `r hscp_emergency_adm1` in `r max_year_ea`, a `r hscp_rate_change`% `r word_change_hscp` since `r min_year_ea` and the Scotland rate is `r scot_emergency_adm1`, a `r scot_rate_change`% `r word_change_scot` since `r min_year_ea`.
+Figure `r x` presents the emergency admissions rate per 100,000 population in the `r LOCALITY` locality from `r min_year_ea` to `r max_year_ea`. As presented Figure `r x`, the emergency admissions rate in the `r LOCALITY` locality for `r max_year_ea` is `r latest_emergency_adm_loc1`, a `r percent_rate_change`% `r word_change_rate` since `r min_year_ea`. The `r HSCP` HSCP rate is `r hscp_emergency_adm1` in `r max_year_ea`, a `r hscp_rate_change`% `r word_change_hscp` since `r min_year_ea` and the Scotland rate is `r scot_emergency_adm1`, a `r scot_rate_change`% `r word_change_scot` since `r min_year_ea`.
 
 ####Figure `r x`: Emergency admissions by geographical area
 \newline
@@ -83,7 +83,7 @@ x <- x + 1
 
 ### Unscheduled Acute Bed Days
 
-Figure `r x` presents the emergency admissions rate per 100,000 population in `r LOCALITY` from `r min_year_ubd` to `r max_year_ubd`. As presented in Figure `r x`, the emergency admissions rate in `r LOCALITY` for `r max_year_ubd` is `r latest_bed_days_loc1`, a `r rate_change_ubd`% `r word_change_ubd` since `r min_year_ubd`. The HSCP rate is `r hscp_bed_days1` in `r max_year_ubd`, a `r hscp_rate_ubd`% `r hscp_change_ubd` since `r min_year_ubd` and the Scotland rate is `r scot_bed_days1`, a `r scot_rate_ubd`% `r scot_change_ubd` since `r min_year_ubd`.
+Figure `r x` presents the emergency admissions rate per 100,000 population in the `r LOCALITY` locality from `r min_year_ubd` to `r max_year_ubd`. As presented in Figure `r x`, the emergency admissions rate in the `r LOCALITY` locality for `r max_year_ubd` is `r latest_bed_days_loc1`, a `r rate_change_ubd`% `r word_change_ubd` since `r min_year_ubd`. The `r HSCP` HSCP rate is `r hscp_bed_days1` in `r max_year_ubd`, a `r hscp_rate_ubd`% `r hscp_change_ubd` since `r min_year_ubd` and the Scotland rate is `r scot_bed_days1`, a `r scot_rate_ubd`% `r scot_change_ubd` since `r min_year_ubd`.
 
 ####Figure `r x`: Unscheduled acute bed days by geographical area
 \newline
@@ -107,6 +107,8 @@ x <- x + 1
 ##### Page break
 
 ### A&E Attendances
+
+Figure `r x` presents the A&E attendance rates per 100,000 population in the `r LOCALITY` locality from `r min_year_ae_area` to `r max_year_ae_area` by geographical area. As presented in Figure `r x`, the A&E attendance rates per 100,000 in `r LOCALITY` for `r max_year_ae_area` is `r latest_ae_att_loc1`, a `r percent_rate_change_ae_areas`% `r word_change_rate_ae_areas` since `r min_year_ae_area`. The `r HSCP` HSCP rate is `r hscp_ae_att1` in `r max_year_ae_area`, a `r percent_rate_change_ae_areas_hscp`% `r word_change_rate_ae_areas_hscp` since `r min_year_ae_area` and the Scotland rate is `r scot_ae_att1`, a `r percent_rate_change_ae_areas_scot`% `r word_change_rate_ae_areas_scot` since `r min_year_ae_area`.
 
 ####Figure `r x`: A&E attendances by geographical area
 \newline
