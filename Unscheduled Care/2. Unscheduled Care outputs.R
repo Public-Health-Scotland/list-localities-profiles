@@ -639,14 +639,71 @@ AandE_loc_ts <- area_trend_usc(
   source = "Source: PHS A&E Datamart"
 )
 
-
-# Objects for text and summary table
-
-min_year_ae_area <- min(ae_att_areas$financial_year)
-max_year_ae_area <- max(ae_att_areas$financial_year)
+# Objects for text and summary table- age
 
 min_year_ae_age <- min(ae_att_age$financial_year)
 max_year_ae_age <- max(ae_att_age$financial_year)
+
+
+latest_ae_att_max_age <- ae_att_age %>%
+  filter(
+    year == max(year),
+    data== max(data)
+  ) %>%
+  mutate(data2 = format(data, big.mark = ",")) #%>%
+#pull(data)
+
+latest_ae_att_loc1_age <- latest_ae_att_max_age %>% pull(data2)
+latest_ae_att_loc2_age <- latest_ae_att_max_age %>% pull(data)
+age_group_max <- latest_ae_att_max_age %>% pull(age_group)
+
+first_ae_att_max_age <- ae_att_age %>%
+  filter(
+    year == min(year),
+    age_group == age_group_max
+  ) %>%
+  mutate(data2 = format(data, big.mark = ",")) #%>%
+#pull(data)
+
+first_ae_att_max_age_data <- first_ae_att_max_age %>% pull(data)
+
+percent_rate_change_ae_age <- round(abs(latest_ae_att_loc2_age - first_ae_att_max_age_data) / first_ae_att_max_age_data * 100, digits = 1)
+word_change_rate_ae_age <- if_else(latest_ae_att_loc2_age > first_ae_att_max_age_data,
+                                     "increase", "decrease")
+
+latest_ae_att_min_age <- ae_att_age %>%
+  filter(
+    year == max(year)) %>%
+  filter(
+    data == min(data)
+  ) %>%
+  mutate(data2 = format(data, big.mark = ",")) #%>%
+#pull(data)
+
+latest_ae_att_loc1_age_min <- latest_ae_att_min_age %>% pull(data2)
+latest_ae_att_loc2_age_min <- latest_ae_att_min_age %>% pull(data)
+age_group_min <- latest_ae_att_min_age %>% pull(age_group)
+
+first_ae_att_min_age <- ae_att_age %>%
+  filter(
+    year == min(year),
+    age_group == age_group_min
+  ) %>%
+  mutate(data2 = format(data, big.mark = ",")) #%>%
+#pull(data)
+
+first_ae_att_min_data <- first_ae_att_min_age %>% pull(data)
+
+percent_rate_change_ae_age2 <- round(abs(latest_ae_att_loc2_age_min - first_ae_att_min_data) / first_ae_att_min_data * 100, digits = 1)
+word_change_rate_ae_age2 <- if_else(latest_ae_att_loc2_age_min > first_ae_att_min_data,
+                                   "increase", "decrease")
+
+
+
+# Objects for text and summary table- area
+
+min_year_ae_area <- min(ae_att_areas$financial_year)
+max_year_ae_area <- max(ae_att_areas$financial_year)
 
 first_fy_rate_ae_areas <- filter(
   ae_att_areas,
@@ -841,6 +898,7 @@ readmissions <- arrow::read_parquet(paste0(import_folder, "readmissions_smr.parq
   filter(financial_year <= max_fy)
 
 # Plotting by age
+
 readmissions_age <- readmissions %>%
   filter(hscp_locality == LOCALITY) %>%
   drop_na(age_group) %>%
@@ -850,7 +908,7 @@ readmissions_age <- readmissions %>%
     discharges = sum(discharges)
   ) %>%
   ungroup() %>%
-  mutate(data = round_half_up(read_28 / discharges * 1000, 1))
+  mutate(data = round_half_up(read_28 / discharges * 1000, 1)) 
 
 Read_age_ts <- age_group_trend_usc(
   data_for_plot = readmissions_age,
@@ -878,7 +936,8 @@ read2 <- readmissions %>%
 
 readmissions_areas <- left_join(read1, read2) %>%
   left_join(pop_areas_all_ages) %>%
-  mutate(data = round_half_up(read_28 / discharges * 1000, 1))
+  mutate(data = round_half_up(read_28 / discharges * 1000, 1))%>%
+  filter(!is.na(year))
 
 rm(read1, read2)
 
@@ -889,13 +948,66 @@ Read_loc_ts <- area_trend_usc(
   source = "Source: PHS SMR01"
 )
 
-# Objects for text and summary table
+# Objects for text and summary table-age
+min_year_re_age <- min(readmissions_age$financial_year)
+max_year_re_age <- max(readmissions_age$financial_year)
+
+latest_re_max_age <- readmissions_age %>%
+  filter(
+    financial_year == max(financial_year),
+    data== max(data)
+  )%>%
+pull(data)
+
+
+
+# Objects for text and summary table-area
+min_year_re_area <- min(readmissions_areas$financial_year)
+max_year_re_area <- max(readmissions_areas$financial_year)
+
+first_read_loc <- readmissions_areas %>%
+  filter(
+    location == LOCALITY,
+    year == min(year))
+
+first_read_loc1 <-first_read_loc %>% pull(data)
+
 latest_read_loc <- readmissions_areas %>%
   filter(
     location == LOCALITY,
+    year == max(year))
+
+latest_read_loc1 <-latest_read_loc %>% pull(data)
+
+percent_rate_change_re_area <- round(abs(latest_read_loc1 - first_read_loc1) / first_read_loc1 * 100, digits = 1)
+word_change_rate_re_area <- if_else(latest_read_loc1 > first_read_loc1,
+                                          "increase", "decrease")
+
+first_hscp_read <- readmissions_areas %>%
+  filter(
+    location == HSCP,
+    year == min(year)
+  ) %>%
+  pull(data)
+
+hscp_read <- readmissions_areas %>%
+  filter(
+    location == HSCP,
     year == max(year)
   ) %>%
   pull(data)
+
+percent_rate_change_re_area_hscp <- round(abs(hscp_read - first_hscp_read) / first_hscp_read * 100, digits = 1)
+word_change_rate_re_area_hscp <- if_else(hscp_read > first_hscp_read,
+                                    "increase", "decrease")
+
+first_scot_read <- readmissions_areas %>%
+  filter(
+    location == "Scotland",
+    year == min(year)
+  ) %>%
+  pull(data)
+
 
 scot_read <- readmissions_areas %>%
   filter(
@@ -904,6 +1016,9 @@ scot_read <- readmissions_areas %>%
   ) %>%
   pull(data)
 
+percent_rate_change_re_area_scot <- round(abs(scot_read - first_scot_read) / first_scot_read * 100, digits = 1)
+word_change_rate_re_area_scot <- if_else(scot_read > first_scot_read,
+                                         "increase", "decrease")
 
 # 7. Comm 6 months ----
 # _________________________________________________________________________________
