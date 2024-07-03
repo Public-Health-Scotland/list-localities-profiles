@@ -956,9 +956,42 @@ latest_re_max_age <- readmissions_age %>%
   filter(
     financial_year == max(financial_year),
     data== max(data)
-  )%>%
-pull(data)
+  )#%>%
+#pull(data)
 
+latest_re_max_age_data <- latest_re_max_age %>% pull(data)
+latest_re_max_age_group <- latest_re_max_age %>% pull(age_group)
+
+first_re_max_age <- readmissions_age %>%
+  filter(
+    financial_year == min(financial_year),
+    age_group == latest_re_max_age_group
+  ) %>%
+  pull(data)
+
+
+percent_rate_change_re_age <- round(abs(latest_re_max_age_data - first_re_max_age) / first_re_max_age * 100, digits = 1)
+word_change_rate_re_age <- if_else(latest_re_max_age_data > first_re_max_age,
+                                   "increase", "decrease")
+
+latest_re_min_age <- readmissions_age %>%
+  filter(
+      financial_year == max(financial_year)) %>% 
+        filter(data== min(data))
+
+latest_re_min_age_data <- latest_re_min_age %>% pull(data)
+latest_re_min_age_group <- latest_re_min_age %>% pull(age_group)
+
+first_re_min_age <- readmissions_age %>%
+  filter(
+    financial_year == min(financial_year),
+    age_group == latest_re_min_age_group
+  ) %>%
+  pull(data)
+
+percent_rate_change_re_age_min <- round(abs(latest_re_min_age_data - first_re_min_age) / first_re_min_age * 100, digits = 1)
+word_change_rate_re_age_min <- if_else(latest_re_min_age_data > first_re_min_age,
+                                   "increase", "decrease")
 
 
 # Objects for text and summary table-area

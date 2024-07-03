@@ -108,7 +108,7 @@ x <- x + 1
 
 ### A&E Attendances
 
-Figure `r x` presents the A&E attendance rates per 100,000 population in the `r LOCALITY` locality from `r min_year_ae_area` to `r max_year_ae_area` by geographical area. As presented in Figure `r x`, the A&E attendance rates per 100,000 in `r LOCALITY` for `r max_year_ae_area` is `r latest_ae_att_loc1`, a `r percent_rate_change_ae_areas`% `r word_change_rate_ae_areas` since `r min_year_ae_area`. The `r HSCP` HSCP rate is `r hscp_ae_att1` in `r max_year_ae_area`, a `r percent_rate_change_ae_areas_hscp`% `r word_change_rate_ae_areas_hscp` since `r min_year_ae_area` and the Scotland rate is `r scot_ae_att1`, a `r percent_rate_change_ae_areas_scot`% `r word_change_rate_ae_areas_scot` since `r min_year_ae_area`.
+Figure `r x` presents the A&E attendance rate per 100,000 population in the `r LOCALITY` locality from `r min_year_ae_area` to `r max_year_ae_area` by geographical area. As presented in Figure `r x`, the A&E attendance rate per 100,000 in `r LOCALITY` for `r max_year_ae_area` is `r latest_ae_att_loc1`, a `r percent_rate_change_ae_areas`% `r word_change_rate_ae_areas` since `r min_year_ae_area`. The `r HSCP` HSCP rate is `r hscp_ae_att1` in `r max_year_ae_area`, a `r percent_rate_change_ae_areas_hscp`% `r word_change_rate_ae_areas_hscp` since `r min_year_ae_area` and the Scotland rate is `r scot_ae_att1`, a `r percent_rate_change_ae_areas_scot`% `r word_change_rate_ae_areas_scot` since `r min_year_ae_area`.
 
 ####Figure `r x`: A&E attendances by geographical area
 \newline
@@ -119,7 +119,7 @@ AandE_loc_ts
 x <- x + 1
 ```
 
-Figure `r x` presents the A&E attendance rates per 100,000 population in the `r LOCALITY` locality from `r min_year_ae_area` to `r max_year_ae_area` by age group. As presented in Figure `r x`, the greatest A&E attendance rates per 100,000 for `r LOCALITY` in `r max_year_ae_age` is `r latest_ae_att_loc1_age` for the `r age_group_max` age group with a percentage `r word_change_rate_ae_age` of `r percent_rate_change_ae_age`% since `r min_year_ae_age`. The smallest A&E attendance per 100,000 for `r LOCALITY` in `r max_year_ae_age` is `r latest_ae_att_loc1_age_min` for the `r age_group_min` age group with a percentage `r word_change_rate_ae_age2` of `r percent_rate_change_ae_age2`% since `r min_year_ae_age`.
+Figure `r x` presents the A&E attendance rate per 100,000 population in the `r LOCALITY` locality from `r min_year_ae_area` to `r max_year_ae_area` by age group. As presented in Figure `r x`, the greatest A&E attendance rate per 100,000 for `r LOCALITY` in `r max_year_ae_age` is `r latest_ae_att_loc1_age` for the `r age_group_max` age group with a percentage `r word_change_rate_ae_age` of `r percent_rate_change_ae_age`% since `r min_year_ae_age`. The smallest A&E attendance rate per 100,000 for `r LOCALITY` in `r max_year_ae_age` is `r latest_ae_att_loc1_age_min` for the `r age_group_min` age group with a percentage `r word_change_rate_ae_age2` of `r percent_rate_change_ae_age2`% since `r min_year_ae_age`.
 
 ####Figure `r x`: A&E attendances by age group
 \newline
@@ -136,7 +136,8 @@ x <- x + 1
 
 ### Emergency Readmissions (28 days)
 
-Figure `r x` presents the emergency readmission (28 days) rate per 1,000 discharges in the `r LOCALITY` locality from `r min_year_re_area` to `r max_year_re_area` by geographical area. As presented in Figure `r x`, the emergency readmission rate per 1,000 discharges in `r LOCALITY` for `r max_year_re_area` is `r latest_read_loc1`, a `r percent_rate_change_re_area`% `r word_change_rate_re_area` since `r min_year_re_area`. The `r HSCP` HSCP rate is `r hscp_read` in `r max_year_re_area`, a `r percent_rate_change_re_area_hscp`% `r word_change_rate_re_area_hscp` since `r min_year_re_area` and the Scotland rate is `r scot_read`, a `r percent_rate_change_re_area_scot`% `r word_change_rate_re_area_scot` since `r min_year_re_area`.
+
+Figure `r x` presents the emergency readmission (28 days) rate per 1,000 discharges in the `r LOCALITY` locality from `r min_year_re_area` to `r max_year_re_area` by geographical area. As presented in Figure `r x`, the emergency readmission (28 days) rate per 1,000 discharges in `r LOCALITY` for `r max_year_re_area` is `r latest_read_loc1`, a `r percent_rate_change_re_area`% `r word_change_rate_re_area` since `r min_year_re_area`. The `r HSCP` HSCP rate is `r hscp_read` in `r max_year_re_area`, a `r percent_rate_change_re_area_hscp`% `r word_change_rate_re_area_hscp` since `r min_year_re_area` and the Scotland rate is `r scot_read`, a `r percent_rate_change_re_area_scot`% `r word_change_rate_re_area_scot` since `r min_year_re_area`.
 
 ####Figure `r x`: Emergency readmissions (28 days) by geographical area
 \newline
@@ -146,7 +147,8 @@ Read_loc_ts
 
 x <- x + 1
 ```
-Figure `r x` presents the emergency readmission (28 days) rate per 1,000 discharges in the `r LOCALITY` locality from `r min_year_re_age` to `r max_year_re_age` by age group.
+Figure `r x` presents the emergency readmission (28 days) rate per 1,000 discharges in the `r LOCALITY` locality from `r min_year_re_age` to `r max_year_re_age` by age group. As presented in Figure `r x`, the greatest emergency readmission (28 days) rate per 1,000 discharges for `r LOCALITY` in `r max_year_re_age` is `r latest_re_max_age_data` for the `r latest_re_max_age_group` age group with a percentage `r word_change_rate_re_age` of `r percent_rate_change_re_age`% since `r min_year_re_age`. The emergency readmission (28 days) rate per 1,000 discharges for `r LOCALITY` in `r max_year_re_age` is `r latest_re_min_age_data` for the `r latest_re_min_age_group` age group with a percentage `r word_change_rate_re_age_min` of `r percent_rate_change_re_age_min`% since `r min_year_re_age`.
+
 ####Figure `r x`: Emergency readmissions (28 days) by age group
 \newline
 
