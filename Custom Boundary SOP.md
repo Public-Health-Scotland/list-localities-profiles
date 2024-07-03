@@ -21,7 +21,9 @@ Request a lookup file from the team with the following columns:
 - hb2019
 - intzone2011name
 - intzone2011
- 
+
+(One idea would be to send an example of a lookup provided before in the correct format?) 
+
 ## Process
 
 1.  Get the new lookups in order.
