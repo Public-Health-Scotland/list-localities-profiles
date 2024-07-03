@@ -611,7 +611,7 @@ ae_att_age <- ae_attendances %>%
   summarise(attendances = sum(attendances)) %>%
   ungroup() %>%
   left_join(loc_pop_age1) %>%
-  mutate(data = round_half_up(attendances / pop * 100000))%>%
+  mutate(data = round_half_up(attendances / pop * 100000)) %>%
   filter(!is.na(year))
 
 
@@ -797,7 +797,8 @@ delayed_disch_areas <- delayed_disch %>%
   rename(n = dd_bed_days) %>%
   aggregate_usc_area_data() %>%
   left_join(pop_areas_65plus) %>%
-  mutate(data = round_half_up(n / pop * 100000))
+  mutate(data = round_half_up(n / pop * 100000)) %>%
+  filter(!is.na(year))
 
 DD_loc_ts <- area_trend_usc(
   data_for_plot = delayed_disch_areas,
@@ -811,29 +812,74 @@ DD_loc_ts <- area_trend_usc(
 
 
 # Objects for text and summary table
+min_year_dd <- min(delayed_disch_areas$financial_year)
+max_year_dd <- max(delayed_disch_areas$financial_year)
+
 latest_dd_loc <- delayed_disch_areas %>%
   filter(
     location == LOCALITY,
     year == max(year)
   ) %>%
-  mutate(data = format(data, big.mark = ",")) %>%
+  mutate(data2 = format(data, big.mark = ",")) 
+
+latest_dd_loc1 <- latest_dd_loc %>% pull(data2)
+latest_dd_loc2 <- latest_dd_loc %>% pull(data)
+
+first_dd_loc <- delayed_disch_areas %>%
+  filter(
+    location == LOCALITY,
+    year == min(year)
+  ) %>%
   pull(data)
+
+percent_rate_change_dd_loc <- round(abs(latest_dd_loc2 - first_dd_loc) / first_dd_loc * 100, digits = 1)
+word_change_rate_dd_loc <- if_else(latest_dd_loc2 > first_dd_loc,
+                                   "increase", "decrease")
+
 
 hscp_dd <- delayed_disch_areas %>%
   filter(
     location == HSCP,
     year == max(year)
   ) %>%
-  mutate(data = format(data, big.mark = ",")) %>%
+  mutate(data2 = format(data, big.mark = ","))
+
+hscp_dd1 <- hscp_dd %>% pull(data2)
+hscp_dd2 <- hscp_dd %>% pull(data)
+
+first_hscp_dd <- delayed_disch_areas %>%
+  filter(
+    location == HSCP,
+    year == min(year)
+  ) %>%
   pull(data)
+
+percent_rate_change_dd_hscp <- round(abs(hscp_dd2 - first_hscp_dd) / first_hscp_dd * 100, digits = 1)
+word_change_rate_dd_hscp <- if_else(hscp_dd2 > first_hscp_dd,
+                                   "increase", "decrease")
+
 
 scot_dd <- delayed_disch_areas %>%
   filter(
     location == "Scotland",
     year == max(year)
   ) %>%
-  mutate(data = format(data, big.mark = ",")) %>%
+  mutate(data2 = format(data, big.mark = ",")) 
+
+scot_dd1 <- scot_dd %>% pull(data2)
+scot_dd2 <- scot_dd %>% pull(data)
+
+first_scot_dd <- delayed_disch_areas %>%
+  filter(
+    location == "Scotland",
+    year == min(year)
+  ) %>%
   pull(data)
+
+percent_rate_change_dd_scot <- round(abs(scot_dd2 - first_scot_dd) / first_scot_dd * 100, digits = 1)
+word_change_rate_dd_scot <- if_else(scot_dd2 > first_scot_dd,
+                                    "increase", "decrease")
+
 
 other_loc_dd <- delayed_disch %>%
   group_by(financial_year, hscp_locality) %>%
@@ -860,7 +906,8 @@ falls_areas <- falls %>%
   rename(n = admissions) %>%
   aggregate_usc_area_data() %>%
   left_join(pop_areas_65plus) %>%
-  mutate(data = round_half_up(n / pop * 100000))
+  mutate(data = round_half_up(n / pop * 100000)) %>%
+  filter(!is.na(year))
 
 Falls_loc_ts <- area_trend_usc(
   data_for_plot = falls_areas,
@@ -874,22 +921,69 @@ Falls_loc_ts <- area_trend_usc(
 
 
 # Objects for text and summary table
+min_year_falls <- min(falls_areas$financial_year)
+max_year_falls <- max(falls_areas$financial_year)
+
 latest_falls_loc <- falls_areas %>%
   filter(
     location == LOCALITY,
     year == max(year)
   ) %>%
-  mutate(data = format(data, big.mark = ",")) %>%
+  mutate(data2 = format(data, big.mark = ","))
+
+latest_falls_loc1 <- latest_falls_loc %>% pull(data2)
+latest_falls_loc2 <- latest_falls_loc %>% pull(data)
+
+first_falls_loc <- falls_areas %>%
+  filter(
+    location == LOCALITY,
+    year == min(year)
+  ) %>%
   pull(data)
 
+percent_rate_change_falls_loc <- round(abs(latest_falls_loc2 - first_falls_loc) / first_falls_loc * 100, digits = 1)
+word_change_rate_falls_loc <- if_else(latest_falls_loc2 > first_falls_loc,
+                                    "increase", "decrease")
+hscp_falls <- falls_areas %>%
+  filter(
+    location == HSCP,
+    year == max(year)
+  ) %>%
+  mutate(data2 = format(data, big.mark = ","))
+
+hscp_falls1 <- hscp_falls %>% pull(data2)
+hscp_falls2 <- hscp_falls %>% pull(data)
+
+first_falls_hscp <- falls_areas %>%
+  filter(
+    location == HSCP,
+    year == min(year)
+  ) %>%
+  pull(data)
+
+percent_rate_change_falls_hscp<- round(abs(hscp_falls2 - first_falls_hscp) / first_falls_hscp * 100, digits = 1)
+word_change_rate_falls_hscp <- if_else(hscp_falls2 > first_falls_hscp,
+                                       "increase", "decrease")
 scot_falls <- falls_areas %>%
   filter(
     location == "Scotland",
     year == max(year)
   ) %>%
-  mutate(data = format(data, big.mark = ",")) %>%
+  mutate(data2 = format(data, big.mark = ","))
+
+scot_falls1 <- scot_falls %>% pull(data2)
+scot_falls2 <- scot_falls %>% pull(data)
+
+first_falls_scot <- falls_areas %>%
+  filter(
+    location == "Scotland",
+    year == min(year)
+  ) %>%
   pull(data)
 
+percent_rate_change_falls_scot<- round(abs(scot_falls2 - first_falls_scot) / first_falls_scot * 100, digits = 1)
+word_change_rate_falls_scot <- if_else(scot_falls2 > first_falls_scot,
+                                      "increase", "decrease")
 
 # 6. Readmissions (28 days) ----
 # _________________________________________________________________________
