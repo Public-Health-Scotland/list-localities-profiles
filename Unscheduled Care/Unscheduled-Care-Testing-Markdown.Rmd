@@ -176,7 +176,8 @@ x <- x + 1
 
 ### Emergency admissions from a fall
 
-Figure `r x` presents the number of delayed discharge bed days per 100,000 population aged over 65+ in the `r LOCALITY` locality from `r min_year_dd` to `r max_year_dd`. As presented in Figure `r x` the number of delayed discharge bed days per 100,000 population aged over 65+ in the `r LOCALITY` locality for `r max_year_dd ` is `r latest_dd_loc1`, a `r percent_rate_change_dd_loc`% `r word_change_rate_dd_loc` since `r min_year_dd`. The `r HSCP` HSCP rate is `r hscp_dd1` in `r max_year_dd`, a `r percent_rate_change_dd_hscp`% `r word_change_rate_dd_hscp` since `r min_year_dd`, and the Scotland rate is `r scot_dd1`, a `r percent_rate_change_dd_scot`% `r  word_change_rate_dd_scot` since `r min_year_dd`.
+Figure `r x` presents the emergency admissions from falls rate per 100,000 population aged over 65+ in the `r LOCALITY` locality from `r min_year_falls` to `r max_year_falls`. As presented in Figure `r x`, the emergency admissions from falls rate per 100,000 population aged over 65+ in the `r LOCALITY` locality for `r max_year_falls ` is `r latest_falls_loc1`, a `r percent_rate_change_falls_loc`% `r word_change_rate_falls_loc` since `r min_year_falls`. The `r HSCP` HSCP rate is `r hscp_falls1` in `r max_year_falls`, a `r percent_rate_change_falls_hscp`% `r word_change_rate_falls_hscp` since `r min_year_falls
+`, and the Scotland rate is `r scot_falls1`, a `r percent_rate_change_falls_scot`% `r  word_change_rate_falls_scot` since `r min_year_falls`.
 
 ####Figure `r x`: Falls in population aged 65+ by geographical area
 \newline

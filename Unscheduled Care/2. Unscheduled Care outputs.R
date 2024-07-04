@@ -530,7 +530,8 @@ bed_days_mh_age <- bed_days_mh %>%
   summarise(bed_days = sum(bed_days)) %>%
   ungroup() %>%
   left_join(loc_pop_age1) %>%
-  mutate(data = round_half_up(bed_days / pop * 100000))
+  mutate(data = round_half_up(bed_days / pop * 100000)) %>% 
+  filter(!is.na(year))
 
 
 BDMH_age_ts <- age_group_trend_usc(
@@ -546,7 +547,8 @@ bed_days_mh_areas <- bed_days_mh %>%
   rename(n = bed_days) %>%
   aggregate_usc_area_data() %>%
   left_join(pop_areas_all_ages) %>%
-  mutate(data = round_half_up(n / pop * 100000))
+  mutate(data = round_half_up(n / pop * 100000)) %>% 
+  filter(!is.na(year))
 
 BDMH_loc_ts <- area_trend_usc(
   data_for_plot = bed_days_mh_areas,
@@ -557,22 +559,46 @@ BDMH_loc_ts <- area_trend_usc(
 
 
 # Objects for text and summary table
+max_year_bd_mh_areas <-max(bed_days_mh_areas$financial_year)
+min_year_bd_mh_areas <-min(bed_days_mh_areas$financial_year)
+
 latest_bed_days_mh_loc <- bed_days_mh_areas %>%
   filter(
     location == LOCALITY,
     year == max(year)
   ) %>%
-  mutate(data = format(data, big.mark = ",")) %>%
+  mutate(data2 = format(data, big.mark = ",")) 
+
+latest_bed_days_mh_loc1 <- latest_bed_days_mh_loc %>% pull(data2)
+latest_bed_days_mh_loc2 <- latest_bed_days_mh_loc %>% pull(data)
+latest_bed_days_mh_loc1 <- ifelse(is_empty(latest_bed_days_mh_loc1), "NA", latest_bed_days_mh_loc1)
+
+first_bed_days_mh_loc <- bed_days_mh_areas %>%
+  filter(
+    location == LOCALITY,
+    year == min(year)
+  ) %>%
   pull(data)
 
-latest_bed_days_mh_loc <- ifelse(is_empty(latest_bed_days_mh_loc), "NA", latest_bed_days_mh_loc)
+loc_rate_change_beds_mh <- round(abs(latest_bed_days_mh_loc2 - first_bed_days_mh_loc) / first_bed_days_mh_loc * 100, digits = 1)
+loc_word_change_beds_mh <- if_else(latest_bed_days_mh_loc2 > first_bed_days_mh_loc,
+                           "increase", "decrease")
 
 hscp_bed_days_mh <- bed_days_mh_areas %>%
   filter(
     location == HSCP,
     year == max(year)
   ) %>%
-  mutate(data = format(data, big.mark = ",")) %>%
+  mutate(data2 = format(data, big.mark = ","))
+
+hscp_bed_days_mh1 <- hscp_bed_days_mh %>% pull(data2)
+hscp_bed_days_mh2 <- hscp_bed_days_mh %>% pull(data)
+
+first_hscp_bed_days_mh <- bed_days_mh_areas %>%
+  filter(
+    location == HSCP,
+    year == min(year)
+  ) %>%
   pull(data)
 
 scot_bed_days_mh <- bed_days_mh_areas %>%
@@ -580,7 +606,16 @@ scot_bed_days_mh <- bed_days_mh_areas %>%
     location == "Scotland",
     year == max(year)
   ) %>%
-  mutate(data = format(data, big.mark = ",")) %>%
+  mutate(data2 = format(data, big.mark = ",")) 
+
+scot_bed_days_mh1 <- scot_bed_days_mh %>% pull(data2)
+scot_bed_days_mh2 <- scot_bed_days_mh %>% pull(data)
+
+first_scot_bed_days_mh <- bed_days_mh_areas %>%
+  filter(
+    location == "Scotland",
+    year == min(year)
+  ) %>%
   pull(data)
 
 other_loc_bed_days_mh <- bed_days_mh %>%
