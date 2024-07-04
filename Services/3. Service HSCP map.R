@@ -14,7 +14,6 @@
 ###### 1. Set up ######
 
 ## Load packages
-
 library(tidyverse)
 library(readxl)
 library(janitor)
@@ -29,7 +28,7 @@ library(ggrepel)
 library(ggmap)
 
 ## Select HCSP (for testing only)
-#HSCP <- "Aberdeenshire"
+#HSCP <- "Renfrewshire"
 
 ## Set file path
 
@@ -92,14 +91,13 @@ min_lat <- zones_coord$min_lat -0.01
 max_lat <- zones_coord$max_lat +0.01
 
 #get data zones in HSCP
-hscp_loc <- read.csv("/conf/linkage/output/lookups/Unicode/Geography/HSCP Locality/HSCP Localities_DZ11_Lookup_20230804.csv") %>%
+hscp_loc <- read.csv("/conf/linkage/output/lookups/Unicode/Geography/HSCP Locality/HSCP Localities_DZ11_Lookup_20240513.csv") %>%
   select(datazone2011, hscp2019name) %>%
   filter(hscp2019name == HSCP)
 
 # get place names of cities, towns and villages within locality
 places <- read_csv(paste0("/conf/linkage/output/lookups/Unicode/Geography/",
-                          "Shapefiles/Scottish Places/Places to Data",
-                          " Zone Lookup.csv")) %>%
+                          "Shapefiles/Scottish Places/Places to Data Zone Lookup.csv")) %>%
   rename(datazone2011 = DataZone) %>%
   filter(datazone2011 %in% hscp_loc$datazone2011) %>%
   #extra filter to remove place names with coordinates outwith locality
@@ -135,6 +133,7 @@ miu <- nrow(markers_miu)
 service2 <- ggmap(service_map_background) +
   geom_sf(data = shp_hscp, mapping = aes(fill = hscp_local), colour = "black", alpha = 0.5, inherit.aes = FALSE) +
   labs(fill = 'Locality')
+
 if (gp > 0) {service2 <- service2 + geom_point(data = markers_gp, aes(x = longitude, y = latitude, colour = "GP Practice"), size = 2,shape = 21, stroke = 0.5,
                                                fill = "red")}
 if (ch > 0) {service2 <- service2 + geom_point(data = markers_care_home, aes(x = longitude, y = latitude, colour = "Care Home"), size = 2, shape = 22, stroke = 0.5,
@@ -149,12 +148,14 @@ if (miu > 0) {service2 <- service2 + geom_point(data = markers_miu, aes(x = long
 
 # create final service map
 service_map <- service2 +
-  scale_color_manual(values = c("GP Practice" = "black", "Care Home" = "black", "Emergency Department" = "black",
+  scale_color_manual(values = c("GP Practice" = "black", 
+                                "Care Home" = "black", 
+                                "Emergency Department" = "black",
                                 "Minor Injury Unit" = "black")) +
   theme(legend.title=element_blank()) +
   scale_fill_manual(values = col_palette) +
-  geom_text_repel(data = places, aes(x = Longitude, y = Latitude,
-                                     label = name),
+  geom_text_repel(data = places,
+                  aes(x = Longitude, y = Latitude, label = name),
                   color = "black", size = 3.5,
                   max.overlaps = getOption("ggrepel.max.overlaps", default = 18)) +
   theme(axis.text.x = element_blank(),
