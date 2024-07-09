@@ -283,7 +283,7 @@ save_dataframes_to_excel <- function(dataframes, sheet_names, file_name) {
 excel_output <- list(flagged_rows1,flagged_rows2,flagged_rows3)
 
 # Corresponding sheet names
-excel_names <- c("SMR01_based", "LTCs", "LTCs_Age_Groups")
+excel_names <- c("SMR01_based", "SMR01_Age_Groups", "LTCs_Age_Groups")
 
 # Call the function to save the dataframes to an Excel file
 save_dataframes_to_excel(excel_output, excel_names, paste0("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/background data/SDC/",HSCP,".xlsx"))
