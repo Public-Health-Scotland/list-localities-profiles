@@ -558,7 +558,60 @@ BDMH_loc_ts <- area_trend_usc(
 )
 
 
-# Objects for text and summary table
+# Objects for text and summary table- age
+max_year_bd_mh_age <- max(bed_days_mh_age$financial_year)
+min_year_bd_mh_age <- min(bed_days_mh_age$financial_year)
+
+latest_bd_mh_max_age <- bed_days_mh_age %>%
+  filter(
+    year == max(year)) %>% 
+  filter(
+    data== max(data)
+  ) %>%
+  mutate(data2 = format(data, big.mark = ",")) 
+
+latest_bd_mh_max_age1 <- latest_bd_mh_max_age %>% pull(data2)
+latest_bd_mh_max_age2 <- latest_bd_mh_max_age %>% pull(data)
+age_group_max_mh <- latest_bd_mh_max_age %>% pull(age_group)
+
+first_bd_mh_max_age <- bed_days_mh_age %>%
+  filter(
+    year == min(year),
+    age_group == age_group_max_mh
+  ) %>%
+  pull(data)
+
+max_rate_change_beds_mh <- round(abs(latest_bd_mh_max_age2 - first_bd_mh_max_age) / first_bd_mh_max_age * 100, digits = 1)
+max_word_change_beds_mh <- if_else(latest_bd_mh_max_age2 > first_bd_mh_max_age,
+                                   "increase", "decrease")
+
+latest_bd_mh_min_age <- bed_days_mh_age %>%
+  filter(
+    year == max(year)) %>% 
+  filter(
+    data== min(data)
+  ) %>%
+  mutate(data2 = format(data, big.mark = ",")) 
+
+latest_bd_mh_min_age1 <- latest_bd_mh_min_age %>% pull(data2)
+latest_bd_mh_min_age2 <- latest_bd_mh_min_age %>% pull(data)
+age_group_min_mh <- latest_bd_mh_min_age %>% pull(age_group)
+
+first_bd_mh_min_age <- bed_days_mh_age %>%
+  filter(
+    age_group == age_group_min_mh
+  ) %>%
+  filter(year==min(year))
+
+first_bd_mh_min_age1 <- first_bd_mh_min_age %>% pull(data)
+min_year_bd_mh_age1<- first_bd_mh_min_age %>% pull(year)
+
+
+min_rate_change_beds_mh <- round(abs(latest_bd_mh_min_age2 - first_bd_mh_min_age1) / first_bd_mh_min_age1 * 100, digits = 1)
+min_word_change_beds_mh <- if_else(latest_bd_mh_min_age2 > first_bd_mh_min_age1,
+                                   "increase", "decrease")
+
+# Objects for text and summary table- area
 max_year_bd_mh_areas <-max(bed_days_mh_areas$financial_year)
 min_year_bd_mh_areas <-min(bed_days_mh_areas$financial_year)
 
@@ -601,6 +654,10 @@ first_hscp_bed_days_mh <- bed_days_mh_areas %>%
   ) %>%
   pull(data)
 
+hscp_rate_change_beds_mh <- round(abs(hscp_bed_days_mh2 - first_hscp_bed_days_mh) / first_hscp_bed_days_mh * 100, digits = 1)
+hscp_word_change_beds_mh <- if_else(hscp_bed_days_mh2 > first_hscp_bed_days_mh,
+                                   "increase", "decrease")
+
 scot_bed_days_mh <- bed_days_mh_areas %>%
   filter(
     location == "Scotland",
@@ -617,6 +674,11 @@ first_scot_bed_days_mh <- bed_days_mh_areas %>%
     year == min(year)
   ) %>%
   pull(data)
+
+scot_rate_change_beds_mh <- round(abs(scot_bed_days_mh2 - first_scot_bed_days_mh) / first_scot_bed_days_mh * 100, digits = 1)
+scot_word_change_beds_mh <- if_else(scot_bed_days_mh2 > first_scot_bed_days_mh,
+                                    "increase", "decrease")
+
 
 other_loc_bed_days_mh <- bed_days_mh %>%
   group_by(financial_year, hscp_locality) %>%
@@ -1281,7 +1343,8 @@ ppa <- arrow::read_parquet(paste0(import_folder, "ppa_smr.parquet")) %>%
 # % PPAs in locality under and over 65
 ppa_total <- ppa %>%
   rename(n = admissions) %>%
-  aggregate_usc_area_data()
+  aggregate_usc_area_data()%>%
+  filter(!is.na(year))
 
 ppa_65plus <- ppa %>%
   filter(age_group %in% c("65 - 74", "75+")) %>%
@@ -1290,7 +1353,8 @@ ppa_65plus <- ppa %>%
   rename(plus65tot = n) %>%
   left_join(ppa_total, by = c("financial_year", "location")) %>%
   left_join(pop_areas_all_ages) %>%
-  mutate(data = round_half_up(plus65tot / n * 100, 1))
+  mutate(data = round_half_up(plus65tot / n * 100, 1))%>%
+  filter(!is.na(year))
 
 latest_ppa_65plus <- ppa_65plus %>%
   filter(
@@ -1306,7 +1370,8 @@ ppa_under65 <- ppa %>%
   rename(under65tot = n) %>%
   left_join(ppa_total, by = c("financial_year", "location")) %>%
   left_join(pop_areas_all_ages) %>%
-  mutate(data = round_half_up(under65tot / n * 100, 1))
+  mutate(data = round_half_up(under65tot / n * 100, 1)) %>%
+  filter(!is.na(year))
 
 latest_ppa_under65 <- ppa_under65 %>%
   filter(
@@ -1323,7 +1388,8 @@ ppa_areas <- ppa %>%
   left_join(pop_areas_all_ages) %>%
   mutate(data = round_half_up(n / pop * 100000)) %>%
   mutate(location = factor(location, levels = c(LOCALITY, HSCP, HB, "Scotland"))) %>%
-  arrange(location)
+  arrange(location) %>%
+  filter(!is.na(year))
 
 
 PPA_loc_ts <- area_trend_usc(
@@ -1335,13 +1401,19 @@ PPA_loc_ts <- area_trend_usc(
 
 
 # Objects for text and summary table
+max_year_ppa_areas <- max(ppa_areas$financial_year)
+min_year_ppa_areas <- min(ppa_areas$financial_year)
+
+
 latest_ppa_loc <- ppa_areas %>%
   filter(
     location == LOCALITY,
     year == max(year)
   ) %>%
-  mutate(data = format(data, big.mark = ",")) %>%
-  pull(data)
+  mutate(data2 = format(data, big.mark = ",")) 
+
+latest_ppa_loc1 <- latest_ppa_loc %>%pull(data2)
+latest_ppa_loc2 <- latest_ppa_loc %>%pull(data)
 
 hscp_ppa <- ppa_areas %>%
   filter(

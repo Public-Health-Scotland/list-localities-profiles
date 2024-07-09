@@ -44,15 +44,15 @@ This section includes acute hospital data, delayed discharge bed days and A&E at
  
  - **`r latest_bed_days_loc1`** unscheduled acute specialty bed days per 100,000 population, compared to `r scot_bed_days1` in Scotland.  
  
- - **`r latest_ae_att_loc`** A&E attendances per 100,000 population, compared to `r scot_ae_att` in Scotland. 
+ - **`r latest_ae_att_loc1`** A&E attendances per 100,000 population, compared to `r scot_ae_att1` in Scotland. 
  
- - **`r latest_dd_loc`** delayed discharge bed days per 100,000 population aged over 65, compared to `r scot_dd` in Scotland. 
+ - **`r latest_dd_loc1`** delayed discharge bed days per 100,000 population aged over 65, compared to `r scot_dd1` in Scotland. 
  
- - **`r latest_falls_loc`** emergency hospital admissions from falls per 100,000 population aged over 65, compared to `r scot_falls` in Scotland. 
+ - **`r latest_falls_loc1`** emergency hospital admissions from falls per 100,000 population aged over 65, compared to `r scot_falls1` in Scotland. 
  
- - **`r latest_read_loc`** emergency readmissions (28 day) per 1,000 discharges, compared to `r scot_read` in Scotland. 
+ - **`r latest_read_loc1`** emergency readmissions (28 day) per 1,000 discharges, compared to `r scot_read` in Scotland. 
  
- - **`r latest_ppa_loc`** potentially preventable hospital admissions per 100,000 population, compared to `r scot_ppa` in Scotland. 
+ - **`r latest_ppa_loc1`** potentially preventable hospital admissions per 100,000 population, compared to `r scot_ppa` in Scotland. 
 
 
 #####Pagebreak
@@ -147,7 +147,7 @@ Read_loc_ts
 
 x <- x + 1
 ```
-Figure `r x` presents the emergency readmission (28 days) rate per 1,000 discharges in the `r LOCALITY` locality from `r min_year_re_age` to `r max_year_re_age` by age group. As presented in Figure `r x`, the greatest emergency readmission (28 days) rate per 1,000 discharges for the `r LOCALITY` locality in `r max_year_re_age` is `r latest_re_max_age_data` for the `r latest_re_max_age_group` age group with a percentage `r word_change_rate_re_age` of `r percent_rate_change_re_age`% since `r min_year_re_age`. The emergency readmission (28 days) rate per 1,000 discharges for the `r LOCALITY` locality in `r max_year_re_age` is `r latest_re_min_age_data` for the `r latest_re_min_age_group` age group with a percentage `r word_change_rate_re_age_min` of `r percent_rate_change_re_age_min`% since `r min_year_re_age`.
+Figure `r x` presents the emergency readmission (28 days) rate per 1,000 discharges in the `r LOCALITY` locality from `r min_year_re_age` to `r max_year_re_age` by age group. As presented in Figure `r x`, the greatest emergency readmission (28 days) rate per 1,000 discharges for the `r LOCALITY` locality in `r max_year_re_age` is `r latest_re_max_age_data` for the `r latest_re_max_age_group` age group with a percentage `r word_change_rate_re_age` of `r percent_rate_change_re_age`% since `r min_year_re_age`. The smallest emergency readmission (28 days) rate per 1,000 discharges for the `r LOCALITY` locality in `r max_year_re_age` is `r latest_re_min_age_data` for the `r latest_re_min_age_group` age group with a percentage `r word_change_rate_re_age_min` of `r percent_rate_change_re_age_min`% since `r min_year_re_age`.
 
 ####Figure `r x`: Emergency readmissions (28 days) by age group
 \newline
@@ -176,8 +176,7 @@ x <- x + 1
 
 ### Emergency admissions from a fall
 
-Figure `r x` presents the emergency admissions from falls rate per 100,000 population aged over 65+ in the `r LOCALITY` locality from `r min_year_falls` to `r max_year_falls`. As presented in Figure `r x`, the emergency admissions from falls rate per 100,000 population aged over 65+ in the `r LOCALITY` locality for `r max_year_falls ` is `r latest_falls_loc1`, a `r percent_rate_change_falls_loc`% `r word_change_rate_falls_loc` since `r min_year_falls`. The `r HSCP` HSCP rate is `r hscp_falls1` in `r max_year_falls`, a `r percent_rate_change_falls_hscp`% `r word_change_rate_falls_hscp` since `r min_year_falls
-`, and the Scotland rate is `r scot_falls1`, a `r percent_rate_change_falls_scot`% `r  word_change_rate_falls_scot` since `r min_year_falls`.
+Figure `r x` presents the emergency admissions from falls rate per 100,000 population aged over 65+ in the `r LOCALITY` locality from `r min_year_falls` to `r max_year_falls`. As presented in Figure `r x`, the emergency admissions from falls rate per 100,000 population aged over 65+ in the `r LOCALITY` locality for `r max_year_falls ` is `r latest_falls_loc1`, a `r percent_rate_change_falls_loc`% `r word_change_rate_falls_loc` since `r min_year_falls`. The `r HSCP` HSCP rate is `r hscp_falls1` in `r max_year_falls`, a `r percent_rate_change_falls_hscp`% `r word_change_rate_falls_hscp` since `r min_year_falls`, and the Scotland rate is `r scot_falls1`, a `r percent_rate_change_falls_scot`% `r  word_change_rate_falls_scot` since `r min_year_falls`.
 
 ####Figure `r x`: Falls in population aged 65+ by geographical area
 \newline
@@ -193,7 +192,7 @@ x <- x + 1
 
 ### Potentially Preventable Admissions (PPAs)
 
-Information conditions included in PPAs is available in Appendix 3. In `r max_fy`, **`r latest_ppa_65plus`%** of PPAs in `r LOCALITY` were amongst those aged 65 and over, and **`r latest_ppa_under65`%** were amongst those aged under 65. 
+Information conditions included in PPAs is available in Appendix 3. In `r max_year_ppa_areas`, **`r latest_ppa_65plus`%** of PPAs in `r LOCALITY` were amongst those aged 65 and over, and **`r latest_ppa_under65`%** were amongst those aged under 65. 
 
 ####Figure `r x`: PPAs by geographical area
 \newline
@@ -217,7 +216,7 @@ This section looks at mental health related unscheduled care indicators.
 **For the most recent time periods available, `r LOCALITY` had:**
 
  - **`r psych_hosp_latest`** psychiatric patient hospitalisations per 100,000, compared to `r scot_psych_hosp` in Scotland^4^.
- - **`r latest_bed_days_mh_loc`** unscheduled mental health specialty bed days per 100,000, compared to `r scot_bed_days_mh` in Scotland. 
+ - **`r latest_bed_days_mh_loc1`** unscheduled mental health specialty bed days per 100,000, compared to `r scot_bed_days_mh1` in Scotland. 
 
 \newline
 
@@ -237,6 +236,8 @@ x <- x + 1
 
 ### Unscheduled Mental Health Specialty Bed Days
 
+Figure `r x` presents the unscheduled mental health bed days rate per 100,000 population in the `r LOCALITY` locality from `r min_year_bd_mh_areas` to `r max_year_bd_mh_areas`. As presented in Figure `r x`, the unscheduled mental health bed days rate per 100,000 population in the `r LOCALITY` locality for `r max_year_bd_mh_areas ` is `r latest_bed_days_mh_loc1`, a `r loc_rate_change_beds_mh`% `r loc_word_change_beds_mh` since `r min_year_bd_mh_areas`. The `r HSCP` HSCP rate is `r hscp_bed_days_mh1` in `r max_year_bd_mh_areas`, a `r hscp_rate_change_beds_mh`% `r hscp_word_change_beds_mh` since `r min_year_bd_mh_areas`, and the Scotland rate is `r scot_bed_days_mh1`, a `r scot_rate_change_beds_mh`% `r  scot_word_change_beds_mh` since `r min_year_bd_mh_areas`.
+
 ####Figure `r x`: Unscheduled mental health specialty bed days by geographical area
 \newline
 
@@ -245,6 +246,9 @@ BDMH_loc_ts
 
 x <- x + 1
 ```
+
+Figure `r x` presents the unscheduled mental health bed days rate per 100,000 in the `r LOCALITY` locality from `r min_year_bd_mh_age` to `r max_year_bd_mh_age` by age group. As presented in Figure `r x`, the greatest unscheduled mental health bed days rate per 100,000 for the `r LOCALITY` locality in `r max_year_bd_mh_age` is `r latest_bd_mh_max_age1` for the `r age_group_max_mh` age group with a percentage `r max_word_change_beds_mh` of `r max_rate_change_beds_mh`% since `r min_year_bd_mh_age`. The smallest unschedule mental health bed days rate per 100,000  for the `r LOCALITY` locality in `r max_year_bd_mh_age` is `r latest_bd_mh_min_age1` for the `r age_group_min_mh` age group with a percentage `r min_word_change_beds_mh` of `r min_rate_change_beds_mh`% since `r min_year_bd_mh_age1`.
+
 
 ####Figure `r x`: Unscheduled mental health specialty bed days by age group
 \newline
