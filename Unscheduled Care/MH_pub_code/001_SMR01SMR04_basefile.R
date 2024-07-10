@@ -78,11 +78,12 @@ future_date <- "2029-01-01"
 
 ### 5 - Define the database connection with SMRA ----
 # set it up so that a pop up appears to enter user name and password
-suppressWarnings(channel <- dbConnect(odbc(),
+channel <- odbc::dbConnect(
+  drv = odbc::odbc(),
   dsn = "SMRA",
-  uid = .rs.askForPassword("SMRA Username:"),
-  pwd = .rs.askForPassword("SMRA Password:")
-))
+  uid = Sys.getenv("USER"),
+  pwd = rstudioapi::askForPassword("Enter LDAP password:")
+)
 
 
 ###################################
@@ -472,7 +473,12 @@ data_res <- data_res %>%
 # Next pull all these variables together so we have multiple rows per patient
 # which shows every year they were resident.
 data_res <- data_res %>%
-  gather(key = resident_year, value = residents, r1996_1997:r2021_2022)
+  pivot_longer(
+    cols = c("r1996_1997":"r2021_2022"),
+    names_to = "resident_year",
+    values_to = "residents"
+  )
+
 # Correct the resident year variable so it has the format 1997/1998
 data_res <- data_res %>%
   mutate(year = paste0(substr(resident_year, 2, 5), "/", substr(resident_year, 7, 11)))

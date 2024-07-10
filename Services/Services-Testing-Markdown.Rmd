@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 options(kableExtra.auto_format = FALSE)
 
 # Line below for testing only
-#Loc <- "Marr"
+# Loc <- "Marr"
 
 locality <- Loc
 LOCALITY <- Loc
