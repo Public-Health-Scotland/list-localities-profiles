@@ -517,6 +517,8 @@ In `r latest_period_adp_presc`, `r LOCALITY` had a `r adp_presc_diff_scot` propo
 
 ```{r echo = FALSE, fig.width = 7.5, fig.height = 4.8}
 adp_presc_bar
+
+x <- x + 1
 ```
 
 
