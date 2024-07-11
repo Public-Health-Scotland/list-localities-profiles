@@ -32,28 +32,27 @@ other_locs <- lookup %>%
   arrange(hscp_locality)
 
 
-# demographics
+# Demographics
 source("hscp_level/Demographics/1. Demographics - Population.R")
 source("hscp_level/Demographics/2. Demographics - SIMD.R")
 
-# housing
+# Housing
 source("hscp_level/Households/HSCP level/Households code.R")
 
-# services
+# Services
 source("hscp_level/Services/3. Service HSCP map.R") # Map
-# source(paste0(lp_path, "Services/Scripts/HSCP level/2. Services data manipulation & table.R"))
-# source("hscp_level/Services/") # Nothing in this folder
+source("hscp_level/Services/2. Services data manipulation & table.R")
 
-# general health
+# General Health
 source("hscp_level/General Health/3. General Health Outputs.R")
 
-# lifestyle & risk factors
+# Lifestyle & risk factors
 source("hscp_level/Lifestyle and risk/HSCP level/2. Lifestyle & Risk Factors Outputs.R")
 
-# unscheduled care
+# Unscheduled Care
 source("hscp_level/unschedule care/2. Unscheduled Care outputs.R")
 
-# appendices
+# Appendices
 source("Master RMarkdown Document & Render Code/Tables for Appendix.R")
 
 # Remove tidylog package which messes up outputs
