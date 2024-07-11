@@ -28,7 +28,7 @@ library(ggrepel)
 library(phsstyles)
 
 # Source in global functions/themes script
-source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/Global Script.R")
+# source("Master RMarkdown Document & Render Code/Global Script.R") 
 
 ## File path
 filepath <- paste0(

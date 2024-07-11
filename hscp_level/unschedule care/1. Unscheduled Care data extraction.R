@@ -31,7 +31,7 @@ library(fst)
 library(odbc)
 
 ## Functions
-source(paste0(lp_path, "Master RMarkdown Document & Render Code/Global Script.R"))
+source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Read/write permissions
 Sys.umask("006")
