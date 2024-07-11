@@ -308,7 +308,8 @@ emergency_adm_age <- emergency_adm %>%
   summarise(adm = sum(admissions)) %>%
   ungroup() %>%
   left_join(loc_pop_age1) %>%
-  mutate(data = round_half_up(adm / pop * 100000))
+  mutate(data = round_half_up(adm / pop * 100000)) %>%
+  filter(!is.na(year))
 
 
 EAs_age_ts <- age_group_trend_usc(
@@ -396,7 +397,25 @@ scot_rate_change <- round(abs(scot_emergency_adm2 - first_fy_scot) / first_fy_sc
 word_change_scot <- if_else(scot_emergency_adm2 > first_fy_scot,
                             "increase", "decrease")
 
+#NHS health board
+hb_emergency_adm <- emergency_adm_areas %>%
+  filter(
+    location == HB,
+    year == max(year)
+  ) %>%
+  mutate(data2 = format(data, big.mark = ",")) 
 
+hb_emergency_adm1 <- hb_emergency_adm %>% pull(data2)
+hb_emergency_adm2 <- hb_emergency_adm %>% pull(data)
+first_fy_hb <- filter(emergency_adm_areas,
+                        (financial_year == min(emergency_adm_areas$financial_year)) &
+                          (location == HB))$data
+
+hb_rate_change <- round(abs(hb_emergency_adm2 - first_fy_hb) / first_fy_hb * 100, digits = 1)
+word_change_hb <- if_else(hb_emergency_adm2 > first_fy_hb,
+                            "increase", "decrease")
+
+#other locations
 other_loc_emergency_adm <- emergency_adm %>%
   group_by(financial_year, hscp_locality) %>%
   summarise(adm = sum(admissions)) %>%
@@ -408,7 +427,58 @@ other_loc_emergency_adm <- emergency_adm %>%
   select(hscp_locality, data) %>%
   pivot_wider(names_from = hscp_locality, values_from = data)
 
+# Create objects for text emergency admissions by age group
+max_ea_age <- max(emergency_adm_age$financial_year)
+min_ea_age <- min(emergency_adm_age$financial_year)
 
+latest_ea_max_age <- emergency_adm_age %>%
+  filter(
+    year == max(year)) %>% 
+  filter(
+    data== max(data)
+  ) %>%
+  mutate(data2 = format(data, big.mark = ",")) 
+
+latest_ea_max_age1 <- latest_ea_max_age %>% pull(data2)
+latest_ea_max_age2 <- latest_ea_max_age %>% pull(data)
+age_group_max_ea <- latest_ea_max_age %>% pull(age_group)
+
+first_ea_max_age <- emergency_adm_age %>%
+  filter(
+    year == min(year),
+    age_group == age_group_max_ea
+  ) %>%
+  pull(data)
+
+max_rate_change_ea <- round(abs(latest_ea_max_age2 - first_ea_max_age) / first_ea_max_age * 100, digits = 1)
+max_word_change_ea <- if_else(latest_ea_max_age2 > first_ea_max_age,
+                              "increase", "decrease")
+
+latest_ea_min_age <- emergency_adm_age %>%
+  filter(
+    year == max(year)) %>% 
+  filter(
+    data== min(data)
+  ) %>%
+  mutate(data2 = format(data, big.mark = ",")) 
+
+latest_ea_min_age1 <- latest_ea_min_age %>% pull(data2)
+latest_ea_min_age2 <- latest_ea_min_age %>% pull(data)
+age_group_min_ea <- latest_ea_min_age %>% pull(age_group)
+
+first_ea_min_age <- emergency_adm_age %>%
+  filter(
+    age_group == age_group_min_ea
+  ) %>%
+  filter(year==min(year))
+
+first_ea_min_age1 <- first_ea_min_age %>% pull(data)
+min_year_ea_age1<- first_ea_min_age %>% pull(year)
+
+
+min_rate_change_ea <- round(abs(latest_ea_min_age2 - first_ea_min_age1) / first_ea_min_age1 * 100, digits = 1)
+min_word_change_ea <- if_else(latest_ea_min_age2 > first_ea_min_age1,
+                                   "increase", "decrease")
 
 # 2a. Unscheduled bed days ----
 # _________________________________________________________________________
@@ -424,7 +494,8 @@ bed_days_age <- bed_days %>%
   summarise(bed_days = sum(bed_days)) %>%
   ungroup() %>%
   left_join(loc_pop_age1) %>%
-  mutate(data = round_half_up(bed_days / pop * 100000))
+  mutate(data = round_half_up(bed_days / pop * 100000)) %>%
+  filter(!is.na(year))
 
 
 BDs_age_ts <- age_group_trend_usc(
@@ -503,6 +574,24 @@ scot_rate_ubd <- round(abs(scot_bed_days2 - first_fy_scot_ubd) / first_fy_scot_u
 scot_change_ubd <- if_else(scot_bed_days2 > first_fy_scot_ubd,
                            "increase", "decrease")
 
+#NHS health board
+hb_bed_days <- bed_days_areas %>%
+  filter(
+    location == HB,
+    year == max(year)
+  ) %>%
+  mutate(data2 = format(data, big.mark = ",")) 
+
+hb_bed_days1 <- hb_bed_days %>% pull(data2)
+hb_bed_days2 <- hb_bed_days %>% pull(data)
+first_fy_hb_ubd <- filter(bed_days_areas,
+                      (financial_year == min(bed_days_areas$financial_year)) &
+                        (location == HB))$data
+
+hb_rate_change_ubd <- round(abs(hb_bed_days2 - first_fy_hb_ubd) / first_fy_hb_ubd * 100, digits = 1)
+word_change_hb_ubd <- if_else(hb_bed_days2 > first_fy_hb_ubd,
+                          "increase", "decrease")
+
 
 other_loc_bed_days <- bed_days %>%
   group_by(financial_year, hscp_locality) %>%
@@ -515,6 +604,58 @@ other_loc_bed_days <- bed_days %>%
   select(hscp_locality, data) %>%
   pivot_wider(names_from = hscp_locality, values_from = data)
 
+# Create objects for text emergency admissions by age group
+max_ubd_age <- max(bed_days_age$financial_year)
+min_ubd_age <- min(bed_days_age$financial_year)
+
+latest_ubd_max_age <- bed_days_age %>%
+  filter(
+    year == max(year)) %>% 
+  filter(
+    data== max(data)
+  ) %>%
+  mutate(data2 = format(data, big.mark = ",")) 
+
+latest_ubd_max_age1 <- latest_ubd_max_age %>% pull(data2)
+latest_ubd_max_age2 <- latest_ubd_max_age %>% pull(data)
+age_group_max_ubd <- latest_ubd_max_age %>% pull(age_group)
+
+first_ubd_max_age <- bed_days_age %>%
+  filter(
+    year == min(year),
+    age_group == age_group_max_ubd
+  ) %>%
+  pull(data)
+
+max_rate_change_ubd <- round(abs(latest_ubd_max_age2 - first_ubd_max_age) / first_ubd_max_age * 100, digits = 1)
+max_word_change_ubd <- if_else(latest_ubd_max_age2 > first_ubd_max_age,
+                              "increase", "decrease")
+
+latest_ubd_min_age <- bed_days_age %>%
+  filter(
+    year == max(year)) %>% 
+  filter(
+    data== min(data)
+  ) %>%
+  mutate(data2 = format(data, big.mark = ",")) 
+
+latest_ubd_min_age1 <- latest_ubd_min_age %>% pull(data2)
+latest_ubd_min_age2 <- latest_ubd_min_age %>% pull(data)
+age_group_min_ubd <- latest_ubd_min_age %>% pull(age_group)
+
+first_ubd_min_age <- bed_days_age %>%
+  filter(
+    age_group == age_group_min_ubd
+  ) %>%
+  filter(year==min(year))
+
+first_ubd_min_age1 <- first_ubd_min_age %>% pull(data)
+min_year_ubd_age1<- first_ubd_min_age %>% pull(year)
+
+
+min_rate_change_ubd <- round(abs(latest_ubd_min_age2 - first_ubd_min_age1) / first_ubd_min_age1 * 100, digits = 1)
+min_word_change_ubd <- if_else(latest_ubd_min_age2 > first_ubd_min_age1,
+                              "increase", "decrease")
 
 # 2b. Unscheduled bed days - Mental Health ----
 # _________________________________________________________________________
@@ -679,6 +820,23 @@ scot_rate_change_beds_mh <- round(abs(scot_bed_days_mh2 - first_scot_bed_days_mh
 scot_word_change_beds_mh <- if_else(scot_bed_days_mh2 > first_scot_bed_days_mh,
                                     "increase", "decrease")
 
+#NHS health board
+hb_mh_beddays <- bed_days_mh_areas %>%
+  filter(
+    location == HB,
+    year == max(year)
+  ) %>%
+  mutate(data2 = format(data, big.mark = ",")) 
+
+hb_mh_beddays1 <- hb_mh_beddays %>% pull(data2)
+hb_mh_beddays2 <- hb_mh_beddays %>% pull(data)
+first_fy_hb_mh <- filter(bed_days_mh_areas,
+                          (financial_year == min(bed_days_mh_areas$financial_year)) &
+                            (location == HB))$data
+
+hb_rate_change_mh <- round(abs(hb_mh_beddays2 - first_fy_hb_mh) / first_fy_hb_mh * 100, digits = 1)
+word_change_hb_mh <- if_else(hb_mh_beddays2 > first_fy_hb_mh,
+                              "increase", "decrease")
 
 other_loc_bed_days_mh <- bed_days_mh %>%
   group_by(financial_year, hscp_locality) %>%
@@ -861,7 +1019,23 @@ percent_rate_change_ae_areas_scot <- round(abs(scot_ae_att2 - first_fy_scot_ae) 
 word_change_rate_ae_areas_scot <- if_else(scot_ae_att2 > first_fy_scot_ae,
                                           "increase", "decrease")
 
+#NHS health board
+hb_ae_att <- ae_att_areas %>%
+  filter(
+    location == HB,
+    year == max(year)
+  ) %>%
+  mutate(data2 = format(data, big.mark = ",")) 
 
+hb_ae1 <- hb_ae_att %>% pull(data2)
+hb_ae2 <- hb_ae_att %>% pull(data)
+first_fy_hb_ae <- filter(ae_att_areas,
+                          (financial_year == min(ae_att_areas$financial_year)) &
+                            (location == HB))$data
+
+hb_rate_change_ae <- round(abs(hb_ae2 - first_fy_hb_ae) / first_fy_hb_ae * 100, digits = 1)
+word_change_hb_ae <- if_else(hb_ae2 > first_fy_hb_ae,
+                              "increase", "decrease")
 
 other_loc_ae_att <- ae_attendances %>%
   group_by(financial_year, hscp_locality) %>%
@@ -977,6 +1151,24 @@ percent_rate_change_dd_scot <- round(abs(scot_dd2 - first_scot_dd) / first_scot_
 word_change_rate_dd_scot <- if_else(scot_dd2 > first_scot_dd,
                                     "increase", "decrease")
 
+#NHS health board
+hb_dd <- delayed_disch_areas %>%
+  filter(
+    location == HB,
+    year == max(year)
+  ) %>%
+  mutate(data2 = format(data, big.mark = ",")) 
+
+hb_dd1 <- hb_dd %>% pull(data2)
+hb_dd2 <- hb_dd %>% pull(data)
+first_fy_hb_dd <- filter(delayed_disch_areas,
+                           (financial_year == min(delayed_disch_areas$financial_year)) &
+                             (location == HB))$data
+
+hb_rate_change_dd <- round(abs(hb_dd2 - first_fy_hb_dd) / first_fy_hb_dd * 100, digits = 1)
+word_change_hb_dd <- if_else(hb_dd2 > first_fy_hb_dd,
+                               "increase", "decrease")
+
 
 other_loc_dd <- delayed_disch %>%
   group_by(financial_year, hscp_locality) %>%
@@ -1081,6 +1273,24 @@ first_falls_scot <- falls_areas %>%
 percent_rate_change_falls_scot<- round(abs(scot_falls2 - first_falls_scot) / first_falls_scot * 100, digits = 1)
 word_change_rate_falls_scot <- if_else(scot_falls2 > first_falls_scot,
                                       "increase", "decrease")
+
+#NHS health board
+hb_falls <- falls_areas %>%
+  filter(
+    location == HB,
+    year == max(year)
+  ) %>%
+  mutate(data2 = format(data, big.mark = ",")) 
+
+hb_falls1 <- hb_falls %>% pull(data2)
+hb_falls2 <- hb_falls %>% pull(data)
+first_fy_hb_falls <- filter(falls_areas,
+                         (financial_year == min(falls_areas$financial_year)) &
+                           (location == HB))$data
+
+hb_rate_change_falls <- round(abs(hb_falls2 - first_fy_hb_falls) / first_fy_hb_falls * 100, digits = 1)
+word_change_hb_falls <- if_else(hb_falls2 > first_fy_hb_falls,
+                             "increase", "decrease")
 
 # 6. Readmissions (28 days) ----
 # _________________________________________________________________________
@@ -1243,6 +1453,24 @@ scot_read <- readmissions_areas %>%
 percent_rate_change_re_area_scot <- round(abs(scot_read - first_scot_read) / first_scot_read * 100, digits = 1)
 word_change_rate_re_area_scot <- if_else(scot_read > first_scot_read,
                                          "increase", "decrease")
+
+#NHS health board
+hb_read <- readmissions_areas %>%
+  filter(
+    location == HB,
+    year == max(year)
+  ) %>%
+  mutate(data2 = format(data, big.mark = ",")) 
+
+hb_read1 <- hb_read %>% pull(data2)
+hb_read2 <- hb_read %>% pull(data)
+first_fy_hb_read <- filter(readmissions_areas,
+                         (financial_year == min(readmissions_areas$financial_year)) &
+                           (location == HB))$data
+
+hb_rate_change_read <- round(abs(hb_read2 - first_fy_hb_read) / first_fy_hb_read * 100, digits = 1)
+word_change_hb_read <- if_else(hb_read2 > first_fy_hb_read,
+                             "increase", "decrease")
 
 # 7. Comm 6 months ----
 # _________________________________________________________________________________
@@ -1408,28 +1636,49 @@ min_year_ppa_areas <- min(ppa_areas$financial_year)
 latest_ppa_loc <- ppa_areas %>%
   filter(
     location == LOCALITY,
-    year == max(year)
+    year == max(year) | year == min(year)
   ) %>%
   mutate(data2 = format(data, big.mark = ",")) 
 
-latest_ppa_loc1 <- latest_ppa_loc %>%pull(data2)
-latest_ppa_loc2 <- latest_ppa_loc %>%pull(data)
+ppa_diff <- round(abs(latest_ppa_loc$data[2] - latest_ppa_loc$data[1]) / latest_ppa_loc$data[1]* 100, digits = 1)
+ppa_word_change <- if_else(latest_ppa_loc$data[2] > latest_ppa_loc$data[1],
+                                             "increase", "decrease")
 
 hscp_ppa <- ppa_areas %>%
   filter(
     location == HSCP,
-    year == max(year)
+    year == max(year) | year == min(year)
   ) %>%
-  mutate(data = format(data, big.mark = ",")) %>%
-  pull(data)
+  mutate(data2 = format(data, big.mark = ",")) #%>%
+  #pull(data)
+
+ppa_diff_hscp <- round(abs(hscp_ppa$data[2] - hscp_ppa$data[1]) / hscp_ppa$data[1]* 100, digits = 1)
+ppa_word_change_hscp <- if_else(hscp_ppa$data[2] > hscp_ppa$data[1],
+                           "increase", "decrease")
 
 scot_ppa <- ppa_areas %>%
   filter(
     location == "Scotland",
-    year == max(year)
+    year == max(year) | year == min(year)
   ) %>%
-  mutate(data = format(data, big.mark = ",")) %>%
-  pull(data)
+  mutate(data2 = format(data, big.mark = ",")) #%>%
+  #pull(data)
+
+diff_scot_ppa <- round(abs(scot_ppa$data[2] - scot_ppa$data[1]) / scot_ppa$data[1] * 100, digits = 1)
+word_change_scot_ppa <- if_else(scot_ppa$data[2] > scot_ppa$data[1],
+                              "increase", "decrease")
+
+#NHS health board
+hb_ppa <- ppa_areas %>%
+  filter(
+    location == HB,
+    year == max(year) |  year == min(year)
+  ) %>%
+  mutate(data2 = format(data, big.mark = ",")) 
+
+diff_hb_ppa <- round(abs(hb_ppa$data[2] - hb_ppa$data[1]) / hb_ppa$data[1] * 100, digits = 1)
+word_change_hb_ppa <- if_else(hb_ppa$data[2] > hb_ppa$data[1],
+                               "increase", "decrease")
 
 other_loc_ppa <- ppa %>%
   group_by(financial_year, hscp_locality) %>%
@@ -1491,6 +1740,67 @@ hscp_psych_hosp <- round_half_up(filter(psych_hosp, year == max(year) &
   (area_name == HSCP & area_type == "HSCP"))$measure, 1)
 
 scot_psych_hosp <- round_half_up(filter(psych_hosp, year == max(year) & area_name == "Scotland")$measure, 1)
+
+
+list_years <- unique(psych_hosp_time_trend$data[6])
+list_years_latest <- list_years$period
+
+
+#Locality
+loc_psych_hosp <- psych_hosp %>%
+  filter(period %in% list_years_latest) %>%
+  filter(
+    area_name == LOCALITY &
+      area_type == "Locality",
+    year == min(year) |  year == max(year)
+  ) %>%
+  mutate(measure2 = format(measure, big.mark = ",")) 
+
+diff_loc_psych <- round(abs(loc_psych_hosp$measure[2] - loc_psych_hosp$measure[1]) / loc_psych_hosp$measure[1] * 100, digits = 1)
+word_change_loc_psych <- if_else(loc_psych_hosp$measure[2] > loc_psych_hosp$measure[1],
+                                "increase", "decrease")
+
+#HSCP
+hscp_psych_hosp <- psych_hosp %>%
+  filter(period %in% list_years_latest) %>%
+  filter(
+    area_name == HSCP &
+      area_type == "HSCP",
+    year == min(year) |  year == max(year)
+  ) %>%
+  mutate(measure2 = format(measure, big.mark = ",")) 
+
+diff_hscp_psych <- round(abs(hscp_psych_hosp$measure[2] - hscp_psych_hosp$measure[1]) / hscp_psych_hosp$measure[1] * 100, digits = 1)
+word_change_hscp_psych <- if_else(hscp_psych_hosp$measure[2] > hscp_psych_hosp$measure[1],
+                                 "increase", "decrease")
+
+#NHS health board
+hb_psych_hosp <- psych_hosp %>%
+  filter(period %in% list_years_latest) %>%
+  filter(
+    area_name == HB &
+    area_type == "Health board",
+    year == min(year) |  year == max(year)
+  ) %>%
+  mutate(measure2 = format(measure, big.mark = ",")) 
+
+diff_hb_psych <- round(abs(hb_psych_hosp$measure[2] - hb_psych_hosp$measure[1]) / hb_psych_hosp$measure[1] * 100, digits = 1)
+word_change_hb_psych <- if_else(hb_psych_hosp$measure[2] > hb_psych_hosp$measure[1],
+                              "increase", "decrease")
+
+#Scotland
+scot_psych_hosp <- psych_hosp %>%
+  filter(period %in% list_years_latest) %>%
+  filter(
+    area_name == "Scotland" &
+      area_type == "Scotland",
+    year == min(year) |  year == max(year)
+  ) %>%
+  mutate(measure2 = format(measure, big.mark = ",")) 
+
+diff_scot_psych <- round(abs(scot_psych_hosp$measure[2] - scot_psych_hosp$measure[1]) / scot_psych_hosp$measure[1] * 100, digits = 1)
+word_change_scot_psych <- if_else(scot_psych_hosp$measure[2] > scot_psych_hosp$measure[1],
+                                "increase", "decrease")
 
 
 
