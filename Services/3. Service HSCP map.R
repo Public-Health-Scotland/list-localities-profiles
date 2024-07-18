@@ -140,7 +140,7 @@ if (ch > 0) {service2 <- service2 + geom_point(data = markers_care_home, aes(x =
                                                fill = "yellow")}
 if (ed > 0) {service2 <- service2 + geom_point(data = markers_emergency_dep, aes(x = longitude, y = latitude, colour = "Emergency Department"), size = 2, shape = 23, stroke = 0.5,
                                                fill = "blue")}
-if (miu > 0) {service2 <- service2 + geom_point(data = markers_miu, aes(x = longitude, y = latitude, colour = "Minor Injury Unit"), size = 2, shape = 24, stroke = 0.5,
+if (miu > 0) {service2 <- service2 + geom_point(data = markers_miu, aes(x = longitude, y = latitude, colour = "Minor Injuries Unit"), size = 2, shape = 24, stroke = 0.5,
                                                 fill = "green")}
 
 # preview HSCP map with service markers added and localities outlined
