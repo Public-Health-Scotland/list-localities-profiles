@@ -151,7 +151,7 @@ service_map <- service2 +
   scale_color_manual(values = c("GP Practice" = "black", 
                                 "Care Home" = "black", 
                                 "Emergency Department" = "black",
-                                "Minor Injury Unit" = "black")) +
+                                "Minor Injuries Unit" = "black")) +
   theme(legend.title=element_blank()) +
   scale_fill_manual(values = col_palette) +
   geom_text_repel(data = places,
