@@ -138,40 +138,40 @@ ed <- nrow(markers_emergency_dep)
 miu <- nrow(markers_miu)
 
 # add locality polygons and service markers to map where services are located
-service2 <- ggmap(service_map_background) +
+service_map <- ggmap(service_map_background) +
   geom_sf(data = shp_hscp, mapping = aes(fill = hscp_local), colour = "black", alpha = 0.5, inherit.aes = FALSE) +
   labs(fill = "Locality")
 
 if (gp > 0) {
-  service2 <- service2 + geom_point(
+  service_map <- service_map + geom_point(
     data = markers_gp, aes(x = longitude, y = latitude, colour = "GP Practice"), size = 2, shape = 21, stroke = 0.5,
     fill = "red"
   )
 }
 if (ch > 0) {
-  service2 <- service2 + geom_point(
+  service_map <- service_map + geom_point(
     data = markers_care_home, aes(x = longitude, y = latitude, colour = "Care Home"), size = 2, shape = 22, stroke = 0.5,
     fill = "yellow"
   )
 }
 if (ed > 0) {
-  service2 <- service2 + geom_point(
+  service_map <- service_map + geom_point(
     data = markers_emergency_dep, aes(x = longitude, y = latitude, colour = "Emergency Department"), size = 2, shape = 23, stroke = 0.5,
     fill = "blue"
   )
 }
 if (miu > 0) {
-  service2 <- service2 + geom_point(
+  service_map <- service_map + geom_point(
     data = markers_miu, aes(x = longitude, y = latitude, colour = "Minor Injuries Unit"), size = 2, shape = 24, stroke = 0.5,
     fill = "green"
   )
 }
 
 # preview HSCP map with service markers added and localities outlined
-# plot(service2)
+# plot(service_map)
 
 # create final service map
-service_map <- service2 +
+service_map <- service_map +
   scale_color_manual(values = c(
     "GP Practice" = "black",
     "Care Home" = "black",
