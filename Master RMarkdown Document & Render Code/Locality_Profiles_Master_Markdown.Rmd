@@ -26,8 +26,8 @@ x <- 1 # figures
 y <- 1 # tables
 
 # # demographics
-#source("Demographics/Scripts/1. Demographics - Population.R")
-#source("Demographics/Scripts/2. Demographics - SIMD.R")
+# source("Demographics/Scripts/1. Demographics - Population.R")
+# source("Demographics/Scripts/2. Demographics - SIMD.R")
 #
 # # housing
 # source("Households/Scripts/Households Code.R")
