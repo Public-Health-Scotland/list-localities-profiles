@@ -104,7 +104,7 @@ places <- read_csv(paste0("/conf/linkage/output/lookups/Unicode/Geography/",
   filter(Longitude >= min_long & Longitude <= max_long &
            Latitude >= min_lat & Latitude <= max_lat) %>%
   group_by(name) %>%
-  dplyr::summarise(Longitude = first(Longitude),
+  summarise(Longitude = first(Longitude),
                    Latitude = first(Latitude),
                    type = first(type)) %>%
   st_as_sf(coords = c("Longitude","Latitude"), remove = FALSE, crs = 4326) %>%
