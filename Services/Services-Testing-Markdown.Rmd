@@ -42,7 +42,6 @@ service_map
 x <- x + 1
 ```
 
-######ED = Emergency Department, MIU = Minor Injuries Unit (or other)
 
 \newline
 
