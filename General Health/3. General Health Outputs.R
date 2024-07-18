@@ -912,7 +912,7 @@ top5_ltc_table <- plot_grid(title, as_gtable(TOPltcs), nrow = 2, rel_heights = c
 
 top5ltc_loc
 rm(
-  ltc_cols,ltc_loc_col, ltc_hscp_col, ltc_scot_col,
+  ltc_cols, ltc_loc_col, ltc_hscp_col, ltc_scot_col,
   ltc_pops_total_loc, ltc_pops_total_hscp,
   loc.ltc.table, loc.ltc.table.wrapped, hscp.ltc.table, hscp.ltc.table.wrapped,
   top5ltc_hscp, top5ltc_scot, TOPltcs, title
