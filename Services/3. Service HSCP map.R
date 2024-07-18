@@ -14,15 +14,8 @@
 ###### 1. Set up ######
 
 ## Load packages
-library(tidyverse)
-library(readxl)
-library(janitor)
+library(readr)
 library(dplyr)
-library(htmlwidgets)
-library(knitr)
-library(gridExtra)
-library(grid)
-library(data.table)
 library(sf)
 library(ggrepel)
 library(ggmap)
@@ -46,12 +39,12 @@ library(ggmap)
 
 ###### 2. Read in locality shape files ######
 
-shp <- sf::read_sf("/conf/linkage/output/lookups/Unicode/Geography/Shapefiles/HSCP Locality (Datazone2011 Base)/HSCP_Locality.shp")
-shp <- sf::st_transform(shp, 4326) %>%
+shp <- read_sf("/conf/linkage/output/lookups/Unicode/Geography/Shapefiles/HSCP Locality (Datazone2011 Base)/HSCP_Locality.shp")
+shp <- st_transform(shp, 4326) %>%
   select(hscp_local, HSCP_name, Shape_Leng, Shape_Area, geometry)
 
 shp <- shp |>
-  dplyr::mutate(hscp_locality = gsub("&", "and", hscp_local)) |>
+  mutate(hscp_locality = gsub("&", "and", hscp_local)) |>
   merge(lookup2, by = "hscp_locality")
 
 shp_hscp <- shp |>
@@ -74,7 +67,7 @@ if (n_loc < 5) {
 
 # Get latitude and longitude co-ordinates for each data locality, find min and max.
 zones_coord <- shp_hscp %>%
-  sf::st_coordinates() %>%
+  st_coordinates() %>%
   as_tibble() %>%
   select("long" = X, "lat" = Y) %>%
   summarise(
@@ -119,7 +112,7 @@ places <- read_csv(paste0(
 locality_map_id <- read_csv("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Services/locality_map_id.csv")
 api_key <- locality_map_id$id
 # upload map background from stadia maps, enter registration key, filter for max and min long/lat
-ggmap::register_stadiamaps(key = api_key)
+register_stadiamaps(key = api_key)
 service_map_background <- get_stadiamap(
   bbox = c(
     min_long, min_lat,
@@ -246,9 +239,3 @@ rm(
   shp_hscp,
   zones_coord
 )
-
-
-# detach(package:tidyverse, unload=TRUE)
-# detach(package:janitor, unload=TRUE)
-# detach(package:mapview, unload=TRUE)
-# detach(package:data.table, unload=TRUE)
