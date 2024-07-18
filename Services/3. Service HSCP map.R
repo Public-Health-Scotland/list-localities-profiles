@@ -1,24 +1,7 @@
-############################################################################################# .
-#                                                                                           #
-#                         LOCALITY PROFILES SERVICES MAP & TABLE CODE                       #
-#                                                                                           #
-############################################################################################# .
+# LOCALITY PROFILES SERVICES MAP & TABLE CODE
+# Code for creating the HSCP services map for the locality profiles
 
-## Code for creating the HSCP services map for the locality profiles
-# Sources in script "2. Services data manipulation and table.R"
-
-## Written by C.Puech
-## Created on 24/02/2020
-## Latest update August 2022 - rewrote parts of code for smoother process
-
-###### 1. Set up ######
-
-## Load packages
-library(readr)
-library(dplyr)
-library(sf)
-library(ggrepel)
-library(ggmap)
+# 0. Testing Set up ----
 
 ## Select HCSP (for testing only)
 # HSCP <- "Renfrewshire"
@@ -36,8 +19,16 @@ library(ggmap)
 # Source the data manipulation script for services
 # source("Services/2. Services data manipulation & table.R")
 
+# 1. Set up ----
 
-###### 2. Read in locality shape files ######
+## Load packages
+library(readr)
+library(dplyr)
+library(sf)
+library(ggrepel)
+library(ggmap)
+
+# 2. Read in locality shape files ----
 
 shp <- read_sf("/conf/linkage/output/lookups/Unicode/Geography/Shapefiles/HSCP Locality (Datazone2011 Base)/HSCP_Locality.shp")
 shp <- st_transform(shp, 4326) |>
@@ -50,7 +41,8 @@ shp <- shp |>
 shp_hscp <- shp |>
   filter(hscp2019name == HSCP)
 
-###### 3. Formatting Code ######
+# 3. Map Code ----
+# 3.1 Palettes ----
 
 # Create colour palettes for different numbers of localities
 if (n_loc < 5) {
@@ -65,6 +57,7 @@ if (n_loc < 5) {
   col_palette <- c("#3F3685", "#9B4393", "#0078D4", "#83BB26", "#948DA3", "#1E7F84", "#6B5C85", "#C73918", "orchid3")
 }
 
+# 3.2 Loaclity shapes ----
 # Get latitude and longitude co-ordinates for each data locality, find min and max.
 zones_coord <- shp_hscp |>
   st_coordinates() |>
@@ -108,7 +101,7 @@ places <- read_csv(paste0(
   filter(!grepl("_", name)) |> # filter incorrect name types and remove smaller places
   filter(type != "hamlet" & type != "village")
 
-# 3. Upload map for locality
+# 3.3 Background map ----
 locality_map_id <- read_csv("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Services/locality_map_id.csv")
 api_key <- locality_map_id$id
 # upload map background from stadia maps, enter registration key, filter for max and min long/lat
@@ -124,7 +117,7 @@ service_map_background <- get_stadiamap(
 # preview map
 # ggmap(service_map_background)
 
-
+# 3.4 Map markers ----
 # add locality polygons and service markers to map where services are located
 service_map <- ggmap(service_map_background) +
   geom_sf(
@@ -191,6 +184,7 @@ if (nrow(markers_miu) > 0) {
 # preview HSCP map with service markers added and localities outlined
 # plot(service_map)
 
+# 3.5 Final map ----
 # create final service map
 service_map <- service_map +
   scale_color_manual(values = c(
@@ -222,6 +216,7 @@ service_map <- service_map +
 # preview final service map
 # plot(service_map)
 
+# 4 Cleanup ----
 # remove unnecessary objects
 rm(
   Clacks_Royal,
