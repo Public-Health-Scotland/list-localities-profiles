@@ -184,7 +184,9 @@ service_map <- service_map +
     data = places,
     aes(x = Longitude, y = Latitude, label = name),
     color = "black", size = 3.5,
-    max.overlaps = getOption("ggrepel.max.overlaps", default = 18)
+    max.overlaps = 18,
+    max.time = 2,
+    max.iter = 100000
   ) +
   theme(
     axis.text.x = element_blank(),
