@@ -106,7 +106,9 @@ ltc_data <- left_join(ltc_agg, slf_pops)
 
 #### SAVE DATA ####
 
-saveRDS(ltc_data, file = paste0(
-  lp_path, "General Health/DATA ",
-  ext_year, "/LTC_from_SLF.RDS"
-))
+arrow::write_parquet(
+  ltc_data,
+  paste0(lp_path, "General Health/DATA ", ext_year, "/LTC_from_SLF_Moray_custom.parquet"),
+  version = "latest",
+  compression = "zstd"
+)

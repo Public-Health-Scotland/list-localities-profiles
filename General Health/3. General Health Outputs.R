@@ -148,7 +148,9 @@ check_missing_data_scotpho(adp_presc)
 
 
 # Long-term conditions
-ltc <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/LTC_from_SLF.RDS"))
+ltc <- arrow::read_parquet(
+  paste0(lp_path, "General Health/DATA ", ext_year, "/LTC_from_SLF_Moray_custom.parquet")
+)
 
 ltc <- dplyr::rename(ltc,
   "Arthritis" = "arth", "Asthma" = "asthma", "Atrial fibrillation" = "atrialfib", "Cancer" = "cancer",
