@@ -201,8 +201,20 @@ service_map <- service_map +
 
 # remove unnecessary objects
 rm(
-  data, hosp_postcodes, hosp_types, markers_care_home, markers_emergency_dep, markers_miu, markers_gp,
-  postcode_lkp, shp, shp_hscp, Clacks_Royal, other_care_type
+  Clacks_Royal,
+  data,
+  hosp_postcodes,
+  hosp_types,
+  markers_care_home,
+  markers_emergency_dep,
+  markers_gp,
+  markers_miu,
+  other_care_type,
+  postcode_lkp,
+  service_map_background,
+  shp,
+  shp_hscp,
+  zones_coord
 )
 
 
