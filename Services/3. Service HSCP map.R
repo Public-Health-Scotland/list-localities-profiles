@@ -113,9 +113,9 @@ places <- read_csv(paste0("/conf/linkage/output/lookups/Unicode/Geography/",
 
 #3. Upload map for locality
 locality_map_id <- read_csv("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Services/locality_map_id.csv")
-MAP_ID <- locality_map_id$id
+api_key <- locality_map_id$id
 # upload map background from stadia maps, enter registration key, filter for max and min long/lat
-ggmap::register_stadiamaps(MAP_ID)
+ggmap::register_stadiamaps(key = api_key)
 service_map_background <- get_stadiamap(bbox = c(min_long, min_lat,
                                        max_long, max_lat),
                               maptype="stamen_terrain_background")
