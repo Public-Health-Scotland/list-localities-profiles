@@ -91,7 +91,7 @@ min_lat <- zones_coord$min_lat - 0.01
 max_lat <- zones_coord$max_lat + 0.01
 
 # get data zones in HSCP
-hscp_loc <- read.csv("/conf/linkage/output/lookups/Unicode/Geography/HSCP Locality/HSCP Localities_DZ11_Lookup_20240513.csv") %>%
+hscp_loc <- read_csv("/conf/linkage/output/lookups/Unicode/Geography/HSCP Locality/HSCP Localities_DZ11_Lookup_20240513.csv") %>%
   select(datazone2011, hscp2019name) %>%
   filter(hscp2019name == HSCP)
 
