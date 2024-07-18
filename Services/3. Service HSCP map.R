@@ -40,7 +40,7 @@ library(ggmap)
 ###### 2. Read in locality shape files ######
 
 shp <- read_sf("/conf/linkage/output/lookups/Unicode/Geography/Shapefiles/HSCP Locality (Datazone2011 Base)/HSCP_Locality.shp")
-shp <- st_transform(shp, 4326) %>%
+shp <- st_transform(shp, 4326) |>
   select(hscp_local, HSCP_name, Shape_Leng, Shape_Area, geometry)
 
 shp <- shp |>
@@ -66,10 +66,10 @@ if (n_loc < 5) {
 }
 
 # Get latitude and longitude co-ordinates for each data locality, find min and max.
-zones_coord <- shp_hscp %>%
-  st_coordinates() %>%
-  as_tibble() %>%
-  select("long" = X, "lat" = Y) %>%
+zones_coord <- shp_hscp |>
+  st_coordinates() |>
+  as_tibble() |>
+  select("long" = X, "lat" = Y) |>
   summarise(
     min_long = min(long),
     max_long = max(long),
@@ -84,28 +84,28 @@ min_lat <- zones_coord$min_lat - 0.01
 max_lat <- zones_coord$max_lat + 0.01
 
 # get data zones in HSCP
-hscp_loc <- read_csv("/conf/linkage/output/lookups/Unicode/Geography/HSCP Locality/HSCP Localities_DZ11_Lookup_20240513.csv") %>%
-  select(datazone2011, hscp2019name) %>%
+hscp_loc <- read_csv("/conf/linkage/output/lookups/Unicode/Geography/HSCP Locality/HSCP Localities_DZ11_Lookup_20240513.csv") |>
+  select(datazone2011, hscp2019name) |>
   filter(hscp2019name == HSCP)
 
 # get place names of cities, towns and villages within locality
 places <- read_csv(paste0(
   "/conf/linkage/output/lookups/Unicode/Geography/",
   "Shapefiles/Scottish Places/Places to Data Zone Lookup.csv"
-)) %>%
-  rename(datazone2011 = DataZone) %>%
-  filter(datazone2011 %in% hscp_loc$datazone2011) %>%
+)) |>
+  rename(datazone2011 = DataZone) |>
+  filter(datazone2011 %in% hscp_loc$datazone2011) |>
   # extra filter to remove place names with coordinates outwith locality
   filter(Longitude >= min_long & Longitude <= max_long &
-    Latitude >= min_lat & Latitude <= max_lat) %>%
-  group_by(name) %>%
+    Latitude >= min_lat & Latitude <= max_lat) |>
+  group_by(name) |>
   summarise(
     Longitude = first(Longitude),
     Latitude = first(Latitude),
     type = first(type)
-  ) %>%
-  st_as_sf(coords = c("Longitude", "Latitude"), remove = FALSE, crs = 4326) %>%
-  filter(!grepl("_", name)) %>% # filter incorrect name types and remove smaller places
+  ) |>
+  st_as_sf(coords = c("Longitude", "Latitude"), remove = FALSE, crs = 4326) |>
+  filter(!grepl("_", name)) |> # filter incorrect name types and remove smaller places
   filter(type != "hamlet" & type != "village")
 
 # 3. Upload map for locality
