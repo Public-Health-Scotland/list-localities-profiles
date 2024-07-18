@@ -131,40 +131,68 @@ service_map_background <- get_stadiamap(
 # preview map
 # ggmap(service_map_background)
 
-# check if services markers exist for locality
-gp <- nrow(markers_gp)
-ch <- nrow(markers_care_home)
-ed <- nrow(markers_emergency_dep)
-miu <- nrow(markers_miu)
 
 # add locality polygons and service markers to map where services are located
 service_map <- ggmap(service_map_background) +
-  geom_sf(data = shp_hscp, mapping = aes(fill = hscp_local), colour = "black", alpha = 0.5, inherit.aes = FALSE) +
+  geom_sf(
+    data = shp_hscp,
+    mapping = aes(
+      fill = hscp_local
+    ),
+    colour = "black",
+    alpha = 0.5,
+    inherit.aes = FALSE
+  ) +
   labs(fill = "Locality")
 
-if (gp > 0) {
-  service_map <- service_map + geom_point(
-    data = markers_gp, aes(x = longitude, y = latitude, colour = "GP Practice"), size = 2, shape = 21, stroke = 0.5,
-    fill = "red"
-  )
+# check if services markers exist for locality
+if (nrow(markers_gp) > 0) {
+  service_map <- service_map +
+    geom_point(
+      data = markers_gp,
+      mapping = aes(
+        x = longitude,
+        y = latitude,
+        colour = "GP Practice"
+      ), size = 2, shape = 21, stroke = 0.5,
+      fill = "red"
+    )
 }
-if (ch > 0) {
-  service_map <- service_map + geom_point(
-    data = markers_care_home, aes(x = longitude, y = latitude, colour = "Care Home"), size = 2, shape = 22, stroke = 0.5,
-    fill = "yellow"
-  )
+if (nrow(markers_care_home) > 0) {
+  service_map <- service_map +
+    geom_point(
+      data = markers_care_home,
+      mapping = aes(
+        x = longitude,
+        y = latitude,
+        colour = "Care Home"
+      ), size = 2, shape = 22, stroke = 0.5,
+      fill = "yellow"
+    )
 }
-if (ed > 0) {
-  service_map <- service_map + geom_point(
-    data = markers_emergency_dep, aes(x = longitude, y = latitude, colour = "Emergency Department"), size = 2, shape = 23, stroke = 0.5,
-    fill = "blue"
-  )
+if (nrow(markers_emergency_dep) > 0) {
+  service_map <- service_map +
+    geom_point(
+      data = markers_emergency_dep,
+      mapping = aes(
+        x = longitude,
+        y = latitude,
+        colour = "Emergency Department"
+      ), size = 2, shape = 23, stroke = 0.5,
+      fill = "blue"
+    )
 }
-if (miu > 0) {
-  service_map <- service_map + geom_point(
-    data = markers_miu, aes(x = longitude, y = latitude, colour = "Minor Injuries Unit"), size = 2, shape = 24, stroke = 0.5,
-    fill = "green"
-  )
+if (nrow(markers_miu) > 0) {
+  service_map <- service_map +
+    geom_point(
+      data = markers_miu,
+      mapping = aes(
+        x = longitude,
+        y = latitude,
+        colour = "Minor Injuries Unit"
+      ), size = 2, shape = 24, stroke = 0.5,
+      fill = "green"
+    )
 }
 
 # preview HSCP map with service markers added and localities outlined
