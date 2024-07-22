@@ -220,13 +220,11 @@ query_deaths <- paste(
 
 
 # Connect to ODBC
-channel <- suppressWarnings(
-  dbConnect(
-    drv = odbc::odbc(),
-    dsn = "SMRA",
-    uid = Sys.getenv("USER"),
-    pwd = .rs.askForPassword("What is your LDAP password?")
-  )
+channel <- odbc::dbConnect(
+  drv = odbc::odbc(),
+  dsn = "SMRA",
+  uid = Sys.getenv("USER"),
+  pwd = rstudioapi::askForPassword("Enter LDAP password:")
 )
 
 # Run queries

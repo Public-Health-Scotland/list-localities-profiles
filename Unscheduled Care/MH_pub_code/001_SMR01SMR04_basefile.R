@@ -78,12 +78,12 @@ future_date <- "2029-01-01"
 
 ### 5 - Define the database connection with SMRA ----
 # set it up so that a pop up appears to enter user name and password
-suppressWarnings(channel <- dbConnect(odbc(),
+channel <- odbc::dbConnect(
+  drv = odbc::odbc(),
   dsn = "SMRA",
   uid = Sys.getenv("USER"),
-  pwd = .rs.askForPassword("SMRA Password:")
-))
-
+  pwd = rstudioapi::askForPassword("Enter LDAP password:")
+)
 
 ###################################
 ### SECTION 2 - DATA EXTRACTION----
