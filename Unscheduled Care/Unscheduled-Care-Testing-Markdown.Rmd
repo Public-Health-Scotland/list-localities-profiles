@@ -23,9 +23,9 @@ options(kableExtra.auto_format = FALSE)
 LOCALITY <-  "Inverness"
 #LOCALITY <- "East Dunbartonshire West"
 
-source("~/list-localities-profiles/Master RMarkdown Document & Render Code/Global Script.R")
+source("../Master RMarkdown Document & Render Code/Global Script.R")
 
-source("~/list-localities-profiles/Unscheduled Care/2. Unscheduled Care outputs.R")
+source("./2. Unscheduled Care outputs.R")
 
 x <- 1 # object for figure numbers
 y <- 1 # object for table numbers
