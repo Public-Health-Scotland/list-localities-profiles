@@ -18,7 +18,7 @@ lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality
 
 # Source in functions code
 source("Master RMarkdown Document & Render Code/Global Script.R")
-
+source("Master RMarkdown Document & Render Code/overwrite_with_custom_functions.R")
 # Below creates locality list of all the localities in a chosen HSCP
 lookup <- read_in_localities()
 
@@ -156,4 +156,4 @@ openxlsx::writeData(wb, sheet = 'Index', x = index_data)
 
 
 # Save the workbook to a file
-openxlsx::saveWorkbook(wb, paste0("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/background data/",HSCP,".xlsx"), overwrite = TRUE)
+openxlsx::saveWorkbook(wb, paste0("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/background data/","custom South Ayrshire",".xlsx"), overwrite = TRUE)
