@@ -29,7 +29,7 @@ library(fst)
 ### for testing run global script and locality placeholder below
 
 ## Functions
-source("../Master RMarkdown Document & Render Code/Global Script.R")
+# source("../Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Define locality
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
