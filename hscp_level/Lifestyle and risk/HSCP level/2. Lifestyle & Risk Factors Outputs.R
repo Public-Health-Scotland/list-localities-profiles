@@ -31,10 +31,10 @@ library(phsstyles)
 
 Sys.umask(mode = "002")
 
-# HSCP <- "Highland"
+#HSCP <- "Highland"
 
 # Set year of data extracts for folder
-ext_year <- 2022
+ext_year <- 2023
 
 # Set file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
@@ -113,7 +113,7 @@ earliest_period_drug_hosp <- unique(filter(drug_hosp, year == min(drug_hosp$year
 
 ## Time trend
 drug_hosp_time_trend <- drug_hosp %>%
-  scotpho_hscp_time_trend(
+  scotpho_time_trend_HSCP(
     data = .,
     chart_title = "Drug-related Hospital Admissions Time Trend",
     xaxis_title = "Financial Year Groups (3-year aggregates)",
@@ -173,7 +173,7 @@ earliest_period_alcohol_hosp <- unique(filter(alcohol_hosp, year == min(alcohol_
 
 ## Time trend
 alcohol_hosp_time_trend <- alcohol_hosp %>%
-  scotpho_hscp_time_trend(
+  scotpho_time_trend_HSCP(
     data = .,
     chart_title = "Alcohol-related Hospital Admissions Time Trend",
     xaxis_title = "Financial Year",
@@ -231,7 +231,7 @@ earliest_period_alcohol_deaths <- unique(filter(alcohol_deaths, year == min(alco
 
 ## Time trend
 alcohol_deaths_time_trend <- alcohol_deaths %>%
-  scotpho_hscp_time_trend(
+  scotpho_time_trend_HSCP(
     data = .,
     chart_title = "Alcohol-specific Deaths Time Trend",
     xaxis_title = "Year Groups (5-year aggregates)",
@@ -290,7 +290,7 @@ earliest_period_bowel_screening <- unique(filter(bowel_screening, year == min(bo
 
 ## Time trend
 bowel_screening_time_trend <- bowel_screening %>%
-  scotpho_hscp_time_trend(
+  scotpho_time_trend_HSCP(
     data = .,
     chart_title = "Bowel Screening Uptake Time Trend",
     xaxis_title = "Year Groups (3-year aggregates)",
