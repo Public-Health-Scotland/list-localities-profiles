@@ -6,7 +6,7 @@
 library(tidyverse)
 
 # Change year to be the year in the data folder name
-ext_year <- 2022
+ext_year <- 2023
 
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Lifestyle & Risk Factors/Data "
 
