@@ -28,7 +28,7 @@ library(ggrepel)
 library(phsstyles)
 
 # Source in global functions/themes script
-# source("Master RMarkdown Document & Render Code/Global Script.R")
+source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## File path
 filepath <- paste0(
@@ -415,7 +415,7 @@ rm(
 ##################### SECTION 5: Objects for summary table #######################
 
 ## Relevant lookups for creating the table objects
-loc <- as.character(filter(lookup, hscp2019name == HSCP)$hscp_locality)
+# HSCP <- as.character(filter(lookup, hscp_locality == LOCALITY)$hscp2019name)
 
 # Determine other localities based on LOCALITY object
 other_locs <- lookup %>%
@@ -430,16 +430,16 @@ n_loc <- lookup %>%
   filter(hscp2019name == HSCP) %>%
   pull(locality_n)
 
-# HSCP objects
+## Locality objects
 total_population <- format_number_for_text(gender_breakdown$total[1])
 gender_ratio <- round_half_up(filter(gender_breakdown, sex == "F")$total_pop / filter(gender_breakdown, sex == "M")$total_pop, 2)
 over65 <- round_half_up(sum(filter(pop_breakdown, Age %in% c("65-74", "75-84", "85+"))$Population) / gender_breakdown$total[1] * 100, 1)
 
 
-## Locality Objects
+## Other localities in HSCP objects
 
 # total pop
-loc_total_pop <- pops %>%
+other_locs_total_pop <- pops %>%
   filter(year == max(year)) %>%
   inner_join(other_locs, by = "hscp_locality") %>%
   group_by(hscp_locality) %>%
@@ -450,7 +450,7 @@ loc_total_pop <- pops %>%
   spread(hscp_locality, total_pop)
 
 # gender ratio
-loc_gender_ratio <- pops %>%
+other_locs_gender_ratio <- pops %>%
   filter(year == max(year)) %>%
   inner_join(other_locs, by = "hscp_locality") %>%
   select(hscp_locality, sex, total_pop) %>%
@@ -462,7 +462,7 @@ loc_gender_ratio <- pops %>%
   spread(hscp_locality, ratio)
 
 # over 65 %
-loc_over65 <- pops %>%
+other_locs_over65 <- pops %>%
   filter(year == max(year)) %>%
   inner_join(other_locs, by = "hscp_locality") %>%
   group_by(hscp_locality) %>%
@@ -473,17 +473,17 @@ loc_over65 <- pops %>%
   spread(hscp_locality, over65_percent)
 
 
-## Locality objects
-# pop_loc <- filter(pops, hscp2019name == HSCP, hscp_locality == loc, year == max(year))
+## HSCP objects
+pop_hscp <- filter(pops, hscp2019name == HSCP, hscp_locality == "Partnership Total", year == max(year))
 
-# loc_total_pop <- (sum(pop_loc$total_pop) %>%
-# formatC(., format="d", big.mark=","))
-# hscp_gender_ratio <- paste0("1:", round_half_up(filter(pop_loc, sex == "F")$total_pop/filter(pop_loc, sex == "M")$total_pop, 2))
-# hscp_over65 <- pop_hscp %>%
-# group_by(hscp2019name) %>%
-# summarise(Pop65Plus = sum(Pop65Plus), total_pop = sum(total_pop)) %>%
-# mutate(perc_over65 = round_half_up(Pop65Plus/total_pop*100, 1)) %>%
-# pull(perc_over65)
+hscp_total_pop <- sum(pop_hscp$total_pop) %>%
+  formatC(., format = "d", big.mark = ",")
+hscp_gender_ratio <- paste0("1:", round_half_up(filter(pop_hscp, sex == "F")$total_pop / filter(pop_hscp, sex == "M")$total_pop, 2))
+hscp_over65 <- pop_hscp %>%
+  group_by(hscp2019name) %>%
+  summarise(Pop65Plus = sum(Pop65Plus), total_pop = sum(total_pop)) %>%
+  mutate(perc_over65 = round_half_up(Pop65Plus / total_pop * 100, 1)) %>%
+  pull(perc_over65)
 
 
 ## Scotland objects
@@ -498,7 +498,7 @@ scot_over65 <- pop_scot %>%
   mutate(perc_over65 = round_half_up(Pop65Plus / total_pop * 100, 1)) %>%
   pull(perc_over65)
 
-rm(pop_scot)
+rm(pop_hscp, pop_scot)
 
 
 
