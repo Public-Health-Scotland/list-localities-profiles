@@ -22,10 +22,10 @@ library(grid)
 library(data.table)
 
 # Change year to be the year in the data folder name
-ext_year <- 2023
+ext_year <- 2022
 
 ## Set Locality (for testing only)
- HSCP <- "Moray"
+# HSCP <- "Moray"
 
 ## Set file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"

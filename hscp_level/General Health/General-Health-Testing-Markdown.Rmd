@@ -6,10 +6,8 @@ output:
       Profiles/Master RMarkdown Document & Render Code/Locality_Profiles_Report_Template.docx
   html_document:
     df_print: paged
-    
 ---
 
-    ```{r, setup, include=FALSE}knitr::opts_knit$set(root.dir = rstudioapi::getActiveProject())```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -28,7 +26,7 @@ HSCP <- "Moray"
 
 
 
-source("hscp_level/General Health/3. General Health Outputs.R")
+source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/General Health/Scripts/HSCP level/3. General Health Outputs.R")
 
 
 x <- 1 # object for figure numbers

@@ -33,10 +33,10 @@ library(phsstyles)
 # LOCALITY <- "City of Dunfermline"
 # LOCALITY <- "Barra"
 
-HSCP <- 'Moray'
+# HSCP <- 'Moray'
 
 # Set year of data extracts for folder
-ext_year <- 2023
+ext_year <- 2022
 
 # Set file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
