@@ -21,14 +21,13 @@ library(janitor)
 library(readxl)
 library(reshape2)
 library(scales)
-library(rgdal)
 library(broom)
 # library(OpenStreetMap)
 library(ggrepel)
 library(phsstyles)
 
 # Source in global functions/themes script
-# source("Master RMarkdown Document & Render Code/Global Script.R")
+source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## File path
 filepath <- paste0(
@@ -38,7 +37,7 @@ filepath <- paste0(
 
 ## Final document will loop through a list of localities
 # Create placeholder for for loop
-# HSCP <- "Moray"
+HSCP <- "Moray"
 
 
 

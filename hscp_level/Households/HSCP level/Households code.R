@@ -45,7 +45,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set locality (for testing only)
 ## LOCALITY = "Whalsay and Skerries"
-# HSCP <- "Moray"
+HSCP <- "Moray"
 
 
 ##################### Section 2 - Households Data #############################
