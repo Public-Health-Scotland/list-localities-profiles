@@ -21,9 +21,11 @@ options(kableExtra.auto_format = FALSE)
 # LOCALITY <- "Helensburgh and Lomond"
 # LOCALITY <- "City of Dunfermline"
 # LOCALITY <-  "Inverness"
-#HSCP <- "Moray"
+HSCP <- "Moray"
 
-source("~/localities/hscp level/unscheduled care/2. Unscheduled Care outputs.R")
+#source("~/localities/Master RMarkdown Document & Render Code/Global Script.R")
+
+source("hscp_level/unschedule care/2. Unscheduled Care outputs.R")
 
 
 x <- 1 # object for figure numbers

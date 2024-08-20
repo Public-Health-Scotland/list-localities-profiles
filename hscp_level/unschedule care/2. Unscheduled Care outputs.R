@@ -30,7 +30,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Define locality
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
- HSCP <- "Aberdeenshire"
+#HSCP <- "Aberdeenshire"
 
 # Set date limit for financial year
 # If in quarter 1
