@@ -29,13 +29,13 @@ library(data.table)
 ext_year <- 2023
 
 ## Set Locality (for testing only)
-# LOCALITY <- "Falkirk West"
+HSCP <- 'Moray'
 
 ## Set file path
-lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+ lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 # Source in functions code
-#source("Master RMarkdown Document & Render Code/Global Script.R")
+ source("Master RMarkdown Document & Render Code/Global Script.R")
 
 
 ### Geographical lookups and objects ----
@@ -47,7 +47,7 @@ lookup <- read_in_localities(dz_level = TRUE)
 lookup2 <- read_in_localities()
 
 ## Determine HSCP
-HSCP <- as.character(filter(lookup2, hscp_locality == LOCALITY)$hscp2019name)
+#HSCP <- #as.character(filter(lookup2, hscp_locality == LOCALITY)$hscp2019name)
 
 # Get number of localities in HSCP
 n_loc <- lookup2 %>%
@@ -75,10 +75,10 @@ services_file_names <- list.files(paste0(lp_path, "Services/DATA ", ext_year), p
 
 for (file in services_file_names) {
   name <- substr(x = file, 1, 4)
-
+  
   data <- readRDS(paste0(lp_path, "Services/DATA ", ext_year, "/", file)) %>%
     clean_names()
-
+  
   assign(name, data)
 }
 
@@ -101,7 +101,7 @@ latest_year_access_dep <- max(access_dep$year)
 access_dep_latest <- filter(
   access_dep,
   year == max(access_dep$year) &
-    (area_name == LOCALITY & area_type == "Locality")
+    (area_name == HSCP & area_type == "HSCP")
 )$measure
 
 ## GP Practices ----
@@ -168,6 +168,7 @@ markers_care_home <- care_homes %>%
   filter(hscp2019name == HSCP)
 
 
+
 ###### 4. Table ######
 
 # Subset care which is not Elderly care for table
@@ -177,21 +178,20 @@ other_care_type <- care_homes %>%
   filter(subtype != "Older People") %>%
   mutate(postcode = gsub(" ", "", service_postcode)) %>%
   left_join(postcode_lkp, by = "postcode") %>%
-  filter(hscp_locality == LOCALITY)
+  filter(hscp2019name == HSCP)
 
 # Create table
 services_tibble <- tibble(
   Type = c("**Primary Care**", "**A&E**", "", "**Care Home**", ""),
   Service = c("GP Practice", "Emergency Department", "Minor Injuries Unit", "Elderly Care", "Other"),
   Number = c(
-    nrow(filter(markers_gp, hscp_locality == LOCALITY)),
-    nrow(filter(markers_emergency_dep, hscp_locality == LOCALITY)),
-    nrow(filter(markers_miu, hscp_locality == LOCALITY)),
-    nrow(filter(markers_care_home, hscp_locality == LOCALITY)),
+    nrow(filter(markers_gp, hscp2019name == HSCP)),
+    nrow(filter(markers_emergency_dep, hscp2019name == HSCP)),
+    nrow(filter(markers_miu, hscp2019name == HSCP)),
+    nrow(filter(markers_care_home, hscp2019name == HSCP)),
     nrow(other_care_type)
   )
 )
-
 
 # detach(package:tidyverse, unload=TRUE)
 # detach(package:janitor, unload=TRUE)
