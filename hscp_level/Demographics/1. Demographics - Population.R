@@ -21,14 +21,13 @@ library(janitor)
 library(readxl)
 library(reshape2)
 library(scales)
-library(rgdal)
 library(broom)
 # library(OpenStreetMap)
 library(ggrepel)
 library(phsstyles)
 
 # Source in global functions/themes script
-# source("Master RMarkdown Document & Render Code/Global Script.R")
+source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## File path
 filepath <- paste0(
@@ -38,7 +37,7 @@ filepath <- paste0(
 
 ## Final document will loop through a list of localities
 # Create placeholder for for loop
-# HSCP <- "Moray"
+#HSCP <- "Moray"
 
 
 
@@ -89,18 +88,18 @@ pops <- pops %>%
   ungroup() %>%
   # Add a partnership total
   bind_rows(., pops %>%
-    select(-hscp_locality) %>%
-    group_by(year, hscp2019name, sex) %>%
-    summarise_all(sum) %>%
-    ungroup() %>%
-    mutate(hscp_locality = "Partnership Total")) %>%
+              select(-hscp_locality) %>%
+              group_by(year, hscp2019name, sex) %>%
+              summarise_all(sum) %>%
+              ungroup() %>%
+              mutate(hscp_locality = "Partnership Total")) %>%
   # Add a Scotland total
   bind_rows(., pops %>%
-    select(-hscp_locality, -hscp2019name) %>%
-    group_by(year, sex) %>%
-    summarise_all(sum) %>%
-    ungroup() %>%
-    mutate(hscp_locality = "Scotland Total", hscp2019name = "Scotland"))
+              select(-hscp_locality, -hscp2019name) %>%
+              group_by(year, sex) %>%
+              summarise_all(sum) %>%
+              ungroup() %>%
+              mutate(hscp_locality = "Scotland Total", hscp2019name = "Scotland"))
 
 
 
@@ -309,7 +308,7 @@ pop_ts_plot <- ggplot(pop_plot_dat, aes(x = year, y = pop)) +
   geom_line(aes(color = data), size = 1) +
   geom_point(color = "#0f243e") +
   geom_text(aes(label = plot_lab),
-    vjust = 2, color = "#4a4a4a", size = 3
+            vjust = 2, color = "#4a4a4a", size = 3
   ) +
   scale_x_continuous(breaks = pop_plot_dat$year) +
   scale_y_continuous(labels = comma, limits = c(0, 1.1 * max(pop_plot_dat$pop))) +
@@ -356,37 +355,37 @@ change_point <- ifelse(pop_latest == pop_last, "last year", change_point)
 change_point <- ifelse(change_point == max(pops$year) - 1, "last year", change_point)
 
 pop_change <- ifelse(pop_latest > pop_last, "been rising since",
-  ifelse(pop_latest == pop_last, "remained the same as",
-    "been falling since"
-  )
+                     ifelse(pop_latest == pop_last, "remained the same as",
+                            "been falling since"
+                     )
 )
 
 pop_graph_text <- ifelse(pval < 0.05,
-
-  # if the pvalue is less than .05 then return:
-  paste0(
-    "The population has been ",
-
-    # determine whether its rising or falling:
-    ifelse(coef < 0, "falling", "rising"),
-
-    # could have trend that has changed in recent years
-    ifelse(coef < 0 & pop_latest > pop_last,
-      " in general, however it has risen since last year.",
-      ifelse(coef > 0 & pop_latest < pop_last,
-        " in general, however it has fallen since last year.",
-        "."
-      )
-    )
-  ),
-
-  # if the pvalue is not significant then return:
-  paste0(
-    paste(
-      "There is no significant linear trend in population.",
-      "However, it has", pop_change, change_point
-    ), "."
-  )
+                         
+                         # if the pvalue is less than .05 then return:
+                         paste0(
+                           "The population has been ",
+                           
+                           # determine whether its rising or falling:
+                           ifelse(coef < 0, "falling", "rising"),
+                           
+                           # could have trend that has changed in recent years
+                           ifelse(coef < 0 & pop_latest > pop_last,
+                                  " in general, however it has risen since last year.",
+                                  ifelse(coef > 0 & pop_latest < pop_last,
+                                         " in general, however it has fallen since last year.",
+                                         "."
+                                  )
+                           )
+                         ),
+                         
+                         # if the pvalue is not significant then return:
+                         paste0(
+                           paste(
+                             "There is no significant linear trend in population.",
+                             "However, it has", pop_change, change_point
+                           ), "."
+                         )
 ) %>% paste()
 
 ## Pop projection
@@ -396,11 +395,11 @@ pop_proj_change <- round_half_up(pop_proj_change, 1) %>% as.character()
 pop_proj_text <- paste(
   "The population in", HSCP, "is estimated to",
   ifelse(pop_proj_dat[1, 2] < pop_proj_dat[6, 2],
-    paste0("increase by ", pop_proj_change, "%"),
-    ifelse(pop_proj_dat[1, 2] == pop_proj_dat[6, 2],
-      "remain the same",
-      paste0("decrease by ", pop_proj_change, "%")
-    )
+         paste0("increase by ", pop_proj_change, "%"),
+         ifelse(pop_proj_dat[1, 2] == pop_proj_dat[6, 2],
+                "remain the same",
+                paste0("decrease by ", pop_proj_change, "%")
+         )
   ),
   "from ", pop_proj_dat[1, 1], " to ", pop_proj_dat[6, 1]
 )

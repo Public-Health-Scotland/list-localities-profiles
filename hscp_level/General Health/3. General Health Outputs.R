@@ -33,10 +33,10 @@ library(phsstyles)
 # LOCALITY <- "City of Dunfermline"
 # LOCALITY <- "Barra"
 
-# HSCP <- 'Moray'
+HSCP <- 'Moray'
 
 # Set year of data extracts for folder
-ext_year <- 2022
+ext_year <- 2023
 
 # Set file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
@@ -161,10 +161,10 @@ check_missing_data_scotpho(adp_presc)
 ltc <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/LTC_from_SLF.RDS"))
 
 ltc <- dplyr::rename(ltc,
-  "Arthritis" = "arth", "Asthma" = "asthma", "Atrial fibrillation" = "atrialfib", "Cancer" = "cancer",
-  "Cardiovascular disease" = "cvd", "Liver disease" = "liver", "COPD*" = "copd", "Dementia" = "dementia",
-  "Diabetes" = "diabetes", "Epilepsy" = "epilepsy", "Coronary heart disease" = "chd", "Heart failure" = "hefailure",
-  "Multiple sclerosis" = "ms", "Parkinsons" = "parkinsons", "Renal failure" = "refailure"
+                     "Arthritis" = "arth", "Asthma" = "asthma", "Atrial fibrillation" = "atrialfib", "Cancer" = "cancer",
+                     "Cardiovascular disease" = "cvd", "Liver disease" = "liver", "COPD*" = "copd", "Dementia" = "dementia",
+                     "Diabetes" = "diabetes", "Epilepsy" = "epilepsy", "Coronary heart disease" = "chd", "Heart failure" = "hefailure",
+                     "Multiple sclerosis" = "ms", "Parkinsons" = "parkinsons", "Renal failure" = "refailure"
 ) %>%
   drop_na(hscp_locality) %>%
   mutate(hscp_locality = gsub("&", "and", hscp_locality)) %>%
@@ -214,9 +214,9 @@ life_exp_trend <- life_exp %>%
 
 life_exp_table <- life_exp %>%
   filter((year == latest_year_life_exp_loc &
-    (area_name == HSCP & area_type == "HSCP")) |
-    year == latest_year_life_exp_otherareas &
-      (area_name == HB | area_name == "Scotland")) %>%
+            (area_name == HSCP & area_type == "HSCP")) |
+           year == latest_year_life_exp_otherareas &
+           (area_name == HB | area_name == "Scotland")) %>%
   select("Sex" = sex, area_name, area_type, measure) %>%
   mutate(measure = round_half_up(measure, 1)) %>%
   mutate(
@@ -232,9 +232,9 @@ life_exp_table <- life_exp %>%
 
 life_exp_table <- life_exp %>%
   filter((year == latest_year_life_exp_loc &
-    (area_name == HSCP & area_type == "HSCP")) |
-    year == latest_year_life_exp_otherareas &
-      (area_name == HB | area_name == "Scotland")) %>%
+            (area_name == HSCP & area_type == "HSCP")) |
+           year == latest_year_life_exp_otherareas &
+           (area_name == HB | area_name == "Scotland")) %>%
   select("Sex" = sex, area_name, area_type, measure) %>%
   mutate(measure = round_half_up(measure, 1)) %>%
   mutate(
@@ -372,12 +372,12 @@ early_deaths_cancer_time_trend
 
 ## Figures for text
 early_deaths_cancer_rate_earliest <- filter(early_deaths_cancer, year == (max(early_deaths_cancer$year) - 10) &
-  (area_name == HSCP & area_type == "HSCP"))$measure
+                                              (area_name == HSCP & area_type == "HSCP"))$measure
 
 cancer_deaths_perc_change <- abs((early_deaths_cancer_rate_latest - early_deaths_cancer_rate_earliest) * 100 / early_deaths_cancer_rate_earliest)
 
 cancer_deaths_changeword <- if_else(early_deaths_cancer_rate_latest > early_deaths_cancer_rate_earliest,
-  "increase", "decrease"
+                                    "increase", "decrease"
 )
 
 
@@ -389,8 +389,8 @@ disease_hosp <- bind_rows(
   filter(copd_hosp, year == max(year))
 ) %>%
   filter((area_name == HSCP & area_type == "HSCP") |
-    area_name == HB |
-    area_name == "Scotland") %>%
+           area_name == HB |
+           area_name == "Scotland") %>%
   mutate(
     area_type = factor(area_type, levels = c("HSCP", "Health board", "Scotland")),
     area_name = fct_reorder(as.factor(area_name), as.numeric(area_type))
@@ -458,7 +458,7 @@ adp_presc_latest <- filter(
 )$measure
 
 adp_presc_earliest <- filter(adp_presc, year == (max(adp_presc$year) - 10) &
-  (area_name == HSCP & area_type == "HSCP"))$measure
+                               (area_name == HSCP & area_type == "HSCP"))$measure
 
 adp_presc_perc_change <- abs((adp_presc_latest - adp_presc_earliest) * 100 / adp_presc_earliest)
 adp_presc_changeword <- if_else(adp_presc_latest > adp_presc_earliest, "increase", "decrease")
@@ -651,8 +651,8 @@ ltc_multimorbidity <- ltc2 %>%
   summarise(people = sum(people)) %>%
   ungroup() %>%
   mutate(ltc_pop = if_else(age_group == "Under 65",
-    filter(slf_pop_loc, age_group == "Under 65")$slf_adj_pop,
-    sum(filter(slf_pop_loc, age_group != "Under 65")$slf_adj_pop)
+                           filter(slf_pop_loc, age_group == "Under 65")$slf_adj_pop,
+                           sum(filter(slf_pop_loc, age_group != "Under 65")$slf_adj_pop)
   )) %>%
   group_by(age_group) %>%
   mutate(percent = round_half_up(people / ltc_pop * 100, 1)) %>%
@@ -891,18 +891,18 @@ hscp.ltc.table <- sapply(hscp.ltc.table.wrapped, paste, collapse = "\n")
 # theme=ttheme_default(core=list(bg_params = list(fill=top5ltc_loc$colours), fg_params=list(col = "white",fontface=2, fontsize = 11)),
 # colhead=list(bg_params = list(fill = "white"),fg_params=list(fontface=3, fontsize = 11))))
 ltc_hscp_col <- tableGrob(top5ltc_hscp[, 1],
-  cols = hscp.ltc.table,
-  theme = ttheme_default(
-    core = list(bg_params = list(fill = top5ltc_hscp$colours), fg_params = list(col = "white", fontface = 2, fontsize = 11)),
-    colhead = list(bg_params = list(fill = "white"), fg_params = list(fontface = 3, fontsize = 11))
-  )
+                          cols = hscp.ltc.table,
+                          theme = ttheme_default(
+                            core = list(bg_params = list(fill = top5ltc_hscp$colours), fg_params = list(col = "white", fontface = 2, fontsize = 11)),
+                            colhead = list(bg_params = list(fill = "white"), fg_params = list(fontface = 3, fontsize = 11))
+                          )
 )
 ltc_scot_col <- tableGrob(top5ltc_scot[, 1],
-  cols = "Scotland",
-  theme = ttheme_default(
-    core = list(bg_params = list(fill = top5ltc_scot$colours), fg_params = list(col = "white", fontface = 2, fontsize = 11)),
-    colhead = list(bg_params = list(fill = "white"), fg_params = list(fontface = 3, fontsize = 11))
-  )
+                          cols = "Scotland",
+                          theme = ttheme_default(
+                            core = list(bg_params = list(fill = top5ltc_scot$colours), fg_params = list(col = "white", fontface = 2, fontsize = 11)),
+                            colhead = list(bg_params = list(fill = "white"), fg_params = list(fontface = 3, fontsize = 11))
+                          )
 )
 
 ## Combine columns
@@ -953,7 +953,7 @@ hscp_scot_summary_table <- function(data, latest_year, area) {
   temp <- data %>%
     filter(year == latest_year) %>%
     filter(area_name == area & area_type == type)
-
+  
   round_half_up(temp$measure, 1)
 }
 
@@ -1015,7 +1015,7 @@ if (HSCP == "Clackmannanshire and Stirling") {
     latest_year = latest_year_life_exp_otherareas,
     area = HSCP
   )
-
+  
   hscp_life_exp_fem <- hscp_scot_summary_table(
     data = filter(life_exp, sex == "Female"),
     latest_year = latest_year_life_exp_otherareas,
