@@ -14,13 +14,10 @@ knitr::opts_chunk$set(echo = TRUE)
 options(kableExtra.auto_format = FALSE)
 
 # Line below for testing only
-#Loc <- "Marr"
+HSCP <- 'Moray'
 
-locality <- Loc
-LOCALITY <- Loc
-
-source("~/Localities/list-localities-profiles/Master RMarkdown Document & Render Code/Global Script.R")
-source("~/Localities/list-localities-profiles/Services/2. Services data manipulation & table.R")
+#source("Master RMarkdown Document & Render Code/Global Script.R")
+source("Services/2. Services data manipulation & table.R")
 
 x <- 1 # object for figure numbers
 y <- 1 # object for table numbers
@@ -43,7 +40,7 @@ x <- x + 1
 
 \newline
 
-####Table `r y`: Number of each type of service in `r LOCALITY` Locality^2^.
+####Table `r y`: Number of each type of service in `r HSCP` HSCP^2^.
 \newline
 
 ```{r echo = FALSE}
@@ -54,5 +51,5 @@ y <- y + 1
 
 \newline
 
-In `r latest_year_access_dep`, `r format_number_for_text(access_dep_latest)`% of the population of `r LOCALITY` lived in the 15% most 'access deprived' areas.
+In `r latest_year_access_dep`, `r format_number_for_text(access_dep_latest)`% of the population of `r HSCP` lived in the 15% most 'access deprived' areas.
 
