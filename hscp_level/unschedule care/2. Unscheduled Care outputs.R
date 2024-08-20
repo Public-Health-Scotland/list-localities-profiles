@@ -7,7 +7,7 @@
 ####################### SECTION 1: Packages, file paths, etc #########################
 
 ## Manually set year that the profiles are being run (year on data folder)
-ext_year <- 2022
+ext_year <- 2023
 
 # Set locality profiles file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
@@ -30,11 +30,11 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Define locality
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
-# HSCP <- "Aberdeenshire"
+ HSCP <- "Aberdeenshire"
 
 # Set date limit for financial year
 # If in quarter 1
-max_fy <- ifelse(quarter(Sys.Date()) == "1L", fy(Sys.Date()), fy(ymd(Sys.Date()) - years(1)))
+max_fy <- '2022/23'#ifelse(quarter(Sys.Date()) == "1L", fy(Sys.Date()), fy(ymd(Sys.Date()) - years(1)))
 
 ########################## SECTION 2: Lookups & Populations ###############################
 
@@ -62,6 +62,11 @@ n_loc <- localities %>%
 ## 2. Populations (for rates) ----
 
 populations <- read_in_dz_pops()
+
+populations22 <- read_in_dz_pops22()
+
+populations <- rbind(populations,populations22)
+
 
 pop_max_year <- max(populations$year)
 
@@ -282,7 +287,7 @@ area_trend_usc <- function(data_for_plot, plot_title, yaxis_title, source) {
 # 1. Emergency Admissions ----
 # _________________________________________________________________________
 
-emergency_adm <- readRDS(paste0(import_folder, "emergency_admissions_msg.rds")) %>%
+emergency_adm <- arrow::read_parquet(paste0(import_folder, "emergency_admissions_msg.parquet")) %>%
   filter(financial_year <= max_fy)
 
 # Plotting by age
@@ -357,7 +362,7 @@ other_loc_emergency_adm <- emergency_adm %>%
 # 2a. Unscheduled bed days ----
 # _________________________________________________________________________
 
-bed_days <- readRDS(paste0(import_folder, "bed_days_msg.rds")) %>%
+bed_days <- arrow::read_parquet(paste0(import_folder, "bed_days_msg.parquet")) %>%
   filter(financial_year <= max_fy)
 
 # Plotting by age
@@ -432,7 +437,7 @@ other_loc_bed_days <- bed_days %>%
 # 2b. Unscheduled bed days - Mental Health ----
 # _________________________________________________________________________
 
-bed_days_mh <- readRDS(paste0(import_folder, "bed_days_mh_msg.rds")) %>%
+bed_days_mh <- arrow::read_parquet(paste0(import_folder, "bed_days_mh_msg.parquet")) %>%
   filter(financial_year <= max_fy)
 
 # Plotting by age
@@ -509,7 +514,7 @@ other_loc_bed_days_mh <- bed_days_mh %>%
 # 3. A&E Attendances ----
 # _________________________________________________________________________
 
-ae_attendances <- readRDS(paste0(import_folder, "ae_attendances_msg.rds")) %>%
+ae_attendances <- arrow::read_parquet(paste0(import_folder, "ae_attendances_msg.parquet")) %>%
   filter(financial_year <= max_fy)
 
 # Plotting by age
@@ -585,7 +590,7 @@ other_loc_ae_att <- ae_attendances %>%
 # 4. Delayed Discharges ----
 # _________________________________________________________________________
 
-delayed_disch <- readRDS(paste0(import_folder, "delayed_discharges_msg.rds")) %>%
+delayed_disch <- arrow::read_parquet(paste0(import_folder, "delayed_discharges_msg.parquet")) %>%
   filter(financial_year <= max_fy) %>%
   filter(age_group %in% c("65 - 74", "75+")) %>%
   group_by(financial_year, hscp2019name, hscp_locality) %>%
@@ -653,7 +658,7 @@ other_loc_dd <- delayed_disch %>%
 # 5. Fall Admissions ----
 # _________________________________________________________________________
 
-falls <- readRDS(paste0(import_folder, "falls_smr.rds")) %>%
+falls <- arrow::read_parquet(paste0(import_folder, "falls_smr.parquet")) %>%
   filter(financial_year <= max_fy) %>%
   filter(age_group %in% c("65 - 74", "75+"))
 
@@ -696,7 +701,7 @@ scot_falls <- falls_areas %>%
 # 6. Readmissions (28 days) ----
 # _________________________________________________________________________
 
-readmissions <- readRDS(paste0(import_folder, "readmissions_smr.rds")) %>%
+readmissions <- arrow::read_parquet(paste0(import_folder, "readmissions_smr.parquet")) %>%
   filter(financial_year <= max_fy)
 
 # Plotting by age
@@ -857,7 +862,7 @@ scot_read <- readmissions_areas %>%
 # 8. Potentially Preventable Admissions ----
 # _______________________________________________________________________________________________________
 
-ppa <- readRDS(paste0(import_folder, "ppa_smr.rds")) %>%
+ppa <- arrow::read_parquet(paste0(import_folder, "ppa_smr.parquet")) %>%
   filter(financial_year <= max_fy)
 
 # % PPAs in locality under and over 65
@@ -965,7 +970,7 @@ latest_period_psych_hosp <- unique(filter(psych_hosp, year == max(psych_hosp$yea
 
 ## Time trend
 psych_hosp_time_trend <- psych_hosp %>%
-  scotpho_hscp_time_trend(
+  scotpho_time_trend_HSCP(
     data = .,
     chart_title = "Psychiatric Patient Hospitalisations Time Trend",
     xaxis_title = "Financial Year Groups (3-year aggregates)",

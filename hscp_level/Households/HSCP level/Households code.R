@@ -33,9 +33,9 @@ library(gridExtra)
 library(reshape2)
 
 # Update Data Year (this is the maximum year available for both housing data sets from NRS)
-max_year_housing <- 2021
+max_year_housing <- 2022
 # Update Publication Year (the year marked on the Data folder)
-ext_year <- 2022
+ext_year <- 2023
 
 # Set Directory.
 filepath <- paste0("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Households/")
@@ -45,7 +45,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set locality (for testing only)
 ## LOCALITY = "Whalsay and Skerries"
-# HSCP <- "Moray"
+ HSCP <- "Moray"
 
 
 ##################### Section 2 - Households Data #############################
@@ -75,7 +75,7 @@ lookup <- read_in_localities(dz_level = T) %>%
 
 
 # filter housing data for locality of interest
-house_dat <- house_raw_dat %>% filter(x2011_data_zone_code %in% lookup$datazone2011)
+house_dat <- house_raw_dat %>% filter(data_zone_code %in% lookup$datazone2011)
 
 # aggregate data
 house_dat1 <- house_dat %>%

@@ -21,9 +21,9 @@ options(kableExtra.auto_format = FALSE)
 # LOCALITY <- "Helensburgh and Lomond"
 # LOCALITY <- "City of Dunfermline"
 # LOCALITY <-  "Inverness"
-HSCP <- "Moray"
+#HSCP <- "Moray"
 
-source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Unscheduled Care/Scripts/HSCP level/2. Unscheduled Care outputs.R")
+source("~/localities/hscp level/unscheduled care/2. Unscheduled Care outputs.R")
 
 
 x <- 1 # object for figure numbers
