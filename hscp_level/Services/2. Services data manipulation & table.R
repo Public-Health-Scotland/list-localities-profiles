@@ -22,10 +22,10 @@ library(grid)
 library(data.table)
 
 # Change year to be the year in the data folder name
-ext_year <- 2022
+ext_year <- 2023
 
 ## Set Locality (for testing only)
-# HSCP <- "Moray"
+HSCP <- "Moray"
 
 ## Set file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
@@ -41,9 +41,6 @@ lookup <- read_in_localities(dz_level = T)
 
 # Lookup without datazones
 lookup2 <- read_in_localities()
-
-## Determine HSCP
-# HSCP <- as.character(filter(lookup2, hscp_locality == LOCALITY)$hscp2019name)
 
 # Get number of localities in HSCP
 n_loc <- lookup2 %>%
@@ -118,7 +115,7 @@ markers_gp <- left_join(prac, postcode_lkp, by = "postcode") %>%
 hosp_lookup <- hosp_types %>%
   filter(status == "Open") %>%
   select(name = treatment_location_name, location = treatment_location_code, type = current_department_type) %>%
-  left_join(select(hosp_postcodes, location, postcode)) %>%
+  left_join(hosp_postcodes %>% select(location = hospital_code, postcode), by = join_by(location)) %>%
   mutate(postcode = gsub(" ", "", postcode)) %>%
   left_join(postcode_lkp, by = "postcode")
 
