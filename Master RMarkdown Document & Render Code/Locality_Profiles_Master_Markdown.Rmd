@@ -678,7 +678,7 @@ x <- x + 1
 
 Figure `r x` presents the emergency admissions rate per 100,000 population in the `r LOCALITY` locality from `r min_year_ea` to `r max_year_ea`. 
 
-As presented Figure `r x`, the emergency admissions rate in the `r LOCALITY` locality for `r max_year_ea` is `r latest_emergency_adm_loc1`, a `r percent_rate_change`% `r word_change_rate` since `r min_year_ea`. The `r HSCP` HSCP rate is `r hscp_emergency_adm1`, a `r hscp_rate_change`% `r word_change_hscp` since `r min_year_ea`. The `r HB` health board rate is `r hscp_emergency_adm1` in `r max_year_ea`, a `r hb_rate_change`% `r word_change_hb` since `r min_year_ea` and the Scotland rate is `r scot_emergency_adm1`, a `r scot_rate_change`% `r word_change_scot` since `r min_year_ea`.
+As presented in Figure `r x`, the emergency admissions rate in the `r LOCALITY` locality for `r max_year_ea` is `r latest_emergency_adm_loc1`, a `r percent_rate_change`% `r word_change_rate` since `r min_year_ea`. The `r HSCP` HSCP rate is `r hscp_emergency_adm1`, a `r hscp_rate_change`% `r word_change_hscp` since `r min_year_ea`. The `r HB` health board rate is `r hscp_emergency_adm1` in `r max_year_ea`, a `r hb_rate_change`% `r word_change_hb` since `r min_year_ea` and the Scotland rate is `r scot_emergency_adm1`, a `r scot_rate_change`% `r word_change_scot` since `r min_year_ea`.
 
 #### Figure `r x`: Emergency admissions by geographical area
 \newline
@@ -814,7 +814,7 @@ x <- x + 1
 
 ### Emergency admissions from a fall
 
-Figure `r x` presents the emergency admissions from falls rate per 100,000 population aged over 65+ in the `r LOCALITY` locality from `r min_year_falls` to `r max_year_falls`. 
+Figure `r x` presents the emergency admissions from falls rate per 100,000 population aged 65 and over in the `r LOCALITY` locality from `r min_year_falls` to `r max_year_falls`. 
 
 As presented in Figure `r x`, the emergency admissions from falls rate per 100,000 population aged over 65+ in the `r LOCALITY` locality for `r max_year_falls ` is `r latest_falls_loc1`, a `r percent_rate_change_falls_loc`% `r word_change_rate_falls_loc` since `r min_year_falls` and the `r HSCP` HSCP rate is `r hscp_falls1`, a `r percent_rate_change_falls_hscp`% `r word_change_rate_falls_hscp` since `r min_year_falls`. The `r HB` health board rate for `r max_year_falls` is `r hb_falls1`, a `r hb_rate_change_falls`% `r word_change_hb_falls` since `r min_year_falls` and the Scotland rate is `r scot_falls1`, a `r percent_rate_change_falls_scot`% `r  word_change_rate_falls_scot` since `r min_year_falls`.
 
@@ -832,9 +832,9 @@ x <- x + 1
 
 ### Potentially Preventable Admissions (PPAs)
 
-Information on the conditions included in PPAs is available in Appendix 3. In `r max_fy`, **`r latest_ppa_65plus`%** of PPAs in `r LOCALITY` were amongst those aged 65 and over, and **`r latest_ppa_under65`%** were amongst those aged under 65. 
+Information on the conditions included in Potentially Preventable Admissions (PPA)s is available in Appendix 3. In `r max_fy`, **`r latest_ppa_65plus`%** of PPAs in `r LOCALITY` were amongst those aged 65 and over, and **`r latest_ppa_under65`%** were amongst those aged under 65. 
 
-Figure `r x` presents the potentially preventable admissions rate per 100,000 population in the `r LOCALITY` locality from `r min_year_ppa_areas` to `r max_year_ppa_areas`. The rate per 100,000 population for potentially preventable admissions in the `r LOCALITY` locality for `r max_year_ppa_areas ` is `r latest_ppa_loc$data2[2]`, a `r ppa_diff`% `r ppa_word_change` since `r latest_ppa_loc$financial_year[1]` and the `r HSCP` HSCP rate is `r hscp_ppa$data[2]`, a `r ppa_diff_hscp`% `r ppa_word_change_hscp` since `r latest_ppa_loc$financial_year[1]`.
+Figure `r x` presents the PPA rate per 100,000 population in the `r LOCALITY` locality from `r min_year_ppa_areas` to `r max_year_ppa_areas`. The rate per 100,000 population for PPAs in the `r LOCALITY` locality for `r max_year_ppa_areas ` is `r latest_ppa_loc$data2[2]`, a `r ppa_diff`% `r ppa_word_change` since `r latest_ppa_loc$financial_year[1]` and the `r HSCP` HSCP rate is `r hscp_ppa$data[2]`, a `r ppa_diff_hscp`% `r ppa_word_change_hscp` since `r latest_ppa_loc$financial_year[1]`.
 The `r HB` health board rate for `r hb_ppa$financial_year[2]` is `r hb_ppa$data2[2]`, a `r diff_hb_ppa`% `r word_change_hb_ppa` since `r hb_ppa$financial_year[]` and the Scotland rate is `r scot_ppa$data2[2]`, a `r diff_scot_ppa`% `r  word_change_scot_ppa` since `r hb_ppa$financial_year[1]`.
 
 #### Figure `r x`: Potentially Preventable Admissions (PPAs) by geographical area
@@ -915,9 +915,9 @@ x <- x + 1
 ##### Page Break
 ### Footnotes
 
-1. Population projections are not currently provided by NRS at the locality level. To explore how the population in `r LOCALITY` is expected to change in the future, the percent changes in population projection to 2025 for `r HSCP` by age group and gender were calculated using the NRS Local Authority Population Projections. These percent changes were then applied to the `r LOCALITY` 2018 mid-year population estimates (also split by age group and gender) to obtain population projection estimates for `r LOCALITY`, based on the projections for the HSCP and the current population structure of the locality.
+1. Population projections are not currently provided by the National Records Scotland (NRS) at the locality level. To explore how the population in `r LOCALITY` is expected to change in the future, the percent changes in population projection to 2025 for `r HSCP` by age group and gender were calculated using the NRS Local Authority Population Projections. These percent changes were then applied to the `r LOCALITY` 2018 mid-year population estimates (also split by age group and gender) to obtain population projection estimates for `r LOCALITY`, based on the projections for the HSCP and the current population structure of the locality.
 
-2. Care Home data included in the Services Map and Table was sourced from the [Care Inspectorate](https://www.careinspectorate.com/images/documents/5713/MDSF_data_31%20May%202020.csv). [GP Practice](https://www.opendata.nhs.scot/dataset/gp-practice-contact-details-and-list-sizes) data from October 2021, and [Hospital](https://www.opendata.nhs.scot/dataset/hospital-codes) and [A&E](https://www.opendata.nhs.scot/dataset/nhs-scotland-accident-emergency-sites) data was sourced from Public Health Scotland Open Data. Only services that are within the physical boundary of the HSCP or Locality are included in the map and table, so there may be services outside `r HSCP` that people may use but are not shown. Information on access deprivation was taken from [ScotPHO](https://scotland.shinyapps.io/ScotPHO_profiles_tool/).
+2. Care Home data included in the Services Map and Table was sourced from the [Care Inspectorate](https://www.careinspectorate.com/images/documents/5713/MDSF_data_31%20May%202020.csv). [GP Practice](https://www.opendata.nhs.scot/dataset/gp-practice-contact-details-and-list-sizes) data from October 2021, and [Hospital](https://www.opendata.nhs.scot/dataset/hospital-codes) and [A&E](https://www.opendata.nhs.scot/dataset/nhs-scotland-accident-emergency-sites) data was sourced from Public Health Scotland Open Data platform. Only services that are within the physical boundary of the HSCP or Locality are included in the map and table, so there may be services outside `r HSCP` that people may use but are not shown. Information on access deprivation was taken from [ScotPHO](https://scotland.shinyapps.io/ScotPHO_profiles_tool/).
 
 3. Sourced from [ScotPHO](https://scotland.shinyapps.io/ScotPHO_profiles_tool/). More recent data may be available for the indicators elsewhere.
 
