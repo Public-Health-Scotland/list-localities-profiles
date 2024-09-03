@@ -921,7 +921,7 @@ x <- x + 1
 
 3. Sourced from [ScotPHO](https://scotland.shinyapps.io/ScotPHO_profiles_tool/). More recent data may be available for the indicators elsewhere.
 
-4. Data taken from ScotPHO is often reported using the European Age-Sex Standardised Rate per 100,000. This allows for comparisons across different areas to be made. For more information on how these rates are calculated, please refer to [www.isdscotland.org/Products-and-Services/GPD-Support/Population/Standard-Populations/](https://www.isdscotland.org/Products-and-Services/GPD-Support/Population/Standard-Populations/)
+4. Data taken from ScotPHO is often reported using the European Age-Sex Standardised Rate per 100,000. This allows for comparisons across different areas to be made. For more information on how these rates are calculated, please refer to [https://publichealthscotland.scot/services/geography-population-and-deprivation-support/population/](https://publichealthscotland.scot/services/geography-population-and-deprivation-support/population/)
 
 5. Physical long-term conditions data comes from the Source Linkage Files, and the conditions are identified using ICD-9 and ICD-10 codes in the diagnosis fields. Please note that the Source Linkage Files data only contains information on people who have had contact with the NHS through either inpatient admissions, outpatient attendances, daycase attendances, A&E attendances or through prescribed items, the data does not show all service users in Scotland who have been diagnosed with an LTC as not all of these individuals will have used these services. Also, note that LTC rates are based on an adjusted population indicator in the Source Linkage Files so that population sizes are closer to the official estimates.
 
