@@ -45,7 +45,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set locality (for testing only)
 ## LOCALITY = "Whalsay and Skerries"
- HSCP <- "Moray"
+#HSCP <- "Moray"
 
 
 ##################### Section 2 - Households Data #############################
@@ -61,7 +61,7 @@ for (i in 2014:max_year_housing) {
   ) %>%
     mutate(year = i) %>%
     clean_names() %>%
-    select(year, 1:10)
+    select(year, 1:12)
 
   house_raw_dat <- rbind(house_raw_dat, temp)
 }
@@ -154,8 +154,8 @@ house_raw_dat2 <- read_excel(paste0(filepath, "Data ", ext_year, "/council_tax.x
 
 # Filter and aggregate
 house_dat2 <- house_raw_dat2 %>%
-  filter(x2011_data_zone_code %in% lookup$datazone2011) %>%
-  select(3:12) %>%
+  filter(data_zone_code %in% lookup$datazone2011) %>%
+  select(5:14) %>%
   summarise_all(.funs = sum)
 
 
@@ -226,17 +226,17 @@ perc_houses_FH <- format_number_for_text(sum(
 # Global Script Function to read in Localities Lookup
 lookup2 <- read_in_localities(dz_level = F)
 
-# Determine HB
-HB <- as.character(filter(lookup2, hscp2019name == HSCP)$hb2019name)
+#Determine other localities based on LOCALITY object
+other_locs <- lookup2 %>% 
+  select(hscp_locality, hscp2019name) %>% 
+  filter(hscp2019name == HSCP) %>% 
+  arrange(hscp_locality)
 
-# Determine localities
-loc <- as.character(filter(lookup2, hscp2019name == HSCP)$hscp_locality)
-
-# Find number of locs per partnership
-n_loc <- lookup2 %>%
-  group_by(hscp2019name) %>%
-  summarise(locality_n = n()) %>%
-  filter(hscp2019name == HSCP) %>%
+#Find number of locs per partnership
+n_loc <- lookup2 %>% 
+  group_by(hscp2019name) %>% 
+  summarise(locality_n = n()) %>% 
+  filter(hscp2019name == HSCP) %>% 
   pull(locality_n)
 
 rm(lookup2)
@@ -245,125 +245,108 @@ rm(lookup2)
 # 1. Other localities
 
 # Global Script Function to read in Localities Lookup
-# other_locs_dz <- read_in_localities(dz_level = T) %>%
-# arrange() %>%
-# dplyr::select(datazone2011, hscp_locality) %>%
-# inner_join(other_locs, by = c("hscp_locality" = "hscp_locality"))
+other_locs_dz <- read_in_localities(dz_level = T) %>%
+  arrange() %>%
+  dplyr::select(datazone2011, hscp_locality) %>%
+  inner_join(other_locs, by = c("hscp_locality" = "hscp_locality"))
 
-# house_dat_otherlocs <- house_raw_dat %>%
-# inner_join(other_locs_dz, by = c( "x2011_data_zone_code" = "datazone2011")) %>%
-# filter(year == max(year)) %>%
-# group_by(hscp_locality) %>%
-# summarise(total_dwellings = sum(total_number_of_dwellings),
-# tax_discount = sum(dwellings_with_a_single_adult_council_tax_discount)) %>%
-# dplyr::ungroup() %>%
-# mutate(tax_discount_perc = round_half_up(tax_discount/total_dwellings*100, 1))
+house_dat_otherlocs <- house_raw_dat %>% 
+  inner_join(other_locs_dz, by = c( "data_zone_code" = "datazone2011")) %>% 
+  filter(year == max(year)) %>% 
+  group_by(hscp_locality) %>% 
+  summarise(total_dwellings = sum(total_number_of_dwellings),
+            tax_discount = sum(dwellings_with_a_single_adult_council_tax_discount)) %>% 
+  dplyr::ungroup() %>%
+  mutate(tax_discount_perc = round_half_up(tax_discount/total_dwellings*100, 1))
 
-# other_locs_n_houses <- house_dat_otherlocs %>%
-# mutate(tot_dwellings_chr = formatC(total_dwellings, format="d", big.mark=",")) %>%
-# arrange(hscp_locality) %>%
-# select(hscp_locality, tot_dwellings_chr) %>%
-# spread(hscp_locality, tot_dwellings_chr)
+other_locs_n_houses <- house_dat_otherlocs %>% 
+  mutate(tot_dwellings_chr = formatC(total_dwellings, format="d", big.mark=",")) %>% 
+  arrange(hscp_locality) %>% 
+  select(hscp_locality, tot_dwellings_chr) %>% 
+  spread(hscp_locality, tot_dwellings_chr) 
 
-# other_locs_perc_discount <- house_dat_otherlocs %>%
-# select(hscp_locality, tax_discount_perc) %>%
-# arrange(hscp_locality) %>%
-# spread(hscp_locality, tax_discount_perc)
-
-
-# house_dat2_otherlocs <- house_raw_dat2 %>%
-# inner_join(other_locs_dz, by = c( "x2011_data_zone_code" = "datazone2011")) %>%
-# group_by(hscp_locality) %>%
-# summarise(total_number_of_dwellings = sum(total_number_of_dwellings),
-#         band_a = sum(council_tax_band_a),
-#        band_b = sum(council_tax_band_b),
-#       band_c = sum(council_tax_band_c),
-#      band_f = sum(council_tax_band_f),
-#     band_g = sum(council_tax_band_g),
-#    band_h = sum(council_tax_band_h)) %>%
-# mutate(perc_houses_AC = round_half_up((band_a + band_b + band_c)/total_number_of_dwellings*100, 1),
-#      perc_houses_FH = round_half_up((band_f + band_g + band_h)/total_number_of_dwellings*100, 1))
-
-# other_locs_perc_housesAC <- house_dat2_otherlocs %>%
-# arrange(hscp_locality) %>%
-# select(hscp_locality, perc_houses_AC) %>%
-# spread(hscp_locality, perc_houses_AC)
-
-# other_locs_perc_housesFH <- house_dat2_otherlocs %>%
-# arrange(hscp_locality) %>%
-# select(hscp_locality, perc_houses_FH) %>%
-# spread(hscp_locality, perc_houses_FH)
-
-# rm(house_dat2_otherlocs, house_dat_otherlocs, other_locs_dz)
+other_locs_perc_discount <- house_dat_otherlocs %>% 
+  select(hscp_locality, tax_discount_perc) %>% 
+  arrange(hscp_locality) %>% 
+  spread(hscp_locality, tax_discount_perc)
 
 
-# 2. Localities
+house_dat2_otherlocs <- house_raw_dat2 %>% 
+  inner_join(other_locs_dz, by = c( "data_zone_code" = "datazone2011")) %>% 
+  group_by(hscp_locality) %>% 
+  summarise(total_number_of_dwellings = sum(total_number_of_dwellings), 
+            band_a = sum(council_tax_band_a),
+            band_b = sum(council_tax_band_b),
+            band_c = sum(council_tax_band_c),
+            band_f = sum(council_tax_band_f),
+            band_g = sum(council_tax_band_g),
+            band_h = sum(council_tax_band_h)) %>% 
+  mutate(perc_houses_AC = round_half_up((band_a + band_b + band_c)/total_number_of_dwellings*100, 1),  
+         perc_houses_FH = round_half_up((band_f + band_g + band_h)/total_number_of_dwellings*100, 1))
+
+other_locs_perc_housesAC <- house_dat2_otherlocs %>% 
+  arrange(hscp_locality) %>% 
+  select(hscp_locality, perc_houses_AC) %>% 
+  spread(hscp_locality, perc_houses_AC)
+
+other_locs_perc_housesFH <- house_dat2_otherlocs %>% 
+  arrange(hscp_locality) %>% 
+  select(hscp_locality, perc_houses_FH) %>% 
+  spread(hscp_locality, perc_houses_FH)
+
+rm(house_dat2_otherlocs, house_dat_otherlocs, other_locs_dz)
+
+
+# 2. HSCP
 
 # Global Script Function to read in Localities Lookup
-loc_dz <- read_in_localities(dz_level = T) %>%
-  select(datazone2011, hscp_locality) %>%
-  filter(hscp_locality == loc)
+hscp_dz <- read_in_localities(dz_level = T) %>%
+  select(datazone2011, hscp2019name) %>% 
+  filter(hscp2019name == HSCP)
 
 
-house_dat_loc <- house_raw_dat %>%
-  inner_join(loc_dz, by = c("x2011_data_zone_code" = "datazone2011")) %>%
-  filter(year == max(year)) %>%
-  group_by(year, hscp_locality) %>%
-  summarise(
-    total_dwellings = sum(total_number_of_dwellings),
-    tax_discount = sum(dwellings_with_a_single_adult_council_tax_discount)
-  ) %>%
+house_dat_hscp <- house_raw_dat %>% 
+  inner_join(hscp_dz, by = c("data_zone_code" = "datazone2011")) %>% 
+  filter(year == max(year)) %>% 
+  group_by(year) %>% 
+  summarise(total_dwellings = sum(total_number_of_dwellings),
+            tax_discount = sum(dwellings_with_a_single_adult_council_tax_discount)) %>% 
   ungroup() %>%
-  mutate(perc_discount = round_half_up(tax_discount / total_dwellings * 100, 1))
+  mutate(perc_discount = round_half_up(tax_discount/total_dwellings*100, 1))
 
-loc_n_houses <- format_number_for_text(house_dat_loc$total_dwellings)
-loc_perc_discount <- house_dat_loc$perc_discount
+hscp_n_houses <- format_number_for_text(house_dat_hscp$total_dwellings)
+hscp_perc_discount <- house_dat_hscp$perc_discount
 
 
-house_dat2_loc <- house_raw_dat2 %>%
-  inner_join(loc_dz, by = c("x2011_data_zone_code" = "datazone2011")) %>%
-  group_by(hscp_locality) %>%
-  summarise(
-    total_dwellings = sum(total_number_of_dwellings),
-    band_a = sum(council_tax_band_a),
-    band_b = sum(council_tax_band_b),
-    band_c = sum(council_tax_band_c),
-    band_f = sum(council_tax_band_f),
-    band_g = sum(council_tax_band_g),
-    band_h = sum(council_tax_band_h)
-  ) %>%
-  ungroup() %>%
-  mutate(
-    perc_houses_AC = round_half_up((band_a + band_b + band_c) / total_dwellings * 100, 1),
-    perc_houses_FH = round_half_up((band_f + band_g + band_h) / total_dwellings * 100, 1)
-  )
+house_dat2_hscp <- house_raw_dat2 %>%  
+  inner_join(hscp_dz, by = c("data_zone_code" = "datazone2011")) %>% 
+  group_by(hscp2019name) %>% 
+  summarise(total_dwellings = sum(total_number_of_dwellings),
+            band_a = sum(council_tax_band_a),
+            band_b = sum(council_tax_band_b),
+            band_c = sum(council_tax_band_c),
+            band_f = sum(council_tax_band_f),
+            band_g = sum(council_tax_band_g),
+            band_h = sum(council_tax_band_h)) %>% 
+  ungroup() %>% 
+  mutate(perc_houses_AC = round_half_up((band_a + band_b + band_c)/total_dwellings*100, 1),  
+         perc_houses_FH = round_half_up((band_f + band_g + band_h)/total_dwellings*100, 1))
 
-loc_perc_housesAC <- house_dat2_loc$perc_houses_AC
-loc_perc_housesFH <- house_dat2_loc$perc_houses_FH
+hscp_perc_housesAC <- house_dat2_hscp$perc_houses_AC
+hscp_perc_housesFH <- house_dat2_hscp$perc_houses_FH
 
-rm(loc_dz, house_dat_loc, house_dat2_loc)
+rm(hscp_dz, house_dat_hscp, house_dat2_hscp)
 
 
 # 3. Scotland
 scot_n_houses <- format_number_for_text(sum(filter(house_raw_dat, year == max(year))$total_number_of_dwellings, na.rm = T))
-scot_perc_discount <- format_number_for_text(sum(filter(house_raw_dat, year == max(year))$dwellings_with_a_single_adult_council_tax_discount, na.rm = T) / sum(filter(house_raw_dat, year == max(year))$total_number_of_dwellings, na.rm = T) * 100)
+scot_perc_discount <- format_number_for_text(sum(filter(house_raw_dat, year == max(year))$dwellings_with_a_single_adult_council_tax_discount, na.rm =T)/sum(filter(house_raw_dat, year == max(year))$total_number_of_dwellings, na.rm = T)*100)
 
-scot_perc_housesAC <- format_number_for_text(sum(house_raw_dat2$council_tax_band_a,
-  house_raw_dat2$council_tax_band_b,
-  house_raw_dat2$council_tax_band_c,
-  na.rm = T
-) / sum(house_raw_dat2$total_number_of_dwellings, na.rm = T) * 100)
+scot_perc_housesAC <- format_number_for_text(sum(house_raw_dat2$council_tax_band_a, 
+                                                 house_raw_dat2$council_tax_band_b, 
+                                                 house_raw_dat2$council_tax_band_c, na.rm = T)/sum(house_raw_dat2$total_number_of_dwellings, na.rm = T)*100)
 scot_perc_housesFH <- format_number_for_text(sum(house_raw_dat2$council_tax_band_f,
-  house_raw_dat2$council_tax_band_g,
-  house_raw_dat2$council_tax_band_h,
-  na.rm = T
-) / sum(house_raw_dat2$total_number_of_dwellings, na.rm = T) * 100)
+                                                 house_raw_dat2$council_tax_band_g, 
+                                                 house_raw_dat2$council_tax_band_h, na.rm = T)/sum(house_raw_dat2$total_number_of_dwellings, na.rm = T)*100)
 
 
-
-#
-# detach(package:tidyverse, unload=TRUE)
-# detach(package:maps, unload=TRUE)
-# detach(package:reshape2, unload=TRUE)
-# detach(package:gridExtra, unload=TRUE)
-# detach(package:janitor, unload=TRUE)

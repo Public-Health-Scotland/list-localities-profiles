@@ -22,8 +22,8 @@ options(kableExtra.auto_format = FALSE)
 #LOCALITY <- "City of Dunfermline"
 HSCP <- "Moray"
 #print(getwd())
-source("hscp_level/Demographics/1. Demographics - Population.R")
-source("hscp_level/Demographics/2. Demographics - SIMD.R")
+source("Demographics/1. Demographics - Population.R")
+source("Demographics/2. Demographics - SIMD.R")
 
 #test
 

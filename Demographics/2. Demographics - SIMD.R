@@ -34,7 +34,7 @@ library(mapview)
 library(sf)
 
 # Source in global functions/themes script
-#source("Master RMarkdown Document & Render Code/Global Script.R")
+source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## File path
 filepath <- paste0(
@@ -45,7 +45,7 @@ filepath <- paste0(
 ## Final document will loop through a list of localities
 # Create placeholder for for loop
 # LOCALITY <-  "Skye, Lochalsh and West Ross"
-#HSCP <- 'Moray'
+#HSCP <- 'Highland'
 
 
 ########################## SECTION 2: Data Imports ###############################
@@ -479,61 +479,53 @@ lookup <- read_in_localities()
 ## Relevant lookups for creating the table objects
 loc <- as.character(filter(lookup, hscp2019name == HSCP)$hscp_locality)
 
-# Determine other localities based on LOCALITY object
-other_locs <- lookup %>%
-  select(hscp_locality, hscp2019name) %>%
-  filter(hscp2019name == HSCP) %>%
+#Determine other localities based on LOCALITY object
+other_locs <- lookup %>% 
+  select(hscp_locality, hscp2019name) %>% 
+  filter(hscp2019name == HSCP) %>% 
   arrange(hscp_locality)
 
-# Find number of locs per partnership
-n_loc <- lookup %>%
-  group_by(hscp2019name) %>%
-  summarise(locality_n = n()) %>%
-  filter(hscp2019name == HSCP) %>%
+#Find number of locs per partnership
+n_loc <- lookup %>% 
+  group_by(hscp2019name) %>% 
+  summarise(locality_n = n()) %>% 
+  filter(hscp2019name == HSCP) %>% 
   pull(locality_n)
 
 
 ## Other localities in HSCP objects
 
-# other_locs_simd <- pop_data %>%
-# mutate(simd2020v2_sc_quintile = as.factor(simd2020v2_sc_quintile)) %>%
-# filter(year == max(year),
-# hscp_locality %in% other_locs$hscp_locality) %>%
-# group_by(hscp_locality, simd2020v2_sc_quintile, .drop = F) %>%
-# summarise(pop = sum(total_pop)) %>%
-# ungroup() %>%
-# group_by(hscp_locality) %>%
-# mutate(total_pop = sum(pop)) %>%
-# ungroup() %>%
-# mutate(perc = round_half_up(pop/total_pop*100, 1)) %>%
-# filter(simd2020v2_sc_quintile == 1 | simd2020v2_sc_quintile == 5) %>%
-# arrange(hscp_locality) %>%
-# select(hscp_locality, simd2020v2_sc_quintile, perc) %>%
-# spread(hscp_locality, perc) %>%
-# arrange(desc(simd2020v2_sc_quintile)) %>%
-# select(-simd2020v2_sc_quintile)
+other_locs_simd <- pop_data %>%
+  mutate(simd2020v2_sc_quintile = as.factor(simd2020v2_sc_quintile)) %>% 
+  filter(year == max(year),
+         hscp_locality %in% other_locs$hscp_locality) %>%
+  group_by(hscp_locality, simd2020v2_sc_quintile, .drop = F) %>% 
+  summarise(pop = sum(total_pop)) %>% 
+  ungroup() %>% 
+  group_by(hscp_locality) %>% 
+  mutate(total_pop = sum(pop)) %>% 
+  ungroup() %>% 
+  mutate(perc = round_half_up(pop/total_pop*100, 1)) %>% 
+  filter(simd2020v2_sc_quintile == 1 | simd2020v2_sc_quintile == 5) %>% 
+  arrange(hscp_locality) %>% 
+  select(hscp_locality, simd2020v2_sc_quintile, perc) %>% 
+  spread(hscp_locality, perc) %>% 
+  arrange(desc(simd2020v2_sc_quintile)) %>% 
+  select(-simd2020v2_sc_quintile)
 
 
-## HSCP objects
+##HSCP objects
 
-loc_simd <- pop_data %>%
-  mutate(simd2020v2_sc_quintile = as.factor(simd2020v2_sc_quintile)) %>%
-  filter(
-    year == max(year),
-    hscp_locality == loc
-  ) %>%
-  group_by(simd2020v2_sc_quintile, .drop = F, hscp_locality) %>%
-  summarise(pop = sum(total_pop)) %>%
-  ungroup() %>%
-  mutate(perc = round_half_up(pop / sum(pop) * 100, 1))
+hscp_simd <- pop_data %>%
+  mutate(simd2020v2_sc_quintile = as.factor(simd2020v2_sc_quintile)) %>% 
+  filter(year == max(year),
+         hscp2019name == HSCP) %>%
+  group_by(simd2020v2_sc_quintile, .drop = F) %>% 
+  summarise(pop = sum(total_pop)) %>% 
+  ungroup() %>% 
+  mutate(perc = round_half_up(pop/sum(pop)*100, 1)) 
 
-loc_simd_top <- filter(loc_simd, simd2020v2_sc_quintile == 5)$perc
-
-loc_simd_bottom <- filter(loc_simd, simd2020v2_sc_quintile == 1)$perc
+hscp_simd_top <- filter(hscp_simd, simd2020v2_sc_quintile == 5)$perc
+hscp_simd_bottom <- filter(hscp_simd, simd2020v2_sc_quintile == 1)$perc
 
 
-# detach(package:tidyverse, unload=TRUE)
-# detach(package:ggrepel, unload=TRUE)
-# detach(package:reshape2, unload=TRUE)
-# detach(package:rgdal, unload=TRUE)
-# detach(package:janitor, unload=TRUE)

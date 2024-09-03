@@ -19,7 +19,7 @@ Sys.umask(mode = "002")
 HSCP <- "Highland"
 
 
-source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Lifestyle & Risk Factors/Scripts/HSCP level/2. Lifestyle & Risk Factors Outputs.R")
+source("Lifestyle and risk/2. Lifestyle & Risk Factors Outputs.R")
 
 
 x <- 1 # object for figure numbers

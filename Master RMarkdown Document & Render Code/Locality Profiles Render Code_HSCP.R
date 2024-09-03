@@ -19,7 +19,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Specify HSCP here
 ## NOTE - make sure that the formatting of the partnership's name matches the lookup
-HSCP <- "Western Isles"
+HSCP <- "Clackmannanshire and Stirling"
 
 # Below creates locality list of all the localities in a chosen HSCP
 lookup <- read_in_localities()
@@ -33,24 +33,23 @@ other_locs <- lookup %>%
 
 
 # Demographics
-source("hscp_level/Demographics/1. Demographics - Population.R")
-source("hscp_level/Demographics/2. Demographics - SIMD.R")
+source("Demographics/1. Demographics - Population.R")
+source("Demographics/2. Demographics - SIMD.R")
 
 # Housing
-source("hscp_level/Households/HSCP level/Households code.R")
+source("Households/Households code.R")
 
 # Services
-source("hscp_level/Services/3. Service HSCP map.R") # Map
-source("hscp_level/Services/2. Services data manipulation & table.R")
-
+source("Services/2. Services data manipulation & table.R")
+source("Services/3. Service HSCP map.R") # Map
 # General Health
-source("hscp_level/General Health/3. General Health Outputs.R")
+source("General Health/3. General Health Outputs.R")
 
 # Lifestyle & risk factors
-source("hscp_level/Lifestyle and risk/HSCP level/2. Lifestyle & Risk Factors Outputs.R")
+source("Lifestyle and risk/2. Lifestyle & Risk Factors Outputs.R")
 
 # Unscheduled Care
-source("hscp_level/unschedule care/2. Unscheduled Care outputs.R")
+source("unschedule care/2. Unscheduled Care outputs.R")
 
 # Appendices
 source("Master RMarkdown Document & Render Code/Tables for Appendix.R")
@@ -60,14 +59,14 @@ detach(package:tidylog, unload = TRUE)
 
 ## 2b) Create the main body of the profiles
 rmarkdown::render(
-  input = "hscp_level/Render script/Locality_Profiles_Master_Markdown_HSCP.Rmd",
+  input = "Master RMarkdown Document & Render Code/Locality_Profiles_Master_Markdown_HSCP.Rmd",
   output_file = paste0(HSCP, " - Locality Profile.docx"),
   output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/")
 )
 
 ## 2c) Create the summary tables
 rmarkdown::render(
-  input = "hscp_level/Summary-Table-Markdown - HSCP.Rmd",
+  input = "Summary Table/Summary-Table-Markdown - HSCP.Rmd",
   output_file = paste0(HSCP, " - Summary Table.docx"),
   output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/Summary Tables/")
 )

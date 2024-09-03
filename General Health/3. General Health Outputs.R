@@ -33,7 +33,7 @@ library(phsstyles)
 # LOCALITY <- "City of Dunfermline"
 # LOCALITY <- "Barra"
 
-HSCP <- 'Moray'
+#HSCP <- 'Moray'
 
 # Set year of data extracts for folder
 ext_year <- 2023
@@ -931,96 +931,101 @@ ltc_diff_scot <- if_else(ltc_percent_total_latest > ltc_perc_scot, "higher", "lo
 
 ############################### 4) CODE FOR SUMMARY TABLE ###############################
 
-
 ## Make GH objects table for hscp, scot AND other localities in the partnership
 
-# Function to get latest data from scotpho
+#Function to get latest data from scotpho
 
-other_locs_summary_table <- function(data, latest_year) {
-  data %>%
-    filter(year == latest_year) %>%
-    filter(area_type == "Locality") %>%
-    rename("hscp_locality" = "area_name") %>%
-    right_join(., other_locs) %>%
+other_locs_summary_table <- function(data, latest_year){
+  
+  data %>% 
+    filter(year == latest_year) %>% 
+    filter(area_type == "Locality") %>% 
+    rename("hscp_locality" = "area_name") %>% 
+    right_join(., other_locs) %>% 
     arrange(hscp_locality) %>%
-    select(hscp_locality, measure) %>%
+    select(hscp_locality, measure) %>% 
     mutate(measure = round_half_up(measure, 1)) %>%
     spread(hscp_locality, measure)
+  
 }
 
-hscp_scot_summary_table <- function(data, latest_year, area) {
+hscp_scot_summary_table <- function(data, latest_year, area){
+  
   type <- ifelse(area == HSCP, "HSCP", "Scotland")
-  temp <- data %>%
-    filter(year == latest_year) %>%
+  temp <- data %>% 
+    filter(year == latest_year) %>% 
     filter(area_name == area & area_type == type)
   
   round_half_up(temp$measure, 1)
+  
 }
 
 # 1. Other localities
 
-# male life expectancy
-# other_locs_life_exp_male <- other_locs_summary_table(
-# data = filter(life_exp, sex == "Male"),
-# latest_year = latest_year_life_exp_loc)
+#male life expectancy
+other_locs_life_exp_male <- other_locs_summary_table(
+  data = filter(life_exp, sex == "Male"),
+  latest_year = latest_year_life_exp_loc)
 
-# female life exp
-# other_locs_life_exp_fem <- other_locs_summary_table(
-# data = filter(life_exp, sex == "Female"),
-# latest_year = latest_year_life_exp_loc)
+#female life exp
+other_locs_life_exp_fem <- other_locs_summary_table(
+  data = filter(life_exp, sex == "Female"),
+  latest_year = latest_year_life_exp_loc)
 
-## deaths 15-44
-# other_locs_deaths_15_44 <- other_locs_summary_table(deaths_15_44,
-#  latest_year = max(deaths_15_44$year))
-
-
-## Cancer
-# other_locs_cancer <- other_locs_summary_table(cancer_reg,
-# latest_year = max(cancer_reg$year))
-
-## ADP
-# other_locs_adp <- other_locs_summary_table(adp_presc,
-#                                          latest_year = max(adp_presc$year))
+##deaths 15-44
+other_locs_deaths_15_44 <- other_locs_summary_table(deaths_15_44, 
+                                                    latest_year = max(deaths_15_44$year)) 
 
 
-## ltc
-# otherloc_ltc_pops <- slf_pops %>%
-# inner_join(other_locs, by = "hscp_locality") %>%
-# group_by(hscp_locality) %>%
-# summarise(slf_adj_pop = sum(slf_adj_pop)) %>%
-# ungroup()
+##Cancer
+other_locs_cancer <- other_locs_summary_table(cancer_reg, 
+                                              latest_year = max(cancer_reg$year)) 
 
-# other_locs_ltc <- inner_join(ltc, other_locs) %>%
-# select(hscp_locality, total_ltc, people) %>%
-# mutate(total_ltc = if_else(total_ltc == 0, 0, 1)) %>%
-# filter(total_ltc == 1) %>%
-# group_by(hscp_locality) %>%
-# summarise(ltc_people = sum(people)) %>%
-# ungroup() %>%
-# left_join(., otherloc_ltc_pops, by = "hscp_locality") %>%
-# mutate(percent = round_half_up(ltc_people/slf_adj_pop*100, 1)) %>%
-# arrange(hscp_locality) %>%
-# select(hscp_locality, percent) %>%
-# spread(., key = hscp_locality, value = percent)
+##ADP 
+other_locs_adp <- other_locs_summary_table(adp_presc, 
+                                           latest_year = max(adp_presc$year))
 
 
-# 2. HSCP
+##ltc
+otherloc_ltc_pops <- slf_pops %>% 
+  inner_join(other_locs, by = "hscp_locality") %>% 
+  group_by(hscp_locality) %>% 
+  summarise(slf_adj_pop = sum(slf_adj_pop)) %>% 
+  ungroup()
 
-if (HSCP == "Clackmannanshire and Stirling") {
+other_locs_ltc <- inner_join(ltc, other_locs) %>% 
+  select(hscp_locality, total_ltc, people) %>% 
+  mutate(total_ltc = if_else(total_ltc == 0, 0, 1)) %>% 
+  filter(total_ltc == 1) %>% 
+  group_by(hscp_locality) %>% 
+  summarise(ltc_people = sum(people)) %>% 
+  ungroup() %>% 
+  left_join(., otherloc_ltc_pops, by = "hscp_locality") %>% 
+  mutate(percent = round_half_up(ltc_people/slf_adj_pop*100, 1)) %>% 
+  arrange(hscp_locality) %>% 
+  select(hscp_locality, percent) %>% 
+  spread(., key = hscp_locality, value = percent)
+
+
+#2. HSCP
+
+if(HSCP == "Clackmannanshire and Stirling") {
+  
   hscp_life_exp_male <- NA
   hscp_life_exp_fem <- NA
+  
 } else {
+  
   hscp_life_exp_male <- hscp_scot_summary_table(
     data = filter(life_exp, sex == "Male"),
     latest_year = latest_year_life_exp_otherareas,
-    area = HSCP
-  )
+    area = HSCP)
   
   hscp_life_exp_fem <- hscp_scot_summary_table(
     data = filter(life_exp, sex == "Female"),
     latest_year = latest_year_life_exp_otherareas,
-    area = HSCP
-  )
+    area = HSCP)
+  
 }
 
 
@@ -1028,25 +1033,24 @@ hscp_deaths_15_44 <- hscp_scot_summary_table(deaths_15_44, latest_year = max(dea
 hscp_cancer <- hscp_scot_summary_table(cancer_reg, latest_year = max(cancer_reg$year), area = HSCP)
 hscp_adp <- hscp_scot_summary_table(adp_presc, latest_year = max(adp_presc$year), area = HSCP)
 
-# hscp_ltc <- round_half_up((sum(other_locs_ltc) + ltc_percent_total_latest)/n_loc, 1)
+hscp_ltc <- round_half_up((sum(other_locs_ltc) + ltc_percent_total_latest)/n_loc, 1)
 
-# 3. Scotland
+#3. Scotland
 
 scot_life_exp_male <- hscp_scot_summary_table(
   data = filter(life_exp, sex == "Male"),
   latest_year = latest_year_life_exp_otherareas,
-  area = "Scotland"
-)
+  area = "Scotland")
 
-scot_life_exp_fem <- hscp_scot_summary_table(
+scot_life_exp_fem <-  hscp_scot_summary_table(
   data = filter(life_exp, sex == "Female"),
   latest_year = latest_year_life_exp_otherareas,
-  area = "Scotland"
-)
+  area = "Scotland")
 
 scot_deaths_15_44 <- hscp_scot_summary_table(deaths_15_44, latest_year = max(deaths_15_44$year), area = "Scotland")
 scot_cancer <- hscp_scot_summary_table(cancer_reg, latest_year = max(cancer_reg$year), area = "Scotland")
 scot_cancer_deaths <- hscp_scot_summary_table(early_deaths_cancer, latest_year = max(early_deaths_cancer$year), area = "Scotland")
 scot_adp_presc <- hscp_scot_summary_table(adp_presc, latest_year = max(adp_presc$year), area = "Scotland")
 
-scot_ltc <- round_half_up((sum(filter(ltc_scot, total_ltc > 0)$people) / ltc_pops_total_scot) * 100, 1)
+scot_ltc <- round_half_up((sum(filter(ltc_scot, total_ltc > 0)$people) / ltc_pops_total_scot)*100, 1)
+

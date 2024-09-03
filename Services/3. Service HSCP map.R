@@ -28,6 +28,9 @@ library(sf)
 library(ggrepel)
 library(ggmap)
 
+source("Master RMarkdown Document & Render Code/Global Script.R")
+
+
 #HSCP <- 'Moray'
 # 2. Read in locality shape files ----
 

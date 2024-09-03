@@ -17,7 +17,7 @@ options(kableExtra.auto_format = FALSE)
 # LOCALITY <- "Falkirk West"
 HSCP <- "Moray"
 
-source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Households/Scripts/HSCP level/Households code.R")
+source("Households/Households code.R")
 
 x <- 1 # object for figure numbers
 y <- 1 # object for table numbers
