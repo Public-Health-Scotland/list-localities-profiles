@@ -341,8 +341,9 @@ max_year_ea <- max(emergency_adm_areas$financial_year)
 
 first_fy_rate <- filter(
   emergency_adm_areas,
-  (financial_year == min(emergency_adm_areas$financial_year)) &
-    (location == LOCALITY & area_type == "Locality")
+  financial_year == min(financial_year),
+  location == LOCALITY,
+  area_type == "Locality"
 )$data
 
 latest_emergency_adm_loc <- emergency_adm_areas %>%
@@ -373,8 +374,8 @@ hscp_emergency_adm1 <- hscp_emergency_adm %>% pull(data2)
 hscp_emergency_adm2 <- hscp_emergency_adm %>% pull(data)
 
 first_fy_hscp <- filter(emergency_adm_areas,
-  (financial_year == min(emergency_adm_areas$financial_year)) &
-    (area_type == "HSCP"))$data
+  financial_year == min(financial_year),
+  area_type == "HSCP")$data
 
 hscp_rate_change <- round(abs(hscp_emergency_adm2 - first_fy_hscp) / first_fy_hscp * 100, digits = 1)
 word_change_hscp <- if_else(hscp_emergency_adm2 > first_fy_hscp, "increase", "decrease")
@@ -389,9 +390,10 @@ scot_emergency_adm <- emergency_adm_areas %>%
 
 scot_emergency_adm1 <- scot_emergency_adm %>% pull(data2)
 scot_emergency_adm2 <- scot_emergency_adm %>% pull(data)
+
 first_fy_scot <- filter(emergency_adm_areas,
-  (financial_year == min(emergency_adm_areas$financial_year)) &
-    (location == "Scotland"))$data
+  financial_year == min(financial_year),
+  location == "Scotland")$data
 
 scot_rate_change <- round(abs(scot_emergency_adm2 - first_fy_scot) / first_fy_scot * 100, digits = 1)
 word_change_scot <- if_else(scot_emergency_adm2 > first_fy_scot,
@@ -407,9 +409,10 @@ hb_emergency_adm <- emergency_adm_areas %>%
 
 hb_emergency_adm1 <- hb_emergency_adm %>% pull(data2)
 hb_emergency_adm2 <- hb_emergency_adm %>% pull(data)
+
 first_fy_hb <- filter(emergency_adm_areas,
-                        (financial_year == min(emergency_adm_areas$financial_year)) &
-                          (location == HB))$data
+                      financial_year == min(financial_year),
+                          location == HB)$data
 
 hb_rate_change <- round(abs(hb_emergency_adm2 - first_fy_hb) / first_fy_hb * 100, digits = 1)
 word_change_hb <- if_else(hb_emergency_adm2 > first_fy_hb,
@@ -528,8 +531,8 @@ max_year_ubd <- max(bed_days_areas$financial_year)
 #LOCALITY
 first_fy_rate_ubd <- filter(
   bed_days_areas,
-  (financial_year == min(bed_days_areas$financial_year)) &
-    (location == LOCALITY & area_type == "Locality"))$data
+  financial_year == min(financial_year),
+  location == LOCALITY & area_type == "Locality")$data
 
 latest_bed_days_loc <- bed_days_areas %>%
   filter(location == LOCALITY, year == max(year)) %>%
@@ -585,8 +588,8 @@ hb_bed_days <- bed_days_areas %>%
 hb_bed_days1 <- hb_bed_days %>% pull(data2)
 hb_bed_days2 <- hb_bed_days %>% pull(data)
 first_fy_hb_ubd <- filter(bed_days_areas,
-                      (financial_year == min(bed_days_areas$financial_year)) &
-                        (location == HB))$data
+                      financial_year == min(financial_year),
+                      location == HB)$data
 
 hb_rate_change_ubd <- round(abs(hb_bed_days2 - first_fy_hb_ubd) / first_fy_hb_ubd * 100, digits = 1)
 word_change_hb_ubd <- if_else(hb_bed_days2 > first_fy_hb_ubd,
@@ -830,9 +833,10 @@ hb_mh_beddays <- bed_days_mh_areas %>%
 
 hb_mh_beddays1 <- hb_mh_beddays %>% pull(data2)
 hb_mh_beddays2 <- hb_mh_beddays %>% pull(data)
+
 first_fy_hb_mh <- filter(bed_days_mh_areas,
-                          (financial_year == min(bed_days_mh_areas$financial_year)) &
-                            (location == HB))$data
+                         financial_year == min(financial_year),
+                          location == HB)$data
 
 hb_rate_change_mh <- round(abs(hb_mh_beddays2 - first_fy_hb_mh) / first_fy_hb_mh * 100, digits = 1)
 word_change_hb_mh <- if_else(hb_mh_beddays2 > first_fy_hb_mh,
@@ -962,8 +966,8 @@ max_year_ae_area <- max(ae_att_areas$financial_year)
 
 first_fy_rate_ae_areas <- filter(
   ae_att_areas,
-  (financial_year == min(ae_att_areas$financial_year)) &
-    (location == LOCALITY & area_type == "Locality")
+  financial_year == min(financial_year),
+  location == LOCALITY & area_type == "Locality",
 )$data
 
 latest_ae_att_loc <- ae_att_areas %>%
@@ -993,8 +997,8 @@ hscp_ae_att1 <- hscp_ae_att %>% pull(data2)
 hscp_ae_att2 <- hscp_ae_att %>% pull(data)
 
 first_fy_hscp_ae <- filter(ae_att_areas,
-                        (financial_year == min(ae_att_areas$financial_year)) &
-                          (area_type == "HSCP"))$data
+                        financial_year == min(financial_year),
+                          area_type == "HSCP")$data
 
 percent_rate_change_ae_areas_hscp <- round(abs(hscp_ae_att2 - first_fy_hscp_ae) / first_fy_hscp_ae * 100, digits = 1)
 word_change_rate_ae_areas_hscp <- if_else(hscp_ae_att2 > first_fy_hscp_ae,
@@ -1012,8 +1016,8 @@ scot_ae_att1 <- scot_ae_att %>% pull(data2)
 scot_ae_att2 <- scot_ae_att %>% pull(data)
 
 first_fy_scot_ae <- filter(ae_att_areas,
-                           (financial_year == min(ae_att_areas$financial_year)) &
-                             (location == "Scotland"))$data
+                           financial_year == min(financial_year),
+                             location == "Scotland")$data
 
 percent_rate_change_ae_areas_scot <- round(abs(scot_ae_att2 - first_fy_scot_ae) / first_fy_scot_ae * 100, digits = 1)
 word_change_rate_ae_areas_scot <- if_else(scot_ae_att2 > first_fy_scot_ae,
@@ -1030,8 +1034,8 @@ hb_ae_att <- ae_att_areas %>%
 hb_ae1 <- hb_ae_att %>% pull(data2)
 hb_ae2 <- hb_ae_att %>% pull(data)
 first_fy_hb_ae <- filter(ae_att_areas,
-                          (financial_year == min(ae_att_areas$financial_year)) &
-                            (location == HB))$data
+                          financial_year == min(financial_year),
+                          location == HB)$data
 
 hb_rate_change_ae <- round(abs(hb_ae2 - first_fy_hb_ae) / first_fy_hb_ae * 100, digits = 1)
 word_change_hb_ae <- if_else(hb_ae2 > first_fy_hb_ae,
@@ -1162,8 +1166,8 @@ hb_dd <- delayed_disch_areas %>%
 hb_dd1 <- hb_dd %>% pull(data2)
 hb_dd2 <- hb_dd %>% pull(data)
 first_fy_hb_dd <- filter(delayed_disch_areas,
-                           (financial_year == min(delayed_disch_areas$financial_year)) &
-                             (location == HB))$data
+                           financial_year == min(financial_year),
+                             location == HB)$data
 
 hb_rate_change_dd <- round(abs(hb_dd2 - first_fy_hb_dd) / first_fy_hb_dd * 100, digits = 1)
 word_change_hb_dd <- if_else(hb_dd2 > first_fy_hb_dd,
@@ -1284,9 +1288,10 @@ hb_falls <- falls_areas %>%
 
 hb_falls1 <- hb_falls %>% pull(data2)
 hb_falls2 <- hb_falls %>% pull(data)
+
 first_fy_hb_falls <- filter(falls_areas,
-                         (financial_year == min(falls_areas$financial_year)) &
-                           (location == HB))$data
+                         financial_year == min(financial_year),
+                           location == HB)$data
 
 hb_rate_change_falls <- round(abs(hb_falls2 - first_fy_hb_falls) / first_fy_hb_falls * 100, digits = 1)
 word_change_hb_falls <- if_else(hb_falls2 > first_fy_hb_falls,
@@ -1464,9 +1469,10 @@ hb_read <- readmissions_areas %>%
 
 hb_read1 <- hb_read %>% pull(data2)
 hb_read2 <- hb_read %>% pull(data)
+
 first_fy_hb_read <- filter(readmissions_areas,
-                         (financial_year == min(readmissions_areas$financial_year)) &
-                           (location == HB))$data
+                         financial_year == min(financial_year),
+                           location == HB)$data
 
 hb_rate_change_read <- round(abs(hb_read2 - first_fy_hb_read) / first_fy_hb_read * 100, digits = 1)
 word_change_hb_read <- if_else(hb_read2 > first_fy_hb_read,
@@ -1822,3 +1828,4 @@ word_change_scot_psych <- if_else(scot_psych_hosp$measure[2] > scot_psych_hosp$m
 #                              "Readmissions 28" = readmissions,
 #                              "PPA" = ppa),
 #                     path = paste0(lp_path, "Publishing/SMR Data.xlsx"))
+
