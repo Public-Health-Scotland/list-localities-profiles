@@ -351,9 +351,9 @@ latest_emergency_adm_loc <- emergency_adm_areas %>%
     location == LOCALITY,
     year == max(year, na.rm = TRUE)
   ) %>%
-  mutate(data2 = format(data, big.mark = ","))
+  mutate(formatted_data = format(data, big.mark = ","))
 
-latest_emergency_adm_loc1 <- latest_emergency_adm_loc %>% pull(data2)
+latest_emergency_adm_loc1 <- latest_emergency_adm_loc %>% pull(formatted_data)
 latest_emergency_adm_loc2 <- latest_emergency_adm_loc %>% pull(data)
 
 percent_rate_change <- round(abs(latest_emergency_adm_loc2 - first_fy_rate) / first_fy_rate * 100, digits = 1)
@@ -366,9 +366,9 @@ hscp_emergency_adm <- emergency_adm_areas %>%
     location == HSCP,
     year == max(year)
   ) %>%
-  mutate(data2 = format(data, big.mark = ","))
+  mutate(formatted_data = format(data, big.mark = ","))
 
-hscp_emergency_adm1 <- hscp_emergency_adm %>% pull(data2)
+hscp_emergency_adm1 <- hscp_emergency_adm %>% pull(formatted_data)
 hscp_emergency_adm2 <- hscp_emergency_adm %>% pull(data)
 
 first_fy_hscp <- filter(emergency_adm_areas,
@@ -384,9 +384,9 @@ scot_emergency_adm <- emergency_adm_areas %>%
     location == "Scotland",
     year == max(year)
   ) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
-scot_emergency_adm1 <- scot_emergency_adm %>% pull(data2)
+scot_emergency_adm1 <- scot_emergency_adm %>% pull(formatted_data)
 scot_emergency_adm2 <- scot_emergency_adm %>% pull(data)
 
 first_fy_scot <- filter(emergency_adm_areas,
@@ -403,9 +403,9 @@ hb_emergency_adm <- emergency_adm_areas %>%
     location == HB,
     year == max(year)
   ) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
-hb_emergency_adm1 <- hb_emergency_adm %>% pull(data2)
+hb_emergency_adm1 <- hb_emergency_adm %>% pull(formatted_data)
 hb_emergency_adm2 <- hb_emergency_adm %>% pull(data)
 
 first_fy_hb <- filter(emergency_adm_areas,
@@ -438,9 +438,9 @@ latest_ea_max_age <- emergency_adm_age %>%
   filter(
     data== max(data)
   ) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
-latest_ea_max_age1 <- latest_ea_max_age %>% pull(data2)
+latest_ea_max_age1 <- latest_ea_max_age %>% pull(formatted_data)
 latest_ea_max_age2 <- latest_ea_max_age %>% pull(data)
 age_group_max_ea <- latest_ea_max_age %>% pull(age_group)
 
@@ -461,9 +461,9 @@ latest_ea_min_age <- emergency_adm_age %>%
   filter(
     data== min(data)
   ) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
-latest_ea_min_age1 <- latest_ea_min_age %>% pull(data2)
+latest_ea_min_age1 <- latest_ea_min_age %>% pull(formatted_data)
 latest_ea_min_age2 <- latest_ea_min_age %>% pull(data)
 age_group_min_ea <- latest_ea_min_age %>% pull(age_group)
 
@@ -534,8 +534,8 @@ first_fy_rate_ubd <- filter(
 
 latest_bed_days_loc <- bed_days_areas %>%
   filter(location == LOCALITY, year == max(year)) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
-latest_bed_days_loc1 <- latest_bed_days_loc %>% pull(data2)
+  mutate(formatted_data = format(data, big.mark = ",")) 
+latest_bed_days_loc1 <- latest_bed_days_loc %>% pull(formatted_data)
 latest_bed_days_loc2 <- latest_bed_days_loc %>% pull(data)
 
 rate_change_ubd <- round(abs(latest_bed_days_loc2 - first_fy_rate_ubd) / first_fy_rate_ubd * 100, digits = 1)
@@ -547,9 +547,9 @@ first_fy_hscp_ubd <- filter(
 
 hscp_bed_days <- bed_days_areas %>%
   filter(location == HSCP, year == max(year)) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
-hscp_bed_days1 <- hscp_bed_days %>% pull(data2)
+hscp_bed_days1 <- hscp_bed_days %>% pull(formatted_data)
 hscp_bed_days2 <- hscp_bed_days %>% pull(data)
 
 hscp_rate_ubd <- round(abs(hscp_bed_days2 - first_fy_hscp_ubd) / first_fy_hscp_ubd * 100, digits = 1)
@@ -562,9 +562,9 @@ first_fy_scot_ubd <- filter(
 
 scot_bed_days <- bed_days_areas %>%
   filter(location == "Scotland", year == max(year)) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
-scot_bed_days1 <- scot_bed_days %>% pull(data2)
+scot_bed_days1 <- scot_bed_days %>% pull(formatted_data)
 scot_bed_days2 <- scot_bed_days %>% pull(data)
 
 scot_rate_ubd <- round(abs(scot_bed_days2 - first_fy_scot_ubd) / first_fy_scot_ubd * 100, digits = 1)
@@ -577,9 +577,9 @@ hb_bed_days <- bed_days_areas %>%
     location == HB,
     year == max(year)
   ) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
-hb_bed_days1 <- hb_bed_days %>% pull(data2)
+hb_bed_days1 <- hb_bed_days %>% pull(formatted_data)
 hb_bed_days2 <- hb_bed_days %>% pull(data)
 first_fy_hb_ubd <- filter(bed_days_areas,
                       financial_year == min(financial_year),
@@ -611,9 +611,9 @@ latest_ubd_max_age <- bed_days_age %>%
   filter(
     data== max(data)
   ) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
-latest_ubd_max_age1 <- latest_ubd_max_age %>% pull(data2)
+latest_ubd_max_age1 <- latest_ubd_max_age %>% pull(formatted_data)
 latest_ubd_max_age2 <- latest_ubd_max_age %>% pull(data)
 age_group_max_ubd <- latest_ubd_max_age %>% pull(age_group)
 
@@ -634,9 +634,9 @@ latest_ubd_min_age <- bed_days_age %>%
   filter(
     data== min(data)
   ) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
-latest_ubd_min_age1 <- latest_ubd_min_age %>% pull(data2)
+latest_ubd_min_age1 <- latest_ubd_min_age %>% pull(formatted_data)
 latest_ubd_min_age2 <- latest_ubd_min_age %>% pull(data)
 age_group_min_ubd <- latest_ubd_min_age %>% pull(age_group)
 
@@ -706,9 +706,9 @@ latest_bd_mh_max_age <- bed_days_mh_age %>%
   filter(
     data== max(data)
   ) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
-latest_bd_mh_max_age1 <- latest_bd_mh_max_age %>% pull(data2)
+latest_bd_mh_max_age1 <- latest_bd_mh_max_age %>% pull(formatted_data)
 latest_bd_mh_max_age2 <- latest_bd_mh_max_age %>% pull(data)
 age_group_max_mh <- latest_bd_mh_max_age %>% pull(age_group)
 
@@ -729,9 +729,9 @@ latest_bd_mh_min_age <- bed_days_mh_age %>%
   filter(
     data== min(data)
   ) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
-latest_bd_mh_min_age1 <- latest_bd_mh_min_age %>% pull(data2)
+latest_bd_mh_min_age1 <- latest_bd_mh_min_age %>% pull(formatted_data)
 latest_bd_mh_min_age2 <- latest_bd_mh_min_age %>% pull(data)
 age_group_min_mh <- latest_bd_mh_min_age %>% pull(age_group)
 
@@ -758,9 +758,9 @@ latest_bed_days_mh_loc <- bed_days_mh_areas %>%
     location == LOCALITY,
     year == max(year)
   ) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
-latest_bed_days_mh_loc1 <- latest_bed_days_mh_loc %>% pull(data2)
+latest_bed_days_mh_loc1 <- latest_bed_days_mh_loc %>% pull(formatted_data)
 latest_bed_days_mh_loc2 <- latest_bed_days_mh_loc %>% pull(data)
 latest_bed_days_mh_loc1 <- ifelse(is_empty(latest_bed_days_mh_loc1), "NA", latest_bed_days_mh_loc1)
 
@@ -780,9 +780,9 @@ hscp_bed_days_mh <- bed_days_mh_areas %>%
     location == HSCP,
     year == max(year)
   ) %>%
-  mutate(data2 = format(data, big.mark = ","))
+  mutate(formatted_data = format(data, big.mark = ","))
 
-hscp_bed_days_mh1 <- hscp_bed_days_mh %>% pull(data2)
+hscp_bed_days_mh1 <- hscp_bed_days_mh %>% pull(formatted_data)
 hscp_bed_days_mh2 <- hscp_bed_days_mh %>% pull(data)
 
 first_hscp_bed_days_mh <- bed_days_mh_areas %>%
@@ -801,9 +801,9 @@ scot_bed_days_mh <- bed_days_mh_areas %>%
     location == "Scotland",
     year == max(year)
   ) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
-scot_bed_days_mh1 <- scot_bed_days_mh %>% pull(data2)
+scot_bed_days_mh1 <- scot_bed_days_mh %>% pull(formatted_data)
 scot_bed_days_mh2 <- scot_bed_days_mh %>% pull(data)
 
 first_scot_bed_days_mh <- bed_days_mh_areas %>%
@@ -823,9 +823,9 @@ hb_mh_beddays <- bed_days_mh_areas %>%
     location == HB,
     year == max(year)
   ) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
-hb_mh_beddays1 <- hb_mh_beddays %>% pull(data2)
+hb_mh_beddays1 <- hb_mh_beddays %>% pull(formatted_data)
 hb_mh_beddays2 <- hb_mh_beddays %>% pull(data)
 
 first_fy_hb_mh <- filter(bed_days_mh_areas,
@@ -903,9 +903,9 @@ latest_ae_att_max_age <- ae_att_age %>%
     year == max(year),
     data== max(data)
   ) %>%
-  mutate(data2 = format(data, big.mark = ","))
+  mutate(formatted_data = format(data, big.mark = ","))
 
-latest_ae_att_loc1_age <- latest_ae_att_max_age %>% pull(data2)
+latest_ae_att_loc1_age <- latest_ae_att_max_age %>% pull(formatted_data)
 latest_ae_att_loc2_age <- latest_ae_att_max_age %>% pull(data)
 age_group_max <- latest_ae_att_max_age %>% pull(age_group)
 
@@ -914,7 +914,7 @@ first_ae_att_max_age <- ae_att_age %>%
     year == min(year),
     age_group == age_group_max
   ) %>%
-  mutate(data2 = format(data, big.mark = ","))
+  mutate(formatted_data = format(data, big.mark = ","))
 
 first_ae_att_max_age_data <- first_ae_att_max_age %>% pull(data)
 
@@ -928,9 +928,9 @@ latest_ae_att_min_age <- ae_att_age %>%
   filter(
     data == min(data)
   ) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
-latest_ae_att_loc1_age_min <- latest_ae_att_min_age %>% pull(data2)
+latest_ae_att_loc1_age_min <- latest_ae_att_min_age %>% pull(formatted_data)
 latest_ae_att_loc2_age_min <- latest_ae_att_min_age %>% pull(data)
 age_group_min <- latest_ae_att_min_age %>% pull(age_group)
 
@@ -939,7 +939,7 @@ first_ae_att_min_age <- ae_att_age %>%
     year == min(year),
     age_group == age_group_min
   ) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
 first_ae_att_min_data <- first_ae_att_min_age %>% pull(data)
 
@@ -965,9 +965,9 @@ latest_ae_att_loc <- ae_att_areas %>%
     location == LOCALITY,
     year == max(year)
   ) %>%
-  mutate(data2 = format(data, big.mark = ","))
+  mutate(formatted_data = format(data, big.mark = ","))
 
-latest_ae_att_loc1 <- latest_ae_att_loc %>% pull(data2)
+latest_ae_att_loc1 <- latest_ae_att_loc %>% pull(formatted_data)
 latest_ae_att_loc2 <- latest_ae_att_loc %>% pull(data)
 
 percent_rate_change_ae_areas <- round(abs(latest_ae_att_loc2 - first_fy_rate_ae_areas) / first_fy_rate_ae_areas * 100, digits = 1)
@@ -979,9 +979,9 @@ hscp_ae_att <- ae_att_areas %>%
     location == HSCP,
     year == max(year)
   ) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
-hscp_ae_att1 <- hscp_ae_att %>% pull(data2)
+hscp_ae_att1 <- hscp_ae_att %>% pull(formatted_data)
 hscp_ae_att2 <- hscp_ae_att %>% pull(data)
 
 first_fy_hscp_ae <- filter(ae_att_areas,
@@ -997,8 +997,8 @@ scot_ae_att <- ae_att_areas %>%
     location == "Scotland",
     year == max(year)
   ) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
-scot_ae_att1 <- scot_ae_att %>% pull(data2)
+  mutate(formatted_data = format(data, big.mark = ",")) 
+scot_ae_att1 <- scot_ae_att %>% pull(formatted_data)
 scot_ae_att2 <- scot_ae_att %>% pull(data)
 
 first_fy_scot_ae <- filter(ae_att_areas,
@@ -1015,9 +1015,9 @@ hb_ae_att <- ae_att_areas %>%
     location == HB,
     year == max(year)
   ) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
-hb_ae1 <- hb_ae_att %>% pull(data2)
+hb_ae1 <- hb_ae_att %>% pull(formatted_data)
 hb_ae2 <- hb_ae_att %>% pull(data)
 first_fy_hb_ae <- filter(ae_att_areas,
                           financial_year == min(financial_year),
@@ -1081,9 +1081,9 @@ latest_dd_loc <- delayed_disch_areas %>%
     location == LOCALITY,
     year == max(year)
   ) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
-latest_dd_loc1 <- latest_dd_loc %>% pull(data2)
+latest_dd_loc1 <- latest_dd_loc %>% pull(formatted_data)
 latest_dd_loc2 <- latest_dd_loc %>% pull(data)
 
 first_dd_loc <- delayed_disch_areas %>%
@@ -1103,9 +1103,9 @@ hscp_dd <- delayed_disch_areas %>%
     location == HSCP,
     year == max(year)
   ) %>%
-  mutate(data2 = format(data, big.mark = ","))
+  mutate(formatted_data = format(data, big.mark = ","))
 
-hscp_dd1 <- hscp_dd %>% pull(data2)
+hscp_dd1 <- hscp_dd %>% pull(formatted_data)
 hscp_dd2 <- hscp_dd %>% pull(data)
 
 first_hscp_dd <- delayed_disch_areas %>%
@@ -1125,9 +1125,9 @@ scot_dd <- delayed_disch_areas %>%
     location == "Scotland",
     year == max(year)
   ) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
-scot_dd1 <- scot_dd %>% pull(data2)
+scot_dd1 <- scot_dd %>% pull(formatted_data)
 scot_dd2 <- scot_dd %>% pull(data)
 
 first_scot_dd <- delayed_disch_areas %>%
@@ -1147,9 +1147,9 @@ hb_dd <- delayed_disch_areas %>%
     location == HB,
     year == max(year)
   ) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
-hb_dd1 <- hb_dd %>% pull(data2)
+hb_dd1 <- hb_dd %>% pull(formatted_data)
 hb_dd2 <- hb_dd %>% pull(data)
 first_fy_hb_dd <- filter(delayed_disch_areas,
                            financial_year == min(financial_year),
@@ -1208,9 +1208,9 @@ latest_falls_loc <- falls_areas %>%
     location == LOCALITY,
     year == max(year)
   ) %>%
-  mutate(data2 = format(data, big.mark = ","))
+  mutate(formatted_data = format(data, big.mark = ","))
 
-latest_falls_loc1 <- latest_falls_loc %>% pull(data2)
+latest_falls_loc1 <- latest_falls_loc %>% pull(formatted_data)
 latest_falls_loc2 <- latest_falls_loc %>% pull(data)
 
 first_falls_loc <- falls_areas %>%
@@ -1228,9 +1228,9 @@ hscp_falls <- falls_areas %>%
     location == HSCP,
     year == max(year)
   ) %>%
-  mutate(data2 = format(data, big.mark = ","))
+  mutate(formatted_data = format(data, big.mark = ","))
 
-hscp_falls1 <- hscp_falls %>% pull(data2)
+hscp_falls1 <- hscp_falls %>% pull(formatted_data)
 hscp_falls2 <- hscp_falls %>% pull(data)
 
 first_falls_hscp <- falls_areas %>%
@@ -1248,9 +1248,9 @@ scot_falls <- falls_areas %>%
     location == "Scotland",
     year == max(year)
   ) %>%
-  mutate(data2 = format(data, big.mark = ","))
+  mutate(formatted_data = format(data, big.mark = ","))
 
-scot_falls1 <- scot_falls %>% pull(data2)
+scot_falls1 <- scot_falls %>% pull(formatted_data)
 scot_falls2 <- scot_falls %>% pull(data)
 
 first_falls_scot <- falls_areas %>%
@@ -1270,9 +1270,9 @@ hb_falls <- falls_areas %>%
     location == HB,
     year == max(year)
   ) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
-hb_falls1 <- hb_falls %>% pull(data2)
+hb_falls1 <- hb_falls %>% pull(formatted_data)
 hb_falls2 <- hb_falls %>% pull(data)
 
 first_fy_hb_falls <- filter(falls_areas,
@@ -1450,9 +1450,9 @@ hb_read <- readmissions_areas %>%
     location == HB,
     year == max(year)
   ) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
-hb_read1 <- hb_read %>% pull(data2)
+hb_read1 <- hb_read %>% pull(formatted_data)
 hb_read2 <- hb_read %>% pull(data)
 
 first_fy_hb_read <- filter(readmissions_areas,
@@ -1629,7 +1629,7 @@ latest_ppa_loc <- ppa_areas %>%
     location == LOCALITY,
     year == max(year) | year == min(year)
   ) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
 ppa_diff <- round(abs(latest_ppa_loc$data[2] - latest_ppa_loc$data[1]) / latest_ppa_loc$data[1]* 100, digits = 1)
 ppa_word_change <- if_else(latest_ppa_loc$data[2] > latest_ppa_loc$data[1],
@@ -1640,7 +1640,7 @@ hscp_ppa <- ppa_areas %>%
     location == HSCP,
     year == max(year) | year == min(year)
   ) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
 ppa_diff_hscp <- round(abs(hscp_ppa$data[2] - hscp_ppa$data[1]) / hscp_ppa$data[1]* 100, digits = 1)
 ppa_word_change_hscp <- if_else(hscp_ppa$data[2] > hscp_ppa$data[1],
@@ -1651,7 +1651,7 @@ scot_ppa <- ppa_areas %>%
     location == "Scotland",
     year == max(year) | year == min(year)
   ) %>%
-  mutate(data2 = format(data, big.mark = ","))
+  mutate(formatted_data = format(data, big.mark = ","))
 
 diff_scot_ppa <- round(abs(scot_ppa$data[2] - scot_ppa$data[1]) / scot_ppa$data[1] * 100, digits = 1)
 word_change_scot_ppa <- if_else(scot_ppa$data[2] > scot_ppa$data[1],
@@ -1663,7 +1663,7 @@ hb_ppa <- ppa_areas %>%
     location == HB,
     year == max(year) |  year == min(year)
   ) %>%
-  mutate(data2 = format(data, big.mark = ",")) 
+  mutate(formatted_data = format(data, big.mark = ",")) 
 
 diff_hb_ppa <- round(abs(hb_ppa$data[2] - hb_ppa$data[1]) / hb_ppa$data[1] * 100, digits = 1)
 word_change_hb_ppa <- if_else(hb_ppa$data[2] > hb_ppa$data[1],

@@ -52,7 +52,7 @@ This section includes acute hospital data, delayed discharge bed days and A&E at
  
  - **`r latest_read_loc1`** emergency readmissions (28 day) per 1,000 discharges, compared to `r scot_read` in Scotland. 
  
- - **`r latest_ppa_loc$data2[2]`** potentially preventable hospital admissions per 100,000 population, compared to `r scot_ppa$data2[2]` in Scotland. 
+ - **`r latest_ppa_loc$formatted_data[2]`** potentially preventable hospital admissions per 100,000 population, compared to `r scot_ppa$formatted_data[2]` in Scotland. 
 
 
 #####Pagebreak
@@ -218,8 +218,8 @@ x <- x + 1
 Information conditions included in PPAs is available in Appendix 3. In `r max_year_ppa_areas`, **`r latest_ppa_65plus`%** of PPAs in `r LOCALITY` were amongst those aged 65 and over, and **`r latest_ppa_under65`%** were amongst those aged under 65. 
 
 
-Figure `r x` presents the potentially preventable admissions rate per 100,000 population in the `r LOCALITY` locality from `r min_year_ppa_areas` to `r max_year_ppa_areas`. The rate per 100,000 population for potentially preventable admissions in the `r LOCALITY` locality for `r max_year_ppa_areas ` is `r latest_ppa_loc$data2[2]`, a `r ppa_diff`% `r ppa_word_change` since `r latest_ppa_loc$financial_year[1]` and the `r HSCP` HSCP rate is `r hscp_ppa$data[2]`, a `r ppa_diff_hscp`% `r ppa_word_change_hscp` since `r latest_ppa_loc$financial_year[1]`.
-The `r HB` health board rate for `r hb_ppa$financial_year[2]` is `r hb_ppa$data2[2]`, a `r diff_hb_ppa`% `r word_change_hb_ppa` since `r hb_ppa$financial_year[]` and the Scotland rate is `r scot_ppa$data2[2]`, a `r diff_scot_ppa`% `r  word_change_scot_ppa` since `r hb_ppa$financial_year[1]`.
+Figure `r x` presents the potentially preventable admissions rate per 100,000 population in the `r LOCALITY` locality from `r min_year_ppa_areas` to `r max_year_ppa_areas`. The rate per 100,000 population for potentially preventable admissions in the `r LOCALITY` locality for `r max_year_ppa_areas ` is `r latest_ppa_loc$formatted_data[2]`, a `r ppa_diff`% `r ppa_word_change` since `r latest_ppa_loc$financial_year[1]` and the `r HSCP` HSCP rate is `r hscp_ppa$data[2]`, a `r ppa_diff_hscp`% `r ppa_word_change_hscp` since `r latest_ppa_loc$financial_year[1]`.
+The `r HB` health board rate for `r hb_ppa$financial_year[2]` is `r hb_ppa$formatted_data[2]`, a `r diff_hb_ppa`% `r word_change_hb_ppa` since `r hb_ppa$financial_year[]` and the Scotland rate is `r scot_ppa$formatted_data[2]`, a `r diff_scot_ppa`% `r  word_change_scot_ppa` since `r hb_ppa$financial_year[1]`.
 
 ####Figure `r x`: PPAs by geographical area
 \newline
