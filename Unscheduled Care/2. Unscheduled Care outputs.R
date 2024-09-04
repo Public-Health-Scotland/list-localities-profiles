@@ -309,7 +309,7 @@ emergency_adm_age <- emergency_adm %>%
   ungroup() %>%
   left_join(loc_pop_age1) %>%
   mutate(data = round_half_up(adm / pop * 100000)) %>%
-  filter(!is.na(year))
+  drop_na(year)
 
 
 EAs_age_ts <- age_group_trend_usc(
@@ -325,7 +325,7 @@ emergency_adm_areas <- emergency_adm %>%
   aggregate_usc_area_data() %>%
   left_join(pop_areas_all_ages) %>%
   mutate(data = round_half_up(n / pop * 100000)) %>%
-  filter(!is.na(year))
+  drop_na(year)
 
 EAs_loc_ts <- area_trend_usc(
   data_for_plot = emergency_adm_areas,
@@ -495,7 +495,7 @@ bed_days_age <- bed_days %>%
   ungroup() %>%
   left_join(loc_pop_age1) %>%
   mutate(data = round_half_up(bed_days / pop * 100000)) %>%
-  filter(!is.na(year))
+  drop_na(year)
 
 
 BDs_age_ts <- age_group_trend_usc(
@@ -512,7 +512,7 @@ bed_days_areas <- bed_days %>%
   aggregate_usc_area_data() %>%
   left_join(pop_areas_all_ages) %>%
   mutate(data = round_half_up(n / pop * 100000)) %>%
-  filter(!is.na(year))
+  drop_na(year)
 
 BDs_loc_ts <- area_trend_usc(
   data_for_plot = bed_days_areas,
@@ -672,7 +672,7 @@ bed_days_mh_age <- bed_days_mh %>%
   ungroup() %>%
   left_join(loc_pop_age1) %>%
   mutate(data = round_half_up(bed_days / pop * 100000)) %>% 
-  filter(!is.na(year))
+  drop_na(year)
 
 
 BDMH_age_ts <- age_group_trend_usc(
@@ -689,7 +689,7 @@ bed_days_mh_areas <- bed_days_mh %>%
   aggregate_usc_area_data() %>%
   left_join(pop_areas_all_ages) %>%
   mutate(data = round_half_up(n / pop * 100000)) %>% 
-  filter(!is.na(year))
+  drop_na(year)
 
 BDMH_loc_ts <- area_trend_usc(
   data_for_plot = bed_days_mh_areas,
@@ -867,7 +867,7 @@ ae_att_age <- ae_attendances %>%
   ungroup() %>%
   left_join(loc_pop_age1) %>%
   mutate(data = round_half_up(attendances / pop * 100000)) %>%
-  filter(!is.na(year))
+  drop_na(year)
 
 
 AandE_age_ts <- age_group_trend_usc(
@@ -884,7 +884,7 @@ ae_att_areas <- ae_attendances %>%
   aggregate_usc_area_data() %>%
   left_join(pop_areas_all_ages) %>%
   mutate(data = round_half_up(n / pop * 100000))%>%
-  filter(!is.na(year))
+  drop_na(year)
 
 
 AandE_loc_ts <- area_trend_usc(
@@ -1069,7 +1069,7 @@ delayed_disch_areas <- delayed_disch %>%
   aggregate_usc_area_data() %>%
   left_join(pop_areas_65plus) %>%
   mutate(data = round_half_up(n / pop * 100000)) %>%
-  filter(!is.na(year))
+  drop_na(year)
 
 DD_loc_ts <- area_trend_usc(
   data_for_plot = delayed_disch_areas,
@@ -1196,7 +1196,7 @@ falls_areas <- falls %>%
   aggregate_usc_area_data() %>%
   left_join(pop_areas_65plus) %>%
   mutate(data = round_half_up(n / pop * 100000)) %>%
-  filter(!is.na(year))
+  drop_na(year)
 
 Falls_loc_ts <- area_trend_usc(
   data_for_plot = falls_areas,
@@ -1338,7 +1338,7 @@ read2 <- readmissions %>%
 readmissions_areas <- left_join(read1, read2) %>%
   left_join(pop_areas_all_ages) %>%
   mutate(data = round_half_up(read_28 / discharges * 1000, 1))%>%
-  filter(!is.na(year))
+  drop_na(year)
 
 rm(read1, read2)
 
@@ -1572,7 +1572,7 @@ ppa <- arrow::read_parquet(paste0(import_folder, "ppa_smr.parquet")) %>%
 ppa_total <- ppa %>%
   rename(n = admissions) %>%
   aggregate_usc_area_data()%>%
-  filter(!is.na(year))
+  drop_na(year)
 
 ppa_65plus <- ppa %>%
   filter(age_group %in% c("65 - 74", "75+")) %>%
@@ -1582,7 +1582,7 @@ ppa_65plus <- ppa %>%
   left_join(ppa_total, by = c("financial_year", "location")) %>%
   left_join(pop_areas_all_ages) %>%
   mutate(data = round_half_up(plus65tot / n * 100, 1))%>%
-  filter(!is.na(year))
+  drop_na(year)
 
 latest_ppa_65plus <- ppa_65plus %>%
   filter(
@@ -1599,7 +1599,7 @@ ppa_under65 <- ppa %>%
   left_join(ppa_total, by = c("financial_year", "location")) %>%
   left_join(pop_areas_all_ages) %>%
   mutate(data = round_half_up(under65tot / n * 100, 1)) %>%
-  filter(!is.na(year))
+  drop_na(year)
 
 latest_ppa_under65 <- ppa_under65 %>%
   filter(
@@ -1617,7 +1617,7 @@ ppa_areas <- ppa %>%
   mutate(data = round_half_up(n / pop * 100000)) %>%
   mutate(location = factor(location, levels = c(LOCALITY, HSCP, HB, "Scotland"))) %>%
   arrange(location) %>%
-  filter(!is.na(year))
+  drop_na(year)
 
 
 PPA_loc_ts <- area_trend_usc(
