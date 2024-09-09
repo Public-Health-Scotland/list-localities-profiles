@@ -158,7 +158,7 @@ check_missing_data_scotpho(adp_presc)
 
 
 # Long-term conditions
-ltc <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/LTC_from_SLF.RDS"))
+ltc <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/LTC_from_SLF2.RDS"))
 
 ltc <- dplyr::rename(ltc,
                      "Arthritis" = "arth", "Asthma" = "asthma", "Atrial fibrillation" = "atrialfib", "Cancer" = "cancer",
@@ -178,10 +178,10 @@ ltc <- dplyr::rename(ltc,
 
 # Time objects
 
-latest_year_life_exp_loc <- max(filter(life_exp, area_type == "HSCP")$year)
-latest_year_life_exp_otherareas <- max(life_exp$year)
+latest_year_life_exp_loc <- max(filter(life_exp, area_type == "Locality")$year)
+latest_year_life_exp_otherareas <-  max(filter(life_exp, area_type == "Locality")$year)
 
-latest_period_life_exp_loc <- unique(filter(life_exp, area_type == "HSCP" & year == latest_year_life_exp_loc)$period_short)
+latest_period_life_exp_loc <- unique(filter(life_exp, area_type == "Locality" & year == latest_year_life_exp_loc)$period_short)
 latest_period_life_exp_otherareas <- unique(filter(life_exp, area_type == "Scotland" & year == latest_year_life_exp_otherareas)$period_short)
 
 
@@ -966,11 +966,12 @@ hscp_scot_summary_table <- function(data, latest_year, area){
 other_locs_life_exp_male <- other_locs_summary_table(
   data = filter(life_exp, sex == "Male"),
   latest_year = latest_year_life_exp_loc)
-
+  #latest_year = 2019)
 #female life exp
 other_locs_life_exp_fem <- other_locs_summary_table(
   data = filter(life_exp, sex == "Female"),
   latest_year = latest_year_life_exp_loc)
+  #latest_year = 2019)
 
 ##deaths 15-44
 other_locs_deaths_15_44 <- other_locs_summary_table(deaths_15_44, 
@@ -1019,11 +1020,13 @@ if(HSCP == "Clackmannanshire and Stirling") {
   hscp_life_exp_male <- hscp_scot_summary_table(
     data = filter(life_exp, sex == "Male"),
     latest_year = latest_year_life_exp_otherareas,
+    #latest_year = 2019,
     area = HSCP)
   
   hscp_life_exp_fem <- hscp_scot_summary_table(
     data = filter(life_exp, sex == "Female"),
     latest_year = latest_year_life_exp_otherareas,
+    #latest_year = 2019,
     area = HSCP)
   
 }
@@ -1040,11 +1043,13 @@ hscp_ltc <- round_half_up((sum(other_locs_ltc) + ltc_percent_total_latest)/n_loc
 scot_life_exp_male <- hscp_scot_summary_table(
   data = filter(life_exp, sex == "Male"),
   latest_year = latest_year_life_exp_otherareas,
+  #latest_year = 2019,
   area = "Scotland")
 
 scot_life_exp_fem <-  hscp_scot_summary_table(
   data = filter(life_exp, sex == "Female"),
   latest_year = latest_year_life_exp_otherareas,
+  #latest_year = 2019,
   area = "Scotland")
 
 scot_deaths_15_44 <- hscp_scot_summary_table(deaths_15_44, latest_year = max(deaths_15_44$year), area = "Scotland")

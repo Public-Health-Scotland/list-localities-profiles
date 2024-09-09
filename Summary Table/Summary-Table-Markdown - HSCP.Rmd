@@ -131,7 +131,7 @@ Headings <- gtable_combine(col_indicator, col_datatype, col_time, col_otherlocs,
 # grid.draw(LP.headings)
 ```
 
-```{r echo=FALSE, fig.width = 11.5, fig.height= 6}
+```{r echo=FALSE, fig.width = 14, fig.height= 6}
 ### 2. TABLE BODY -----------------------------------------------------
 
 ### Set themes for each column
@@ -313,7 +313,7 @@ grid.draw(Summary_Table1)
 
 ## Summary Table (2)
 
-```{r echo=FALSE, fig.width = 11.5, fig.height= 6}
+```{r echo=FALSE, fig.width = 14, fig.height= 6}
 ## 2d. Lifestyle & Risk Factors ----
 
 indicators <- c(
