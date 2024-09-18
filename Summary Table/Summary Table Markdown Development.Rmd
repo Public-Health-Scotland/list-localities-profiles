@@ -101,7 +101,6 @@ knitr::kable(table_values,
       align = c("c"), format = "markdown") %>% 
   row_spec(c(0,1,7),bold=TRUE) |> 
   row_spec(0,color="white",background="grey50") |> 
-
   column_spec(c(1,2,3,4),border_left = "2px white solid",border_right = "2px white solid") |> 
   column_spec(4,bold=TRUE) |> 
   kable_styling(full_width = FALSE) %>%
