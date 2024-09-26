@@ -384,7 +384,7 @@ first_fy_hscp <- filter(emergency_adm_areas,
   financial_year == min(financial_year),
   area_type == "HSCP")$data
 
-hscp_rate_change <- round(abs(hscp_emergency_adm2 - first_fy_hscp) / first_fy_hscp * 100, digits = 1)
+hscp_rate_change <- percent_change_calc(hscp_emergency_adm2, first_fy_hscp)
 word_change_hscp <- if_else(hscp_emergency_adm2 > first_fy_hscp, "increase", "decrease")
 
 #Scotland
@@ -402,7 +402,7 @@ first_fy_scot <- filter(emergency_adm_areas,
   financial_year == min(financial_year),
   location == "Scotland")$data
 
-scot_rate_change <- round(abs(scot_emergency_adm2 - first_fy_scot) / first_fy_scot * 100, digits = 1)
+scot_rate_change <- percent_change_calc(scot_emergency_adm2, first_fy_scot)
 word_change_scot <- if_else(scot_emergency_adm2 > first_fy_scot,
                             "increase", "decrease")
 
@@ -421,7 +421,7 @@ first_fy_hb <- filter(emergency_adm_areas,
                       financial_year == min(financial_year),
                           location == HB)$data
 
-hb_rate_change <- round(abs(hb_emergency_adm2 - first_fy_hb) / first_fy_hb * 100, digits = 1)
+hb_rate_change <- percent_change_calc(hb_emergency_adm2, first_fy_hb)
 word_change_hb <- if_else(hb_emergency_adm2 > first_fy_hb,
                             "increase", "decrease")
 
@@ -460,7 +460,7 @@ first_ea_max_age <- emergency_adm_age %>%
   ) %>%
   pull(data)
 
-max_rate_change_ea <- round(abs(latest_ea_max_age2 - first_ea_max_age) / first_ea_max_age * 100, digits = 1)
+max_rate_change_ea <- percent_change_calc(latest_ea_max_age2, first_ea_max_age)
 max_word_change_ea <- if_else(latest_ea_max_age2 > first_ea_max_age,
                               "increase", "decrease")
 
@@ -486,7 +486,7 @@ first_ea_min_age1 <- first_ea_min_age %>% pull(data)
 min_year_ea_age1<- first_ea_min_age %>% pull(year)
 
 
-min_rate_change_ea <- round(abs(latest_ea_min_age2 - first_ea_min_age1) / first_ea_min_age1 * 100, digits = 1)
+min_rate_change_ea <- percent_change_calc(latest_ea_min_age2, first_ea_min_age1)
 min_word_change_ea <- if_else(latest_ea_min_age2 > first_ea_min_age1,
                                    "increase", "decrease")
 
@@ -547,7 +547,7 @@ latest_bed_days_loc <- bed_days_areas %>%
 latest_bed_days_loc1 <- latest_bed_days_loc %>% pull(formatted_data)
 latest_bed_days_loc2 <- latest_bed_days_loc %>% pull(data)
 
-rate_change_ubd <- round(abs(latest_bed_days_loc2 - first_fy_rate_ubd) / first_fy_rate_ubd * 100, digits = 1)
+rate_change_ubd <- percent_change_calc(latest_bed_days_loc2, first_fy_rate_ubd)
 word_change_ubd <- if_else(latest_bed_days_loc2 > first_fy_rate_ubd,
                             "increase", "decrease")
 #HSCP
@@ -561,7 +561,7 @@ hscp_bed_days <- bed_days_areas %>%
 hscp_bed_days1 <- hscp_bed_days %>% pull(formatted_data)
 hscp_bed_days2 <- hscp_bed_days %>% pull(data)
 
-hscp_rate_ubd <- round(abs(hscp_bed_days2 - first_fy_hscp_ubd) / first_fy_hscp_ubd * 100, digits = 1)
+hscp_rate_ubd <- percent_change_calc(hscp_bed_days2, first_fy_hscp_ubd)
 hscp_change_ubd <- if_else(hscp_bed_days2 > first_fy_hscp_ubd,
                            "increase", "decrease")
 
@@ -576,7 +576,7 @@ scot_bed_days <- bed_days_areas %>%
 scot_bed_days1 <- scot_bed_days %>% pull(formatted_data)
 scot_bed_days2 <- scot_bed_days %>% pull(data)
 
-scot_rate_ubd <- round(abs(scot_bed_days2 - first_fy_scot_ubd) / first_fy_scot_ubd * 100, digits = 1)
+scot_rate_ubd <- percent_change_calc(scot_bed_days2, first_fy_scot_ubd)
 scot_change_ubd <- if_else(scot_bed_days2 > first_fy_scot_ubd,
                            "increase", "decrease")
 
@@ -594,7 +594,7 @@ first_fy_hb_ubd <- filter(bed_days_areas,
                       financial_year == min(financial_year),
                       location == HB)$data
 
-hb_rate_change_ubd <- round(abs(hb_bed_days2 - first_fy_hb_ubd) / first_fy_hb_ubd * 100, digits = 1)
+hb_rate_change_ubd <- percent_change_calc(hb_bed_days2, first_fy_hb_ubd)
 word_change_hb_ubd <- if_else(hb_bed_days2 > first_fy_hb_ubd,
                           "increase", "decrease")
 
@@ -633,7 +633,7 @@ first_ubd_max_age <- bed_days_age %>%
   ) %>%
   pull(data)
 
-max_rate_change_ubd <- round(abs(latest_ubd_max_age2 - first_ubd_max_age) / first_ubd_max_age * 100, digits = 1)
+max_rate_change_ubd <- percent_change_calc(latest_ubd_max_age2, first_ubd_max_age)
 max_word_change_ubd <- if_else(latest_ubd_max_age2 > first_ubd_max_age,
                               "increase", "decrease")
 
@@ -659,7 +659,7 @@ first_ubd_min_age1 <- first_ubd_min_age %>% pull(data)
 min_year_ubd_age1<- first_ubd_min_age %>% pull(year)
 
 
-min_rate_change_ubd <- round(abs(latest_ubd_min_age2 - first_ubd_min_age1) / first_ubd_min_age1 * 100, digits = 1)
+min_rate_change_ubd <- percent_change_calc(latest_ubd_min_age2, first_ubd_min_age1)
 min_word_change_ubd <- if_else(latest_ubd_min_age2 > first_ubd_min_age1,
                               "increase", "decrease")
 
@@ -728,7 +728,7 @@ first_bd_mh_max_age <- bed_days_mh_age %>%
   ) %>%
   pull(data)
 
-max_rate_change_beds_mh <- round(abs(latest_bd_mh_max_age2 - first_bd_mh_max_age) / first_bd_mh_max_age * 100, digits = 1)
+max_rate_change_beds_mh <- percent_change_calc(latest_bd_mh_max_age2, first_bd_mh_max_age)
 max_word_change_beds_mh <- if_else(latest_bd_mh_max_age2 > first_bd_mh_max_age,
                                    "increase", "decrease")
 
@@ -754,7 +754,7 @@ first_bd_mh_min_age1 <- first_bd_mh_min_age %>% pull(data)
 min_year_bd_mh_age1<- first_bd_mh_min_age %>% pull(year)
 
 
-min_rate_change_beds_mh <- round(abs(latest_bd_mh_min_age2 - first_bd_mh_min_age1) / first_bd_mh_min_age1 * 100, digits = 1)
+min_rate_change_beds_mh <- percent_change_calc(latest_bd_mh_min_age2, first_bd_mh_min_age1)
 min_word_change_beds_mh <- if_else(latest_bd_mh_min_age2 > first_bd_mh_min_age1,
                                    "increase", "decrease")
 
@@ -780,7 +780,7 @@ first_bed_days_mh_loc <- bed_days_mh_areas %>%
   ) %>%
   pull(data)
 
-loc_rate_change_beds_mh <- round(abs(latest_bed_days_mh_loc2 - first_bed_days_mh_loc) / first_bed_days_mh_loc * 100, digits = 1)
+loc_rate_change_beds_mh <- percent_change_calc(latest_bed_days_mh_loc2, first_bed_days_mh_loc)
 loc_word_change_beds_mh <- if_else(latest_bed_days_mh_loc2 > first_bed_days_mh_loc,
                            "increase", "decrease")
 
@@ -801,7 +801,7 @@ first_hscp_bed_days_mh <- bed_days_mh_areas %>%
   ) %>%
   pull(data)
 
-hscp_rate_change_beds_mh <- round(abs(hscp_bed_days_mh2 - first_hscp_bed_days_mh) / first_hscp_bed_days_mh * 100, digits = 1)
+hscp_rate_change_beds_mh <- percent_change_calc(hscp_bed_days_mh2, first_hscp_bed_days_mh)
 hscp_word_change_beds_mh <- if_else(hscp_bed_days_mh2 > first_hscp_bed_days_mh,
                                    "increase", "decrease")
 
@@ -822,7 +822,7 @@ first_scot_bed_days_mh <- bed_days_mh_areas %>%
   ) %>%
   pull(data)
 
-scot_rate_change_beds_mh <- round(abs(scot_bed_days_mh2 - first_scot_bed_days_mh) / first_scot_bed_days_mh * 100, digits = 1)
+scot_rate_change_beds_mh <- percent_change_calc(scot_bed_days_mh2, first_scot_bed_days_mh)
 scot_word_change_beds_mh <- if_else(scot_bed_days_mh2 > first_scot_bed_days_mh,
                                     "increase", "decrease")
 
@@ -1026,7 +1026,7 @@ first_fy_hb_ae <- filter(ae_att_areas,
                           financial_year == min(financial_year),
                           location == HB)$data
 
-hb_rate_change_ae <- round(abs(hb_ae2 - first_fy_hb_ae) / first_fy_hb_ae * 100, digits = 1)
+hb_rate_change_ae <- percent_change_calc(hb_ae2,  first_fy_hb_ae)
 word_change_hb_ae <- if_else(hb_ae2 > first_fy_hb_ae,
                               "increase", "decrease")
 
@@ -1155,7 +1155,7 @@ first_fy_hb_dd <- filter(delayed_disch_areas,
                            financial_year == min(financial_year),
                              location == HB)$data
 
-hb_rate_change_dd <- round(abs(hb_dd2 - first_fy_hb_dd) / first_fy_hb_dd * 100, digits = 1)
+hb_rate_change_dd <- percent_change_calc(hb_dd2,  first_fy_hb_dd)
 word_change_hb_dd <- if_else(hb_dd2 > first_fy_hb_dd,
                                "increase", "decrease")
 
@@ -1452,7 +1452,7 @@ first_fy_hb_read <- filter(readmissions_areas,
                          financial_year == min(financial_year),
                            location == HB)$data
 
-hb_rate_change_read <- round(abs(hb_read2 - first_fy_hb_read) / first_fy_hb_read * 100, digits = 1)
+hb_rate_change_read <- percent_change_calc(hb_read2,  first_fy_hb_read)
 word_change_hb_read <- if_else(hb_read2 > first_fy_hb_read,
                              "increase", "decrease")
 
@@ -1624,7 +1624,7 @@ latest_ppa_loc <- ppa_areas %>%
   ) %>%
   mutate(formatted_data = format(data, big.mark = ",")) 
 
-ppa_diff <- round(abs(latest_ppa_loc$data[2] - latest_ppa_loc$data[1]) / latest_ppa_loc$data[1]* 100, digits = 1)
+ppa_diff <- percent_change_calc(latest_ppa_loc$data[2],  latest_ppa_loc$data[1])
 ppa_word_change <- if_else(latest_ppa_loc$data[2] > latest_ppa_loc$data[1],
                                              "increase", "decrease")
 
@@ -1635,7 +1635,7 @@ hscp_ppa <- ppa_areas %>%
   ) %>%
   mutate(formatted_data = format(data, big.mark = ",")) 
 
-ppa_diff_hscp <- round(abs(hscp_ppa$data[2] - hscp_ppa$data[1]) / hscp_ppa$data[1]* 100, digits = 1)
+ppa_diff_hscp <- percent_change_calc(hscp_ppa$data[2],  hscp_ppa$data[1])
 ppa_word_change_hscp <- if_else(hscp_ppa$data[2] > hscp_ppa$data[1],
                            "increase", "decrease")
 
@@ -1646,7 +1646,7 @@ scot_ppa <- ppa_areas %>%
   ) %>%
   mutate(formatted_data = format(data, big.mark = ","))
 
-diff_scot_ppa <- round(abs(scot_ppa$data[2] - scot_ppa$data[1]) / scot_ppa$data[1] * 100, digits = 1)
+diff_scot_ppa <- percent_change_calc(scot_ppa$data[2],  scot_ppa$data[1])
 word_change_scot_ppa <- if_else(scot_ppa$data[2] > scot_ppa$data[1],
                               "increase", "decrease")
 
@@ -1658,7 +1658,7 @@ hb_ppa <- ppa_areas %>%
   ) %>%
   mutate(formatted_data = format(data, big.mark = ",")) 
 
-diff_hb_ppa <- round(abs(hb_ppa$data[2] - hb_ppa$data[1]) / hb_ppa$data[1] * 100, digits = 1)
+diff_hb_ppa <- percent_change_calc(hb_ppa$data[2],  hb_ppa$data[1])
 word_change_hb_ppa <- if_else(hb_ppa$data[2] > hb_ppa$data[1],
                                "increase", "decrease")
 
@@ -1738,7 +1738,7 @@ loc_psych_hosp <- psych_hosp %>%
   ) %>%
   mutate(measure2 = format(measure, big.mark = ",")) 
 
-diff_loc_psych <- round(abs(loc_psych_hosp$measure[2] - loc_psych_hosp$measure[1]) / loc_psych_hosp$measure[1] * 100, digits = 1)
+diff_loc_psych <- percent_change_calc(loc_psych_hosp$measure[2],  loc_psych_hosp$measure[1])
 word_change_loc_psych <- if_else(loc_psych_hosp$measure[2] > loc_psych_hosp$measure[1],
                                 "increase", "decrease")
 
@@ -1752,7 +1752,7 @@ hscp_psych_hosp <- psych_hosp %>%
   ) %>%
   mutate(measure2 = format(measure, big.mark = ",")) 
 
-diff_hscp_psych <- round(abs(hscp_psych_hosp$measure[2] - hscp_psych_hosp$measure[1]) / hscp_psych_hosp$measure[1] * 100, digits = 1)
+diff_hscp_psych <- percent_change_calc(hscp_psych_hosp$measure[2],  hscp_psych_hosp$measure[1])
 word_change_hscp_psych <- if_else(hscp_psych_hosp$measure[2] > hscp_psych_hosp$measure[1],
                                  "increase", "decrease")
 
@@ -1766,7 +1766,7 @@ hb_psych_hosp <- psych_hosp %>%
   ) %>%
   mutate(measure2 = format(measure, big.mark = ",")) 
 
-diff_hb_psych <- round(abs(hb_psych_hosp$measure[2] - hb_psych_hosp$measure[1]) / hb_psych_hosp$measure[1] * 100, digits = 1)
+diff_hb_psych <- percent_change_calc(hb_psych_hosp$measure[2],  hb_psych_hosp$measure[1])
 word_change_hb_psych <- if_else(hb_psych_hosp$measure[2] > hb_psych_hosp$measure[1],
                               "increase", "decrease")
 
@@ -1780,7 +1780,7 @@ scot_psych_hosp <- psych_hosp %>%
   ) %>%
   mutate(measure2 = format(measure, big.mark = ",")) 
 
-diff_scot_psych <- round(abs(scot_psych_hosp$measure[2] - scot_psych_hosp$measure[1]) / scot_psych_hosp$measure[1] * 100, digits = 1)
+diff_scot_psych <- percent_change_calc(scot_psych_hosp$measure[2],  scot_psych_hosp$measure[1])
 word_change_scot_psych <- if_else(scot_psych_hosp$measure[2] > scot_psych_hosp$measure[1],
                                 "increase", "decrease")
 
