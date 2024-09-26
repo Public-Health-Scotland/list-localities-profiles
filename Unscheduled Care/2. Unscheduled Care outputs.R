@@ -288,10 +288,10 @@ area_trend_usc <- function(data_for_plot, plot_title, yaxis_title, source) {
     )
 }
 
-# Functions for variables
+# Functions for text variables
 
-percent_change_calc <- function(numerator, denominator) {
-  round(abs(numerator - denominator) / denominator* 100, digits = 1)
+percent_change_calc <- function(numerator, denominator, digits = 1) {
+  round(abs(numerator - denominator) / denominator * 100, digits = digits)
 }
 
 word_change_calc <- function(latest, first) {
