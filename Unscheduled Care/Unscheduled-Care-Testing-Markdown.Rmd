@@ -160,7 +160,7 @@ As presented in Figure `r x`, the emergency readmission (28 days) rate per 1,000
 \newline
 
 ```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = F}
-Read_loc_ts
+read_loc_ts
 
 x <- x + 1
 ```
@@ -172,7 +172,7 @@ As presented in Figure `r x`, the highest emergency readmission (28 days) rate f
 \newline
 
 ```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = F}
-Read_age_ts
+read_age_ts
 
 x <- x + 1
 ```
@@ -225,7 +225,7 @@ The `r HB` health board rate for `r hb_ppa$financial_year[2]` is `r hb_ppa$forma
 \newline
 
 ```{r echo = FALSE, fig.width= 7.6, fig.height= 4, warning = F}
-PPA_loc_ts
+ppa_loc_ts
 
 x <- x + 1
 ```

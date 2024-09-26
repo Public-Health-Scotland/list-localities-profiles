@@ -1312,7 +1312,7 @@ readmissions_age <- readmissions %>%
   ungroup() %>%
   mutate(data = round_half_up(read_28 / discharges * 1000, 1))
 
-Read_age_ts <- age_group_trend_usc(
+read_age_ts <- age_group_trend_usc(
   data_for_plot = readmissions_age,
   plot_title = paste("Readmission rate (28 days) per 1,000 discharges by age group\n for", LOCALITY),
   yaxis_title = "Readmission rate (28 days)\n per 1,000 discharges",
@@ -1343,7 +1343,7 @@ readmissions_areas <- left_join(read1, read2) %>%
 
 rm(read1, read2)
 
-Read_loc_ts <- area_trend_usc(
+read_loc_ts <- area_trend_usc(
   data_for_plot = readmissions_areas,
   plot_title = paste("Readmission rate (28 days) per 1,000 discharges over time by residence"),
   yaxis_title = "Readmission rate (28 days)\n per 1,000 discharges",
@@ -1619,7 +1619,7 @@ ppa_areas <- ppa %>%
   drop_na(year)
 
 
-PPA_loc_ts <- area_trend_usc(
+ppa_loc_ts <- area_trend_usc(
   data_for_plot = ppa_areas,
   plot_title = paste("Potentially Preventable Emergency Admissions per 100,000 by residence"),
   yaxis_title = "PPA rate\nper 100,000 population",

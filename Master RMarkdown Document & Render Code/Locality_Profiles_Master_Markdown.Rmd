@@ -778,7 +778,7 @@ As presented in Figure `r x`, the emergency readmission (28 days) rate per 1,000
 \newline
 
 ```{r echo = FALSE, fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing seven-year time trends for emergency readmissions per 1,000 discharges split by geographical area."}
-Read_loc_ts
+read_loc_ts
 
 x <- x + 1
 ```
@@ -791,7 +791,7 @@ As presented in Figure `r x`, the highest emergency readmission (28 days) rate f
 \newline
 
 ```{r echo = FALSE, fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing seven-year time trends for emergency readmissions per 1,000 discharges split by age group."}
-Read_age_ts
+read_age_ts
 
 x <- x + 1
 ```
@@ -843,7 +843,7 @@ The `r HB` health board rate for `r hb_ppa$financial_year[2]` is `r hb_ppa$forma
 \newline
 
 ```{r echo = FALSE, fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing seven-year time trends for potentially preventable admissions per 100,000 population split by geographical area."}
-PPA_loc_ts
+ppa_loc_ts
 
 x <- x + 1
 ```
