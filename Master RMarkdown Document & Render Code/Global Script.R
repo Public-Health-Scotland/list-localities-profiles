@@ -393,23 +393,24 @@ scotpho_time_trend_HSCP <- function(data, chart_title, xaxis_title, yaxis_title,
 scotpho_bar_chart <- function(data, chart_title, xaxis_title) {
   data_for_plot <- data %>%
     filter(year == max(year)) %>%
-    filter((area_name %in% c(LOCALITY, other_locs$hscp_locality) & area_type == "Locality") |
+    filter(
+      (area_name %in% c(LOCALITY, other_locs$hscp_locality) & area_type == "Locality") |
       (area_name == HSCP & area_type == "HSCP") |
       area_name == HB |
       area_name == "Scotland") %>%
-    mutate(text_col = if_else(area_name == LOCALITY, 1, 0)) %>%
     mutate(
+      text_highlight = area_name == LOCALITY,
       area_type = factor(area_type, levels = c("Locality", "HSCP", "Health board", "Scotland")),
       area_name = fct_reorder(as.factor(str_wrap(area_name, 28)), measure)
     ) %>%
     arrange(area_name)
-
+  
   ggplot(data_for_plot) +
     aes(y = area_name, fill = area_type, weight = measure) +
     geom_bar(colour = "white") +
     scale_fill_manual(values = palette) +
     theme_profiles() +
-    theme(axis.text.x = element_text(colour = if_else(data_for_plot$text_col == 1, "red", "black"))) +
+    theme(axis.text.y = element_text(colour = if_else(data_for_plot$text_highlight, "red", "black"))) +
     labs(
       title = chart_title,
       x = xaxis_title,
@@ -421,9 +422,7 @@ scotpho_bar_chart <- function(data, chart_title, xaxis_title) {
       aes(xmin = lower_confidence_interval, xmax = upper_confidence_interval),
       width = 0.2,
       position = position_dodge(width = 1)
-    ) #+
-  # guides(linetype = "none", shape = "none",  colour = "none",
-  #        fill = guide_legend(nrow= 2, byrow=TRUE))
+    )
 }
 
 
@@ -434,8 +433,8 @@ scotpho_bar_chart_HSCP <- function(data, chart_title, xaxis_title) {
       (area_name == HSCP & area_type == "HSCP") |
       area_name == HB |
       area_name == "Scotland") %>%
-    mutate(text_col = if_else(area_name == HSCP, 1, 0)) %>%
     mutate(
+      text_highlight = area_name == HSCP,
       area_type = factor(area_type, levels = c("Locality", "HSCP", "Health board", "Scotland")),
       area_name = fct_reorder(as.factor(str_wrap(area_name, 28)), measure)
     ) %>%
@@ -446,7 +445,7 @@ scotpho_bar_chart_HSCP <- function(data, chart_title, xaxis_title) {
     geom_bar(colour = "white") +
     scale_fill_manual(values = palette) +
     theme_profiles() +
-    theme(axis.text.x = element_text(colour = if_else(data_for_plot$text_col == 1, "red", "black"))) +
+    theme(axis.text.y = element_text(colour = if_else(data_for_plot$text_highlight, "red", "black"))) +
     labs(
       title = chart_title,
       x = xaxis_title,
@@ -457,9 +456,7 @@ scotpho_bar_chart_HSCP <- function(data, chart_title, xaxis_title) {
       aes(xmin = lower_confidence_interval, xmax = upper_confidence_interval),
       width = 0.2,
       position = position_dodge(width = 1)
-    ) #+
-  # guides(linetype = "none", shape = "none",  colour = "none",
-  #        fill = guide_legend(nrow= 2, byrow=TRUE))
+    )
 }
 
 ## Checking for missing data

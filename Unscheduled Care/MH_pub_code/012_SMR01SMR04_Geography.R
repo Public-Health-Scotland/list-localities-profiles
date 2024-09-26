@@ -30,9 +30,6 @@
 ### 1 - Load packages ----
 library(tidyverse) # tidyr_1.1.2; dplyr_1.0.2
 library(lubridate) # for formatting dates
-# library(haven)          # for reading spss files
-# library(foreign)        # for accessing SPSS data
-
 
 ### 2 -  Publication Date variable to define filepath ----
 # MUST BE UPDATED EACH TIME WE PUBLISH
