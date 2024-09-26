@@ -75,8 +75,6 @@ populations22 <- read_in_dz_pops22()
 populations <- rbind(populations, populations22)
 
 
-# pop_max_year <- max(populations$year)
-
 # compute age bands
 populations$"Pop0_17" <- rowSums(subset(populations, select = age0:age17))
 populations$"Pop18_44" <- rowSums(subset(populations, select = age18:age44))
@@ -291,12 +289,15 @@ area_trend_usc <- function(data_for_plot, plot_title, yaxis_title, source) {
 # Functions for text variables
 
 percent_change_calc <- function(numerator, denominator, digits = 1) {
-  round(abs(numerator - denominator) / denominator * 100, digits = digits)
+  janitor::round_half_up(
+    abs(numerator - denominator) / denominator * 100,
+    digits = digits
+  )
 }
 
 word_change_calc <- function(latest, first) {
-  case_when(
-    near(latest, first) ~ "same",
+  dplyr::case_when(
+    dplyr::near(latest, first) ~ "same",
     latest > first ~ "increase",
     latest < first ~ "decrease"
   )
@@ -1729,10 +1730,15 @@ other_locs_psych_hosp <- psych_hosp %>%
   mutate(measure = as.character(round_half_up(measure, 1))) %>%
   pivot_wider(names_from = hscp_locality, values_from = measure)
 
-hscp_psych_hosp <- round_half_up(filter(psych_hosp, year == max(year) &
-  (area_name == HSCP & area_type == "HSCP"))$measure, 1)
+hscp_psych_hosp <- round_half_up(
+  filter(psych_hosp, year == max(year) & (area_name == HSCP & area_type == "HSCP"))$measure,
+  1
+)
 
-scot_psych_hosp <- round_half_up(filter(psych_hosp, year == max(year) & area_name == "Scotland")$measure, 1)
+scot_psych_hosp <- round_half_up(
+  filter(psych_hosp, year == max(year) & area_name == "Scotland")$measure,
+  1
+)
 
 
 list_years <- unique(psych_hosp_time_trend$data[6])
