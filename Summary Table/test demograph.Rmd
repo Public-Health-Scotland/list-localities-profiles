@@ -18,11 +18,14 @@ knitr::opts_chunk$set(echo = TRUE, comment = NA)
 # LOCALITY <- "Whalsay and Skerries"
  LOCALITY <- "Inverclyde East"
  
- setwd("~/list-localities-profiles/")
+ #setwd("~/list-localities-profiles/")
 
 ## Project file path
- lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
- 
+# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+lp_path <- "/conf/LIST_analytics/Glasgow City/Training/CG/Locality Profiles/2024 Summary Table Project/list-localities-profiles/"
+
+#Profiles/"\\stats\LIST_analytics\Glasgow City\Training\CG\Locality Profiles\2024 Summary Table #Project\list-localities-profiles\Summary Table
+
 # Source in global functions/themes script
  source("./Master RMarkdown Document & Render Code/Global Script.R")
  
