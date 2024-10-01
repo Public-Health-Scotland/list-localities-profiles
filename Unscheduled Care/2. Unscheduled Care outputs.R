@@ -1558,8 +1558,8 @@ ppa <- arrow::read_parquet(paste0(import_folder, "ppa_smr.parquet")) %>%
 # % PPAs in locality under and over 65
 ppa_total <- ppa %>%
   rename(n = admissions) %>%
-  aggregate_usc_area_data()%>%
-  drop_na(year)
+  aggregate_usc_area_data()
+
 
 ppa_65plus <- ppa %>%
   filter(age_group %in% c("65 - 74", "75+")) %>%
