@@ -31,7 +31,7 @@ library(mapview)
 library(sf)
 
 # Source in global functions/themes script
-#source("./Master RMarkdown Document & Render Code/Global Script.R")
+# source("./Master RMarkdown Document & Render Code/Global Script.R")
 
 ## File path
 filepath <- paste0(
@@ -120,70 +120,70 @@ perc_top_quintile <- simd_perc_breakdown[5, ]$perc
 ## 5b) SIMD map ----
 
 # load in shapefile for mapping
-#zones<- sf::read_sf("//conf/linkage/output/lookups/Unicode/Geography/Shapefiles/Data Zones 2011/SG_DataZone_Bdry_2011.shp")
+# zones<- sf::read_sf("//conf/linkage/output/lookups/Unicode/Geography/Shapefiles/Data Zones 2011/SG_DataZone_Bdry_2011.shp")
 
-#zones <- sf::st_transform(zones,4326)
+# zones <- sf::st_transform(zones,4326)
 
-#zones$datazone2011 <- zones$DataZone
+# zones$datazone2011 <- zones$DataZone
 
 
 # merge lookup and shapefile
-#zones <- merge(zones, lookup_dz, by = "datazone2011")
+# zones <- merge(zones, lookup_dz, by = "datazone2011")
 
 # subset for Locality
-#zones <- subset(zones, hscp_locality == LOCALITY)
+# zones <- subset(zones, hscp_locality == LOCALITY)
 
 # get place names
-#places <- read_csv(paste0(
+# places <- read_csv(paste0(
 #  "/conf/linkage/output/lookups/Unicode/Geography/",
 #  "Shapefiles/Scottish Places/Places to Data",
 #  " Zone Lookup.csv"
-#)) %>%
+# )) %>%
 #  rename(datazone2011 = DataZone) %>%
 #  filter(datazone2011 %in% zones$datazone2011) %>%
 #  group_by(name) %>%
 #  dplyr::summarise(
 #    Longitude = first(Longitude),
 #    Latitude = first(Latitude),
- #   type = first(type),
- #   datazone2011 = first(datazone2011)
- # )
+#   type = first(type),
+#   datazone2011 = first(datazone2011)
+# )
 
 
 # load in 2020 deprivation data
-#simd_map_data <- simd2020 %>%
+# simd_map_data <- simd2020 %>%
 #  filter(hscp_locality == LOCALITY) %>%
- # dplyr::select(datazone2011, simd)
+# dplyr::select(datazone2011, simd)
 
 # merge with shapefile
-#zones <- merge(zones, simd_map_data, by = "datazone2011")
+# zones <- merge(zones, simd_map_data, by = "datazone2011")
 
 
 # set colours for simd
-#simd_col <- c("#de4243", "#f6bf87", "#ffffc2", "#b9e1eb", "#4f81bd")
+# simd_col <- c("#de4243", "#f6bf87", "#ffffc2", "#b9e1eb", "#4f81bd")
 
-#simd_cats <- c(
+# simd_cats <- c(
 #  "SIMD 1",
 #  "SIMD 2",
 #  "SIMD 3",
 #  "SIMD 4",
 #  "SIMD 5"
-#)
-#loc.cols <- colorFactor(simd_col, domain = zones$simd, levels = 1:5)
+# )
+# loc.cols <- colorFactor(simd_col, domain = zones$simd, levels = 1:5)
 
 
 
 ## Create Map
-#simd_map <-
+# simd_map <-
 #  leaflet(options = leafletOptions(zoomControl = FALSE, attributionControl = FALSE)) %>%
-  ##order layers, map place names over polygon layer
+## order layers, map place names over polygon layer
 #  addMapPane("providertitles", zIndex = 430) %>%
 #  addMapPane("polygons", zIndex = 440) %>%
-  ##add map background and map place names
+## add map background and map place names
 #  addProviderTiles(providers$CartoDB.PositronNoLabels) %>%
 #  addProviderTiles(provider = providers$CartoDB.PositronOnlyLabels,
 #                   options = pathOptions(pane = "providertitles")) %>%
-  ## Locality shapefiles
+## Locality shapefiles
 #  addPolygons(data=zones,
 #              fillColor = ~loc.cols(simd),
 #              fillOpacity = 0.7,
@@ -191,20 +191,22 @@ perc_top_quintile <- simd_perc_breakdown[5, ]$perc
 #              stroke=T,
 #              weight = 2,
 #              label = ~ simd,
- #             group = "SIMD") %>%
+#             group = "SIMD") %>%
 
- # addLegend("bottomright", pal = loc.cols, values = zones$simd,title = "SIMD",opacity = 0.7, group="SIMD")
+# addLegend("bottomright", pal = loc.cols, values = zones$simd,title = "SIMD",opacity = 0.7, group="SIMD")
 
 ## Set file path for map
-#lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 ## Save map in localities
-#mapshot(simd_map, file = paste0(lp_path, "/Demographics/map.png"))
+# mapshot(simd_map, file = paste0(lp_path, "/Demographics/map.png"))
 
-#rm(zones, places, simd_map_data)
+# rm(zones, places, simd_map_data)
 
 # load in shapefile for mapping
-zones<-read_sf(dsn = "//conf/linkage/output/lookups/Unicode/Geography/Shapefiles/Data Zones 2011/SG_DataZone_Bdry_2011.shp") %>% st_transform(4326) %>% rename(datazone2011 = datazone20)
+zones <- read_sf(dsn = "//conf/linkage/output/lookups/Unicode/Geography/Shapefiles/Data Zones 2011/SG_DataZone_Bdry_2011.shp") %>%
+  st_transform(4326) %>%
+  rename(datazone2011 = datazone20)
 
 # merge lookup and shapefile
 zones <- merge(zones, lookup_dz, by = "datazone2011")
@@ -212,38 +214,44 @@ zones <- merge(zones, lookup_dz, by = "datazone2011")
 # subset for Locality
 zones <- subset(zones, hscp_locality == LOCALITY)
 
-#Get latitude and longitdue co-ordinates for each datazone, find min and max.
+# Get latitude and longitdue co-ordinates for each datazone, find min and max.
 zones_coord <-
   zones %>%
   sf::st_coordinates() %>%
   as_tibble() %>%
   select("long" = X, "lat" = Y) %>%
-  summarise(min_long = min(long),
-            max_long = max(long),
-            min_lat = min(lat),
-            max_lat = max(lat))
+  summarise(
+    min_long = min(long),
+    max_long = max(long),
+    min_lat = min(lat),
+    max_lat = max(lat)
+  )
 
-#Get min and max longitude for locality
+# Get min and max longitude for locality
 min_long <- zones_coord$min_long
 max_long <- zones_coord$max_long
 min_lat <- zones_coord$min_lat
 max_lat <- zones_coord$max_lat
 
 # get place names
-places <- read_csv(paste0("/conf/linkage/output/lookups/Unicode/Geography/",
-                          "Shapefiles/Scottish Places/Places to Data",
-                          " Zone Lookup.csv")) %>%
+places <- read_csv(paste0(
+  "/conf/linkage/output/lookups/Unicode/Geography/",
+  "Shapefiles/Scottish Places/Places to Data",
+  " Zone Lookup.csv"
+)) %>%
   rename(datazone2011 = DataZone) %>%
   filter(datazone2011 %in% zones$datazone2011) %>%
-  #extra filter to remove place names with coordinates outwith locality
+  # extra filter to remove place names with coordinates outwith locality
   filter(Longitude >= min_long & Longitude <= max_long &
-           Latitude >= min_lat & Latitude <= max_lat) %>%
+    Latitude >= min_lat & Latitude <= max_lat) %>%
   group_by(name) %>%
-  dplyr::summarise(Longitude = first(Longitude),
-                   Latitude = first(Latitude),
-                   type = first(type),
-                   datazone2011 = first(datazone2011)) %>%
-  st_as_sf(coords = c("Longitude","Latitude"), remove = FALSE, crs = 4326)
+  dplyr::summarise(
+    Longitude = first(Longitude),
+    Latitude = first(Latitude),
+    type = first(type),
+    datazone2011 = first(datazone2011)
+  ) %>%
+  st_as_sf(coords = c("Longitude", "Latitude"), remove = FALSE, crs = 4326)
 
 
 # load in 2020 deprivation data
@@ -260,27 +268,35 @@ zones <- merge(zones, simd_map_data, by = "datazone2011")
 # zones_tidy <- left_join(zones_tidy, zones@data)
 
 # set colours for simd
-simd_col <- c("#de4243","#f6bf87", "#ffffc2", "#b9e1eb", "#4f81bd")
-simd_cats <- c("SIMD 1",
-               "SIMD 2",
-               "SIMD 3",
-               "SIMD 4",
-               "SIMD 5")
+simd_col <- c("#de4243", "#f6bf87", "#ffffc2", "#b9e1eb", "#4f81bd")
+simd_cats <- c(
+  "SIMD 1",
+  "SIMD 2",
+  "SIMD 3",
+  "SIMD 4",
+  "SIMD 5"
+)
 
 # plot
 simd_map <- ggplot() +
-  geom_sf(data = zones,
-          aes(fill = factor(simd, levels = 1:5)), colour = "black") +
+  geom_sf(
+    data = zones,
+    aes(fill = factor(simd, levels = 1:5)), colour = "black"
+  ) +
   scale_fill_manual(values = simd_col, labels = simd_cats, drop = FALSE) +
-  geom_text_repel(data = places, aes(x = Longitude, y = Latitude,
-                                     label = name),
-                  color = "black", size = 3.5,
-                  max.overlaps = getOption("ggrepel.max.overlaps", default = 12)) +
+  geom_text_repel(
+    data = places, aes(
+      x = Longitude, y = Latitude,
+      label = name
+    ),
+    color = "black", size = 3.5,
+    max.overlaps = getOption("ggrepel.max.overlaps", default = 12)
+  ) +
   #
   # scale_x_continuous(limits = c(min(zones_tidy$long), max(zones_tidy$long))) +
   # scale_y_continuous(limits = c(min(zones_tidy$lat), max(zones_tidy$lat))) +
   theme_void() +
-  guides(fill=guide_legend(title="SIMD Quintile")) +
+  guides(fill = guide_legend(title = "SIMD Quintile")) +
   labs(caption = "Source: Scottish Government, Public Health Scotland")
 
 
