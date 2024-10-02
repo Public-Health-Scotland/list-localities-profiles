@@ -8,7 +8,7 @@ read_in_localities <- function(dz_level = FALSE) {
 
   if (!dz_level) {
     data <- data |>
-      dplyr::distinct(hscp_locality, hscp2019name, hscp2019, hb2019name, hb2019)
+      dplyr::distinct(hscp_locality, hscp2019name, hscp2019, hb2019name, hb2019,mm_ward_name,mm_ward_code)
   }
 
   return(data)

@@ -24,7 +24,7 @@ source("Master RMarkdown Document & Render Code/overwrite_with_custom_functions.
 
 ## Specify HSCP here
 ## NOTE - make sure that the formatting of the partnership's name matches the lookup
-HSCP <- "South Ayrshire"
+HSCP <- "East Ayrshire"
 
 # Below creates locality list of all the localities in a chosen HSCP
 lookup <- read_in_localities()
