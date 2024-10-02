@@ -3,9 +3,10 @@
 # Contains various settings and functions to be used in other locality profile scripts
 
 # How to read in:
-# source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/Global Script.R)
+# source("Master RMarkdown Document & Render Code/Global Script.R)
 
-## Packages for functions (** note - should this contain all packages necessary for locality profiles?
+## Packages for functions ----
+# (** note - should this contain all packages necessary for locality profiles?
 # and automatically installing missing packages?)
 library(tidyverse)
 library(janitor)
@@ -15,7 +16,7 @@ library(magrittr)
 library(lubridate)
 
 
-#### Colours & Formatting ####
+#### Colours & Formatting #### ----
 
 # Installing phsstyles:
 # remotes::install_github("Public-Health-Scotland/phsstyles",
@@ -124,7 +125,7 @@ theme_profiles <- function() {
   )
 }
 
-#### Lookup ####
+#### Lookup #### ----
 
 ## Import the latest locality lookup from cl-out ----
 # Argument dz_level: Allows you to choose whether lookup contains all datazones in localities
@@ -391,7 +392,7 @@ scotpho_time_trend_HSCP <- function(data, chart_title, xaxis_title, yaxis_title,
     )
 }
 
-## Bar chart function for ScotPHO data
+## Bar chart function for ScotPHO data ----
 
 # Creates a horizontal bar chart comparing the last time period of data across
 # all localities in a partnership, the HSCP, HB, and Scotland
@@ -409,16 +410,17 @@ scotpho_bar_chart <- function(data, chart_title, xaxis_title) {
     filter(year == max(year)) %>%
     filter(
       (area_name %in% c(LOCALITY, other_locs$hscp_locality) & area_type == "Locality") |
-      (area_name == HSCP & area_type == "HSCP") |
-      area_name == HB |
-      area_name == "Scotland") %>%
+        (area_name == HSCP & area_type == "HSCP") |
+        area_name == HB |
+        area_name == "Scotland"
+    ) %>%
     mutate(
       text_highlight = area_name == LOCALITY,
       area_type = factor(area_type, levels = c("Locality", "HSCP", "Health board", "Scotland")),
       area_name = fct_reorder(as.factor(str_wrap(area_name, 28)), measure)
     ) %>%
     arrange(area_name)
-  
+
   ggplot(data_for_plot) +
     aes(y = area_name, fill = area_type, weight = measure) +
     geom_bar(colour = "white") +
@@ -484,7 +486,7 @@ check_missing_data_scotpho <- function(data) {
 }
 
 
-########### Unscheduled care functions - can be used across other topics ############
+### Unscheduled care functions - can be used across other topics ### ----
 
 # Reformat age groups to specific strings shown i.e. add spaces
 age_group_1 <- function(age_group) {
