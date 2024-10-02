@@ -216,7 +216,7 @@ x <- x + 1
 
 #####Page break
 
-In `r latest_period_adp_presc`, `r LOCALITY` had `r adp_presc_diff_scot` proportion of the population being prescribed ADP medication compared to the rest of Scotland (`r format_number_for_text(adp_presc_latest))` `r adp_presc_diff_scot` proportion of the population being prescribed ADP medication compared to the rest of Scotland (`r format_number_for_text(adp_presc_latest)`% compared to `r format_number_for_text(scot_adp_presc)`%).
+In `r latest_period_adp_presc`, `r LOCALITY` had a `r adp_presc_diff_scot` proportion of the population being prescribed ADP medication compared to the rest of Scotland (`r format_number_for_text(adp_presc_latest))` `r adp_presc_diff_scot` proportion of the population being prescribed ADP medication compared to the rest of Scotland (`r format_number_for_text(adp_presc_latest)`% compared to `r format_number_for_text(scot_adp_presc)`%).
 
 ####Figure `r x`: Percentage population prescribed medication for anxiety, depression, and psychosis by area for the latest time period available. \newline
 
