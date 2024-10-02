@@ -13,8 +13,8 @@ custom_lookup <- readxl::read_excel(fs::path(
   "custom_lookups/Ayrshire_mmw.xlsx"
 ))|>
   # Clean names
-  clean_names() |>
-  left_join(dz_lookup) 
+  left_join(dz_lookup) |>
+  clean_names()
 
 
 # Make locality lookup
@@ -35,6 +35,7 @@ custom_lookup |>
   distinct(
     intzone2011,
     intzone2011name,
+    hscp_locality,
     mm_ward_name
   ) |>
   # Write out as a parquet file

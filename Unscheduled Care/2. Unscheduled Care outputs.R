@@ -12,7 +12,7 @@ ext_year <- 2023
 # Set locality profiles file path
 # lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 import_folder <- paste0(lp_path, "Unscheduled Care/DATA ", ext_year, "/")
-import_folder_southayrshire <- path(lp_path, "Unscheduled Care", paste("South Ayrshire Data", ext_year))
+import_folder_southayrshire <- path(lp_path, "Unscheduled Care", paste("East Ayrshire mmw Data", ext_year))
 
 ## Packages
 library(tidyverse)

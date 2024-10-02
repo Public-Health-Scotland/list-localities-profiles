@@ -46,7 +46,16 @@ read_in_iz <- function(dz_all = FALSE) {
       dplyr::mutate(
         hscp_locality = dplyr::if_else(is.na(hscp_locality.y), hscp_locality.x, hscp_locality.y),
         .keep = "unused"
-      ) 
+      ) |> 
+      dplyr::mutate(
+        intzone2011 = dplyr::if_else(is.na(intzone2011.y), intzone2011.x, intzone2011.y),
+        .keep = "unused")|> 
+      dplyr::mutate(
+        intzone2011name = dplyr::if_else(is.na(intzone2011name.y), intzone2011name.x, intzone2011name.y),
+        .keep = "unused")|> 
+      dplyr::mutate(
+        mm_ward_name = dplyr::if_else(is.na(mm_ward_name.y), mm_ward_name.x, mm_ward_name.y),
+        .keep = "unused")
   }
   
   return(iz_lookup)

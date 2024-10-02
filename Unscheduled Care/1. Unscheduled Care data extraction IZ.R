@@ -31,7 +31,7 @@ source("Master RMarkdown Document & Render Code/overwrite_with_custom_functions.
 
 
 # Folder to export to
-exportfolder <- path(lp_path, "Unscheduled Care", paste("South Ayrshire Data", ext_year))
+exportfolder <- path(lp_path, "Unscheduled Care", paste("East Ayrshire mmw Data", ext_year))
 
 
 ## Lookups ----
