@@ -43,7 +43,21 @@ format_number_for_text <- function(x) {
   format(x, big.mark = ",")
 }
 
-## Theme for charts
+# This will return the correct article depending on the (max 2-digit) number supplied
+# e.g. 
+# 81.2 -> an 
+# 18 -> an
+# 7.2 -> an
+# To be used for "a xx increase" which could be "an xx increase"
+get_article <- function(number) {
+  if (substr(number, 1, 1) == "8" || substr(number, 1, 2) == "18") {
+    return("an")
+  } else {
+    return("a")
+  }
+}
+
+## Theme for charts ----
 # This theme is similar to theme_phs() from phsstyles but adapted to locality profiles
 # Differences include smaller text (to ensure names of areas always fit regardless of length)
 # Code taken from phsstyles Github page
