@@ -44,7 +44,7 @@ filepath <- paste0("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/
 # source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set locality (for testing only)
-## LOCALITY = "Whalsay and Skerries"
+# LOCALITY <- "Whalsay and Skerries"
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
 
 
@@ -368,12 +368,3 @@ scot_perc_housesFH <- format_number_for_text(sum(house_raw_dat2$council_tax_band
   house_raw_dat2$council_tax_band_h,
   na.rm = TRUE
 ) / sum(house_raw_dat2$total_number_of_dwellings, na.rm = TRUE) * 100)
-
-
-
-#
-# detach(package:tidyverse, unload=TRUE)
-# detach(package:maps, unload=TRUE)
-# detach(package:reshape2, unload=TRUE)
-# detach(package:gridExtra, unload=TRUE)
-# detach(package:janitor, unload=TRUE)

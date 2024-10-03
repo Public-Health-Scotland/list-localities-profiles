@@ -14,7 +14,7 @@
 # source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Select a locality based on the HSCP (for source code "2. Services Outputs" to run - it does not matter which one is chosen)
-# LOCALITY <- as.character(filter(read_in_localities(), hscp2019name == HSCP)[1, 1])
+# LOCALITY <- read_in_localities() |> filter(hscp2019name == HSCP) |> slice(1) |> pull(hscp_locality)
 
 # Source the data manipulation script for services
 # source("Services/2. Services data manipulation & table.R")

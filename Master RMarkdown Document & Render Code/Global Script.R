@@ -17,11 +17,6 @@ library(lubridate)
 
 #### Colours & Formatting ####
 
-# Installing phsstyles:
-# remotes::install_github("Public-Health-Scotland/phsstyles",
-#                         upgrade = "never"
-# )
-
 ## PHS colour palette from phsstyles
 palette <- phsstyles::phs_colours(c(
   "phs-purple", "phs-magenta", "phs-blue", "phs-green",
