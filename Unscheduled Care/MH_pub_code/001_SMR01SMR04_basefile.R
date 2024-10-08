@@ -85,7 +85,6 @@ channel <- odbc::dbConnect(
   pwd = rstudioapi::askForPassword("Enter LDAP password:")
 )
 
-
 ###################################
 ### SECTION 2 - DATA EXTRACTION----
 ###################################

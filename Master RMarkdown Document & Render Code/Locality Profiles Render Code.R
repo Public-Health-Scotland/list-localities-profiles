@@ -6,6 +6,7 @@ library(tidyverse)
 library(knitr)
 library(markdown)
 library(rmarkdown)
+library(fs)
 
 rm(list = ls())
 
@@ -18,9 +19,12 @@ lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality
 # Source in functions code
 source("Master RMarkdown Document & Render Code/Global Script.R")
 
+# Source custom localities function to overwrite the standard
+source("Master RMarkdown Document & Render Code/overwrite_with_custom_functions.R")
+
 ## Specify HSCP here
 ## NOTE - make sure that the formatting of the partnership's name matches the lookup
-HSCP <- "Angus"
+HSCP <- "South Ayrshire"
 
 # Below creates locality list of all the localities in a chosen HSCP
 lookup <- read_in_localities()
@@ -31,6 +35,9 @@ HSCP_list <- unique(lookup$hscp2019name)
 locality_list <- lookup |>
   filter(hscp2019name == HSCP) |>
   pull(hscp_locality)
+
+# We don't want to create a profile doc for 'other areas'
+#locality_list <- locality_list[locality_list != "Other areas"]
 
 
 ## Loop to create the profiles for all the localities in the list
@@ -88,3 +95,4 @@ for (LOCALITY in locality_list) {
   # Force garbage collection to free up memory
   gc()
 }
+
