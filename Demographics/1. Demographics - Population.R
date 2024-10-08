@@ -20,24 +20,17 @@ library(janitor)
 library(readxl)
 library(reshape2)
 library(scales)
-# library(rgdal)
 library(broom)
-# library(OpenStreetMap)
-# library(ggrepel)
 library(phsstyles)
 
 # Source in global functions/themes script
-# source("./Master RMarkdown Document & Render Code/Global Script.R")
-
-## File path
-filepath <- "./RMarkdown/Locality Profiles/Demographics/"
+#  source("./Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Final document will loop through a list of localities
 # Create placeholder for for loop
 # LOCALITY <- "Inverness"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
-
 
 
 ########################## SECTION 2: Data Imports ###############################
@@ -158,7 +151,7 @@ pop_pyramid <- ggplot(
     limits = max(pop_breakdown$Population) * c(-1, 1)
   ) +
   scale_fill_manual(values = palette) +
-  theme_profiles() + # guides(fill = FALSE)
+  theme_profiles() +
   labs(
     x = "Population",
     y = "Age Group",
@@ -488,11 +481,3 @@ scot_over65 <- pop_scot %>%
   pull(perc_over65)
 
 rm(pop_hscp, pop_scot)
-
-
-
-# detach(package:tidyverse, unload=TRUE)
-# detach(package:ggrepel, unload=TRUE)
-# detach(package:reshape2, unload=TRUE)
-# detach(package:rgdal, unload=TRUE)
-# detach(package:janitor, unload=TRUE)

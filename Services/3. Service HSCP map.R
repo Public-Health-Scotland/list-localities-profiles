@@ -14,7 +14,7 @@
 # source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Select a locality based on the HSCP (for source code "2. Services Outputs" to run - it does not matter which one is chosen)
-# LOCALITY <- as.character(filter(read_in_localities(), hscp2019name == HSCP)[1, 1])
+# LOCALITY <- read_in_localities() |> filter(hscp2019name == HSCP) |> slice(1) |> pull(hscp_locality)
 
 # Source the data manipulation script for services
 # source("Services/2. Services data manipulation & table.R")
@@ -102,7 +102,7 @@ places <- read_csv(paste0(
   filter(type != "hamlet" & type != "village")
 
 # 3.3 Background map ----
-locality_map_id <- read_csv("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Services/locality_map_id.csv")
+locality_map_id <- read_csv(paste0(lp_path, "Services/", "locality_map_id.csv"))
 api_key <- locality_map_id$id
 # upload map background from stadia maps, enter registration key, filter for max and min long/lat
 register_stadiamaps(key = api_key)
