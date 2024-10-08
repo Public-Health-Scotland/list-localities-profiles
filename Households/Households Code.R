@@ -38,10 +38,10 @@ max_year_housing <- 2022
 ext_year <- 2023
 
 # Set Directory.
-filepath <- paste0("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Households/")
+# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 # Read in Global Script for RMarkdown (For testing only)
-# source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/Global Script.R")
+# source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set locality (for testing only)
 # LOCALITY <- "Whalsay and Skerries"
@@ -54,9 +54,9 @@ filepath <- paste0("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/
 
 house_raw_dat <- data.frame()
 
-# get historic housing data, each year is on a seperate sheet so do a for loop
+# get historic housing data, each year is on a separate sheet so do a for loop
 for (i in 2014:max_year_housing) {
-  temp <- read_excel(paste0(filepath, "Data ", ext_year, "/household_estimates.xlsx"),
+  temp <- read_excel(paste0(lp_path, "Households/", "Data ", ext_year, "/household_estimates.xlsx"),
     sheet = paste(i), skip = 3
   ) %>%
     mutate(year = i) %>%
@@ -144,7 +144,7 @@ house_table <- house_dat1 %>%
 
 # https://www.nrscotland.gov.uk/statistics-and-data/statistics/statistics-by-theme/households/household-estimates/small-area-statistics-on-households-and-dwellings
 
-house_raw_dat2 <- read_excel(paste0(filepath, "Data ", ext_year, "/council_tax.xlsx"),
+house_raw_dat2 <- read_excel(paste0(lp_path, "Households/", "Data ", ext_year, "/council_tax.xlsx"),
   sheet = as.character(max_year_housing), skip = 4
 ) %>%
   clean_names()

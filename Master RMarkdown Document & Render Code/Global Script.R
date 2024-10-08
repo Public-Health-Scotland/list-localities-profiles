@@ -2,8 +2,8 @@
 
 # Contains various settings and functions to be used in other locality profile scripts
 
-# How to read in:
-# source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/Global Script.R)
+# How to use this script:
+# source("Master RMarkdown Document & Render Code/Global Script.R)
 
 ## Packages for functions (** note - should this contain all packages necessary for locality profiles?
 # and automatically installing missing packages?)

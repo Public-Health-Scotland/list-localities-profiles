@@ -2,7 +2,7 @@
 title: ''
 output: 
   word_document:
-    reference_docx: "//conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Summary Table/ST_ref_doc.docx"
+    reference_docx: "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Summary Table/ST_ref_doc.docx"
 ---
 
 ```{r setup, include = FALSE}
