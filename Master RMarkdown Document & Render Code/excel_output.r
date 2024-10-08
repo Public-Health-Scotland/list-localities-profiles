@@ -48,21 +48,21 @@ for (LOCALITY in locality_list) {
   
   # demographics
   source("Demographics/1. Demographics - Population.R")
-  source("./Demographics/2. Demographics - SIMD.R")
+  source("Demographics/2. Demographics - SIMD.R")
   # lifestyle & risk factors
-  source("./Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
+  source("Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
   
   # unscheduled care
-  source("./Unscheduled Care/2. Unscheduled Care outputs.R")
+  source("Unscheduled Care/2. Unscheduled Care outputs.R")
   
   # general health
-  source("./General Health/3. General Health Outputs.R")
+  source("General Health/3. General Health Outputs.R")
   
   # housing
-  source("./Households/Households Code.R")
+  source("Households/Households Code.R")
   
   # services
-  source("./Services/2. Services data manipulation & table.R")
+  source("Services/2. Services data manipulation & table.R")
   
   # Define data frames and their corresponding sheet names
   df <- list(
