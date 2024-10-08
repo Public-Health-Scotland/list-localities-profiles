@@ -156,4 +156,4 @@ openxlsx::writeData(wb, sheet = 'Index', x = index_data)
 
 
 # Save the workbook to a file
-openxlsx::saveWorkbook(wb, paste0("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/background data/","custom South Ayrshire",".xlsx"), overwrite = TRUE)
+openxlsx::saveWorkbook(wb, paste0(lp_path, "background data/", "custom South Ayrshire", ".xlsx"), overwrite = TRUE)

@@ -30,13 +30,7 @@ lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality
 lookup <- read_in_localities(dz_level = TRUE)
 
 # Read in SLF individual level file
-# slf <- read.fst(paste0(
-#  "/conf/hscdiip/01-Source-linkage-files/",
-#  "source-individual-file-", fy, ".fst"
-# )) %>%
-#  select(-locality, -hscp2019, -hb2019)
-
-slf <- slfhelper::read_slf_individual("2223",
+slf <- read_slf_individual("2223",
   col_select = c("year", "datazone2011", "hscp2018", "age", "keep_population", ltc_vars),
   as_data_frame = TRUE
 )
@@ -58,7 +52,6 @@ slf$age_group <- case_when(
 
 ltc_agg <- slf %>%
   left_join(lookup, by = "datazone2011") %>%
-  # drop_na(Locality) %>%
   group_by(year, hscp2019name, hscp_locality, age_group, total_ltc) %>%
   summarise(
     arth = sum(arth),

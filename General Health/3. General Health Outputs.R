@@ -10,17 +10,12 @@
 ############# 1) PACKAGES, DIRECTORY, LOOKUPS, DATA IMPORT + CLEANING #############
 
 ## load packages
-# library(readxl)
 library(tidyverse)
-# library(reshape2)
-# library(knitr)
 library(janitor)
 library(cowplot)
 library(gridExtra)
 library(grid)
 library(png)
-
-# library(tidylog)
 library(phsstyles)
 
 
