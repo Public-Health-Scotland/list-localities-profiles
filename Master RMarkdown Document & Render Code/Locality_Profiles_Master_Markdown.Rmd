@@ -15,45 +15,14 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 options(kableExtra.auto_format = FALSE)
 
-## Project file path
-# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
-
-# Line below for testing only
-# LOCALITY <- "Moray East"
-
 # Figure and table number objects
 x <- 1 # figures
 y <- 1 # tables
-
-# # demographics
-# source("Demographics/Scripts/1. Demographics - Population.R")
-# source("Demographics/Scripts/2. Demographics - SIMD.R")
-#
-# # housing
-# source("Households/Scripts/Households Code.R")
-#
-# # services
-# source("Services/Scripts/2. Services data manipulation & table.R")
-# # services map (uncomment this when testing out individual localities)
-# # source("Services/Scripts/3. Service HSCP map.R")
-#
-# # general health
-# source("General Health/Scripts/3. General Health Outputs.R")
-#
-# # lifestyle & risk factors
-# source("Lifestyle & Risk Factors/Scripts/2. Lifestyle & Risk Factors Outputs.R")
-#
-# # unscheduled care
-# source("Unscheduled Care/Scripts/2. Unscheduled Care outputs.R")
-#
-# # appendices
-# source("Master RMarkdown Document & Render Code/Tables for Appendix.R")
 
 library(tidyverse)
 library(knitr)
 library(gridExtra)
 library(grid)
-# detach(package:tidylog, unload = TRUE)
 ```
 
 ##### Page break
