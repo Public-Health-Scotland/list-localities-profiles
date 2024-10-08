@@ -8,7 +8,7 @@ output:
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE, comment = NA)
 # Lines below for testing only:
- LOCALITY <- "Falkirk West"
+# LOCALITY <- "Falkirk West"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
 # LOCALITY <- "Mid-Argyll, Kintyre and Islay"
 # LOCALITY <- "City of Dunfermline"
@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = FALSE, comment = NA)
 # LOCALITY <- "Whalsay and Skerries"
 # LOCALITY <- "Inverclyde East"
  
- setwd("~/list-localities-profiles/")
+# setwd("~/list-localities-profiles/")
 
 ## Project file path
  lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
