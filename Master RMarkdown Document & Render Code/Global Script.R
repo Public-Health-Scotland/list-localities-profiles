@@ -146,6 +146,9 @@ read_in_localities <- function(dz_level = FALSE) {
   return(data)
 }
 
+count_localities <- function(locality_lookup, hscp_name) {
+  return(sum(locality_lookup[["hscp2019name"]] == hscp_name))
+}
 
 ## Function to read in latest SPD file ----
 
