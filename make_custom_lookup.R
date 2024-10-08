@@ -14,6 +14,7 @@ custom_lookup <- readxl::read_excel(fs::path(
 ))|>
   # Clean names
   left_join(dz_lookup) |>
+  mutate(hb2019name = "NHS Ayrshire and Arran") |>
   clean_names()
 
 
