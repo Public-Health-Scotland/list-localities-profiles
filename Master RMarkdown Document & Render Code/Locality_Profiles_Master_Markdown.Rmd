@@ -518,6 +518,8 @@ In `r latest_period_adp_presc`, `r LOCALITY` had a `r adp_presc_diff_scot` propo
 
 ```{r echo = FALSE, fig.width = 7.5, fig.height = 4.8, fig.cap = "A bar graph showing the percentage of the population prescribed anxiety, depression and psychosis medication in the most recent financial year for all Localities in the partnership and the total percentage for the HSCP, Health Board and all Scotland."}
 adp_presc_bar
+
+x <- x + 1
 ```
 
 
