@@ -191,9 +191,3 @@ services_tibble <- tibble(
     nrow(other_care_type)
   )
 )
-
-
-# detach(package:tidyverse, unload=TRUE)
-# detach(package:janitor, unload=TRUE)
-# detach(package:mapview, unload=TRUE)
-# detach(package:data.table, unload=TRUE)

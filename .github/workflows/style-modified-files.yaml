@@ -3,13 +3,12 @@ name: Style Modified Files
 on:
   pull_request_target: # Triggers when code is pushed to a PR's target branch
     types: [opened, synchronize, reopened]
+    
+permissions: write-all
 
 jobs:
   style_check:
     runs-on: ubuntu-latest
-    permissions: write-all
-    env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -59,11 +58,9 @@ jobs:
 
       - name: Style modified R files
         run: |
-          files <- gh::gh("GET https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files")
+          files <- gh::gh("/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files")
           changed_files <- purrr::map_chr(files, "filename")
-          all_files <- list.files(recursive = TRUE)
-          exclusions_list <- as.list(setdiff(all_files, changed_files))
-          styler::style_dir(exclude_files = exclusions_list)
+          styler::style_dir(exclude_files = setdiff(list.files(recursive = TRUE), changed_files))
         shell: Rscript {0}
 
       - name: Commit and push changes
@@ -71,3 +68,4 @@ jobs:
         with:
           commit_message: "Style code"
           file_pattern: '*.R *.Rmarkdown'
+          skip_checkout: true
