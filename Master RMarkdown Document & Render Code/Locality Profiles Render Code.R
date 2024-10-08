@@ -77,9 +77,6 @@ for (LOCALITY in locality_list) {
   # appendices
   source("./Master RMarkdown Document & Render Code/Tables for Appendix.R")
 
-  # Remove tidylog package which messes up outputs
-  # detach(package:tidylog, unload = TRUE)
-
   ## 1b) Create the main body of the profiles
 
   rmarkdown::render("./Master RMarkdown Document & Render Code/Locality_Profiles_Master_Markdown.Rmd",
