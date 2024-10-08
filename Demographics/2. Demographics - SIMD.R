@@ -33,12 +33,6 @@ library(sf)
 # Source in global functions/themes script
 # source("Master RMarkdown Document & Render Code/Global Script.R")
 
-## File path
-filepath <- paste0(
-  "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/",
-  "RMarkdown/Locality Profiles/Demographics/"
-)
-
 ## Final document will loop through a list of localities
 # Create placeholder for for loop
 # LOCALITY <-  "Skye, Lochalsh and West Ross"
@@ -262,11 +256,6 @@ simd_map_data <- simd2020 %>%
 # merge with shapefile
 zones <- merge(zones, simd_map_data, by = "datazone2011")
 
-# convert to df for ggplot and add data back on
-# zones_tidy <- tidy(zones)
-# zones$id <- row.names(zones)
-# zones_tidy <- left_join(zones_tidy, zones@data)
-
 # set colours for simd
 simd_col <- c("#de4243", "#f6bf87", "#ffffc2", "#b9e1eb", "#4f81bd")
 simd_cats <- c(
@@ -292,9 +281,6 @@ simd_map <- ggplot() +
     color = "black", size = 3.5,
     max.overlaps = getOption("ggrepel.max.overlaps", default = 12)
   ) +
-  #
-  # scale_x_continuous(limits = c(min(zones_tidy$long), max(zones_tidy$long))) +
-  # scale_y_continuous(limits = c(min(zones_tidy$lat), max(zones_tidy$lat))) +
   theme_void() +
   guides(fill = guide_legend(title = "SIMD Quintile")) +
   labs(caption = "Source: Scottish Government, Public Health Scotland")
@@ -528,10 +514,3 @@ hscp_simd <- pop_data %>%
 
 hscp_simd_top <- filter(hscp_simd, simd2020v2_sc_quintile == 5)$perc
 hscp_simd_bottom <- filter(hscp_simd, simd2020v2_sc_quintile == 1)$perc
-
-
-# detach(package:tidyverse, unload=TRUE)
-# detach(package:ggrepel, unload=TRUE)
-# detach(package:reshape2, unload=TRUE)
-# detach(package:rgdal, unload=TRUE)
-# detach(package:janitor, unload=TRUE)

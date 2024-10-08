@@ -68,3 +68,4 @@ jobs:
         with:
           commit_message: "Style code"
           file_pattern: '*.R *.Rmarkdown'
+          skip_checkout: true
