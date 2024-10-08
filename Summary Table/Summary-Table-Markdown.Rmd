@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE, comment = NA)
 # LOCALITY <- "City of Dunfermline"
 # LOCALITY <- "Barra"
 # LOCALITY <- "Whalsay and Skerries"
-
+# LOCALITY <- "Ballochmyle"
 ## Project file path
 # lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
@@ -356,7 +356,7 @@ time <- c(
 )
 
 # Values
-loc_values <- round_half_up(c(alcohol_hosp_latest, alcohol_deaths_latest, drug_hosp_latest, bowel_screening_latest), 1)
+#loc_values <- round_half_up(c(alcohol_hosp_latest, alcohol_deaths_latest, drug_hosp_latest, bowel_screening_latest), 1)
 other_loc_values <- bind_rows(other_locs_alcohol_hosp, other_locs_alcohol_deaths, other_locs_drug_hosp, other_locs_bowel_screening)
 hscp_values <- c(hscp_alcohol_hosp, hscp_alcohol_deaths, hscp_drug_hosp, hscp_bowel_screening)
 scot_values <- c(scot_alcohol_hosp, scot_alcohol_deaths, scot_drug_hosp, scot_bowel_screening)
@@ -365,7 +365,7 @@ scot_values <- c(scot_alcohol_hosp, scot_alcohol_deaths, scot_drug_hosp, scot_bo
 col_indicator <- tableGrob(indicators, cols = "Lifestyle & Risk Factors", theme = theme_grey)
 col_datatype <- tableGrob(datatype, cols = "", theme = theme_grey)
 col_time <- tableGrob(time, cols = "", theme = theme_grey)
-col_loc <- tableGrob(loc_values, cols = "", theme = theme_loc)
+#col_loc <- tableGrob(loc_values, cols = "", theme = theme_loc)
 col_hscp <- tableGrob(hscp_values, cols = "", theme = theme_hscp)
 col_scot <- tableGrob(scot_values, cols = "", theme = theme_scot)
 col_otherlocs <- tableGrob(other_loc_values, rows = NULL, cols = rep("", n_loc - 1), theme = theme_otherlocs)
