@@ -2,7 +2,7 @@
 
 # Contains various settings and functions to be used in other locality profile scripts
 
-# How to read in:
+# How to use this script:
 # source("Master RMarkdown Document & Render Code/Global Script.R)
 
 ## Packages for functions ----
@@ -17,11 +17,6 @@ library(lubridate)
 
 
 #### Colours & Formatting #### ----
-
-# Installing phsstyles:
-# remotes::install_github("Public-Health-Scotland/phsstyles",
-#                         upgrade = "never"
-# )
 
 ## PHS colour palette from phsstyles
 palette <- phsstyles::phs_colours(c(

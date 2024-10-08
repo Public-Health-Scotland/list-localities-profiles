@@ -2,8 +2,8 @@
 title: ''
 output:
   word_document:
-    reference_docx: //conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality
-      Profiles/Master RMarkdown Document & Render Code/Locality_Profiles_Report_Template.docx
+    reference_docx: "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality
+      Profiles/Master RMarkdown Document & Render Code/Locality_Profiles_Report_Template.docx"
   html_document:
     df_print: paged
 ---
@@ -22,8 +22,8 @@ options(kableExtra.auto_format = FALSE)
 # LOCALITY <- "City of Dunfermline"
 LOCALITY <- "Inverness"
 
-source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Demographics/Scripts/1. Demographics - Population.R")
-source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Demographics/Scripts/2. Demographics - SIMD.R")
+source("Demographics/Scripts/1. Demographics - Population.R")
+source("Demographics/Scripts/2. Demographics - SIMD.R")
 
 x <- 1 # object for figure numbers
 y <- 1 # object for table numbers
