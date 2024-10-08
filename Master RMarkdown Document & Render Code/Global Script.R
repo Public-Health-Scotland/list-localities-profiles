@@ -5,7 +5,8 @@
 # How to use this script:
 # source("Master RMarkdown Document & Render Code/Global Script.R)
 
-## Packages for functions (** note - should this contain all packages necessary for locality profiles?
+## Packages for functions ----
+# (** note - should this contain all packages necessary for locality profiles?
 # and automatically installing missing packages?)
 library(tidyverse)
 library(janitor)
@@ -15,7 +16,7 @@ library(magrittr)
 library(lubridate)
 
 
-#### Colours & Formatting ####
+#### Colours & Formatting #### ----
 
 ## PHS colour palette from phsstyles
 palette <- phsstyles::phs_colours(c(
@@ -38,7 +39,21 @@ format_number_for_text <- function(x) {
   format(x, big.mark = ",")
 }
 
-## Theme for charts
+# This will return the correct article depending on the (max 2-digit) number supplied
+# e.g. 
+# 81.2 -> an 
+# 18 -> an
+# 7.2 -> an
+# To be used for "a xx increase" which could be "an xx increase"
+get_article <- function(number) {
+  if (substr(number, 1, 1) == "8" || substr(number, 1, 2) == "18") {
+    return("an")
+  } else {
+    return("a")
+  }
+}
+
+## Theme for charts ----
 # This theme is similar to theme_phs() from phsstyles but adapted to locality profiles
 # Differences include smaller text (to ensure names of areas always fit regardless of length)
 # Code taken from phsstyles Github page
@@ -105,7 +120,7 @@ theme_profiles <- function() {
   )
 }
 
-#### Lookup ####
+#### Lookup #### ----
 
 ## Import the latest locality lookup from cl-out ----
 # Argument dz_level: Allows you to choose whether lookup contains all datazones in localities
@@ -372,7 +387,7 @@ scotpho_time_trend_HSCP <- function(data, chart_title, xaxis_title, yaxis_title,
     )
 }
 
-## Bar chart function for ScotPHO data
+## Bar chart function for ScotPHO data ----
 
 # Creates a horizontal bar chart comparing the last time period of data across
 # all localities in a partnership, the HSCP, HB, and Scotland
@@ -390,16 +405,17 @@ scotpho_bar_chart <- function(data, chart_title, xaxis_title) {
     filter(year == max(year)) %>%
     filter(
       (area_name %in% c(LOCALITY, other_locs$hscp_locality) & area_type == "Locality") |
-      (area_name == HSCP & area_type == "HSCP") |
-      area_name == HB |
-      area_name == "Scotland") %>%
+        (area_name == HSCP & area_type == "HSCP") |
+        area_name == HB |
+        area_name == "Scotland"
+    ) %>%
     mutate(
       text_highlight = area_name == LOCALITY,
       area_type = factor(area_type, levels = c("Locality", "HSCP", "Health board", "Scotland")),
       area_name = fct_reorder(as.factor(str_wrap(area_name, 28)), measure)
     ) %>%
     arrange(area_name)
-  
+
   ggplot(data_for_plot) +
     aes(y = area_name, fill = area_type, weight = measure) +
     geom_bar(colour = "white") +
@@ -465,7 +481,7 @@ check_missing_data_scotpho <- function(data) {
 }
 
 
-########### Unscheduled care functions - can be used across other topics ############
+### Unscheduled care functions - can be used across other topics ### ----
 
 # Reformat age groups to specific strings shown i.e. add spaces
 age_group_1 <- function(age_group) {
