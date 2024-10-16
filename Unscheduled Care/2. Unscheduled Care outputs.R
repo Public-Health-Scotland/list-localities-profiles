@@ -1360,7 +1360,8 @@ max_year_re_age <- max(readmissions_age$financial_year)
 
 latest_re_max_age <- readmissions_age %>%
   filter(
-    financial_year == max(financial_year),
+    financial_year == max(financial_year)) %>% 
+  filter(
     data == max(data)
   )
 
@@ -1819,3 +1820,4 @@ word_change_scot_psych <- word_change_calc(scot_psych_hosp$measure[2], scot_psyc
 #                              "Readmissions 28" = readmissions,
 #                              "PPA" = ppa),
 #                     path = paste0(lp_path, "Publishing/SMR Data.xlsx"))
+
