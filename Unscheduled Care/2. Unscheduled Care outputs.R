@@ -913,13 +913,16 @@ max_year_ae_age <- max(ae_att_age$financial_year)
 
 latest_ae_att_max_age <- ae_att_age %>%
   filter(
-    year == max(year),
+    year == max(year)
+  ) %>%
+  filter(
     data == max(data)
   ) %>%
   mutate(formatted_data = format(data, big.mark = ","))
 
 latest_ae_att_loc1_age <- latest_ae_att_max_age %>% pull(formatted_data)
 latest_ae_att_loc2_age <- latest_ae_att_max_age %>% pull(data)
+
 age_group_max <- latest_ae_att_max_age %>% pull(age_group)
 
 first_ae_att_max_age <- ae_att_age %>%
