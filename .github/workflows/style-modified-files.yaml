@@ -22,7 +22,7 @@ jobs:
         with:
           use-public-rspm: true
         
-      - name: Install pak (will install any system deps too)
+      - name: Install pak (will install any system dependancies too)
         run: install.packages("pak")
         shell: Rscript {0}
 
@@ -67,4 +67,5 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Style code"
+          file_pattern: '*.R *.r *.Rmd *.rmd *.Rmarkdown *.rmarkdown'
           skip_checkout: true
