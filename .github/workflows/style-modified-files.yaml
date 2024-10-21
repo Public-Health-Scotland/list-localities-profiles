@@ -72,3 +72,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Style code"
+          skip_checkout: true
