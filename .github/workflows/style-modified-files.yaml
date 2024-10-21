@@ -14,8 +14,8 @@ jobs:
         with:
           fetch-depth: 0  # Fetch full history for accurate diff
 
-      - name: Delete .Rprofile (if present)
-        run: if [ -f .Rprofile ]; then rm .Rprofile; fi
+      - name: Temporarily rename the .Rprofile (if present)
+        run: if [ -f .Rprofile ]; then mv .Rprofile r_profile; fi
 
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
@@ -65,9 +65,10 @@ jobs:
           styler::style_dir(exclude_files = exclusions, filetype = c("r", "rmd", "qmd", "rmarkdown"))
         shell: Rscript {0}
 
+      - name: Restore the .Rprofile (if present)
+        run: if [ -f r_profile ]; then mv r_profile .Rprofile; fi
+
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Style code"
-          file_pattern: '*.R *.r *.Rmd *.rmd *.Rmarkdown *.rmarkdown'
-          skip_checkout: true
