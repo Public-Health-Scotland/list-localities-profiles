@@ -22,7 +22,7 @@ jobs:
         with:
           use-public-rspm: true
         
-      - name: Install pak (will install any system deps too)
+      - name: Install pak (will install any system dependencies too)
         run: install.packages("pak")
         shell: Rscript {0}
 
@@ -58,14 +58,16 @@ jobs:
 
       - name: Style modified R files
         run: |
-          files <- gh::gh("/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files")
+          files <- gh::gh("GET https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files")
           changed_files <- purrr::map_chr(files, "filename")
-          styler::style_dir(exclude_files = setdiff(list.files(recursive = TRUE), changed_files))
+          all_files <- list.files(recursive = TRUE)
+          exclusions <- setdiff(all_files, changed_files)
+          styler::style_dir(exclude_files = exclusions, filetype = c("r", "rmd", "qmd", "rmarkdown")
         shell: Rscript {0}
 
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Style code"
-          file_pattern: '*.R *.Rmarkdown'
+          file_pattern: '*.R *.r *.Rmd *.rmd *.Rmarkdown *.rmarkdown'
           skip_checkout: true
