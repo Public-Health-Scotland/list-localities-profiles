@@ -40,8 +40,8 @@ format_number_for_text <- function(x) {
 }
 
 # This will return the correct article depending on the (max 2-digit) number supplied
-# e.g. 
-# 81.2 -> an 
+# e.g.
+# 81.2 -> an
 # 18 -> an
 # 7.2 -> an
 # To be used for "a xx increase" which could be "an xx increase"
@@ -146,6 +146,9 @@ read_in_localities <- function(dz_level = FALSE) {
   return(data)
 }
 
+count_localities <- function(locality_lookup, hscp_name) {
+  return(sum(locality_lookup[["hscp2019name"]] == hscp_name))
+}
 
 ## Function to read in latest SPD file ----
 
