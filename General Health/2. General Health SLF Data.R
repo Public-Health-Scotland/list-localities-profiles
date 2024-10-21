@@ -101,4 +101,3 @@ ltc_data <- left_join(ltc_agg, slf_pops)
 exportfolder <- path(lp_path, "General Health", paste("South Ayrshire Data", ext_year))
 dir.create(exportfolder, showWarnings = FALSE, recursive = TRUE)
 write_parquet(ltc_data, path(exportfolder, "LTC_from_SLF_South_Ayrshire_custom.parquet"), compression = "zstd")
-

@@ -318,4 +318,3 @@ monthly_beddays <- function(data,
 
   return(data)
 }
-

@@ -37,7 +37,7 @@ locality_list <- lookup |>
   pull(hscp_locality)
 
 # We don't want to create a profile doc for 'other areas'
-#locality_list <- locality_list[locality_list != "Other areas"]
+# locality_list <- locality_list[locality_list != "Other areas"]
 
 
 ## Loop to create the profiles for all the localities in the list
@@ -64,7 +64,7 @@ for (LOCALITY in locality_list) {
   # services
   source("./Services/2. Services data manipulation & table.R")
   source("./Services/3. Service HSCP map.R")
-  
+
   # general health
   source("./General Health/3. General Health Outputs.R")
 
@@ -95,4 +95,3 @@ for (LOCALITY in locality_list) {
   # Force garbage collection to free up memory
   gc()
 }
-

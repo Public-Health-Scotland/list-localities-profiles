@@ -6,7 +6,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 custom_lookup <- readxl::read_excel(fs::path(
   lp_path,
   "custom_lookups/custom_south_ayrshire_localities.xlsx"
-))|>
+)) |>
   # Clean names
   clean_names()
 
