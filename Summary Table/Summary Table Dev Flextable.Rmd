@@ -17,11 +17,11 @@ knitr::opts_chunk$set(echo = FALSE, comment = NA)
 # LOCALITY <- "Inverclyde East"
 
 ## Project file path
- lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
- 
+lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+
 # Source in global functions/themes script
 # source("./Master RMarkdown Document & Render Code/Global Script.R")
- 
+
 # # demographics
 # source("./Demographics/1. Demographics - Population.R")
 # source("./Demographics/2. Demographics - SIMD.R")
@@ -47,7 +47,6 @@ library(dplyr)
 library(flextable)
 library(officer)
 library(officedown)
-
 ```
 
 
@@ -59,15 +58,15 @@ loc_name <- paste(LOCALITY, "Locality", sep = "\n") %>%
 
 # Set other localities df
 
-otherloc_names <- paste(other_locs$hscp_locality, "Locality", sep = "\n") |> 
+otherloc_names <- paste(other_locs$hscp_locality, "Locality", sep = "\n") |>
   str_wrap(width = case_when(n_loc < 4 ~ 20, n_loc == 4 ~ 15, n_loc > 4 ~ 8))
-otherloc_names <- tibble(loc_number = 2:n_loc, otherloc_names) |> 
+otherloc_names <- tibble(loc_number = 2:n_loc, otherloc_names) |>
   pivot_wider(names_from = loc_number, values_from = otherloc_names)
 
 # Set HSCP name object
-hscp_name <- paste0(HSCP, "\nHSCP") |> 
+hscp_name <- paste0(HSCP, "\nHSCP") |>
   strwrap(width = if_else(n_loc < 3, 30, 12))
-  
+
 
 summary_table <- tibble(
   Indicators = "Indicators",
@@ -78,14 +77,12 @@ summary_table <- tibble(
   HSCP = hscp_name,
   Scotland = "Scotland"
 )
-
 ```
 
 ## Demographics Summary Table
 
 
 ```{r echo=FALSE}
-
 indicators <- c(
   "Total population",
   "Gender ratio male to female",
@@ -96,34 +93,35 @@ indicators <- c(
 # List what data type they are
 datatype <- c("count", "ratio", "%", "%", "%")
 # Enter the time periods available
-time <- c(pop_max_year, pop_max_year, pop_max_year, "2020","2020")
+time <- c(pop_max_year, pop_max_year, pop_max_year, "2020", "2020")
 
 loc_values <- c(total_population, paste0("1:", gender_ratio), over65, perc_top_quintile, perc_bottom_quintile)
 other_loc_values <- bind_rows(other_locs_total_pop, other_locs_gender_ratio, other_locs_over65, other_locs_simd)
 hscp_values <- c(hscp_total_pop, hscp_gender_ratio, hscp_over65, hscp_simd_top, hscp_simd_bottom)
 scot_values <- c(scot_total_pop, scot_gender_ratio, scot_over65, 20, 20)
 
-demographic_values <-tibble(indicators, datatype, time, loc_values, other_loc_values,
-                          hscp_values, scot_values)
+demographic_values <- tibble(
+  indicators, datatype, time, loc_values, other_loc_values,
+  hscp_values, scot_values
+)
 
 headings <- as.character(unlist(summary_table[1, ]))
 
 colnames(demographic_values) <- headings
 
-demographics <- flextable(demographic_values) |> 
+demographics <- flextable(demographic_values) |>
   bold(part = "header") %>%
-  bold(j = 1, bold = TRUE, part = "body") |> 
-  fontsize(part = "header", size = 12) |> 
+  bold(j = 1, bold = TRUE, part = "body") |>
+  fontsize(part = "header", size = 12) |>
   font(part = "body", fontname = "Arial") |>
-  font(part = "header", fontname = "Arial") |> 
-  color(part = "header", color = "white") |> 
-  bg(part = "header", bg = "#3F3685") |> 
+  font(part = "header", fontname = "Arial") |>
+  color(part = "header", color = "white") |>
+  bg(part = "header", bg = "#3F3685") |>
   bg(j = 1:3, part = "body", bg = "grey90") |>
-  border(border = fp_border(color = "white", width = 1), part = "body") |> 
+  border(border = fp_border(color = "white", width = 1), part = "body") |>
   set_table_properties(layout = "autofit")
-  
-demographics
 
+demographics
 ```
 
 
@@ -131,7 +129,6 @@ demographics
 
 
 ```{r echo=FALSE}
-
 indicators <- c(
   "Total number of households",
   "Households with single occupant tax discount",
@@ -150,34 +147,35 @@ hscp_values <- c(hscp_n_houses, hscp_perc_discount, hscp_perc_housesAC, hscp_per
 scot_values <- c(scot_n_houses, scot_perc_discount, scot_perc_housesAC, scot_perc_housesFH)
 
 
-housing_values <-tibble(indicators, datatype, time, loc_values, other_loc_values,
-                          hscp_values, scot_values)
+housing_values <- tibble(
+  indicators, datatype, time, loc_values, other_loc_values,
+  hscp_values, scot_values
+)
 
 
 headings <- as.character(unlist(summary_table[1, ]))
 
 colnames(housing_values) <- headings
 
-housing_table <- flextable(housing_values) |> 
+housing_table <- flextable(housing_values) |>
   bold(part = "header") %>%
-  bold(j = 1, bold = TRUE, part = "body") |> 
-  fontsize(part = "header", size = 12) |> 
+  bold(j = 1, bold = TRUE, part = "body") |>
+  fontsize(part = "header", size = 12) |>
   font(part = "body", fontname = "Arial") |>
-  font(part = "header", fontname = "Arial") |> 
-  color(part = "header", color = "white") |> 
-  bg(part = "header", bg = "#3F3685") |> 
+  font(part = "header", fontname = "Arial") |>
+  color(part = "header", color = "white") |>
+  bg(part = "header", bg = "#3F3685") |>
   bg(j = 1:3, part = "body", bg = "grey90") |>
-  border(border = fp_border(color = "white", width = 1), part = "body") |> 
+  border(border = fp_border(color = "white", width = 1), part = "body") |>
   set_table_properties(layout = "autofit")
 
-housing_table <- colformat_num(housing_table, 
-                                  j = "Time Period",  # The column name
-                                  big.mark = "",      # Remove thousand separator
-                                  digits = 0) 
-  
+housing_table <- colformat_num(housing_table,
+  j = "Time Period", # The column name
+  big.mark = "", # Remove thousand separator
+  digits = 0
+)
+
 housing_table
-
-
 ```
 
 
@@ -186,8 +184,6 @@ housing_table
 
 
 ```{r echo=FALSE}
-
-
 indicators <- c(
   "Male average life expectancy in years",
   "Female average life expectancy in years",
@@ -216,28 +212,27 @@ hscp_values <- c(hscp_life_exp_male, hscp_life_exp_fem, hscp_deaths_15_44, hscp_
 scot_values <- c(scot_life_exp_male, scot_life_exp_fem, scot_deaths_15_44, scot_ltc, scot_cancer, scot_adp_presc)
 
 
-general_health_values <-tibble(indicators, datatype, time, loc_values, other_loc_values,
-                          hscp_values, scot_values)
+general_health_values <- tibble(
+  indicators, datatype, time, loc_values, other_loc_values,
+  hscp_values, scot_values
+)
 
 
 colnames(general_health_values) <- headings
 
-general_health_table <- flextable(general_health_values) |> 
-  bold(part = "header") |> 
-  bold(j = 1, bold = TRUE, part = "body") |> 
-  fontsize(part = "header", size = 12) |> 
+general_health_table <- flextable(general_health_values) |>
+  bold(part = "header") |>
+  bold(j = 1, bold = TRUE, part = "body") |>
+  fontsize(part = "header", size = 12) |>
   font(part = "body", fontname = "Arial") |>
-  font(part = "header", fontname = "Arial") |> 
-  color(part = "header", color = "white") |> 
-  bg(part = "header", bg = "#3F3685") |> 
+  font(part = "header", fontname = "Arial") |>
+  color(part = "header", color = "white") |>
+  bg(part = "header", bg = "#3F3685") |>
   bg(j = 1:3, part = "body", bg = "grey90") |>
-  border(border = fp_border(color = "white", width = 1), part = "body") |> 
+  border(border = fp_border(color = "white", width = 1), part = "body") |>
   set_table_properties(layout = "autofit")
-  
+
 general_health_table
-
-
-
 ```
 
 ###### *At HSCP and Scotland level, the time period is a 3-year aggregate (`r latest_period_life_exp_otherareas`)
@@ -248,7 +243,6 @@ general_health_table
 
 
 ```{r echo=FALSE}
-
 indicators <- c(
   "Alcohol-related hospital admissions per 100,000",
   "Alcohol-specific mortality per 100,000",
@@ -272,28 +266,27 @@ hscp_values <- c(hscp_alcohol_hosp, hscp_alcohol_deaths, hscp_drug_hosp, hscp_bo
 scot_values <- c(scot_alcohol_hosp, scot_alcohol_deaths, scot_drug_hosp, scot_bowel_screening)
 
 
-lifestyle_values <- tibble(indicators, datatype, time, loc_values, other_loc_values,
-                          hscp_values, scot_values)
+lifestyle_values <- tibble(
+  indicators, datatype, time, loc_values, other_loc_values,
+  hscp_values, scot_values
+)
 
 
 colnames(lifestyle_values) <- headings
 
-lifestyle_table <- flextable(lifestyle_values) |> 
-  bold(part = "header") |> 
-  bold(j = 1, bold = TRUE, part = "body") |> 
-  fontsize(part = "header", size = 12) |> 
+lifestyle_table <- flextable(lifestyle_values) |>
+  bold(part = "header") |>
+  bold(j = 1, bold = TRUE, part = "body") |>
+  fontsize(part = "header", size = 12) |>
   font(part = "body", fontname = "Arial") |>
-  font(part = "header", fontname = "Arial") |> 
-  color(part = "header", color = "white") |> 
-  bg(part = "header", bg = "#3F3685") |> 
+  font(part = "header", fontname = "Arial") |>
+  color(part = "header", color = "white") |>
+  bg(part = "header", bg = "#3F3685") |>
   bg(j = 1:3, part = "body", bg = "grey90") |>
-  border(border = fp_border(color = "white", width = 1), part = "body") |> 
+  border(border = fp_border(color = "white", width = 1), part = "body") |>
   set_table_properties(layout = "autofit")
-  
+
 lifestyle_table
-
-
-
 ```
 
 
@@ -302,7 +295,6 @@ lifestyle_table
 
 
 ```{r echo=FALSE}
-
 indicators <- c(
   "Emergency admissions per 100,000",
   "Unscheduled bed days per 100,000",
@@ -320,27 +312,26 @@ hscp_values <- c(hscp_emergency_adm, hscp_bed_days, hscp_ae_att, hscp_dd, hscp_p
 scot_values <- c(scot_emergency_adm, scot_bed_days, scot_ae_att, scot_dd, scot_ppa)
 
 
-UC_values <-tibble(indicators, datatype, time, loc_values, other_loc_values,
-                          hscp_values, scot_values)
+UC_values <- tibble(
+  indicators, datatype, time, loc_values, other_loc_values,
+  hscp_values, scot_values
+)
 
 colnames(UC_values) <- headings
 
-UC_table <- flextable(UC_values) |> 
-  bold(part = "header") |> 
-  bold(j = 1, bold = TRUE, part = "body") |> 
-  fontsize(part = "header", size = 12) |> 
+UC_table <- flextable(UC_values) |>
+  bold(part = "header") |>
+  bold(j = 1, bold = TRUE, part = "body") |>
+  fontsize(part = "header", size = 12) |>
   font(part = "body", fontname = "Arial") |>
-  font(part = "header", fontname = "Arial") |> 
-  color(part = "header", color = "white") |> 
-  bg(part = "header", bg = "#3F3685") |> 
+  font(part = "header", fontname = "Arial") |>
+  color(part = "header", color = "white") |>
+  bg(part = "header", bg = "#3F3685") |>
   bg(j = 1:3, part = "body", bg = "grey90") |>
   border(border = fp_border(color = "white", width = 1), part = "body") |>
   set_table_properties(layout = "autofit")
-  
+
 UC_table
-
-
-
 ```
 
 
@@ -349,7 +340,6 @@ UC_table
 
 
 ```{r echo=FALSE}
-
 indicators <- c(
   "Psychiatric patient hospitalisations per 100,000",
   "Unscheduled bed days per 100,000"
@@ -364,26 +354,25 @@ hscp_values <- c(hscp_psych_hosp, hscp_bed_days_mh)
 scot_values <- c(scot_psych_hosp, scot_bed_days_mh)
 
 
-UC_MH_values <- tibble(indicators, datatype, time, loc_values, other_loc_values,
-                          hscp_values, scot_values)
+UC_MH_values <- tibble(
+  indicators, datatype, time, loc_values, other_loc_values,
+  hscp_values, scot_values
+)
 
 colnames(UC_MH_values) <- headings
 
-UC_MH_table <- flextable(UC_MH_values) |> 
-  bold(part = "header") |> 
-  bold(j = 1, bold = TRUE, part = "body") |> 
-  fontsize(part = "header", size = 12) |> 
+UC_MH_table <- flextable(UC_MH_values) |>
+  bold(part = "header") |>
+  bold(j = 1, bold = TRUE, part = "body") |>
+  fontsize(part = "header", size = 12) |>
   font(part = "body", fontname = "Arial") |>
-  font(part = "header", fontname = "Arial") |> 
-  color(part = "header", color = "white") |> 
-  bg(part = "header", bg = "#3F3685") |> 
+  font(part = "header", fontname = "Arial") |>
+  color(part = "header", color = "white") |>
+  bg(part = "header", bg = "#3F3685") |>
   bg(j = 1:3, part = "body", bg = "grey90") |>
-  border(border = fp_border(color = "white", width = 1), part = "body") |> 
+  border(border = fp_border(color = "white", width = 1), part = "body") |>
   set_table_properties(layout = "autofit")
-  
+
 UC_MH_table
-
-
-
 ```
 

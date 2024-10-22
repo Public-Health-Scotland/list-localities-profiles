@@ -7,7 +7,6 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-
 ```
 
 
@@ -18,7 +17,6 @@ output:
 <!--# Clive to create dummy vars with same names as called vars to populate table -->
 
 ```{r, echo=FALSE, message=FALSE}
-
 library(kableExtra)
 library(dplyr)
 
@@ -36,13 +34,13 @@ perc_houses_FH <- "12.7"
 
 
 indicators <- c(
-"Demographics",
-"Total population",
-"Gender ratio male to female",
-"Population over 65",
-"Population in least deprived SIMD quintile",
-"Population in most deprived SIMD quintile",
-"Housing",
+  "Demographics",
+  "Total population",
+  "Gender ratio male to female",
+  "Population over 65",
+  "Population in least deprived SIMD quintile",
+  "Population in most deprived SIMD quintile",
+  "Housing",
   "Total number of households",
   "Households with single occupant tax discount",
   "Households in Council Tax Band A-C",
@@ -51,71 +49,68 @@ indicators <- c(
 
 datatype <- c(
   " ",
-  "count", 
-  "ratio", 
-  "%", 
-  "%", 
+  "count",
+  "ratio",
+  "%",
+  "%",
   "%",
   " ",
-  "count", 
-  "%", 
-  "%", 
+  "count",
+  "%",
+  "%",
   "%"
-  )
+)
 
 time <- c(
   " ",
-  "2021", 
-  "2021", 
-  "2021", 
-  "2020", 
+  "2021",
+  "2021",
+  "2021",
+  "2020",
   "2020",
   " ",
-  "2022", 
-  "2022", 
-  "2022", 
+  "2022",
+  "2022",
+  "2022",
   "2022"
-  )
+)
 
 
 loc_values <- c(
   " ",
-  total_population, 
-  paste0("1:",gender_ratio), 
-  over65, 
-  perc_top_quintile, 
+  total_population,
+  paste0("1:", gender_ratio),
+  over65,
+  perc_top_quintile,
   perc_bottom_quintile,
   " ",
-  n_houses, 
-  perc_single_discount, 
-  perc_houses_AC, 
-  perc_houses_FH)
+  n_houses,
+  perc_single_discount,
+  perc_houses_AC,
+  perc_houses_FH
+)
 
-table_values <-data.frame(indicators, datatype,time,loc_values)
+table_values <- data.frame(indicators, datatype, time, loc_values)
 
-table_col_names <- c("Indicators", "Data Type", "Time Period",
-                           paste0(LOCALITY, " Locality"))
+table_col_names <- c(
+  "Indicators", "Data Type", "Time Period",
+  paste0(LOCALITY, " Locality")
+)
 
 knitr::kable(table_values,
-      col.names = c(table_col_names),
-      align = c("c"), format = "markdown") %>% 
-  row_spec(c(0,1,7),bold=TRUE) |> 
-  row_spec(0,color="white",background="grey50") |> 
-  column_spec(c(1,2,3,4),border_left = "2px white solid",border_right = "2px white solid") |> 
-  column_spec(4,bold=TRUE) |> 
+  col.names = c(table_col_names),
+  align = c("c"), format = "markdown"
+) %>%
+  row_spec(c(0, 1, 7), bold = TRUE) |>
+  row_spec(0, color = "white", background = "grey50") |>
+  column_spec(c(1, 2, 3, 4), border_left = "2px white solid", border_right = "2px white solid") |>
+  column_spec(4, bold = TRUE) |>
   kable_styling(full_width = FALSE) %>%
-  column_spec(1, width = "22em", background = "grey90") |> 
-  column_spec(2, width = "5em", background = "grey90") |> 
-  column_spec(3, width = "6em", background = "grey90") |> 
-  column_spec(4, width = "10em", background = "#C5C3DA") |> 
-  row_spec(c(1,7),background="white")
-
-
-
-
-
-
-
+  column_spec(1, width = "22em", background = "grey90") |>
+  column_spec(2, width = "5em", background = "grey90") |>
+  column_spec(3, width = "6em", background = "grey90") |>
+  column_spec(4, width = "10em", background = "#C5C3DA") |>
+  row_spec(c(1, 7), background = "white")
 ```
 
 

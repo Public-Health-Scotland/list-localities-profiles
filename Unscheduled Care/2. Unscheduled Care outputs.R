@@ -10,7 +10,7 @@
 ext_year <- 2023
 
 # Set locality profiles file path
-#lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 import_folder <- paste0(lp_path, "Unscheduled Care/DATA ", ext_year, "/")
 
 ## Packages
@@ -34,7 +34,7 @@ library(reshape2)
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
 # LOCALITY <- "Whalsay and Skerries"
 # LOCALITY <- "North Perthshire"
-#LOCALITY <- "Inverclyde East"
+# LOCALITY <- "Inverclyde East"
 # Set date limit for financial year
 # Unless we're in Q4 use the previous FY as the max
 max_fy <- ifelse(
@@ -42,7 +42,7 @@ max_fy <- ifelse(
   phsmethods::extract_fin_year(Sys.Date() - years(1)),
   phsmethods::extract_fin_year(Sys.Date())
 )
-max_fy = "2022/23"
+max_fy <- "2022/23"
 ########################## SECTION 2: Lookups & Populations ###############################
 
 ## 1. Lookups ----

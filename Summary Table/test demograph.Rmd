@@ -16,22 +16,22 @@ knitr::opts_chunk$set(echo = TRUE, comment = NA)
 # LOCALITY <- "City of Dunfermline"
 # LOCALITY <- "Barra"
 # LOCALITY <- "Whalsay and Skerries"
- LOCALITY <- "Inverclyde East"
- 
- #setwd("~/list-localities-profiles/")
+LOCALITY <- "Inverclyde East"
+
+# setwd("~/list-localities-profiles/")
 
 ## Project file path
 # lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 lp_path <- "/conf/LIST_analytics/Glasgow City/Training/CG/Locality Profiles/2024 Summary Table Project/list-localities-profiles/"
 
-#Profiles/"\\stats\LIST_analytics\Glasgow City\Training\CG\Locality Profiles\2024 Summary Table #Project\list-localities-profiles\Summary Table
+# Profiles/"\\stats\LIST_analytics\Glasgow City\Training\CG\Locality Profiles\2024 Summary Table #Project\list-localities-profiles\Summary Table
 
 # Source in global functions/themes script
- source("./Master RMarkdown Document & Render Code/Global Script.R")
- 
+source("./Master RMarkdown Document & Render Code/Global Script.R")
+
 # # demographics
- source("./Demographics/1. Demographics - Population.R")
- source("./Demographics/2. Demographics - SIMD.R")
+source("./Demographics/1. Demographics - Population.R")
+source("./Demographics/2. Demographics - SIMD.R")
 #
 # # housing
 # source("./Households/Households Code.R")
@@ -83,7 +83,6 @@ summary_table <- data.frame(
   HSCP = hscp_name,
   Scotland = "Scotland"
 )
-
 ```
 
 ## Demographics Summary Table
@@ -111,8 +110,10 @@ other_loc_values <- rbind(other_locs_total_pop, other_locs_gender_ratio, other_l
 hscp_values <- c(hscp_total_pop, hscp_gender_ratio, hscp_over65, hscp_simd_top, hscp_simd_bottom)
 scot_values <- c(scot_total_pop, scot_gender_ratio, scot_over65, 20, 20)
 
-demographic_values <-data.frame(indicators, datatype, time, loc_values, other_loc_values,
-                          hscp_values, scot_values)
+demographic_values <- data.frame(
+  indicators, datatype, time, loc_values, other_loc_values,
+  hscp_values, scot_values
+)
 
 headings <- as.character(unlist(summary_table[1, ]))
 
@@ -123,15 +124,14 @@ demographics <- flextable(demographic_values) %>%
   bold(j = 1, bold = TRUE, part = "body") %>%
   fontsize(part = "header", size = 12) %>%
   font(part = "body", fontname = "Arial") |>
-  font(part = "header", fontname = "Arial") |> 
+  font(part = "header", fontname = "Arial") |>
   color(part = "header", color = "white") %>%
   bg(part = "header", bg = "#3F3685") %>%
   bg(j = 1:3, part = "body", bg = "grey90") |>
- # width(j = 1, width = "22em") |> 
-  border(border = fp_border(color = "white", width = 1), part = "body") |> 
-  set_table_properties(layout = "autofit")|> 
-  autofit()  # Automatically adjust column widths
-  
-demographics
+  # width(j = 1, width = "22em") |>
+  border(border = fp_border(color = "white", width = 1), part = "body") |>
+  set_table_properties(layout = "autofit") |>
+  autofit() # Automatically adjust column widths
 
+demographics
 ```
