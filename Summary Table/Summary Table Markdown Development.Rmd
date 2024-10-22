@@ -7,6 +7,10 @@ output:
 ---
 
 ```{r setup, include=FALSE}
+library(kableExtra)
+library(dplyr)
+
+LOCALITY <- "Inverclyde East"
 ```
 
 
@@ -16,11 +20,7 @@ output:
 <!--# below to convert to a separate script and call-->
 <!--# Clive to create dummy vars with same names as called vars to populate table -->
 
-```{r, echo=FALSE, message=FALSE}
-library(kableExtra)
-library(dplyr)
-
-LOCALITY <- "Inverclyde East"
+```{r make_test_data, echo=FALSE}
 total_population <- "20,039"
 gender_ratio <- "1.1"
 over65 <- "22.8"
@@ -30,9 +30,9 @@ n_houses <- "10,279"
 perc_single_discount <- "36.7"
 perc_houses_AC <- "76.6"
 perc_houses_FH <- "12.7"
+```
 
-
-
+```{r test_table, echo=FALSE, message=FALSE}
 indicators <- c(
   "Demographics",
   "Total population",
@@ -74,7 +74,6 @@ time <- c(
   "2022",
   "2022"
 )
-
 
 loc_values <- c(
   " ",
