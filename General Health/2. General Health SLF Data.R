@@ -18,7 +18,7 @@ ext_year <- 2023
 fy <- "202223"
 
 # Set file path
-# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 # Source in functions code
 # source("Master RMarkdown Document & Render Code/Global Script.R")
@@ -98,8 +98,6 @@ slf_pops <- left_join(slf_pops, lookup) %>%
 ltc_data <- left_join(ltc_agg, slf_pops)
 
 #### SAVE DATA ####
-
-saveRDS(ltc_data, file = paste0(
-  lp_path, "General Health/DATA ",
-  ext_year, "/LTC_from_SLF.RDS"
-))
+exportfolder <- path(lp_path, "General Health", paste("South Ayrshire Data", ext_year))
+dir.create(exportfolder, showWarnings = FALSE, recursive = TRUE)
+write_parquet(ltc_data, path(exportfolder, "LTC_from_SLF_South_Ayrshire_custom.parquet"), compression = "zstd")
