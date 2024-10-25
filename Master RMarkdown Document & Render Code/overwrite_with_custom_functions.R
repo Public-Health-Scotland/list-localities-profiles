@@ -68,19 +68,21 @@ summarise_iz_to_locality <- function(data, iz_lookup = read_in_iz(dz_all = FALSE
       )
   } else {
     locality_data <- iz_data |>
-      mutate(denominator = numerator * 100000 / measure) %>%
+      mutate(denominator = case_when((numerator == 0 | measure == 0) ~ 0,
+                                     TRUE ~ numerator * 100000 / measure)) %>%
       group_by(indicator, year, period, area_name = hscp_locality, definition, data_source) |>
       summarise(
         numerator = sum(numerator),
         denominator = sum(denominator),
-        measure = (numerator * 100000) / denominator, # Adjust for per 100,000
+        measure = case_when((numerator == 0 | denominator == 0) ~ 0,
+                            TRUE ~ (numerator * 100000) / denominator) , # Adjust for per 100,000
         se = sqrt(sum(numerator * (measure - lower_confidence_interval)^2 / (denominator - 1)) +
-          sum(numerator * (upper_confidence_interval - measure)^2 / (denominator - 1))),
+                    sum(numerator * (upper_confidence_interval - measure)^2 / (denominator - 1))),
         lower_confidence_interval = measure - 1.96 * se,
         upper_confidence_interval = measure + 1.96 * se,
         area_type = "HSC locality",
         .groups = "drop"
-      ) |>
+      )  |>
       select(!denominator, !se)
   }
 
