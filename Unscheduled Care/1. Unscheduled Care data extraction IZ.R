@@ -31,7 +31,7 @@ source("Master RMarkdown Document & Render Code/overwrite_with_custom_functions.
 
 
 # Folder to export to
-exportfolder <- path(lp_path, "Unscheduled Care", paste("East Ayrshire mmw Data", ext_year))
+exportfolder <- path(lp_path, "Unscheduled Care", paste("mmw Data", ext_year))
 
 
 ## Lookups ----
@@ -649,3 +649,4 @@ write_parquet(smr_readmissions, path(exportfolder, "readmissions_smr.parquet"), 
 
 # PPA
 write_parquet(ppa, path(exportfolder, "ppa_smr.parquet"), compression = "zstd")
+

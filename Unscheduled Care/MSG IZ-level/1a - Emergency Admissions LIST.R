@@ -136,3 +136,4 @@ list_output <- smr01_final %>%
 
 # Save LIST breakdown file
 arrow::write_parquet(list_output, path(data_folder, "1a-Admissions-breakdown.parquet"), compression = "zstd")
+

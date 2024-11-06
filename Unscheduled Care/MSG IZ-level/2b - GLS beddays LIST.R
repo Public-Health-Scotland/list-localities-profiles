@@ -116,3 +116,4 @@ list_output <- beddays %>%
 
 # Save LIST output
 arrow::write_parquet(list_output, path(data_folder, "2b-GLS-Beddays-breakdown.parquet"), compression = "zstd")
+

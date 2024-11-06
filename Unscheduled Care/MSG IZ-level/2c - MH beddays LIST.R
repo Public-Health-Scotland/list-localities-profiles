@@ -38,8 +38,7 @@ smr04_extract <- as_tibble(dbGetQuery(channel, statement = "SELECT LINK_NO, ADMI
   # set admission & discharge as dates
   mutate(
     admission_date = as_date(admission_date),
-    discharge_date = as_date(discharge_date)
-  ) %>%
+    discharge_date = as_date(discharge_date)) %>%
   # Match on geographies
   left_join(postcode_lookup, by = "dr_postcode") %>%
   left_join(locality_lookup, by = "datazone2011") %>%
@@ -233,3 +232,4 @@ list_output <- beddays %>%
 
 # save LIST output
 arrow::write_parquet(list_output, path(data_folder, "2c-MH-Beddays-breakdown.parquet"), compression = "zstd")
+

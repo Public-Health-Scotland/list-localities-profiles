@@ -2,7 +2,7 @@ read_in_localities <- function(dz_level = FALSE) {
   data <- arrow::read_parquet(
     fs::path(
       "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/",
-      "custom_lookups/custom_mmw.parquet"
+      "custom_lookups/custom_mmw2.parquet"
     )
   )
   
@@ -16,7 +16,7 @@ read_in_localities <- function(dz_level = FALSE) {
 
 read_in_iz <- function(dz_all = FALSE) {
   iz_lookup <- arrow::read_parquet(
-    fs::path(lp_path, "custom_lookups/custom_mmw_iz.parquet")
+    fs::path(lp_path, "custom_lookups/custom_mmw2_iz.parquet")
   )
   
   if (dz_all) {
@@ -110,3 +110,4 @@ clean_scotpho_dat <- function(data) {
       area_type = if_else(area_type == "HSC locality", "Locality", area_type)
     )
 }
+

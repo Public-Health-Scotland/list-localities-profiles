@@ -105,7 +105,7 @@ slf_pops <- left_join(slf_pops, lookup) %>%
 ltc_data <- left_join(ltc_agg, slf_pops)
 
 #### SAVE DATA ####
-exportfolder <- path(lp_path, "General Health", paste("East Ayrshire mmw Data", ext_year))
+exportfolder <- path(lp_path, "General Health", paste("mmw Data", ext_year))
 dir.create(exportfolder, showWarnings = FALSE, recursive = TRUE)
-write_parquet(ltc_data, path(exportfolder, "LTC_from_SLF_East_Ayrshire_mmw_custom.parquet"), compression = "zstd")
+write_parquet(ltc_data, path(exportfolder, "LTC_from_SLF_mmw_custom.parquet"), compression = "zstd")
 

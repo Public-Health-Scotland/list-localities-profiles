@@ -36,7 +36,7 @@ ext_year <- 2023
 
 # Set file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
-import_folder_southayrshire <- path(lp_path, "General Health", paste("East Ayrshire mmw Data", ext_year))
+import_folder_southayrshire <- path(lp_path, "General Health", paste("mmw Data", ext_year))
 # Source in functions code
 # source("Master RMarkdown Document & Render Code/Global Script.R")
 
@@ -148,7 +148,7 @@ check_missing_data_scotpho(adp_presc)
 
 
 # Long-term conditions
-ltc <- arrow::read_parquet(path(import_folder_southayrshire, "/LTC_from_SLF_East_Ayrshire_mmw_custom.parquet"))
+ltc <- arrow::read_parquet(path(import_folder_southayrshire, "/LTC_from_SLF_mmw_custom.parquet"))
 
 ltc <- dplyr::rename(ltc,
   "Arthritis" = "arth", "Asthma" = "asthma", "Atrial fibrillation" = "atrialfib", "Cancer" = "cancer",

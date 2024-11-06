@@ -10,7 +10,7 @@ dz_lookup <- read_in_localities(T) |>
 # Read in the Excel Lookup
 custom_lookup <- readxl::read_excel(fs::path(
   lp_path,
-  "custom_lookups/Ayrshire_mmw.xlsx"
+  "custom_lookups/Ayrshire_mmw2.xlsx"
 ))|>
   # Clean names
   left_join(dz_lookup) |>
@@ -25,7 +25,7 @@ custom_lookup |>
   arrow::write_parquet(
     fs::path(
       lp_path,
-      "custom_lookups/custom_mmw.parquet"
+      "custom_lookups/custom_mmw2.parquet"
     ),
     version = "latest",
     compression = "zstd"
@@ -36,14 +36,13 @@ custom_lookup |>
   distinct(
     intzone2011,
     intzone2011name,
-    hscp_locality,
-    mm_ward_name
+    hscp_locality
   ) |>
   # Write out as a parquet file
   arrow::write_parquet(
     fs::path(
       lp_path,
-      "custom_lookups/custom_mmw_iz.parquet"
+      "custom_lookups/custom_mmw2_iz.parquet"
     ),
     version = "latest",
     compression = "zstd"

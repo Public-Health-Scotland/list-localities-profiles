@@ -91,3 +91,4 @@ final_output <- temp_ae %>%
 
 # save out R breakdown file
 write_parquet(final_output, path(data_folder, "3-A&E-Breakdowns.parquet"), compression = "zstd")
+

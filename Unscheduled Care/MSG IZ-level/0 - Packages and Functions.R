@@ -8,7 +8,7 @@ earliest_date <- lubridate::make_date(year = 2017, month = 4, day = 01)
 reporting_month_date <- lubridate::make_date(year = 2023, month = 3, day = 31)
 # Data output folder
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
-data_folder <- file.path(lp_path, "Unscheduled Care/East Ayrshire mmw Data 2023")
+data_folder <- file.path(lp_path, "Unscheduled Care/mmw Data 2023")
 dir.create(data_folder, showWarnings = FALSE, recursive = TRUE)
 
 
