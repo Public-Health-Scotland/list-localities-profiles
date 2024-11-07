@@ -20,23 +20,23 @@ knitr::opts_chunk$set(echo = FALSE, comment = NA)
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 # Source in global functions/themes script
-# source("./Master RMarkdown Document & Render Code/Global Script.R")
+# source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # # demographics
-# source("./Demographics/1. Demographics - Population.R")
-# source("./Demographics/2. Demographics - SIMD.R")
+# source("Demographics/1. Demographics - Population.R")
+# source("Demographics/2. Demographics - SIMD.R")
 #
 # # housing
-# source("./Households/Households Code.R")
+# source("Households/Households Code.R")
 #
 # # general health
-# source("./General Health/3. General Health Outputs.R")
+# source("General Health/3. General Health Outputs.R")
 #
 # # lifestyle & risk factors
-# source("./Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
+# source("Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
 #
 # # unscheduled care
-# source("./Unscheduled Care/2. Unscheduled Care outputs.R")
+# source("Unscheduled Care/2. Unscheduled Care outputs.R")
 
 library(tidyverse)
 library(knitr)
