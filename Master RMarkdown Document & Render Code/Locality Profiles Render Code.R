@@ -49,33 +49,30 @@ for (LOCALITY in locality_list) {
 
   # demographics
   source("Demographics/1. Demographics - Population.R")
-  source("./Demographics/2. Demographics - SIMD.R")
+  source("Demographics/2. Demographics - SIMD.R")
 
   # housing
-  source("./Households/Households Code.R")
+  source("Households/Households Code.R")
 
   # services
-  source("./Services/2. Services data manipulation & table.R")
-  source("./Services/3. Service HSCP map.R")
-  
+  source("Services/2. Services data manipulation & table.R")
+  source("Services/3. Service HSCP map.R")
+
   # general health
-  source("./General Health/3. General Health Outputs.R")
+  source("General Health/3. General Health Outputs.R")
 
   # lifestyle & risk factors
-  source("./Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
+  source("Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
 
   # unscheduled care
-  source("./Unscheduled Care/2. Unscheduled Care outputs.R")
+  source("Unscheduled Care/2. Unscheduled Care outputs.R")
 
   # appendices
-  source("./Master RMarkdown Document & Render Code/Tables for Appendix.R")
-
-  # Remove tidylog package which messes up outputs
-  # detach(package:tidylog, unload = TRUE)
+  source("Master RMarkdown Document & Render Code/Tables for Appendix.R")
 
   ## 1b) Create the main body of the profiles
 
-  rmarkdown::render("./Master RMarkdown Document & Render Code/Locality_Profiles_Master_Markdown.Rmd",
+  rmarkdown::render("Master RMarkdown Document & Render Code/Locality_Profiles_Master_Markdown.Rmd",
     output_file = paste0(LOCALITY, " - Locality Profile.docx"),
     output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/")
   )

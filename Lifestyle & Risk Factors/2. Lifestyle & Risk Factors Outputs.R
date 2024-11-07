@@ -23,7 +23,6 @@ library(cowplot)
 library(knitr)
 library(gridExtra)
 library(grid)
-# library(tidylog)
 library(phsstyles)
 
 # Determine locality (for testing only)
@@ -401,10 +400,3 @@ scot_alcohol_hosp <- round_half_up(scot_alcohol_hosp, 1)
 scot_alcohol_deaths <- round_half_up(scot_alcohol_deaths, 1)
 
 scot_bowel_screening <- round_half_up(scot_bowel_screening, 1)
-
-
-
-# detach(package:tidyverse, unload=TRUE)
-# detach(package:reshape2, unload=TRUE)
-# detach(package:janitor, unload=TRUE)
-# detach(package:ggthemes, unload=TRUE)
