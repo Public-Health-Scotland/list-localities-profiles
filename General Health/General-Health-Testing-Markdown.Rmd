@@ -21,6 +21,8 @@ LOCALITY <- "Inverness"
 # LOCALITY <- "Skye, Lochalsh and West Ross"
 # LOCALITY <- "East Dunbartonshire West"
 
+# Set file path
+lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 source("~/localities/Master RMarkdown Document & Render Code/Global Script.R")
 
