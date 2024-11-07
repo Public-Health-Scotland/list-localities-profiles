@@ -757,11 +757,11 @@ ltc_plot_right <- ltc_types %>%
   expand_limits(x = lims.ov65) +
   theme_profiles() +
   theme(
+    title = element_text(colour = palette[2]),
     plot.margin = unit(c(0.5, 0, 0, 0), "cm"),
-    axis.title.x = element_blank(),
-    axis.text.x = element_blank(),
-    axis.ticks.x = element_blank(),
-    title = element_text(colour = palette[2])
+    axis.title.y = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
   ) +
   scale_y_discrete(limits = rev(levels(as.factor(ltc_types$key))))
 
