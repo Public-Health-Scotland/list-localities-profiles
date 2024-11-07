@@ -53,7 +53,7 @@ library(officedown)
 ```{r echo=FALSE}
 # Set locality name object (with automatic wrapping)
 
-loc_name <- paste(LOCALITY, "Locality", sep = "\n") %>%
+loc_name <- paste(LOCALITY, "Locality", sep = "\n") |>
   str_wrap(width = case_when(n_loc < 4 ~ 20, n_loc == 4 ~ 15, n_loc > 4 ~ 8))
 
 # Set other localities df
@@ -110,7 +110,7 @@ headings <- as.character(unlist(summary_table[1, ]))
 colnames(demographic_values) <- headings
 
 demographics <- flextable(demographic_values) |>
-  bold(part = "header") %>%
+  bold(part = "header") |>
   bold(j = 1, bold = TRUE, part = "body") |>
   fontsize(part = "header", size = 12) |>
   font(part = "body", fontname = "Arial") |>
@@ -158,7 +158,7 @@ headings <- as.character(unlist(summary_table[1, ]))
 colnames(housing_values) <- headings
 
 housing_table <- flextable(housing_values) |>
-  bold(part = "header") %>%
+  bold(part = "header") |>
   bold(j = 1, bold = TRUE, part = "body") |>
   fontsize(part = "header", size = 12) |>
   font(part = "body", fontname = "Arial") |>
