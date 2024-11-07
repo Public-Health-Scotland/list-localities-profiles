@@ -402,8 +402,8 @@ disease_hosp_table <- disease_hosp |>
       .default = 2L
     )
   ) |>
-  arrange(area_order) |> 
-  select(indicator, period_short, area_name, measure) |> 
+  arrange(area_order) |>
+  select(indicator, period_short, area_name, measure) |>
   pivot_wider(names_from = area_name, values_from = measure) |>
   rename(
     "Disease" = indicator,
