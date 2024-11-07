@@ -40,8 +40,8 @@ format_number_for_text <- function(x) {
 }
 
 # This will return the correct article depending on the (max 2-digit) number supplied
-# e.g. 
-# 81.2 -> an 
+# e.g.
+# 81.2 -> an
 # 18 -> an
 # 7.2 -> an
 # To be used for "a xx increase" which could be "an xx increase"
