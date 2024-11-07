@@ -17,8 +17,6 @@ LOCALITY <- "Inverclyde East"
 
 
 ## Summary Table
-<!--# below to convert to a separate script and call-->
-<!--# Clive to create dummy vars with same names as called vars to populate table -->
 
 ```{r make_test_data, echo=FALSE}
 total_population <- "20,039"
