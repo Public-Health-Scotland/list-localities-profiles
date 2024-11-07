@@ -394,9 +394,19 @@ highest_hosp_disease <- disease_hosp %>%
   filter(area_name == LOCALITY & area_type == "Locality") %>%
   filter(measure == max(measure))
 
-disease_hosp_table <- disease_hosp %>%
-  select(indicator, period_short, area_name, measure) %>%
-  pivot_wider(names_from = area_name, values_from = measure) %>%
+disease_hosp_table <- disease_hosp |>
+  mutate(
+    area_order = case_when(
+      area_name == LOCALITY ~ 1L,
+      area_name == HSCP ~ 2L,
+      str_starts(area_name, "NHS") ~ 4L,
+      area_name == "Scotland" ~ 5L,
+      .default = 2L
+    )
+  ) |>
+  arrange(area_order) |> 
+  select(indicator, period_short, area_name, measure) |> 
+  pivot_wider(names_from = area_name, values_from = measure) |>
   rename(
     "Disease" = indicator,
     "Latest time period" = period_short
