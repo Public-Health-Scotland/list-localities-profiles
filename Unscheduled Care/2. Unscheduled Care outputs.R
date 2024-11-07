@@ -26,7 +26,7 @@ library(reshape2)
 ### for testing run global script and locality placeholder below
 
 ## Functions
-# source("../Master RMarkdown Document & Render Code/Global Script.R")
+# source("./Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Define locality
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
@@ -37,11 +37,12 @@ library(reshape2)
 
 # Set date limit for financial year
 # Unless we're in Q4 use the previous FY as the max
-max_fy <- ifelse(
-  lubridate::quarter(Sys.Date(), fiscal_start = 4) != 4,
-  phsmethods::extract_fin_year(Sys.Date() - years(1)),
-  phsmethods::extract_fin_year(Sys.Date())
-)
+# max_fy <- ifelse(
+#   lubridate::quarter(Sys.Date(), fiscal_start = 4) != 4,
+#   phsmethods::extract_fin_year(Sys.Date() - years(1)),
+#   phsmethods::extract_fin_year(Sys.Date())
+# )
+max_fy <- "2022/23" # TODO Change this to be dynamic and move to general!
 
 ########################## SECTION 2: Lookups & Populations ###############################
 
