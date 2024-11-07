@@ -31,7 +31,7 @@ library(mapview)
 library(sf)
 
 # Source in global functions/themes script
-# source("./Master RMarkdown Document & Render Code/Global Script.R")
+# source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Final document will loop through a list of localities
 # Create placeholder for for loop
