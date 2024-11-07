@@ -49,7 +49,7 @@ for (LOCALITY in locality_list) {
   # demographics
   source("Demographics/1. Demographics - Population.R")
   source("Demographics/2. Demographics - SIMD.R")
-  
+
   # lifestyle & risk factors
   source("Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
 
