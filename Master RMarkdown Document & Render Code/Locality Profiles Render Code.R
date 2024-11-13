@@ -23,6 +23,7 @@ lookup <- read_in_localities()
 
 # Specify HSCP(s) ----
 # use `unique(lookup$hscp2019name)` for all
+# or create a vector for multiple e.g. `c("Angus", "West Lothian")`
 hscp_list <- "Angus"
 
 # NOTE - This checks that it exactly matches the lookup
