@@ -25,6 +25,7 @@ library(phsstyles)
 # LOCALITY <- "Mid-Argyll, Kintyre and Islay"
 # LOCALITY <- "City of Dunfermline"
 # LOCALITY <- "Barra"
+# LOCALITY <- "Inverclyde East"
 
 # Set year of data extracts for folder
 ext_year <- 2023
@@ -363,9 +364,10 @@ early_deaths_cancer_rate_earliest <- filter(early_deaths_cancer, year == (max(ea
 
 cancer_deaths_perc_change <- abs((early_deaths_cancer_rate_latest - early_deaths_cancer_rate_earliest) * 100 / early_deaths_cancer_rate_earliest)
 
-cancer_deaths_changeword <- if_else(early_deaths_cancer_rate_latest > early_deaths_cancer_rate_earliest,
-  "increase", "decrease"
-)
+# cancer_deaths_changeword <- if_else(early_deaths_cancer_rate_latest > early_deaths_cancer_rate_earliest,
+#   "increase", "decrease"
+# )
+text_changeword <- dynamic_text(early_deaths_cancer_rate_latest, early_deaths_cancer_rate_earliest)
 
 
 ##### 2d Hospitalisations from diseases #####
@@ -449,7 +451,8 @@ adp_presc_earliest <- filter(adp_presc, year == (max(adp_presc$year) - 10) &
   (area_name == LOCALITY & area_type == "Locality"))$measure
 
 adp_presc_perc_change <- abs((adp_presc_latest - adp_presc_earliest) * 100 / adp_presc_earliest)
-adp_presc_changeword <- if_else(adp_presc_latest > adp_presc_earliest, "increase", "decrease")
+#adp_presc_changeword <- if_else(adp_presc_latest > adp_presc_earliest, "increase", "decrease")
+text_changeword <- dynamic_text(adp_presc_latest, adp_presc_earliest)
 
 scot_adp_presc <- filter(
   adp_presc,

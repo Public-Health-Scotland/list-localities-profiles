@@ -40,8 +40,8 @@ format_number_for_text <- function(x) {
 }
 
 # This will return the correct article depending on the (max 2-digit) number supplied
-# e.g. 
-# 81.2 -> an 
+# e.g.
+# 81.2 -> an
 # 18 -> an
 # 7.2 -> an
 # To be used for "a xx increase" which could be "an xx increase"
@@ -51,6 +51,18 @@ get_article <- function(number) {
   } else {
     return("a")
   }
+}
+
+# This will return any of "the same as", "a/an x% increase since", "a/an x% decrease since"
+dynamic_text <- function(latest_value,earliest_value) {
+  if (latest_value > earliest_value) {
+    "a x% increase since "
+  } else if (latest_value == earliest_value) {
+    "the same as "
+  }
+  else {
+    "a x% decrease since "
+}
 }
 
 ## Theme for charts ----

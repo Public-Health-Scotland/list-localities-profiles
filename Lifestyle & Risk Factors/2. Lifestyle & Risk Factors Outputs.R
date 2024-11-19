@@ -148,9 +148,10 @@ drug_hosp_earliest <- filter(
 )$measure
 
 drug_hosp_change <- abs((drug_hosp_latest - drug_hosp_earliest) / drug_hosp_earliest * 100)
-drug_hosp_change_word <- if_else(drug_hosp_latest > drug_hosp_earliest,
+#drug_hosp_change_word <- if_else(drug_hosp_latest > drug_hosp_earliest,
   "increase", "decrease"
 )
+text_changeword <- dynamic_text(drug_hosp_latest, drug_hosp_earliest)
 
 scot_drug_hosp <- filter(
   drug_hosp,
@@ -208,9 +209,10 @@ alcohol_hosp_earliest <- filter(
 )$measure
 
 alcohol_hosp_change <- abs((alcohol_hosp_latest - alcohol_hosp_earliest) / alcohol_hosp_earliest * 100)
-alcohol_hosp_change_word <- if_else(alcohol_hosp_latest > alcohol_hosp_earliest,
+#alcohol_hosp_change_word <- if_else(alcohol_hosp_latest > alcohol_hosp_earliest,
   "increase", "decrease"
 )
+text_changeword <- dynamic_text(alcohol_hosp_latest, alcohol_hosp_earliest)
 
 scot_alcohol_hosp <- filter(
   alcohol_hosp,
@@ -325,9 +327,10 @@ bowel_screening_earliest <- filter(
 )$measure
 
 bowel_screening_change <- abs((bowel_screening_latest - bowel_screening_earliest) / bowel_screening_earliest * 100)
-bowel_screening_change_word <- if_else(bowel_screening_latest > bowel_screening_earliest,
+#bowel_screening_change_word <- if_else(bowel_screening_latest > bowel_screening_earliest,
   "increase", "decrease"
 )
+text_changeword <- dynamic_text(bowel_screening_latest, bowel_screening_earliest)
 
 
 scot_bowel_screening <- filter(
