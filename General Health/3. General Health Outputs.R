@@ -59,21 +59,6 @@ n_loc <- lookup %>%
   filter(hscp2019name == HSCP) %>%
   pull(locality_n)
 
-
-## Functions and themes ----
-
-# set an empty theme for icons/images
-theme_icon <- function() {
-  theme_void() +
-    theme(
-      panel.background = element_rect(fill = "transparent", colour = NA),
-      plot.background = element_rect(fill = "transparent", colour = NA),
-      legend.background = element_rect(fill = "transparent", colour = NA),
-      legend.box.background = element_rect(fill = "transparent", colour = NA)
-    )
-}
-
-
 ### Import + clean datasets ----
 
 # Life expectancy
