@@ -171,12 +171,18 @@ latest_period_life_exp_otherareas <- unique(filter(life_exp, area_type == "Scotl
 
 # Create time trend
 life_exp_trend <- life_exp %>%
-  filter(area_name == LOCALITY & area_type == "Locality" & year >= max(year) - 10) %>%
-  mutate(period_short = str_wrap(period_short, width = 10)) %>%
-  mutate(measure = round_half_up(measure, 1)) %>%
   ggplot(aes(x = period_short, y = measure, group = sex, linetype = sex, shape = sex)) +
   geom_line(aes(colour = sex), size = 1) +
   geom_point(aes(colour = sex), size = 2) +
+  filter(
+    area_name == LOCALITY,
+    area_type == "Locality",
+    year >= max(year) - 10
+  ) %>%
+  mutate(
+    period_short = str_wrap(period_short, width = 10),
+    measure = round_half_up(measure, 1)
+  ) %>%
   scale_colour_manual(values = palette) +
   theme_profiles() +
   expand_limits(y = 0) +
