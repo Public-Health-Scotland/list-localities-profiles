@@ -290,7 +290,6 @@ deaths_15_44_time_trend <- deaths_15_44 %>%
     string_wrap = 10
   )
 
-deaths_15_44_time_trend
 
 ## Bar chart
 deaths_15_44_bar <- deaths_15_44 %>%
@@ -300,7 +299,6 @@ deaths_15_44_bar <- deaths_15_44 %>%
     xaxis_title = "Deaths, aged 15-44 (Standardised rates per 100,000)"
   )
 
-deaths_15_44_bar
 
 ## Numbers for text
 deaths_15_44_latest <- filter(
@@ -333,8 +331,6 @@ cancer_reg_time_trend <- cancer_reg %>%
     yaxis_title = "Cancer registrations \n(Standardised rates per 100,000)",
     string_wrap = 10
   )
-
-cancer_reg_time_trend
 
 
 ## Numbers for text
@@ -372,8 +368,6 @@ early_deaths_cancer_time_trend <- early_deaths_cancer %>%
     yaxis_title = "Early deaths from cancer\n(Standardised rates per 100,000)",
     string_wrap = 10
   )
-
-early_deaths_cancer_time_trend
 
 
 ## Figures for text
@@ -449,7 +443,6 @@ adp_presc_time_trend <- adp_presc %>%
     rotate_xaxis = TRUE
   )
 
-adp_presc_time_trend
 
 ## Bar chart
 adp_presc_bar <- adp_presc %>%
@@ -461,8 +454,6 @@ adp_presc_bar <- adp_presc %>%
     ),
     xaxis_title = "Population prescribed medication (%)"
   )
-
-adp_presc_bar
 
 
 ## Numbers for text
