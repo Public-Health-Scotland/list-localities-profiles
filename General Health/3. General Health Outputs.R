@@ -203,14 +203,12 @@ life_exp_table <- life_exp %>%
     year == latest_year_life_exp_otherareas &
       ((area_name == HSCP & area_type == "HSCP") |
         area_name == HB | area_name == "Scotland")) %>%
-  select("Sex" = sex, area_name, area_type, measure) %>%
-  mutate(measure = round_half_up(measure, 1)) %>%
   mutate(
-    area_type = factor(area_type, levels = c("Locality", "HSCP", "Health board", "Scotland")),
-    area_name = fct_reorder(as.factor(area_name), as.numeric(area_type))
+    measure = round_half_up(measure, 1),
+    area_type = ordered(area_type, levels = c("Locality", "HSCP", "Health board", "Scotland"))
   ) %>%
-  arrange(area_name) %>%
-  select(-area_type) %>%
+  arrange(area_type) %>%
+  select("Sex" = sex, area_name, measure) %>%
   pivot_wider(names_from = area_name, values_from = measure)
 
 
@@ -394,9 +392,19 @@ highest_hosp_disease <- disease_hosp %>%
   filter(area_name == LOCALITY & area_type == "Locality") %>%
   filter(measure == max(measure))
 
-disease_hosp_table <- disease_hosp %>%
-  select(indicator, period_short, area_name, measure) %>%
-  pivot_wider(names_from = area_name, values_from = measure) %>%
+disease_hosp_table <- disease_hosp |>
+  mutate(
+    area_order = case_when(
+      area_name == LOCALITY ~ 1L,
+      area_name == HSCP ~ 2L,
+      str_starts(area_name, "NHS") ~ 4L,
+      area_name == "Scotland" ~ 5L,
+      .default = 2L
+    )
+  ) |>
+  arrange(area_order) |>
+  select(indicator, period_short, area_name, measure) |>
+  pivot_wider(names_from = area_name, values_from = measure) |>
   rename(
     "Disease" = indicator,
     "Latest time period" = period_short
