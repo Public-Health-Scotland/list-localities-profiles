@@ -234,8 +234,8 @@ life_exp_table <- life_exp %>%
       ((area_name == HSCP & area_type == "HSCP") |
         area_name == HB | area_name == "Scotland")) %>%
   select("Sex" = sex, area_name, area_type, measure) %>%
-  mutate(measure = round_half_up(measure, 1)) %>%
   mutate(
+    measure = round_half_up(measure, 1),
     area_type = factor(area_type, levels = c("Locality", "HSCP", "Health board", "Scotland")),
     area_name = fct_reorder(as.factor(area_name), as.numeric(area_type))
   ) %>%
