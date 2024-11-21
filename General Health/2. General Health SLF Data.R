@@ -51,6 +51,7 @@ slf <- read_slf_individual(fy, col_select = c(
 # Aggregate to Locality level ----
 ltc_data <- slf |>
   left_join(lookup, by = "datazone2011") |>
+  drop_na(hscp_locality) |>
   group_by(year, hscp2019name, hscp_locality, age_group, total_ltc) |>
   summarise(
     across(arth:refailure, sum),

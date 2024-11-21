@@ -153,7 +153,6 @@ ltc <- dplyr::rename(ltc,
   "Diabetes" = "diabetes", "Epilepsy" = "epilepsy", "Coronary heart disease" = "chd", "Heart failure" = "hefailure",
   "Multiple sclerosis" = "ms", "Parkinsons" = "parkinsons", "Renal failure" = "refailure"
 ) %>%
-  drop_na(hscp_locality) %>%
   mutate(hscp_locality = gsub("&", "and", hscp_locality)) %>%
   mutate(year = paste0("20", substr(year, 1, 2), "/", substr(year, 3, 4)))
 
