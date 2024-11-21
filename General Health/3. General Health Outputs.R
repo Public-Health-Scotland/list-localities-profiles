@@ -194,7 +194,7 @@ life_exp_trend <- life_exp %>%
   theme_profiles() +
   expand_limits(y = 0) +
   labs(
-    title = paste0("Average Life Expectancy in ", str_wrap(`LOCALITY`, 40)),
+    title = str_wrap(glue("Average Life Expectancy in {LOCALITY}"), width = 65),
     x = "Year Groups (5-year aggregates)",
     y = "Average Life Expectancy (in years)",
     caption = "Source: ScotPHO"
