@@ -245,23 +245,34 @@ life_exp_table <- life_exp %>%
 
 
 ## Numbers for text
-avg_life_exp_latest_male <- if (LOCALITY %in% check_missing_data_scotpho(life_exp)$area_name) {
-  NA
-} else {
-  round_half_up(filter(
-    life_exp, sex == "Male" & year == latest_year_life_exp_loc &
-      area_name == LOCALITY & area_type == "Locality"
-  )$measure, 1)
-}
+locality_missing <- LOCALITY %in% check_missing_data_scotpho(life_exp)$area_name
 
-avg_life_exp_latest_fem <- if (LOCALITY %in% check_missing_data_scotpho(life_exp)$area_name) {
-  NA
-} else {
-  round_half_up(filter(
-    life_exp, sex == "Female" & year == latest_year_life_exp_loc &
-      area_name == LOCALITY & area_type == "Locality"
-  )$measure, 1)
-}
+avg_life_exp_latest_male <- if_else(
+  locality_missing,
+  NA_real_,
+  filter(
+    life_exp, sex == "Male",
+    year == latest_year_life_exp_loc,
+    area_name == LOCALITY,
+    area_type == "Locality"
+  ) |>
+    pull(measure) |>
+    round_half_up(digits = 1)
+)
+
+avg_life_exp_latest_female <- if_else(
+  locality_missing,
+  NA_real_,
+  filter(
+    life_exp, sex == "Female",
+    year == latest_year_life_exp_loc,
+    area_name == LOCALITY,
+    area_type == "Locality"
+  ) |>
+    pull(measure) |>
+    round_half_up(digits = 1)
+)
+
 
 
 
