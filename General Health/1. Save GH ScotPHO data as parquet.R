@@ -25,11 +25,12 @@ dir_ls(path = gen_health_data_dir, type = "file", regexp = ".csv", fixed = TRUE)
   # 1) Read the data
   # 2) Write it out as a compressed parquet file
   # 3) Delete the original CSV file
-  walk(function(file_path) {
-    read_csv(file_path, show_col_types = FALSE) |>
-      write_parquet(path_ext_set(file_path, "parquet"), compression = "zstd")
+  walk(
+    function(file_path) {
+      read_csv(file_path, show_col_types = FALSE) |>
+        write_parquet(path_ext_set(file_path, "parquet"), compression = "zstd")
 
-    file_delete(file_path)
+      file_delete(file_path)
     },
     .progress = TRUE
   )
