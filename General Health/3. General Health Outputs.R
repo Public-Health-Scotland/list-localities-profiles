@@ -188,7 +188,7 @@ life_exp_trend <- life_exp %>%
     shape = sex,
     colour = sex
   )) +
-  geom_line(size = 1) +
+  geom_line(linewidth = 1) +
   geom_point(size = 2) +
   scale_colour_manual(values = palette) +
   theme_profiles() +
