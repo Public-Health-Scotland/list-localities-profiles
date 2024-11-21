@@ -303,13 +303,15 @@ deaths_15_44_bar <- deaths_15_44 %>%
 ## Numbers for text
 deaths_15_44_latest <- filter(
   deaths_15_44,
-  year == max(deaths_15_44$year) &
-    (area_name == LOCALITY & area_type == "Locality")
+  year == max(deaths_15_44$year),
+  area_name == LOCALITY,
+  area_type == "Locality"
 )$measure
 
 scot_deaths_15_44 <- filter(
   deaths_15_44,
-  year == max(deaths_15_44$year) & area_name == "Scotland"
+  year == max(deaths_15_44$year),
+  area_name == "Scotland"
 )$measure
 
 deaths_15_44_diff_scot <- if_else(deaths_15_44_latest > scot_deaths_15_44, "higher", "lower")
