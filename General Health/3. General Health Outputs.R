@@ -42,9 +42,9 @@ gen_health_data_dir <- path(lp_path, "General Health", glue("DATA {ext_year}"))
 # Locality lookup
 lookup <- read_in_localities()
 
-# Determine HSCP and HB based on Loc
-HSCP <- as.character(filter(lookup, hscp_locality == LOCALITY)$hscp2019name)
-HB <- as.character(filter(lookup, hscp_locality == LOCALITY)$hb2019name)
+# Determine HSCP and HB based on Locality
+HSCP <- filter(lookup, hscp_locality == LOCALITY)[["hscp2019name"]]
+HB <- filter(lookup, hscp_locality == LOCALITY)[["hb2019name"]]
 
 # Determine other localities based on LOCALITY object
 other_locs <- lookup %>%
