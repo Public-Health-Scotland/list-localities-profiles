@@ -71,7 +71,11 @@ life_exp_fem <- read_parquet(path(gen_health_data_dir, "scotpho_data_extract_lif
   clean_scotpho_dat()
 
 life_exp <- bind_rows(life_exp_male, life_exp_fem) %>%
-  mutate(sex = if_else(indicator == "Life expectancy, males", "Male", "Female")) %>%
+  mutate(sex = case_match(
+    indicator,
+    "Life expectancy, males" ~ "Male",
+    "Life expectancy, females" ~ "Female"
+  )) %>%
   mutate(period_short = gsub("to", "-", substr(period, 1, 12)))
 
 rm(life_exp_fem, life_exp_male)
