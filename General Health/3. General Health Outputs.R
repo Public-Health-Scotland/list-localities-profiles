@@ -437,7 +437,7 @@ disease_hosp_table <- disease_hosp |>
     "Latest time period" = period_short
   )
 
-table8_year_title <- max(disease_hosp_table$`Latest time period`)
+table8_year_title <- max(disease_hosp_table[["Latest time period"]])
 
 ##### 2e Prescriptions for Anxiety, Depression and Psychosis #####
 
