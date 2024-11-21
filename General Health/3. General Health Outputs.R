@@ -35,6 +35,8 @@ ext_year <- 2023
 # Source in functions code
 # source("Master RMarkdown Document & Render Code/Global Script.R")
 
+gen_health_data_dir <- path(lp_path, "General Health", glue("DATA {ext_year}"))
+
 ### Geographical lookups and objects ----
 
 # Locality lookup
@@ -77,10 +79,10 @@ theme_icon <- function() {
 # Life expectancy
 
 # Males
-life_exp_male <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_life_exp_male.RDS")) %>%
+life_exp_male <- read_parquet(path(gen_health_data_dir, "scotpho_data_extract_life_exp_male.parquet")) %>%
   clean_scotpho_dat()
 # Females
-life_exp_fem <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_life_exp_fem.RDS")) %>%
+life_exp_fem <- read_parquet(path(gen_health_data_dir, "scotpho_data_extract_life_exp_fem.parquet")) %>%
   clean_scotpho_dat()
 
 life_exp <- bind_rows(life_exp_male, life_exp_fem) %>%
@@ -92,21 +94,21 @@ rm(life_exp_fem, life_exp_male)
 check_missing_data_scotpho(life_exp)
 
 ## Deaths aged 15-44
-deaths_15_44 <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_deaths_15_44.RDS")) %>%
+deaths_15_44 <- read_parquet(path(gen_health_data_dir, "scotpho_data_extract_deaths_15_44.parquet")) %>%
   clean_scotpho_dat() %>%
   mutate(period_short = gsub("to", "-", substr(period, 1, 12)))
 
 check_missing_data_scotpho(deaths_15_44)
 
 ## Cancer registrations
-cancer_reg <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_cancer_reg.RDS")) %>%
+cancer_reg <- read_parquet(path(gen_health_data_dir, "scotpho_data_extract_cancer_reg.parquet")) %>%
   clean_scotpho_dat() %>%
   mutate(period_short = gsub("to", "-", substr(period, 1, 12)))
 
 check_missing_data_scotpho(cancer_reg)
 
 ## Early deaths cancer
-early_deaths_cancer <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_early_deaths_cancer.RDS")) %>%
+early_deaths_cancer <- read_parquet(path(gen_health_data_dir, "scotpho_data_extract_early_deaths_cancer.parquet")) %>%
   clean_scotpho_dat() %>%
   mutate(period_short = gsub("to", "-", substr(period, 1, 12)))
 
@@ -114,28 +116,28 @@ check_missing_data_scotpho(early_deaths_cancer)
 
 
 ## Asthma hospitalisations
-asthma_hosp <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_asthma_hosp.RDS")) %>%
+asthma_hosp <- read_parquet(path(gen_health_data_dir, "scotpho_data_extract_asthma_hosp.parquet")) %>%
   clean_scotpho_dat() %>%
   mutate(period_short = gsub("to", "-", substr(period, 1, 18)))
 
 check_missing_data_scotpho(asthma_hosp)
 
 ## CHD hospitalisations
-chd_hosp <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_chd_hosp.RDS")) %>%
+chd_hosp <- read_parquet(path(gen_health_data_dir, "scotpho_data_extract_chd_hosp.parquet")) %>%
   clean_scotpho_dat() %>%
   mutate(period_short = gsub("to", "-", substr(period, 1, 18)))
 
 check_missing_data_scotpho(chd_hosp)
 
 ## COPD hospitalisations
-copd_hosp <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_copd_hosp.RDS")) %>%
+copd_hosp <- read_parquet(path(gen_health_data_dir, "scotpho_data_extract_copd_hosp.parquet")) %>%
   clean_scotpho_dat() %>%
   mutate(period_short = gsub("to", "-", substr(period, 1, 18)))
 
 check_missing_data_scotpho(copd_hosp)
 
 ## Anxiety/depression/psychosis prescriptions
-adp_presc <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_adp_presc.RDS")) %>%
+adp_presc <- read_parquet(path(gen_health_data_dir, "scotpho_data_extract_adp_presc.parquet")) %>%
   clean_scotpho_dat() %>%
   mutate(period_short = substr(period, 1, 7))
 
@@ -143,7 +145,7 @@ check_missing_data_scotpho(adp_presc)
 
 
 # Long-term conditions
-ltc <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/LTC_from_SLF.RDS"))
+ltc <- read_parquet(path(gen_health_data_dir, "LTC_from_SLF.parquet"))
 
 ltc <- dplyr::rename(ltc,
   "Arthritis" = "arth", "Asthma" = "asthma", "Atrial fibrillation" = "atrialfib", "Cancer" = "cancer",

@@ -14,6 +14,8 @@ library(data.table)
 library(glue)
 library(magrittr)
 library(lubridate)
+library(fs)
+library(arrow)
 
 
 #### Colours & Formatting #### ----

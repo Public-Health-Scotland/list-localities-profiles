@@ -1,105 +1,76 @@
-#############################################################################################
-#                                                                                           #
-#                     LOCALITY PROFILES GENERAL HEALTH SLF DATA CODE                        #
-#                                                                                           #
-#############################################################################################
+# LOCALITY PROFILES GENERAL HEALTH SLF DATA CODE
 
-## Code used to extract long-term conditions data from Source Linkage Files
+# Code used to extract long-term conditions data from Source Linkage Files
 
-# Packages
-library(dplyr)
-library(slfhelper)
+# Set-up ----
 
 # Set year for data extracts folder for saving
 ext_year <- 2023
 
 # Set financial year to use for SLFs (format ex: for FY 2021/2022 -> 202122)
 # Recommended to use previous year's data for more up to date figures + pop
-fy <- "202223"
-
-# Set file path
-# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+fy <- "2223"
 
 # Source in functions code
-# source("Master RMarkdown Document & Render Code/Global Script.R")
+source("Master RMarkdown Document & Render Code/Global Script.R")
+
+# Additional packages
+library(slfhelper)
+
+# Set file path
+lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
 
 
-### Geographical lookups and objects ----
+gen_health_data_dir <- path(lp_path, "General Health", glue("DATA {ext_year}"))
 
-# Locality lookup
+# Locality lookup ----
 lookup <- read_in_localities(dz_level = TRUE)
 
-# Read in SLF individual level file
-slf <- read_slf_individual("2223",
-  col_select = c("year", "datazone2011", "hscp2018", "age", "keep_population", ltc_vars),
-  as_data_frame = TRUE
-)
 
-# Compute total LTCs
-slf$"total_ltc" <- rowSums(subset(slf, select = arth:refailure))
+# Read in SLF individual level data ---
+slf <- read_slf_individual(fy, col_select = c(
+  "year",
+  "datazone2011",
+  "hscp2018",
+  "age",
+  "keep_population",
+  ltc_vars
+)) |>
+  # remove -1 age
+  filter(age >= 0) |>
+  # Compute total LTCs
+  mutate(total_ltc = rowSums(pick(arth:refailure))) |>
+  # compute age band
+  mutate(age_group = case_when(
+    age < 65 ~ "Under 65",
+    between(age, 65, 74) ~ "65-74",
+    between(age, 75, 84) ~ "75-84",
+    age >= 85 ~ "85+"
+  ))
 
-# compute age band
-# remove -1 age
-slf <- filter(slf, age >= 0)
-slf$age_group <- case_when(
-  slf$age < 65 ~ "Under 65",
-  between(slf$age, 65, 74) ~ "65-74",
-  between(slf$age, 75, 84) ~ "75-84",
-  slf$age >= 85 ~ "85+"
-)
-
-# Aggregate to Locality level
-
-ltc_agg <- slf %>%
-  left_join(lookup, by = "datazone2011") %>%
-  group_by(year, hscp2019name, hscp_locality, age_group, total_ltc) %>%
+# Aggregate to Locality level ----
+ltc_data <- slf |>
+  left_join(lookup, by = "datazone2011") |>
+  group_by(year, hscp2019name, hscp_locality, age_group, total_ltc) |>
   summarise(
-    arth = sum(arth),
-    asthma = sum(asthma),
-    atrialfib = sum(atrialfib),
-    cancer = sum(cancer),
-    cvd = sum(cvd),
-    liver = sum(liver),
-    copd = sum(copd),
-    dementia = sum(dementia),
-    diabetes = sum(diabetes),
-    epilepsy = sum(epilepsy),
-    chd = sum(chd),
-    hefailure = sum(hefailure),
-    ms = sum(ms),
-    parkinsons = sum(parkinsons),
-    refailure = sum(refailure),
+    across(arth:refailure, sum),
     # congen = sum(congen),
     # bloodbfo = sum(bloodbfo),
     # endomet = sum(endomet),
     # digestive = sum(digestive),
-    people = n()
-  ) %>%
+    people = n(),
+    slf_adj_pop = sum(keep_population),
+    .groups = "drop_last"
+  ) |>
+  # Using adjusted population from SLFs for closer estimates to true population
+  mutate(slf_adj_pop = sum(slf_adj_pop)) |>
   ungroup()
 
+# Save data as parquet ----
+write_parquet(
+  ltc_data,
+  path(gen_health_data_dir, "LTC_from_SLF.parquet")
+)
 
-#### LTC POPULATIONS ####
-
-## Using adjusted population from SLFs for closer estimates to true population
-
-slf_pops <- slf %>%
-  group_by(year, datazone2011, age_group) %>%
-  summarise(population = sum(keep_population)) %>%
-  ungroup()
-
-slf_pops <- left_join(slf_pops, lookup) %>%
-  group_by(year, hscp_locality, hscp2019name, age_group) %>%
-  summarise(slf_adj_pop = sum(population)) %>%
-  ungroup()
-
-
-#### JOIN DATASETS ####
-
-ltc_data <- left_join(ltc_agg, slf_pops)
-
-#### SAVE DATA ####
-
-saveRDS(ltc_data, file = paste0(
-  lp_path, "General Health/DATA ",
-  ext_year, "/LTC_from_SLF.RDS"
-))
+# Clean up the environment
+rm(list = ls())
