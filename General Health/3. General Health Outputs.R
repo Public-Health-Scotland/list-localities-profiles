@@ -134,14 +134,24 @@ check_missing_data_scotpho(adp_presc)
 
 
 # Long-term conditions
-ltc <- read_parquet(path(gen_health_data_dir, "LTC_from_SLF.parquet"))
-
-ltc <- dplyr::rename(ltc,
-  "Arthritis" = "arth", "Asthma" = "asthma", "Atrial fibrillation" = "atrialfib", "Cancer" = "cancer",
-  "Cardiovascular disease" = "cvd", "Liver disease" = "liver", "COPD*" = "copd", "Dementia" = "dementia",
-  "Diabetes" = "diabetes", "Epilepsy" = "epilepsy", "Coronary heart disease" = "chd", "Heart failure" = "hefailure",
-  "Multiple sclerosis" = "ms", "Parkinsons" = "parkinsons", "Renal failure" = "refailure"
-) %>%
+ltc <- read_parquet(path(gen_health_data_dir, "LTC_from_SLF.parquet")) %>%
+  rename(
+    "Arthritis" = "arth",
+    "Asthma" = "asthma",
+    "Atrial fibrillation" = "atrialfib",
+    "Cancer" = "cancer",
+    "Cardiovascular disease" = "cvd",
+    "Liver disease" = "liver",
+    "COPD*" = "copd",
+    "Dementia" = "dementia",
+    "Diabetes" = "diabetes",
+    "Epilepsy" = "epilepsy",
+    "Coronary heart disease" = "chd",
+    "Heart failure" = "hefailure",
+    "Multiple sclerosis" = "ms",
+    "Parkinsons" = "parkinsons",
+    "Renal failure" = "refailure"
+  ) %>%
   mutate(hscp_locality = gsub("&", "and", hscp_locality)) %>%
   mutate(year = paste0("20", substr(year, 1, 2), "/", substr(year, 3, 4)))
 
