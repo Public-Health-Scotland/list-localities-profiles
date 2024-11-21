@@ -284,7 +284,6 @@ latest_period_deaths_15_44 <- unique(filter(deaths_15_44, year == max(deaths_15_
 ## Time trend
 deaths_15_44_time_trend <- deaths_15_44 %>%
   scotpho_time_trend(
-    data = .,
     chart_title = "Deaths Aged 15-44 Time Trend",
     xaxis_title = "Year Groups (3-year aggregates)",
     yaxis_title = "Deaths, aged 15-44\n(Standardised rates per 100,000)",
@@ -329,7 +328,6 @@ prev_period_cancer_reg <- unique(filter(cancer_reg, year == max(cancer_reg$year)
 ## Time trend
 cancer_reg_time_trend <- cancer_reg %>%
   scotpho_time_trend(
-    data = .,
     chart_title = "Cancer Registrations Time Trend",
     xaxis_title = "Year Groups (3-year aggregates)",
     yaxis_title = "Cancer registrations \n(Standardised rates per 100,000)",
@@ -369,7 +367,6 @@ early_deaths_cancer_rate_latest <- filter(
 ## Time trend for cancer deaths
 early_deaths_cancer_time_trend <- early_deaths_cancer %>%
   scotpho_time_trend(
-    data = .,
     chart_title = "Early Deaths from Cancer Time Trend",
     xaxis_title = "Year Groups (3-year aggregates)",
     yaxis_title = "Early deaths from cancer\n(Standardised rates per 100,000)",
@@ -445,7 +442,6 @@ prev_period_adp_presc <- unique(filter(adp_presc, year == max(adp_presc$year) - 
 ## Time trend
 adp_presc_time_trend <- adp_presc %>%
   scotpho_time_trend(
-    data = .,
     chart_title = "Anxiety, Depression and Psychosis Prescriptions Time Trend",
     xaxis_title = "Financial Year",
     yaxis_title = "Population prescribed\n medication (%)",
