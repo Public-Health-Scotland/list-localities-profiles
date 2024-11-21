@@ -295,8 +295,8 @@ deaths_15_44_time_trend <- deaths_15_44 %>%
 deaths_15_44_bar <- deaths_15_44 %>%
   scotpho_bar_chart(
     data = .,
-    chart_title = paste0("Deaths Aged 15-44 by area, ", max(.$period_short)),
-    xaxis_title = "Deaths, aged 15-44 (Standardised rates per 100,000)"
+    chart_title = paste0("Deaths, Aged 15-44 by area, ", max(.$period_short)),
+    xaxis_title = "Deaths (Standardised rates per 100,000)"
   )
 
 
