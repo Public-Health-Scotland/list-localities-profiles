@@ -736,7 +736,7 @@ ltc_plot_left <- ltc_types %>%
   geom_point(colour = palette[1], size = 3) +
   geom_segment(aes(x = 0, y = key, xend = percent, yend = key), size = 0.4) +
   labs(x = "People under 65 with\nthe condition (%)", y = "", title = "UNDER 65") +
-  scale_x_continuous(breaks = seq(-100, 0, 2), labels = paste0(seq(100, 0, -2))) +
+  scale_x_continuous(breaks = seq(-100, 0, 2), labels = abs) +
   expand_limits(x = lims.un65) +
   theme_profiles() +
   theme(
@@ -765,11 +765,11 @@ ltc_plot_right <- ltc_types %>%
   expand_limits(x = lims.ov65) +
   theme_profiles() +
   theme(
+    title = element_text(colour = palette[2]),
     plot.margin = unit(c(0.5, 0, 0, 0), "cm"),
-    axis.title.x = element_blank(),
-    axis.text.x = element_blank(),
-    axis.ticks.x = element_blank(),
-    title = element_text(colour = palette[2])
+    axis.title.y = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
   ) +
   scale_y_discrete(limits = rev(levels(as.factor(ltc_types$key))))
 
