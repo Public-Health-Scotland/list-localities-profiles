@@ -40,8 +40,8 @@ format_number_for_text <- function(x) {
 }
 
 # This will return the correct article depending on the (max 2-digit) number supplied
-# e.g. 
-# 81.2 -> an 
+# e.g.
+# 81.2 -> an
 # 18 -> an
 # 7.2 -> an
 # To be used for "a xx increase" which could be "an xx increase"
@@ -421,7 +421,12 @@ scotpho_bar_chart <- function(data, chart_title, xaxis_title) {
     geom_bar(colour = "white") +
     scale_fill_manual(values = palette) +
     theme_profiles() +
-    theme(axis.text.y = element_text(colour = if_else(data_for_plot$text_highlight, "red", "black"))) +
+    theme(
+      axis.text.y = element_text(
+        colour = if_else(data_for_plot$text_highlight, "red", "black"),
+        face = if_else(data_for_plot$text_highlight, "bold", "plain")
+      )
+    ) +
     labs(
       title = chart_title,
       x = xaxis_title,
