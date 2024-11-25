@@ -912,6 +912,7 @@ ltc_loc_col <- tableGrob(top5ltc_loc[, 1],
 )
 ltc_hscp_col <- tableGrob(top5ltc_hscp[, 1],
   cols = hscp.ltc.table,
+  rows = NULL,
   theme = ttheme_default(
     core = list(bg_params = list(fill = top5ltc_hscp$colours), fg_params = list(col = "white", fontface = 2, fontsize = 11)),
     colhead = list(bg_params = list(fill = "white"), fg_params = list(fontface = 3, fontsize = 11))
@@ -919,6 +920,7 @@ ltc_hscp_col <- tableGrob(top5ltc_hscp[, 1],
 )
 ltc_scot_col <- tableGrob(top5ltc_scot[, 1],
   cols = "Scotland",
+  rows = NULL,
   theme = ttheme_default(
     core = list(bg_params = list(fill = top5ltc_scot$colours), fg_params = list(col = "white", fontface = 2, fontsize = 11)),
     colhead = list(bg_params = list(fill = "white"), fg_params = list(fontface = 3, fontsize = 11))
