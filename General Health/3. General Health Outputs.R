@@ -29,11 +29,11 @@ library(phsstyles)
 # Set year of data extracts for folder
 ext_year <- 2023
 
-# Set file path
-# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
-
 # Source in functions code
 # source("Master RMarkdown Document & Render Code/Global Script.R")
+
+# Set file path
+# lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
 
 gen_health_data_dir <- path(lp_path, "General Health", glue("DATA {ext_year}"))
 
@@ -521,17 +521,17 @@ ltc_scot <- ltc %>%
 
 # Load images
 # under 65
-ppl_bold_u65 <- readPNG(paste0(lp_path, "General Health/infographics/people bold under 65.png"))
-ppl_faint_u65 <- readPNG(paste0(lp_path, "General Health/infographics/people faint under 65.png"))
+ppl_bold_u65 <- readPNG(path(lp_path, "General Health", "infographics", "people bold under 65.png"))
+ppl_faint_u65 <- readPNG(path(lp_path, "General Health", "infographics", "people faint under 65.png"))
 # 65-74
-ppl_bold_6574 <- readPNG(paste0(lp_path, "General Health/infographics/people bold 65-74.png"))
-ppl_faint_6574 <- readPNG(paste0(lp_path, "General Health/infographics/people faint 65-74.png"))
+ppl_bold_6574 <- readPNG(path(lp_path, "General Health", "infographics", "people bold 65-74.png"))
+ppl_faint_6574 <- readPNG(path(lp_path, "General Health", "infographics", "people faint 65-74.png"))
 # 75-84
-ppl_bold_7584 <- readPNG(paste0(lp_path, "General Health/infographics/people bold 75-84.png"))
-ppl_faint_7584 <- readPNG(paste0(lp_path, "General Health/infographics/people faint 75-84.png"))
+ppl_bold_7584 <- readPNG(path(lp_path, "General Health", "infographics", "people bold 75-84.png"))
+ppl_faint_7584 <- readPNG(path(lp_path, "General Health", "infographics", "people faint 75-84.png"))
 # over 85
-ppl_bold_o85 <- readPNG(paste0(lp_path, "General Health/infographics/people bold over 85.png"))
-ppl_faint_o85 <- readPNG(paste0(lp_path, "General Health/infographics/people faint over 85.png"))
+ppl_bold_o85 <- readPNG(path(lp_path, "General Health", "infographics", "people bold over 85.png"))
+ppl_faint_o85 <- readPNG(path(lp_path, "General Health", "infographics", "people faint over 85.png"))
 
 # LTC infographic waffle chart
 create_infographic <- function(image1, image2, perc_ltc, col, age_label1, age_label2) {
@@ -1118,4 +1118,4 @@ scot_ltc <- round_half_up((sum(filter(ltc_scot, total_ltc > 0)$people) / ltc_pop
 # writexl::write_xlsx(x = list("Total Pop with LTC Age" = sdc1,
 #                              "LTC Multimorbidity Age" = sdc2,
 #                              "LTC Types Age" = sdc3),
-#                     path = paste0(lp_path, "Publishing/LTC Data.xlsx"))
+#                     path = path(lp_path, "Publishing", "LTC Data.xlsx"))
