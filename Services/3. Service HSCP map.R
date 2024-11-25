@@ -187,6 +187,7 @@ if (nrow(markers_miu) > 0) {
 # 3.5 Final map ----
 # create final service map
 service_map <- service_map +
+  labs(colour="Service Type") + 
   scale_color_manual(values = c(
     "GP Practice" = "black",
     "Care Home" = "black",
