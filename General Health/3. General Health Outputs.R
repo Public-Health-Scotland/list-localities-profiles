@@ -1017,7 +1017,7 @@ otherloc_ltc_pops <- slf_pops %>%
   summarise(slf_adj_pop = sum(slf_adj_pop)) %>%
   ungroup()
 
-other_locs_ltc <- ltc |> 
+other_locs_ltc <- ltc |>
   inner_join(other_locs, by = join_by(hscp2019name, hscp_locality)) %>%
   select(hscp_locality, total_ltc, people) %>%
   mutate(total_ltc = if_else(total_ltc == 0, 0, 1)) %>%
