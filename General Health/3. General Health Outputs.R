@@ -499,17 +499,16 @@ adp_presc_diff_scot <- if_else(adp_presc_latest > scot_adp_presc, "larger", "sma
 ############################ 3) SLF DATA (LTCs) ####################################
 
 # Extract SLF adjusted populations
-slf_pops <- ltc %>%
-  group_by(age_group, hscp_locality, hscp2019name) %>%
-  summarise(slf_adj_pop = first(slf_adj_pop)) %>%
-  ungroup()
+slf_pops <- ltc |>
+  distinct(age_group, hscp_locality, hscp2019name, slf_adj_pop)
 
-slf_pop_loc <- slf_pops %>% filter(hscp_locality == LOCALITY)
+slf_pop_loc <- slf_pops %>%
+  filter(hscp_locality == LOCALITY)
 
 # Determine year
-latest_year_ltc <- distinct(ltc, year) %>% as.character()
+latest_year_ltc <- ltc[["year"]][1]
 
-## Create scotland totals
+## Create Scotland totals
 ltc_scot <- ltc %>%
   select(-year, -hscp2019name, -hscp_locality, -slf_adj_pop) %>%
   group_by(total_ltc, age_group) %>%
@@ -567,7 +566,6 @@ create_infographic <- function(image1, image2, perc_ltc, col, age_label1, age_la
 ltc_infographic <- ltc %>%
   filter(hscp_locality == LOCALITY) %>%
   filter(total_ltc > 0) %>%
-  select(hscp_locality, age_group, total_ltc, people) %>%
   group_by(hscp_locality, age_group) %>%
   summarise(people = sum(people)) %>%
   ungroup() %>%
@@ -629,7 +627,7 @@ waffle.o85 <- create_infographic(
 
 
 ## Combine images
-waffles <- cowplot::plot_grid(waffle.u65, waffle.6574, waffle.7584, waffle.o85, nrow = 2)
+waffles <- plot_grid(waffle.u65, waffle.6574, waffle.7584, waffle.o85, nrow = 2)
 
 
 ## Numbers for text
@@ -710,6 +708,7 @@ ltc_types <- ltc2 %>%
   filter(hscp_locality == LOCALITY) %>%
   group_by(hscp_locality, age_group) %>%
   summarise(across(everything(), sum)) %>%
+  ungroup() |>
   pivot_longer(
     cols = c("Arthritis":"Renal failure"),
     names_to = "key",
@@ -724,39 +723,28 @@ ltc_types_temp <- ltc_types %>%
 ltc_types <- ltc_types %>%
   filter(age_group == "65+") %>%
   mutate(percent = (value / sum(filter(slf_pop_loc, age_group != "Under 65")$slf_adj_pop) * 100)) %>%
-  rbind(ltc_types_temp)
+  bind_rows(ltc_types_temp)
 
 rm(ltc_types_temp)
 
 
 #### lollipop with 3 separate plots put together
 
-## To consider when determining y limits:
-# look at max values on each side
-# code below shows max for under and over 65 (change this in filter accordingly)
-# ltc.test <- ltc2 %>%
-#   select(-hscp2019, -total_ltc) %>%
-#   filter(age_group == "Under 65") %>%
-#   group_by(hscp_locality, age_group) %>%
-#   summarise_all(sum) %>%
-#   ungroup() %>%
-#   gather(key ="key", value  ="value", c(`Arthritis`:`Renal failure`)) %>%
-#   mutate(percent = (value/people)*100) %>%
-#   group_by(hscp_locality) %>%
-#   summarise(percent.max = max(percent)) %>%
-#   ungroup()
-
 ## create conditionals for expand limits
+max_ltc_types_pct <- max(ltc_types$percent)
+
 lims.un65 <- case_when(
-  max(ltc_types$percent) < 20 ~ -10,
-  between(max(ltc_types$percent), 20, 24) ~ -12,
-  max(ltc_types$percent) > 24 ~ -15
+  max_ltc_types_pct < 20 ~ -10,
+  between(max_ltc_types_pct, 20, 24) ~ -12,
+  max_ltc_types_pct > 24 ~ -15
 )
 lims.ov65 <- case_when(
-  max(ltc_types$percent) < 20 ~ 20,
-  between(max(ltc_types$percent), 20, 24) ~ 24,
-  max(ltc_types$percent) > 24 ~ 30
+  max_ltc_types_pct < 20 ~ 20,
+  between(max_ltc_types_pct, 20, 24) ~ 24,
+  max_ltc_types_pct > 24 ~ 30
 )
+
+rm(max_ltc_types_pct)
 
 ltc_plot_left <- ltc_types %>%
   filter(age_group == "Under 65") %>%
@@ -811,8 +799,20 @@ caption <- ggdraw() +
   draw_label("Source: Source Linkage Files", size = 10, hjust = -0.5)
 
 # Combine plots into 1
-ltc_types_plot <- plot_grid(ltc_plot_left, ltc_axis, ltc_plot_right, ncol = 3, align = "h", rel_widths = c(0.5, 0.6, 1))
-ltc_types_plot <- plot_grid(title, ltc_types_plot, caption, nrow = 3, rel_heights = c(0.1, 1, 0.1))
+ltc_types_plot <- plot_grid(
+  title,
+  plot_grid(
+    ltc_plot_left,
+    ltc_axis,
+    ltc_plot_right,
+    ncol = 3,
+    align = "h",
+    rel_widths = c(0.5, 0.6, 1)
+  ),
+  caption,
+  nrow = 3,
+  rel_heights = c(0.1, 1, 0.1)
+)
 
 
 rm(
@@ -831,19 +831,23 @@ ltc_totals <- ltc2 %>%
   summarise(across(everything(), sum)) %>%
   ungroup()
 
-ltc_totals <- left_join(ltc_totals, select(lookup, hscp_locality, hscp2019name)) # join df with lookup2
+ltc_totals <- left_join(
+  ltc_totals,
+  select(lookup, hscp_locality, hscp2019name),
+  by = join_by(hscp_locality),
+  relationship = "one-to-one"
+)
 
 # Extract population totals to make %
-ltc_pops_total_loc <- as.numeric(sum(slf_pop_loc$slf_adj_pop))
+ltc_pops_total_loc <- sum(slf_pop_loc$slf_adj_pop)
 ltc_pops_total_scot <- sum(slf_pops$slf_adj_pop)
 ltc_pops_total_hscp <- sum(filter(slf_pops, hscp2019name == HSCP)$slf_adj_pop)
 
 # Colour lookup for table
 ltc_cols <- ltc_scot %>%
-  select(3:17) %>%
+  select(!c(total_ltc, age_group, people)) %>%
   summarise(across(everything(), sum)) %>%
-  pivot_longer(cols = everything(), names_to = "key", values_to = "value") %>%
-  rename(topltc = key) %>%
+  pivot_longer(cols = everything(), names_to = "topltc", values_to = "value") %>%
   arrange(desc(value)) %>%
   mutate(colours = c(palette, c(
     "navy", "lightsalmon4", "deeppink4",
@@ -854,65 +858,53 @@ ltc_cols <- ltc_scot %>%
 top5ltc_loc <- ltc_totals %>%
   filter(hscp_locality == LOCALITY) %>%
   select(-hscp_locality, -hscp2019name, -people, -slf_adj_pop) %>%
-  pivot_longer(cols = everything(), names_to = "key", values_to = "value") %>%
+  pivot_longer(cols = everything(), names_to = "topltc", values_to = "value") %>%
   arrange(desc(value)) %>%
   slice_max(n = 5, order_by = value) %>%
-  mutate(topltc = key, percent = round_half_up((value / ltc_pops_total_loc) * 100, 2)) %>%
-  select(-key, -value) %>%
-  left_join(ltc_cols) %>%
-  unite(col = "Prevalence", c(topltc, percent), sep = "\n") %>%
-  mutate(Prevalence = paste0(Prevalence, "%"))
+  mutate(percent = round_half_up((value / ltc_pops_total_loc) * 100, 2)) %>%
+  select(-value) %>%
+  left_join(ltc_cols, by = join_by(topltc)) %>%
+  unite("Prevalence", topltc, percent, sep = "\n") %>%
+  mutate(Prevalence = paste(Prevalence, "%"))
 
 # Top 5 HSCP
 top5ltc_hscp <- ltc_totals %>%
-  select(-hscp_locality) %>%
-  group_by(hscp2019name) %>%
-  summarise(across(everything(), sum)) %>%
-  ungroup() %>%
   filter(hscp2019name == HSCP) %>%
-  select(-hscp2019name, -people, -slf_adj_pop) %>%
-  pivot_longer(cols = everything(), names_to = "key", values_to = "value") %>%
+  select(-hscp_locality, -hscp2019name, -people, -slf_adj_pop) %>%
+  summarise(across(everything(), sum)) %>%
+  pivot_longer(cols = everything(), names_to = "topltc", values_to = "value") %>%
   arrange(desc(value)) %>%
   slice_max(n = 5, order_by = value) %>%
-  mutate(topltc = key, percent = round_half_up((value / ltc_pops_total_hscp) * 100, 2)) %>%
-  select(-key, -value) %>%
-  left_join(ltc_cols) %>%
-  unite(col = "Prevalence", c(topltc, percent), sep = "\n") %>%
-  mutate(Prevalence = paste0(Prevalence, "%"))
+  mutate(percent = round_half_up((value / ltc_pops_total_hscp) * 100, 2)) %>%
+  select(-value) %>%
+  left_join(ltc_cols, by = join_by(topltc)) %>%
+  unite("Prevalence", topltc, percent, sep = "\n") %>%
+  mutate(Prevalence = paste(Prevalence, "%"))
 
 # Top 5 Scotland
-top5ltc_scot <- ltc_scot %>%
-  mutate(area = "Scotland") %>%
-  filter(total_ltc != 0) %>%
-  select(-age_group, -people) %>%
-  group_by(area) %>%
+top5ltc_scot <- ltc_totals %>%
+  select(-hscp_locality, -hscp2019name, -people, -slf_adj_pop) %>%
   summarise(across(everything(), sum)) %>%
-  ungroup() %>%
-  select(-area, -total_ltc) %>%
-  pivot_longer(cols = everything(), names_to = "key", values_to = "value") %>%
+  pivot_longer(cols = everything(), names_to = "topltc", values_to = "value") %>%
   arrange(desc(value)) %>%
   slice_max(n = 5, order_by = value) %>%
-  mutate(topltc = key, percent = round_half_up((value / ltc_pops_total_scot) * 100, 2)) %>%
-  select(-key, -value) %>%
-  left_join(ltc_cols) %>%
-  unite(col = "Prevalence", c(topltc, percent), sep = "\n") %>%
-  mutate(Prevalence = paste0(Prevalence, "%"))
+  mutate(percent = round_half_up((value / ltc_pops_total_scot) * 100, 2)) %>%
+  select(-value) %>%
+  left_join(ltc_cols, by = join_by(topltc)) %>%
+  unite("Prevalence", topltc, percent, sep = "\n") %>%
+  mutate(Prevalence = paste(Prevalence, "%"))
 
 
 ## Create column headers
 
-loc.ltc.table <- paste0(`LOCALITY`, "\nLocality")
-loc.ltc.table.wrapped <- strwrap(loc.ltc.table, width = if_else(n_loc < 5, 30, 25), simplify = FALSE)
-loc.ltc.table <- sapply(loc.ltc.table.wrapped, paste, collapse = "\n")
+loc.ltc.table <- str_wrap(glue("{LOCALITY} Locality"), width = if_else(n_loc < 5, 30, 25))
 
-hscp.ltc.table <- paste0(`HSCP`, "\nHSCP")
-hscp.ltc.table.wrapped <- strwrap(hscp.ltc.table, width = 25, simplify = FALSE)
-hscp.ltc.table <- sapply(hscp.ltc.table.wrapped, paste, collapse = "\n")
+hscp.ltc.table <- str_wrap(glue("{HSCP} HSCP"), width = 25)
 
-## If any areas have a tie for fifth place, add top5ltc_area[c(1:5), 1] to select only the first 5 rows
 
 ltc_loc_col <- tableGrob(top5ltc_loc[, 1],
-  cols = loc.ltc.table, rows = 1:5,
+  cols = loc.ltc.table,
+  rows = 1:5,
   theme = ttheme_default(
     core = list(bg_params = list(fill = top5ltc_loc$colours), fg_params = list(col = "white", fontface = 2, fontsize = 11)),
     colhead = list(bg_params = list(fill = "white"), fg_params = list(fontface = 3, fontsize = 11))
@@ -934,12 +926,12 @@ ltc_scot_col <- tableGrob(top5ltc_scot[, 1],
 )
 
 ## Combine columns
-TOPltcs <- gtable_combine(ltc_loc_col, ltc_hscp_col, ltc_scot_col)
+top5ltc_all_table <- as_gtable(gtable_combine(ltc_loc_col, ltc_hscp_col, ltc_scot_col))
 
 title <- ggdraw() +
   draw_label("Top 5 Physical Long-Term Conditions 2022/23", size = 11, fontface = "bold")
 
-top5_ltc_table <- plot_grid(title, as_gtable(TOPltcs), nrow = 2, rel_heights = c(0.1, 1.2))
+top5_ltc_table <- plot_grid(title, top5ltc_all_table, nrow = 2, rel_heights = c(0.1, 1.2))
 
 
 rm(
