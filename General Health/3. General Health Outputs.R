@@ -10,14 +10,9 @@
 ############# 1) PACKAGES, DIRECTORY, LOOKUPS, DATA IMPORT + CLEANING #############
 
 ## load packages
-library(tidyverse)
-library(janitor)
 library(cowplot)
 library(gridExtra)
-library(grid)
 library(png)
-library(phsstyles)
-
 
 # Determine locality (for testing only)
 # LOCALITY <- "Inverness"
