@@ -960,10 +960,12 @@ ltc_diff_scot <- if_else(ltc_percent_total_latest > ltc_perc_scot, "higher", "lo
 
 other_locs_summary_table <- function(data, latest_year) {
   data %>%
-    filter(year == latest_year) %>%
-    filter(area_type == "Locality") %>%
+    filter(
+      year == latest_year,
+      area_type == "Locality"
+    ) %>%
     rename("hscp_locality" = "area_name") %>%
-    right_join(other_locs) %>%
+    right_join(other_locs, by = join_by(hscp_locality)) %>%
     arrange(hscp_locality) %>%
     select(hscp_locality, measure) %>%
     mutate(measure = round_half_up(measure, 1)) %>%
@@ -971,10 +973,13 @@ other_locs_summary_table <- function(data, latest_year) {
 }
 
 hscp_scot_summary_table <- function(data, latest_year, area) {
-  type <- ifelse(area == HSCP, "HSCP", "Scotland")
+  type <- if_else(area == HSCP, "HSCP", "Scotland")
   temp <- data %>%
-    filter(year == latest_year) %>%
-    filter(area_name == area & area_type == type)
+    filter(
+      year == latest_year,
+      area_name == area,
+      area_type == type
+    )
 
   round_half_up(temp$measure, 1)
 }
@@ -1017,7 +1022,8 @@ otherloc_ltc_pops <- slf_pops %>%
   summarise(slf_adj_pop = sum(slf_adj_pop)) %>%
   ungroup()
 
-other_locs_ltc <- inner_join(ltc, other_locs) %>%
+other_locs_ltc <- ltc |> 
+  inner_join(other_locs, by = join_by(hscp2019name, hscp_locality)) %>%
   select(hscp_locality, total_ltc, people) %>%
   mutate(total_ltc = if_else(total_ltc == 0, 0, 1)) %>%
   filter(total_ltc == 1) %>%
@@ -1034,8 +1040,8 @@ other_locs_ltc <- inner_join(ltc, other_locs) %>%
 # 2. HSCP
 
 if (HSCP == "Clackmannanshire and Stirling") {
-  hscp_life_exp_male <- NA
-  hscp_life_exp_fem <- NA
+  hscp_life_exp_male <- NA_real_
+  hscp_life_exp_fem <- NA_real_
 } else {
   hscp_life_exp_male <- hscp_scot_summary_table(
     data = filter(life_exp, sex == "Male"),
