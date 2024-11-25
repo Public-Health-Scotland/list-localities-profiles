@@ -6,7 +6,7 @@
 library(tidyverse)
 
 # Change year to be the year in the data folder name
-ext_year <- 2023
+ext_year <- 2024
 
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Services/DATA "
 
@@ -24,11 +24,38 @@ filt_and_save <- function(file_name) {
   unlink(paste0(lp_path, ext_year, "/", file_name, ".csv"))
 }
 
-# Extract all file names from the ScotPHO folder
-my_files <- list.files(paste0(lp_path, ext_year), pattern = ".csv")
+# Extract all file names that have .csv within the services data folder (at any folder level)
 
-# Remove .csv from file names
-file_names <- as.list(gsub(".csv", "", my_files))
+my_files <- list.files(paste0(lp_path, ext_year,"/CSV"),
+                       pattern=".csv",
+                       recursive = TRUE,
+                       full.names = TRUE)
 
-# Apply "filt_and_save" function created earlier to each element of the file_names list
-lapply(file_names, filt_and_save)
+# save CSV information in list
+
+csv_Files <- sapply(
+  
+  X=my_files,
+  FUN=read_csv,
+  simplify=FALSE,
+  USE.NAMES = TRUE
+  
+)
+
+# Get name of each CSV file (without the CSV bit)
+
+new_file_names <- my_files %>%
+  str_split("/") %>%
+  lapply(last) %>%
+  unlist() %>%
+  gsub(".csv",".RDS",.)
+
+
+for (i in 1:length(csv_Files)){
+
+  data_i <- csv_Files[[i]] 
+  
+  saveRDS(data_i,paste0(lp_path, ext_year, "/", new_file_names[i]))
+
+}  
+
