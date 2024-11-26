@@ -255,7 +255,7 @@ avg_life_exp_latest_male <- if_else(
     round_half_up(digits = 1)
 )
 
-avg_life_exp_latest_female <- if_else(
+avg_life_exp_latest_fem <- if_else(
   locality_missing,
   NA_real_,
   filter(
