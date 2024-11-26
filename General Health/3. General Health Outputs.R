@@ -189,9 +189,9 @@ life_exp_trend <- life_exp %>%
   theme_profiles() +
   expand_limits(y = 0) +
   labs(
-    title = str_wrap(glue("Average Life Expectancy in {LOCALITY}"), width = 65),
+    title = str_wrap(glue("Average Life Expectancy in {LOCALITY} locality"), width = 65),
     x = "Year Groups (5-year aggregates)",
-    y = "Average Life Expectancy (in years)",
+    y = str_wrap("Average Life Expectancy (in years)", width = 35),
     caption = "Source: ScotPHO"
   ) +
   theme(plot.margin = unit(c(0, 0, 0, 1), "cm")) +
@@ -279,9 +279,9 @@ latest_period_deaths_15_44 <- unique(filter(deaths_15_44, year == max(deaths_15_
 ## Time trend
 deaths_15_44_time_trend <- deaths_15_44 %>%
   scotpho_time_trend(
-    chart_title = "Deaths Aged 15-44 Time Trend",
+    chart_title = "Deaths Aged 15 to 44 Time Trend",
     xaxis_title = "Year Groups (3-year aggregates)",
-    yaxis_title = "Deaths, aged 15-44\n(Standardised rates per 100,000)",
+    yaxis_title = "Deaths, aged 15 to 44\n(Standardised rates per 100,000)",
     string_wrap = 10
   )
 
@@ -290,7 +290,7 @@ deaths_15_44_time_trend <- deaths_15_44 %>%
 deaths_15_44_bar <- deaths_15_44 %>%
   scotpho_bar_chart(
     data = .,
-    chart_title = paste0("Deaths, Aged 15-44 by area, ", max(.$period_short)),
+    chart_title = paste0("Deaths, Aged 15 to 44 by area, ", max(.$period_short)),
     xaxis_title = "Deaths (Standardised rates per 100,000)"
   )
 
@@ -678,8 +678,8 @@ ltc_multimorbidity_table <- ltc_multimorbidity %>%
   pivot_wider(names_from = age_group, values_from = percent) %>%
   rename(
     " " = total_ltc,
-    "Proportion under 65 (%)" = "Under 65",
-    "Proportion over 65 (%)" = "65+"
+    "Percentage under 65" = "Under 65",
+    "Percentage over 65" = "65+"
   )
 
 
@@ -785,10 +785,14 @@ ltc_plot_right <- ltc_types %>%
   scale_y_discrete(limits = rev(levels(as.factor(ltc_types$key))))
 
 title <- ggdraw() +
-  draw_label(paste0(
-    "Prevalence of Physical Long-Term Conditions 2022/23 in\n",
-    `LOCALITY`, " Locality"
-  ), size = 11, fontface = "bold")
+  draw_label(
+    str_wrap(
+      glue("Prevalence of Physical Long-Term Conditions {latest_year_ltc} in the {LOCALITY} Locality"),
+      width = 65
+    ),
+    size = 11,
+    fontface = "bold"
+  )
 
 caption <- ggdraw() +
   draw_label("Source: Source Linkage Files", size = 10, hjust = -0.5)
@@ -926,7 +930,10 @@ ltc_scot_col <- tableGrob(top5ltc_scot[, 1],
 top5ltc_all_table <- as_gtable(gtable_combine(ltc_loc_col, ltc_hscp_col, ltc_scot_col))
 
 title <- ggdraw() +
-  draw_label("Top 5 Physical Long-Term Conditions 2022/23", size = 11, fontface = "bold")
+  draw_label(str_wrap(
+    glue("Top 5 most prevalent Physical Long-Term Conditions {latest_year_ltc}"),
+    width = 65
+  ), size = 11, fontface = "bold")
 
 top5_ltc_table <- plot_grid(title, top5ltc_all_table, nrow = 2, rel_heights = c(0.1, 1.2))
 
