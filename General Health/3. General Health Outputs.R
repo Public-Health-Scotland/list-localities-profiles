@@ -564,7 +564,7 @@ ltc_infographic <- ltc %>%
   group_by(hscp_locality, age_group) %>%
   summarise(people = sum(people)) %>%
   ungroup() %>%
-  left_join(slf_pop_loc) %>%
+  left_join(slf_pop_loc, by = join_by(hscp_locality, age_group)) %>%
   mutate(perc_with_ltc = round_half_up(people / slf_adj_pop, 2))
 
 # objects for each percentage for text + cropping images
@@ -622,7 +622,7 @@ waffle.o85 <- create_infographic(
 
 
 ## Combine images
-waffles <- plot_grid(waffle.u65, waffle.6574, waffle.7584, waffle.o85, nrow = 2)
+ltc_waffles <- plot_grid(waffle.u65, waffle.6574, waffle.7584, waffle.o85, nrow = 2)
 
 
 ## Numbers for text
@@ -638,7 +638,7 @@ rm(
 )
 
 
-###### 3b Multimorbidity LTC Table ######
+###### 3b Multi-morbidity LTC Table ######
 
 ## Create df with under 65 vs over 65 - will be used for rest of LTC work
 ltc2 <- ltc %>%
