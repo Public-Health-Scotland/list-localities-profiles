@@ -288,7 +288,7 @@ pop_plot_dat <- rbind(
   mutate(plot_lab = if_else(year %% 2 == 0, format(pop, big.mark = ","), ""))
 
 pop_ts_plot <- ggplot(pop_plot_dat, aes(x = year, y = pop)) +
-  geom_line(aes(color = data), size = 1) +
+  geom_line(aes(color = data), linewidth = 1) +
   geom_point(color = "#0f243e") +
   geom_text(aes(label = plot_lab),
     vjust = 2, color = "#4a4a4a", size = 3
