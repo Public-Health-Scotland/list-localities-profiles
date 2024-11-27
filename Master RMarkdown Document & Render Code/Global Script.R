@@ -312,7 +312,7 @@ scotpho_time_trend <- function(data, chart_title, xaxis_title, yaxis_title, stri
       x = str_wrap(period_short, width = string_wrap), y = measure,
       group = area_name, fill = area_name, linetype = area_type
     )) +
-    geom_line(aes(colour = area_name), size = 1) +
+    geom_line(aes(colour = area_name), linewidth = 1) +
     geom_point(aes(colour = area_name), size = 2) +
     geom_ribbon(
       aes(
@@ -363,7 +363,7 @@ scotpho_time_trend_HSCP <- function(data, chart_title, xaxis_title, yaxis_title,
       x = str_wrap(period_short, width = string_wrap), y = measure,
       group = area_name, fill = area_name, linetype = area_type
     )) +
-    geom_line(aes(colour = area_name), size = 1) +
+    geom_line(aes(colour = area_name), linewidth = 1) +
     geom_point(aes(colour = area_name), size = 2) +
     geom_ribbon(
       aes(

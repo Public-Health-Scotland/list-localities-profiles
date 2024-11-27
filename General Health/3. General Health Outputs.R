@@ -171,7 +171,7 @@ life_exp_trend <- life_exp %>%
   mutate(period_short = str_wrap(period_short, width = 10)) %>%
   mutate(measure = round_half_up(measure, 1)) %>%
   ggplot(aes(x = period_short, y = measure, group = sex, linetype = sex, shape = sex)) +
-  geom_line(aes(colour = sex), size = 1) +
+  geom_line(aes(colour = sex), linewidth = 1) +
   geom_point(aes(colour = sex), size = 2) +
   scale_colour_manual(values = palette) +
   theme_profiles() +
