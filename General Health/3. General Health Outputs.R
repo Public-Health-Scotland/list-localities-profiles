@@ -48,11 +48,7 @@ other_locs <- lookup %>%
   arrange(hscp_locality)
 
 # Find number of locs per partnership
-n_loc <- lookup %>%
-  group_by(hscp2019name) %>%
-  summarise(locality_n = n()) %>%
-  filter(hscp2019name == HSCP) %>%
-  pull(locality_n)
+n_loc <- count_localities(lookup, HSCP)
 
 ### Import + clean datasets ----
 
@@ -199,8 +195,6 @@ life_exp_trend <- life_exp %>%
     linetype = "none", shape = "none",
     colour = guide_legend(override.aes = list(shape = c(21, 24), fill = palette[1:2]))
   )
-
-
 
 
 # Make a table to compare with other areas
