@@ -887,9 +887,9 @@ top5_ltc_table <- bind_cols(
 ) |>
   gt::gt() |>
   gt::tab_header(title = str_wrap(
-glue("Top 5 most prevalent Physical Long-Term Conditions {latest_year_ltc}"),
-width = 65
-)) |>
+    glue("Top 5 most prevalent Physical Long-Term Conditions {latest_year_ltc}"),
+    width = 65
+  )) |>
   gt::data_color(columns = loc.ltc.table, palette = top5ltc_loc$colours, ordered = TRUE) |>
   gt::data_color(columns = hscp.ltc.table, palette = top5ltc_hscp$colours, ordered = TRUE) |>
   gt::data_color(columns = Scotland, palette = top5ltc_scot$colours, ordered = TRUE) |>
