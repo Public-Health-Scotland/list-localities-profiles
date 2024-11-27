@@ -879,42 +879,47 @@ hscp.ltc.table <- sapply(hscp.ltc.table.wrapped, paste, collapse = "\n")
 
 ## If any areas have a tie for fifth place, add top5ltc_area[c(1:5), 1] to select only the first 5 rows
 
-ltc_loc_col <- tableGrob(top5ltc_loc[, 1],
-  cols = loc.ltc.table, rows = 1:5,
-  theme = ttheme_default(
-    core = list(bg_params = list(fill = top5ltc_loc$colours), fg_params = list(col = "white", fontface = 2, fontsize = 11)),
-    colhead = list(bg_params = list(fill = "white"), fg_params = list(fontface = 3, fontsize = 11))
+# Top5 LTC table as a table (instead of image) - almost there...
+top5_ltc_table <- bind_cols(
+  select(top5ltc_loc, {{ loc.ltc.table }} := Prevalence),
+  select(top5ltc_hscp, {{ hscp.ltc.table }} := Prevalence),
+  select(top5ltc_scot, "Scotland" = Prevalence)
+) |>
+  gt::gt() |>
+  gt::tab_header(title = str_wrap(
+glue("Top 5 most prevalent Physical Long-Term Conditions {latest_year_ltc}"),
+width = 65
+)) |>
+  gt::data_color(columns = loc.ltc.table, palette = top5ltc_loc$colours, ordered = TRUE) |>
+  gt::data_color(columns = hscp.ltc.table, palette = top5ltc_hscp$colours, ordered = TRUE) |>
+  gt::data_color(columns = Scotland, palette = top5ltc_scot$colours, ordered = TRUE) |>
+  gt::tab_style(
+    style = list(
+      gt::cell_text(font = "Arial", size = 16, weight = "bold"),
+      gt::cell_borders(sides = "all", style = "hidden")
+    ),
+    locations = gt::cells_title()
+  ) |>
+  gt::tab_style(
+    style = list(
+      gt::cell_text(font = "Arial", size = 16, style = "italic"),
+      gt::cell_borders(sides = "all", style = "hidden")
+    ),
+    locations = gt::cells_column_labels()
+  ) |>
+  gt::tab_style(
+    style = list(
+      gt::cell_text(font = "Arial", size = 16, weight = "bold"),
+      gt::cell_borders(sides = "left", color = "white", style = "solid", weight = gt::px(15)),
+      gt::cell_borders(sides = "top", color = "white", style = "solid", weight = gt::px(5))
+    ),
+    locations = gt::cells_body()
   )
-)
-ltc_hscp_col <- tableGrob(top5ltc_hscp[, 1],
-  cols = hscp.ltc.table,
-  theme = ttheme_default(
-    core = list(bg_params = list(fill = top5ltc_hscp$colours), fg_params = list(col = "white", fontface = 2, fontsize = 11)),
-    colhead = list(bg_params = list(fill = "white"), fg_params = list(fontface = 3, fontsize = 11))
-  )
-)
-ltc_scot_col <- tableGrob(top5ltc_scot[, 1],
-  cols = "Scotland",
-  theme = ttheme_default(
-    core = list(bg_params = list(fill = top5ltc_scot$colours), fg_params = list(col = "white", fontface = 2, fontsize = 11)),
-    colhead = list(bg_params = list(fill = "white"), fg_params = list(fontface = 3, fontsize = 11))
-  )
-)
-
-## Combine columns
-TOPltcs <- gtable_combine(ltc_loc_col, ltc_hscp_col, ltc_scot_col)
-
-title <- ggdraw() +
-  draw_label("Top 5 Physical Long-Term Conditions 2022/23", size = 11, fontface = "bold")
-
-top5_ltc_table <- plot_grid(title, as_gtable(TOPltcs), nrow = 2, rel_heights = c(0.1, 1.2))
-
 
 rm(
-  ltc_cols, ltc_loc_col, ltc_hscp_col, ltc_scot_col,
-  ltc_pops_total_loc, ltc_pops_total_hscp,
+  ltc_cols, ltc_pops_total_loc, ltc_pops_total_hscp,
   loc.ltc.table, loc.ltc.table.wrapped, hscp.ltc.table, hscp.ltc.table.wrapped,
-  top5ltc_loc, top5ltc_hscp, top5ltc_scot, TOPltcs, title
+  top5ltc_loc, top5ltc_hscp, top5ltc_scot
 )
 
 # ltc_pops_total_scot,
