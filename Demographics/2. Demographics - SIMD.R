@@ -469,11 +469,7 @@ other_locs <- lookup %>%
   arrange(hscp_locality)
 
 # Find number of locs per partnership
-n_loc <- lookup %>%
-  group_by(hscp2019name) %>%
-  summarise(locality_n = n()) %>%
-  filter(hscp2019name == HSCP) %>%
-  pull(locality_n)
+n_loc <- count_localities(lookup, HSCP)
 
 
 ## Other localities in HSCP objects

@@ -51,11 +51,7 @@ other_locs <- lookup %>%
   arrange(hscp_locality)
 
 # Find number of locs per partnership
-n_loc <- lookup %>%
-  group_by(hscp2019name) %>%
-  summarise(locality_n = n()) %>%
-  filter(hscp2019name == HSCP) %>%
-  pull(locality_n)
+n_loc <- count_localities(lookup, HSCP)
 
 
 ## Functions and themes ----
@@ -177,7 +173,7 @@ life_exp_trend <- life_exp %>%
   mutate(period_short = str_wrap(period_short, width = 10)) %>%
   mutate(measure = round_half_up(measure, 1)) %>%
   ggplot(aes(x = period_short, y = measure, group = sex, linetype = sex, shape = sex)) +
-  geom_line(aes(colour = sex), size = 1) +
+  geom_line(aes(colour = sex), linewidth = 1) +
   geom_point(aes(colour = sex), size = 2) +
   scale_colour_manual(values = palette) +
   theme_profiles() +
@@ -205,14 +201,12 @@ life_exp_table <- life_exp %>%
     year == latest_year_life_exp_otherareas &
       ((area_name == HSCP & area_type == "HSCP") |
         area_name == HB | area_name == "Scotland")) %>%
-  select("Sex" = sex, area_name, area_type, measure) %>%
-  mutate(measure = round_half_up(measure, 1)) %>%
   mutate(
-    area_type = factor(area_type, levels = c("Locality", "HSCP", "Health board", "Scotland")),
-    area_name = fct_reorder(as.factor(area_name), as.numeric(area_type))
+    measure = round_half_up(measure, 1),
+    area_type = ordered(area_type, levels = c("Locality", "HSCP", "Health board", "Scotland"))
   ) %>%
-  arrange(area_name) %>%
-  select(-area_type) %>%
+  arrange(area_type) %>%
+  select("Sex" = sex, area_name, measure) %>%
   pivot_wider(names_from = area_name, values_from = measure)
 
 
@@ -396,9 +390,19 @@ highest_hosp_disease <- disease_hosp %>%
   filter(area_name == LOCALITY & area_type == "Locality") %>%
   filter(measure == max(measure))
 
-disease_hosp_table <- disease_hosp %>%
-  select(indicator, period_short, area_name, measure) %>%
-  pivot_wider(names_from = area_name, values_from = measure) %>%
+disease_hosp_table <- disease_hosp |>
+  mutate(
+    area_order = case_when(
+      area_name == LOCALITY ~ 1L,
+      area_name == HSCP ~ 2L,
+      str_starts(area_name, "NHS") ~ 4L,
+      area_name == "Scotland" ~ 5L,
+      .default = 2L
+    )
+  ) |>
+  arrange(area_order) |>
+  select(indicator, period_short, area_name, measure) |>
+  pivot_wider(names_from = area_name, values_from = measure) |>
   rename(
     "Disease" = indicator,
     "Latest time period" = period_short
@@ -730,7 +734,7 @@ ltc_plot_left <- ltc_types %>%
   geom_point(colour = palette[1], size = 3) +
   geom_segment(aes(x = 0, y = key, xend = percent, yend = key), size = 0.4) +
   labs(x = "People under 65 with\nthe condition (%)", y = "", title = "UNDER 65") +
-  scale_x_continuous(breaks = seq(-100, 0, 2), labels = paste0(seq(100, 0, -2))) +
+  scale_x_continuous(breaks = seq(-100, 0, 2), labels = abs) +
   expand_limits(x = lims.un65) +
   theme_profiles() +
   theme(
@@ -759,11 +763,11 @@ ltc_plot_right <- ltc_types %>%
   expand_limits(x = lims.ov65) +
   theme_profiles() +
   theme(
+    title = element_text(colour = palette[2]),
     plot.margin = unit(c(0.5, 0, 0, 0), "cm"),
-    axis.title.x = element_blank(),
-    axis.text.x = element_blank(),
-    axis.ticks.x = element_blank(),
-    title = element_text(colour = palette[2])
+    axis.title.y = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
   ) +
   scale_y_discrete(limits = rev(levels(as.factor(ltc_types$key))))
 
