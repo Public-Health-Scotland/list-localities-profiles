@@ -80,13 +80,13 @@ theme_profiles <- function() {
     # The legend may often need some more manual tweaking when it comes to its
     # exact position based on the plot coordinates.
     legend.position = "bottom",
-    legend.text.align = 0,
     legend.background = ggplot2::element_blank(),
     legend.title = ggplot2::element_blank(),
     legend.key = ggplot2::element_blank(),
     legend.text = ggplot2::element_text(
       family = fontStyle,
-      size = fontSize
+      size = fontSize,
+      hjust = 0 # Replaces legend.text.align = 0
     ),
 
     # Axis format
