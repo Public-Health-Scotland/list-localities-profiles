@@ -17,6 +17,8 @@ library(gridExtra)
 library(grid)
 library(png)
 library(phsstyles)
+library(flextable)
+library(officer)
 
 
 # Determine locality (for testing only)
@@ -885,36 +887,20 @@ top5_ltc_table <- bind_cols(
   select(top5ltc_hscp, {{ hscp.ltc.table }} := Prevalence),
   select(top5ltc_scot, "Scotland" = Prevalence)
 ) |>
-  gt::gt() |>
-  gt::tab_header(title = str_wrap(
-    glue("Top 5 most prevalent Physical Long-Term Conditions {latest_year_ltc}"),
-    width = 65
-  )) |>
-  gt::data_color(columns = loc.ltc.table, palette = top5ltc_loc$colours, ordered = TRUE) |>
-  gt::data_color(columns = hscp.ltc.table, palette = top5ltc_hscp$colours, ordered = TRUE) |>
-  gt::data_color(columns = Scotland, palette = top5ltc_scot$colours, ordered = TRUE) |>
-  gt::tab_style(
-    style = list(
-      gt::cell_text(font = "Arial", size = 16, weight = "bold"),
-      gt::cell_borders(sides = "all", style = "hidden")
-    ),
-    locations = gt::cells_title()
-  ) |>
-  gt::tab_style(
-    style = list(
-      gt::cell_text(font = "Arial", size = 16, style = "italic"),
-      gt::cell_borders(sides = "all", style = "hidden")
-    ),
-    locations = gt::cells_column_labels()
-  ) |>
-  gt::tab_style(
-    style = list(
-      gt::cell_text(font = "Arial", size = 16, weight = "bold"),
-      gt::cell_borders(sides = "left", color = "white", style = "solid", weight = gt::px(15)),
-      gt::cell_borders(sides = "top", color = "white", style = "solid", weight = gt::px(5))
-    ),
-    locations = gt::cells_body()
-  )
+  flextable(cwidth = 2) %>%
+  add_header_lines(
+    values = str_wrap(glue("Top 5 most prevalent Physical Long-Term Conditions {latest_year_ltc}"), width = 65)
+  ) %>%
+  bg(j = 1, bg = top5ltc_loc$colours) %>%
+  bg(j = 2, bg = top5ltc_hscp$colours) %>%
+  bg(j = 3, bg = top5ltc_scot$colours) %>%
+  fontsize(size = 16, part = "header") %>%
+  fontsize(size = 12, part = "body") %>%
+  font(fontname = "Arial", part = "all") %>%
+  color(color = "white", part = "body") %>%
+  bold(part = "header") %>%
+  italic(part = "header") %>%
+  border(border = fp_border(color = "white", width = 5), part = "body")
 
 rm(
   ltc_cols, ltc_pops_total_loc, ltc_pops_total_hscp,
