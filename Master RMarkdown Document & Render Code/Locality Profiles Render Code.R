@@ -51,27 +51,29 @@ for (HSCP in hscp_list) {
   for (LOCALITY in locality_list) {
     # 1a) Source in all the scripts for a given LOCALITY
 
-    # demographics
+
+    # Demographics
+
     source("Demographics/1. Demographics - Population.R")
     source("Demographics/2. Demographics - SIMD.R")
 
-    # housing
+    # Housing
     source("Households/Households Code.R")
 
-    # services
+    # Services
     source("Services/2. Services data manipulation & table.R")
     source("Services/3. Service HSCP map.R")
 
-    # general health
+    # General Health
     source("General Health/3. General Health Outputs.R")
 
-    # lifestyle & risk factors
+    # Lifestyle & Risk Factors
     source("Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
 
-    # unscheduled care
+    # Unscheduled Care
     source("Unscheduled Care/2. Unscheduled Care outputs.R")
 
-    # appendices
+    # Appendices
     source("Master RMarkdown Document & Render Code/Tables for Appendix.R")
 
     # 1b) Create the main body of the profiles
