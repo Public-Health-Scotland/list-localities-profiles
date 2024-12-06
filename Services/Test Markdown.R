@@ -21,5 +21,8 @@ for (Loc in randomly_selected_localities){
   
 }
 
+
+# USE TO DELETE TEST DOCUMENTS
+
 list.files("Services",pattern="*.docx",full.names = TRUE) %>%
   unlink()
