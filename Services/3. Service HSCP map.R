@@ -17,7 +17,7 @@
 # LOCALITY <- read_in_localities() |> filter(hscp2019name == HSCP) |> slice(1) |> pull(hscp_locality)
 
 # Source the data manipulation script for services
-source("Services/2. Services data manipulation & table.R")
+# source("Services/2. Services data manipulation & table.R")
 
 # 1. Set up ----
 
@@ -243,7 +243,7 @@ service_map_1 <- ggmap(service_map_background) +
   ) +
   labs(caption = "Source: Public Health Scotland")
 
-leg1 <- get_legend(service_map_1)
+leg1 <- cowplot::get_legend(service_map_1)
 
 # Create Map of Just the Locations in order to use its legend (of location colours and shapes) ----
 
@@ -284,14 +284,15 @@ service_map_2 <- ggmap(service_map_background) +
   labs(caption = "Source: Public Health Scotland")
 
 
-leg2 <- get_legend(service_map_2)
+leg2 <- cowplot::get_legend(service_map_2)
 
 # Create new legend which combines other legends ----
 
-blank_leg <- plot_spacer() + theme_void()
+blank_leg <- patchwork::plot_spacer() + theme_void()
 
-leg12 <- plot_grid(blank_leg,
+leg12 <- cowplot::plot_grid(blank_leg,
                    leg1,
+                   blank_leg,
                    leg2,
                    blank_leg,
                    ncol=1
@@ -299,12 +300,12 @@ leg12 <- plot_grid(blank_leg,
 
 # Combine plot of locations and localities with corrected legends 
 
-service_map <- plot_grid(service_map,
+service_map <- cowplot::plot_grid(service_map,
                      leg12,
                      nrow = 1,
                      align = "h",
                      axis = "t",
-                     rel_widths = c(1.7, 0.8)
+                     rel_widths = c(1.7, 1.0)
 )
 
 # preview final service map
