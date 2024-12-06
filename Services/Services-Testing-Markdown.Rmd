@@ -14,15 +14,17 @@ knitr::opts_chunk$set(echo = TRUE)
 options(kableExtra.auto_format = FALSE)
 
 # Line below for testing only
-Loc <- "Falkirk East"
+Loc <- "Teviot and Liddesdale"
 
 locality <- Loc
 LOCALITY <- Loc
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
-source("Master RMarkdown Document & Render Code/Global Script.R")
-source("Services/2. Services data manipulation & table.R")
-source("Services/3. Service HSCP map.R")
+#stop(getwd())
+
+source("../Master RMarkdown Document & Render Code/Global Script.R")
+source("../Services/2. Services data manipulation & table.R")
+source("../Services/3. Service HSCP map.R")
 
 x <- 1 # object for figure numbers
 y <- 1 # object for table numbers
