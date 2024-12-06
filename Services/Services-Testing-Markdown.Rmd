@@ -14,12 +14,11 @@ knitr::opts_chunk$set(echo = TRUE)
 options(kableExtra.auto_format = FALSE)
 
 # Line below for testing only
-Loc <- "Marr"
+Loc <- "Falkirk East"
 
 locality <- Loc
 LOCALITY <- Loc
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
-
 
 source("Master RMarkdown Document & Render Code/Global Script.R")
 source("Services/2. Services data manipulation & table.R")
@@ -30,9 +29,9 @@ y <- 1 # object for table numbers
 ```
 
 
-##Services
+## Services
 
-####Figure `r x`: Map of GP practices by locality in `r HSCP` HSCP^2^.
+#### Figure `r x`: Map of GP practices by locality in `r HSCP` HSCP^2^.
 
 \newline
 
@@ -45,7 +44,7 @@ x <- x + 1
 
 \newline
 
-####Table `r y`: Number of each type of service in `r LOCALITY` Locality^2^.
+#### Table `r y`: Number of each type of service in `r LOCALITY` Locality^2^.
 \newline
 
 ```{r echo = FALSE}
