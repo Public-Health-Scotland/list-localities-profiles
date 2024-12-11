@@ -921,7 +921,7 @@ rm(
   ltc_cols, ltc_pops_total_loc, ltc_pops_total_hscp,
   loc.ltc.table, loc.ltc.table.wrapped, hscp.ltc.table, hscp.ltc.table.wrapped,
   top5ltc_loc, top5ltc_hscp, top5ltc_scot
-  )
+)
 
 ## Objects for text
 
