@@ -29,12 +29,13 @@ lookup <- read_in_localities(dz_level = TRUE)
 slf <- read_slf_individual(
   year = fy,
   col_select = c(
-  "year",
-  "datazone2011",
-  "hscp2018",
-  "age",
-  "keep_population",
-  ltc_vars),
+    "year",
+    "datazone2011",
+    "hscp2018",
+    "age",
+    "keep_population",
+    ltc_vars
+  ),
   as_data_frame = FALSE
 ) |>
   # remove -1 age
@@ -45,8 +46,8 @@ slf <- read_slf_individual(
     between(age, 65, 74) ~ "65-74",
     between(age, 75, 84) ~ "75-84",
     age >= 85 ~ "85+"
-  )) |> 
-  collect() |> 
+  )) |>
+  collect() |>
   # Compute total LTCs
   mutate(total_ltc = rowSums(pick(arth:refailure)))
 
