@@ -20,33 +20,36 @@ library(slfhelper)
 # Set file path
 lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
 
-
 gen_health_data_dir <- path(lp_path, "General Health", glue("DATA {ext_year}"))
 
 # Locality lookup ----
 lookup <- read_in_localities(dz_level = TRUE)
 
-
 # Read in SLF individual level data ---
-slf <- read_slf_individual(fy, col_select = c(
+slf <- read_slf_individual(
+  year = fy,
+  col_select = c(
   "year",
   "datazone2011",
   "hscp2018",
   "age",
   "keep_population",
-  ltc_vars
-)) |>
+  ltc_vars),
+  as_data_frame = FALSE
+) |>
   # remove -1 age
   filter(age >= 0) |>
-  # Compute total LTCs
-  mutate(total_ltc = rowSums(pick(arth:refailure))) |>
   # compute age band
   mutate(age_group = case_when(
     age < 65 ~ "Under 65",
     between(age, 65, 74) ~ "65-74",
     between(age, 75, 84) ~ "75-84",
     age >= 85 ~ "85+"
-  ))
+  )) |> 
+  collect() |> 
+  # Compute total LTCs
+  mutate(total_ltc = rowSums(pick(arth:refailure)))
+
 
 # Aggregate to Locality level ----
 ltc_data <- slf |>
