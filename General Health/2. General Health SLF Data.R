@@ -5,11 +5,11 @@
 # Set-up ----
 
 # Set year for data extracts folder for saving
-ext_year <- 2023
+ext_year <- 2024
 
 # Set financial year to use for SLFs (format ex: for FY 2021/2022 -> 202122)
 # Recommended to use previous year's data for more up to date figures + pop
-fy <- "2223"
+fy <- "2324"
 
 # Source in functions code
 source("Master RMarkdown Document & Render Code/Global Script.R")

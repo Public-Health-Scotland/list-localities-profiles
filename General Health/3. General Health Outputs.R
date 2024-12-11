@@ -22,7 +22,7 @@ library(png)
 # LOCALITY <- "Barra"
 
 # Set year of data extracts for folder
-ext_year <- 2023
+ext_year <- 2024
 
 # Source in functions code
 # source("Master RMarkdown Document & Render Code/Global Script.R")
