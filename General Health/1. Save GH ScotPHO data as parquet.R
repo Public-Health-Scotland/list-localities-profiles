@@ -69,3 +69,4 @@ file_delete(data_extract_file)
 
 # Clean up the environment
 rm(list = ls())
+gc()
