@@ -1,8 +1,6 @@
 ##### LOCALITY PROFILES MASTER DOC RENDER CODE #####
 
 library(readxl)
-library(janitor)
-library(tidyverse)
 library(knitr)
 library(markdown)
 library(rmarkdown)
