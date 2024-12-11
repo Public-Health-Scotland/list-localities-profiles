@@ -26,20 +26,19 @@ filt_and_save <- function(file_name) {
 
 # Extract all file names that have .csv within the services data folder (at any folder level)
 
-my_files <- list.files(paste0(lp_path, ext_year,"/CSV"),
-                       pattern=".csv",
-                       recursive = TRUE,
-                       full.names = TRUE)
+my_files <- list.files(paste0(lp_path, ext_year, "/CSV"),
+  pattern = ".csv",
+  recursive = TRUE,
+  full.names = TRUE
+)
 
 # save CSV information in list
 
 csv_Files <- sapply(
-  
-  X=my_files,
-  FUN=read_csv,
-  simplify=FALSE,
+  X = my_files,
+  FUN = read_csv,
+  simplify = FALSE,
   USE.NAMES = TRUE
-  
 )
 
 # Get name of each CSV file (without the CSV bit)
@@ -48,14 +47,11 @@ new_file_names <- my_files %>%
   str_split("/") %>%
   lapply(last) %>%
   unlist() %>%
-  gsub(".csv",".RDS",.)
+  gsub(".csv", ".RDS", .)
 
 
-for (i in 1:length(csv_Files)){
+for (i in 1:length(csv_Files)) {
+  data_i <- csv_Files[[i]]
 
-  data_i <- csv_Files[[i]] 
-  
-  saveRDS(data_i,paste0(lp_path, ext_year, "/", new_file_names[i]))
-
-}  
-
+  saveRDS(data_i, paste0(lp_path, ext_year, "/", new_file_names[i]))
+}

@@ -20,7 +20,7 @@ locality <- Loc
 LOCALITY <- Loc
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
-#stop(getwd())
+# stop(getwd())
 
 source("../Master RMarkdown Document & Render Code/Global Script.R")
 source("../Services/2. Services data manipulation & table.R")

@@ -1,4 +1,3 @@
-
 source("Master RMarkdown Document & Render Code/Global Script.R")
 
 return_rows <- function(x) {
@@ -8,21 +7,20 @@ return_rows <- function(x) {
 
 randomly_selected_localities <- read_in_localities() %>%
   group_by(hb2019name) %>%
-  filter(return_rows(hscp_locality )) %>%
+  filter(return_rows(hscp_locality)) %>%
   ungroup() %>%
   pull(hscp_locality) %>%
   unique()
 
-for (Loc in randomly_selected_localities){
-  
+for (Loc in randomly_selected_localities) {
   rmarkdown::render("Services/Services-Testing-Markdown.Rmd",
-                    output_file =  paste0("Services-Testing-Markdown-",Loc,".docx"),
-                    output_dir = "Services")
-  
+    output_file = paste0("Services-Testing-Markdown-", Loc, ".docx"),
+    output_dir = "Services"
+  )
 }
 
 
 # USE TO DELETE TEST DOCUMENTS
 
-list.files("Services",pattern="*.docx",full.names = TRUE) %>%
+list.files("Services", pattern = "*.docx", full.names = TRUE) %>%
   unlink()
