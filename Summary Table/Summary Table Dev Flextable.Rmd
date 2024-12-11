@@ -77,8 +77,6 @@ summary_table <- tibble(
   HSCP = hscp_name,
   Scotland = "Scotland"
 )
-
-
 ```
 
 ## Demographics Summary Table
