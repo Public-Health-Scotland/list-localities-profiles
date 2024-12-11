@@ -37,3 +37,4 @@ dir_ls(path = gen_health_data_dir, type = "file", regexp = ".csv", fixed = TRUE)
 
 # Clean up the environment
 rm(list = ls())
+gc()
