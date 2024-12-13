@@ -469,7 +469,7 @@ adp_presc_latest <- filter(
 adp_presc_earliest <- filter(
   adp_presc,
   year == (max(adp_presc$year) - 10),
-  area_name == LOCALITY, 
+  area_name == LOCALITY,
   area_type == "Locality"
 )$measure
 
