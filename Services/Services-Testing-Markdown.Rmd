@@ -22,9 +22,9 @@ lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality
 
 # stop(getwd())
 
-source("../Master RMarkdown Document & Render Code/Global Script.R")
-source("../Services/2. Services data manipulation & table.R")
-source("../Services/3. Service HSCP map.R")
+source("Master RMarkdown Document & Render Code/Global Script.R")
+source("Services/2. Services data manipulation & table.R")
+source("Services/3. Service HSCP map.R")
 
 x <- 1 # object for figure numbers
 y <- 1 # object for table numbers
