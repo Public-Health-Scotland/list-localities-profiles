@@ -18,13 +18,11 @@ lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality
 # Delete the full csv extract
 
 filt_and_save <- function(file_name) {
-  
   data <- read_csv(paste0(lp_path, ext_year, "/", file_name, ".csv"))
 
   saveRDS(data, paste0(lp_path, ext_year, "/", file_name, ".RDS"))
 
   unlink(paste0(lp_path, ext_year, "/", file_name, ".csv"))
-  
 }
 
 # Extract all file names that have .csv within the services data folder (at any folder level)
@@ -46,7 +44,7 @@ csv_Files <- sapply(
 
 # Get name of each CSV file (without the CSV bit)
 
-new_file_names <- path_file(path_ext_set(my_files, "RDS")) 
+new_file_names <- path_file(path_ext_set(my_files, "RDS"))
 
 
 for (i in 1:length(csv_Files)) {
