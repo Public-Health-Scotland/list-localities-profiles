@@ -7,9 +7,9 @@ library(tidyverse)
 library(fs)
 
 # Change year to be the year in the data folder name
-#ext_year <- 2024
+# ext_year <- 2024
 
-#lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 # Create function to do the following:
 
