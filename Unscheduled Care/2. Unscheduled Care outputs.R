@@ -60,11 +60,7 @@ other_locs <- localities %>%
   arrange(hscp_locality)
 
 # Find number of locs per partnership
-n_loc <- localities %>%
-  group_by(hscp2019name) %>%
-  summarise(locality_n = n()) %>%
-  filter(hscp2019name == HSCP) %>%
-  pull(locality_n)
+n_loc <- count_localities(localities, HSCP)
 
 
 ## 2. Populations (for rates) ----
@@ -242,7 +238,7 @@ aggregate_usc_area_data <- function(data) {
 age_group_trend_usc <- function(data_for_plot, plot_title, yaxis_title, source) {
   data_for_plot %>%
     ggplot(aes(x = financial_year, y = data, group = age_group, color = age_group)) +
-    geom_line(size = 1) +
+    geom_line(linewidth = 1) +
     geom_point() +
     scale_colour_manual(values = c(palette)) +
     scale_x_discrete(breaks = data_for_plot$financial_year) +
@@ -263,7 +259,7 @@ area_trend_usc <- function(data_for_plot, plot_title, yaxis_title, source) {
     mutate(location = fct_reorder(as.factor(str_wrap(location, 23)), as.numeric(area_type))) %>%
     ggplot() +
     aes(x = financial_year, y = data, group = location, fill = location, linetype = area_type) +
-    geom_line(aes(colour = location), size = 1) +
+    geom_line(aes(colour = location), linewidth = 1) +
     geom_point(aes(colour = location), size = 2) +
     scale_fill_manual(values = palette) +
     scale_colour_manual(values = palette) +
