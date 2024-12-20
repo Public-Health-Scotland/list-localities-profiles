@@ -44,8 +44,7 @@ library(officer)
 library(officedown)
 ```
 
-
-```{r echo=FALSE}
+```{r locality_names}
 # Set locality name object (with automatic wrapping)
 
 loc_name <- paste(LOCALITY, "Locality", sep = "\n") |>
@@ -76,15 +75,14 @@ summary_table <- tibble(
 
 ## Demographics Summary Table
 
-
-```{r echo=FALSE}
+```{r demographics}
 indicators <- c(
   "Total population",
   "Gender ratio male to female",
   "Population over 65",
   "Population in least deprived SIMD quintile",
   "Population in most deprived SIMD quintile"
-)
+) |> str_wrap(width = 30)
 # List what data type they are
 datatype <- c("count", "ratio", "%", "%", "%")
 # Enter the time periods available
@@ -120,17 +118,15 @@ demographics <- flextable(demographic_values) |>
 demographics
 ```
 
-
 ## Housing Summary Table
 
-
-```{r echo=FALSE}
+```{r housing}
 indicators <- c(
   "Total number of households",
   "Households with single occupant tax discount",
   "Households in Council Tax Band A-C",
   "Households in Council Tax Band F-H"
-)
+) |> str_wrap(width = 30)
 
 datatype <- c("count", "%", "%", "%")
 
@@ -174,12 +170,9 @@ housing_table <- colformat_num(housing_table,
 housing_table
 ```
 
-
-
 ## General Health Summary Table
 
-
-```{r echo=FALSE}
+```{r general_health}
 indicators <- c(
   "Male average life expectancy in years",
   "Female average life expectancy in years",
@@ -187,7 +180,7 @@ indicators <- c(
   "Population with long-term condition",
   "Cancer registrations per 100,000",
   "Anxiety, depression & psychosis prescriptions"
-)
+) |> str_wrap(width = 30)
 
 datatype <- c("mean", "mean", "rate", "%", "rate", "%")
 
@@ -231,20 +224,17 @@ general_health_table <- flextable(general_health_values) |>
 general_health_table
 ```
 
-###### *At HSCP and Scotland level, the time period is a 3-year aggregate (`r latest_period_life_exp_otherareas`)
-
-
+###### \*At HSCP and Scotland level, the time period is a 3-year aggregate (`r latest_period_life_exp_otherareas`)
 
 ## Lifestyle & Risk Factors Summary Table
 
-
-```{r echo=FALSE}
+```{r lifestyle_risk_factors}
 indicators <- c(
   "Alcohol-related hospital admissions per 100,000",
   "Alcohol-specific mortality per 100,000",
   "Drug-related hospital admissions per 100,000",
   "Bowel screening uptake"
-)
+) |> str_wrap(width = 30)
 
 datatype <- c("rate", "rate", "rate", "%")
 
@@ -285,27 +275,24 @@ lifestyle_table <- flextable(lifestyle_values) |>
 lifestyle_table
 ```
 
+## Hospital and Community Care Summary Table
 
-
-## Hopsital and Community Care Summary Table
-
-
-```{r echo=FALSE}
+```{r hospital_community_care}
 indicators <- c(
   "Emergency admissions per 100,000",
   "Unscheduled bed days per 100,000",
   "A&E attendances per 100,000",
   "Delayed discharges (65+) per 100,000",
   "Potentially Preventable Admissions per 100,000"
-)
+) |> str_wrap(width = 30)
 datatype <- c("rate", "rate", "rate", "rate", "rate")
 time <- c(max_fy, max_fy, max_fy, max_fy, max_fy)
 
 # Values
-loc_values <- c(latest_emergency_adm_loc, latest_bed_days_loc, latest_ae_att_loc, latest_dd_loc, latest_ppa_loc)
+loc_values <- c(latest_emergency_adm_loc$n, latest_bed_days_loc$n, latest_ae_att_loc$n, latest_dd_loc$n, latest_ppa_loc$n[2])
 other_loc_values <- bind_rows(other_loc_emergency_adm, other_loc_bed_days, other_loc_ae_att, other_loc_dd, other_loc_ppa)
-hscp_values <- c(hscp_emergency_adm, hscp_bed_days, hscp_ae_att, hscp_dd, hscp_ppa)
-scot_values <- c(scot_emergency_adm, scot_bed_days, scot_ae_att, scot_dd, scot_ppa)
+hscp_values <- c(hscp_emergency_adm$n, hscp_bed_days$n, hscp_ae_att$n, hscp_dd$n, hscp_ppa$n[2])
+scot_values <- c(scot_emergency_adm$n, scot_bed_days$n, scot_ae_att$n, scot_dd$n, scot_ppa$n[2])
 
 # Ensure all columns have the same length
 n <- length(indicators)
@@ -333,24 +320,21 @@ UC_table <- flextable(UC_values) |>
 UC_table
 ```
 
-
-
 ## Hospital Care (Mental Health) Summary Table
 
-
-```{r echo=FALSE}
+```{r hospital_mental_health}
 indicators <- c(
   "Psychiatric patient hospitalisations per 100,000",
   "Unscheduled bed days per 100,000"
-)
+) |> str_wrap(width = 30)
 datatype <- c("rate", "rate")
 time <- c(str_wrap(latest_period_psych_hosp, 9), max_fy)
 
 # Values
-loc_values <- c(psych_hosp_latest, latest_bed_days_mh_loc)
+loc_values <- c(psych_hosp_latest, latest_bed_days_mh_loc$n)
 other_loc_values <- bind_rows(other_locs_psych_hosp, other_loc_bed_days_mh)
-hscp_values <- c(hscp_psych_hosp, hscp_bed_days_mh)
-scot_values <- c(scot_psych_hosp, scot_bed_days_mh)
+hscp_values <- c(hscp_psych_hosp$measure2[2], hscp_bed_days_mh$n)
+scot_values <- c(scot_psych_hosp$measure2[2], scot_bed_days_mh$n)
 
 
 UC_MH_values <- tibble(
@@ -374,4 +358,3 @@ UC_MH_table <- flextable(UC_MH_values) |>
 
 UC_MH_table
 ```
-
