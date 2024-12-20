@@ -58,9 +58,8 @@ otherloc_names <- tibble(loc_number = 2:n_loc, otherloc_names) |>
   pivot_wider(names_from = loc_number, values_from = otherloc_names)
 
 # Set HSCP name object
-hscp_name <- paste0(HSCP, "\nHSCP") |>
-  strwrap(width = if_else(n_loc < 3, 30, 12))
-
+hscp_name <- paste(HSCP, "HSCP") |>
+  str_wrap(width = if_else(n_loc < 3, 25, 10))
 
 summary_table <- tibble(
   Indicators = "Indicators",
