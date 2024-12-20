@@ -38,12 +38,7 @@ lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality
 # # unscheduled care
 # source("Unscheduled Care/2. Unscheduled Care outputs.R")
 
-library(tidyverse)
 library(knitr)
-library(gridExtra)
-library(grid)
-library(kableExtra)
-library(dplyr)
 library(flextable)
 library(officer)
 library(officedown)
