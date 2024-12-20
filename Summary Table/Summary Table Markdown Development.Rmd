@@ -13,9 +13,6 @@ library(dplyr)
 LOCALITY <- "Inverclyde East"
 ```
 
-
-
-
 ## Summary Table
 
 ```{r make_test_data, echo=FALSE}
@@ -110,6 +107,4 @@ knitr::kable(table_values,
   row_spec(c(1, 7), background = "white")
 ```
 
-
-
-*At HSCP and Scotland level, the time period is a 3-year aggregate (2020 - 2022).
+\*At HSCP and Scotland level, the time period is a 3-year aggregate (2020 - 2022).
