@@ -25,3 +25,10 @@ Sys.setenv("GDAL_DATA" = "/usr/gdal34/share/gdal")
 
 dyn.load("/usr/gdal34/lib/libgdal.so")
 dyn.load("/usr/geos310/lib64/libgeos_c.so", local = FALSE)
+
+# readr options ----
+# Use lazy reading for CSVs (should be faster)
+# https://www.tidyverse.org/blog/2021/11/readr-2-1-0-lazy/
+options(readr.read_lazy = TRUE)
+# Don't print col types on read
+options(readr.show_col_types = FALSE)
