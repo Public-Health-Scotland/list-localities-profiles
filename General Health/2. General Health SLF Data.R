@@ -85,4 +85,3 @@ write_parquet(
 # Clean up the environment
 rm(list = ls())
 gc()
-
