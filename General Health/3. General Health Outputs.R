@@ -24,7 +24,7 @@ library(officer)
 # LOCALITY <- "Barra"
 
 # Set year of data extracts for folder
-ext_year <- 2023
+ext_year <- 2024
 
 # Source in functions code
 # source("Master RMarkdown Document & Render Code/Global Script.R")
@@ -471,7 +471,8 @@ adp_presc_latest <- filter(
 adp_presc_earliest <- filter(
   adp_presc,
   year == (max(adp_presc$year) - 10),
-  area_name == LOCALITY, area_type == "Locality"
+  area_name == LOCALITY,
+  area_type == "Locality"
 )$measure
 
 adp_presc_perc_change <- abs((adp_presc_latest - adp_presc_earliest) * 100 / adp_presc_earliest)
