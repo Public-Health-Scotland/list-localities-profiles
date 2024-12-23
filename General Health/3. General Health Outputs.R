@@ -241,7 +241,7 @@ avg_life_exp_latest_male <- ifelse(
   locality_missing,
   NA_real_,
   filter(
-    life_exp, 
+    life_exp,
     sex == "Male",
     year == latest_year_life_exp_loc,
     area_name == LOCALITY,
@@ -255,7 +255,7 @@ avg_life_exp_latest_fem <- ifelse(
   locality_missing,
   NA_real_,
   filter(
-    life_exp, 
+    life_exp,
     sex == "Female",
     year == latest_year_life_exp_loc,
     area_name == LOCALITY,
