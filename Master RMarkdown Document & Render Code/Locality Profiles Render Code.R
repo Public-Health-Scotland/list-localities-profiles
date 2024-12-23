@@ -1,8 +1,6 @@
 ##### LOCALITY PROFILES MASTER DOC RENDER CODE #####
 
 library(readxl)
-library(janitor)
-library(tidyverse)
 library(knitr)
 library(markdown)
 library(rmarkdown)
@@ -58,7 +56,9 @@ for (HSCP in hscp_list) {
   for (LOCALITY in locality_list) {
     # 1a) Source in all the scripts for a given LOCALITY
 
+
     # Demographics
+
     source("Demographics/1. Demographics - Population.R")
     source("Demographics/2. Demographics - SIMD.R")
 
