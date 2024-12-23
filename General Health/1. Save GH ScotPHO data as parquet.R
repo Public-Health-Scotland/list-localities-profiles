@@ -1,13 +1,16 @@
-# Save General Health ScotPHO data as parquet
-
-# This script takes all the CSV files in the data folder,
-# saves as parquet and deletes the original CSV to save space.
+# Save the GH ScotPHO data
+# Get the data from https://scotland.shinyapps.io/ScotPHO_profiles_tool/
+# Choose Scotland, Council Area, Health Board, HSC Partnership, HSC Locality and Intermediate Zone
+# Choose the indicators listed below (in the case_match)
+# Download the data as a parquet (file name should be ScotPHO_datatab_extract_***.parquet)
+# Put this file in the 'new' data folder e.g. 'General Health/DATA 20XX'
 
 library(fs)
 library(glue)
 library(purrr)
-library(readr)
 library(arrow)
+library(dplyr)
+library(tidyr)
 
 # Change year to be the year in the data folder name
 ext_year <- 2024
@@ -26,7 +29,7 @@ stopifnot(file_exists(data_extract_file))
 stopifnot(length(data_extract_file) == 1)
 
 # Read the data and split (nest) it by indicator so we can write out each one separately
-read_rds(data_extract_file) |>
+read_parquet(data_extract_file) |>
   nest(.by = indicator) |>
   mutate(
     # Put the indicator column back in the data
