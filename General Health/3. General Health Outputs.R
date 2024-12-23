@@ -236,11 +236,12 @@ life_exp_table <- life_exp %>%
 ## Numbers for text
 locality_missing <- LOCALITY %in% check_missing_data_scotpho(life_exp)$area_name
 
-avg_life_exp_latest_male <- if_else(
+avg_life_exp_latest_male <- ifelse(
   locality_missing,
   NA_real_,
   filter(
-    life_exp, sex == "Male",
+    life_exp, 
+    sex == "Male",
     year == latest_year_life_exp_loc,
     area_name == LOCALITY,
     area_type == "Locality"
@@ -249,11 +250,12 @@ avg_life_exp_latest_male <- if_else(
     round_half_up(digits = 1)
 )
 
-avg_life_exp_latest_fem <- if_else(
+avg_life_exp_latest_fem <- ifelse(
   locality_missing,
   NA_real_,
   filter(
-    life_exp, sex == "Female",
+    life_exp, 
+    sex == "Female",
     year == latest_year_life_exp_loc,
     area_name == LOCALITY,
     area_type == "Locality"
@@ -261,9 +263,6 @@ avg_life_exp_latest_fem <- if_else(
     pull(measure) |>
     round_half_up(digits = 1)
 )
-
-
-
 
 ##### 2b Deaths aged 15-44 #####
 
