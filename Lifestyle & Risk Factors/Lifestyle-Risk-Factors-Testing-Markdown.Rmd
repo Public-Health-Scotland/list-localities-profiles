@@ -21,15 +21,9 @@ LOCALITY <- "Falkirk West"
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
 
 
-source("~/localities/Master RMarkdown Document & Render Code/Global Script.R")
+source("../Master RMarkdown Document & Render Code/Global Script.R")
 
-# For testing - CF directory
-source("~/localities/Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
-
-# KH testing directory
-
-# source("~/list-localities-profiles/Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
-
+source("./2. Lifestyle & Risk Factors Outputs.R")
 
 
 x <- 1 # object for figure numbers
