@@ -14,36 +14,39 @@ knitr::opts_chunk$set(echo = TRUE)
 options(kableExtra.auto_format = FALSE)
 
 # Line below for testing only
-#Loc <- "Marr"
+Loc <- "Teviot and Liddesdale"
 
 locality <- Loc
 LOCALITY <- Loc
+lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
-source("~/Localities/list-localities-profiles/Master RMarkdown Document & Render Code/Global Script.R")
-source("~/Localities/list-localities-profiles/Services/2. Services data manipulation & table.R")
+# stop(getwd())
+
+source("Master RMarkdown Document & Render Code/Global Script.R")
+source("Services/2. Services data manipulation & table.R")
+source("Services/3. Service HSCP map.R")
 
 x <- 1 # object for figure numbers
 y <- 1 # object for table numbers
 ```
 
 
-##Services
+## Services
 
-####Figure `r x`: Map of GP practices by locality in `r HSCP` HSCP^2^.
+#### Figure `r x`: Map of GP practices by locality in `r HSCP` HSCP^2^.
 
 \newline
 
-```{r echo = FALSE}
-knitr::include_graphics("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Services/map.png")
+```{r echo = FALSE, fig.width=6}
+service_map
 
 x <- x + 1
 ```
 
-######ED = Emergency Department, MIU = Minor Injuries Unit (or other)
 
 \newline
 
-####Table `r y`: Number of each type of service in `r LOCALITY` Locality^2^.
+#### Table `r y`: Number of each type of service in `r LOCALITY` Locality^2^.
 \newline
 
 ```{r echo = FALSE}

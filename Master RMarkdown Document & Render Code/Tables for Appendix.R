@@ -15,7 +15,7 @@ library(dplyr)
 ext_year <- 2023
 
 # Set file path
-lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 # testing locality
 # LOCALITY <- "Forres"
@@ -28,7 +28,6 @@ indicator_defs <- read_excel(paste0(lp_path, "Project Info & Indicators/Indicato
 indicator_defs$format <- "**"
 indicator_defs$Indicator <- paste0(indicator_defs$format, indicator_defs$Indicator, indicator_defs$format)
 
-# indicator_defs <- as_tibble(indicator_defs)
 indicator_defs <- dplyr::select(indicator_defs, -format)
 
 
