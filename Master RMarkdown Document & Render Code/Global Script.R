@@ -156,7 +156,7 @@ read_in_postcodes <- function() {
     read_in_localities(dz_level = TRUE),
     by = dplyr::join_by(datazone2011),
     relationship = "many-to-one"
-    )
+  )
 
   return(data)
 }
@@ -208,7 +208,7 @@ read_in_dz_pops22 <- function() {
       hscp2019, hscp2019name, hscp2018, hscp2016, hb2019, hb2019name, hb2018, hb2014
     )) %>%
     left_join(read_in_localities(dz_level = TRUE)) |>
-    filter(year == '2022') |>
+    filter(year == "2022") |>
     select(-year) |>
     mutate(year = 2023)
 }
