@@ -150,7 +150,7 @@ read_in_postcodes <- function() {
     # Read in the most up to date lookup version
     max() |>
     arrow::read_parquet(col_select = -c(hscp2019, hscp2019name, hb2019, hb2019name))
-  
+
   data <- dplyr::left_join(
     data,
     read_in_localities(dz_level = TRUE),
@@ -207,10 +207,10 @@ read_in_dz_pops22 <- function() {
       ca2018, ca2011,
       hscp2019, hscp2019name, hscp2018, hscp2016, hb2019, hb2019name, hb2018, hb2014
     )) %>%
-    left_join(read_in_localities(dz_level = TRUE)) |> 
-    filter(year == '2021') |> 
-    select(-year) |> 
-    mutate(year = 2022)
+    left_join(read_in_localities(dz_level = TRUE)) |>
+    filter(year == '2022') |>
+    select(-year) |>
+    mutate(year = 2023)
 }
 
 ## Function to read in latest population projections ----
