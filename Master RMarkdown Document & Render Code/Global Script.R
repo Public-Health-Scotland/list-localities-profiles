@@ -205,24 +205,7 @@ read_in_dz_pops <- function() {
 }
 
 read_in_dz_pops22 <- function() {
-  fs::dir_ls(
-    glue(
-      "/conf/linkage/output/lookups/Unicode/",
-      "Populations/Estimates/"
-    ),
-    regexp = glue("DataZone2011_pop_est_2011_.+?\\.rds$")
-  ) %>%
-    # Read in the most up to date lookup version
-    max() %>%
-    read_rds() %>%
-    clean_names() %>%
-    select(-c(
-      intzone2011, intzone2011name,
-      ca2019, ca2019name,
-      ca2018, ca2011,
-      hscp2019, hscp2019name, hscp2018, hscp2016, hb2019, hb2019name, hb2018, hb2014
-    )) %>%
-    left_join(read_in_localities(dz_level = TRUE)) |>
+   read_in_dz_pops() |>
     filter(year == "2022") |>
     select(-year) |>
     mutate(year = 2023)
