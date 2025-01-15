@@ -205,7 +205,7 @@ read_in_dz_pops <- function() {
 }
 
 read_in_dz_pops22 <- function() {
-   read_in_dz_pops() |>
+  read_in_dz_pops() |>
     filter(year == "2022") |>
     select(-year) |>
     mutate(year = 2023)
