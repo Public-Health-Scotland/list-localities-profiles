@@ -26,16 +26,16 @@ library(grid)
 library(data.table)
 
 # Change year to be the year in the data folder name
-ext_year <- 2023
+ext_year <- 2024
 
 ## Set Locality (for testing only)
-# LOCALITY <- "Falkirk West"
+#LOCALITY <- "Falkirk West"
 
 ## Set file path
-# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+#lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 # Source in functions code
-# source("Master RMarkdown Document & Render Code/Global Script.R")
+#source("Master RMarkdown Document & Render Code/Global Script.R")
 
 
 ### Geographical lookups and objects ----
@@ -79,26 +79,14 @@ for (file in services_file_names) {
 }
 
 # Change to more straightforward names
-access_dep <- scot
 hosp_postcodes <- curr
 hosp_types <- hosp
 care_homes <- MDSF
 
-rm(curr, hosp, MDSF, scot)
+rm(curr, hosp, MDSF)
 
 
 ###### 3. Manipulate services data ######
-
-## Access deprivtion ----
-access_dep <- clean_scotpho_dat(access_dep)
-
-latest_year_access_dep <- max(access_dep$year)
-
-access_dep_latest <- filter(
-  access_dep,
-  year == max(access_dep$year) &
-    (area_name == LOCALITY & area_type == "Locality")
-)$measure
 
 ## GP Practices ----
 
@@ -187,3 +175,4 @@ services_tibble <- tibble(
     nrow(other_care_type)
   )
 )
+
