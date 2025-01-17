@@ -192,7 +192,6 @@ y <- y + 1
 
 \newline
 
-In `r latest_year_access_dep`, `r format_number_for_text(access_dep_latest)`% of the population of `r LOCALITY` lived in the 15% most 'access deprived' areas ^3^.
 
 ##### Page break
 
