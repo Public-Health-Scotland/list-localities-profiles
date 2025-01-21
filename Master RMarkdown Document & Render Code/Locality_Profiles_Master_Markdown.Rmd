@@ -190,8 +190,6 @@ knitr::kable(services_tibble, col.names = c("**Service Type**", "**Service**", "
 y <- y + 1
 ```
 
-\newline
-
 
 ##### Page break
 
