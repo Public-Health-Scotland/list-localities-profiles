@@ -7,7 +7,7 @@
 ####################### SECTION 1: Packages, file paths, etc #########################
 
 ## Manually set year that the profiles are being run (year on data folder)
-ext_year <- 2023
+ext_year <- 2024
 
 # Set locality profiles file path
 # lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
@@ -42,7 +42,7 @@ library(reshape2)
 #   phsmethods::extract_fin_year(Sys.Date() - years(1)),
 #   phsmethods::extract_fin_year(Sys.Date())
 # )
-max_fy <- "2022/23" # TODO Change this to be dynamic and move to general!
+max_fy <- "2023/24" # TODO Change this to be dynamic and move to general!
 
 ########################## SECTION 2: Lookups & Populations ###############################
 
@@ -1742,7 +1742,7 @@ scot_psych_hosp <- round_half_up(
 )
 
 
-list_years <- unique(psych_hosp_time_trend$data[6])
+list_years <- unique(psych_hosp_time_trend$data[5])
 list_years_latest <- list_years$period
 
 
