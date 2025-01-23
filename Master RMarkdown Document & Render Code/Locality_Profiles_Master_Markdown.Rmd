@@ -555,9 +555,9 @@ x <- x + 1
 
 ### Drug-related Hospital Admissions
 
-There were **`r format_number_for_text(drug_hosp_latest)`** drug-related hospital admissions per 100,000 age-sex standardised population^4^ in `r LOCALITY` locality in the time period `r latest_period_drug_hosp` (3-year financial year aggregate). This is `r get_article(drug_hosp_change)` `r format_number_for_text(drug_hosp_change)`% `r drug_hosp_change_word` since `r earliest_period_drug_hosp`. A trend of the change in drug-related hospital admissions for the locality and comparable areas is shown in Figure `r x` from `r earliest_period_drug_hosp` onward.
+There were **`r format_number_for_text(drug_hosp_latest)`** drug-related hospital admissions per 100,000 age-sex standardised population^4^ in the `r LOCALITY` locality in the time period `r latest_period_drug_hosp` (3-year financial year aggregate). This is `r get_article(drug_hosp_change)` `r format_number_for_text(drug_hosp_change)`% `r drug_hosp_change_word` since `r earliest_period_drug_hosp`. A trend of the change in drug-related hospital admissions for the locality and comparable areas is shown in Figure `r x` from `r earliest_period_drug_hosp` onward.
 
-A comparison of areas at the most recent time period (`r latest_period_drug_hosp` aggregated financial years) is available in Figure `r x + 1` This shows `r LOCALITY` locality has a `r drug_hosp_diff_scot` rate of drug-related hospital admissions than Scotland (`r format_number_for_text(scot_drug_hosp)` admissions per 100,000).
+A comparison of areas at the most recent time period (`r latest_period_drug_hosp` aggregated financial years) is available in Figure `r x + 1` This shows the `r LOCALITY` locality has a `r drug_hosp_diff_scot` rate of drug-related hospital admissions than Scotland (`r format_number_for_text(scot_drug_hosp)` admissions per 100,000).
 
 #### Figure `r x`: Drug-related hospital admission rates by area and over time.
 
