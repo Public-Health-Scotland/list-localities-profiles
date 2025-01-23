@@ -10,12 +10,13 @@ library(readxl)
 library(magrittr)
 library(kableExtra)
 library(dplyr)
+library(fs)
 
 # Set year of data extracts for folder
 ext_year <- 2024
 
 # Set file path
-# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+# lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
 
 # testing locality
 # LOCALITY <- "Forres"
