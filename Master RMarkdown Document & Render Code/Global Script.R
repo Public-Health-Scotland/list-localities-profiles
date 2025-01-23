@@ -204,7 +204,7 @@ read_in_dz_pops <- function() {
     left_join(read_in_localities(dz_level = TRUE))
 }
 
-read_in_dz_pops22 <- function() {
+read_in_dz_pops_proxy_year <- function() {
   read_in_dz_pops() |>
     filter(year == "2022") |>
     select(-year) |>
