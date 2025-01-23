@@ -3,12 +3,8 @@
 ## Reads in indicator info from "Indicator Tracker" excel doc and formats tables for profiles
 
 # Packages
-library(flextable)
-library(tidyverse)
 library(janitor)
 library(readxl)
-library(magrittr)
-library(kableExtra)
 library(dplyr)
 library(fs)
 
