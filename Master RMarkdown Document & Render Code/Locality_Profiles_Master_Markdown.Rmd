@@ -879,23 +879,21 @@ x <- x + 1
 
 ### Footnotes
 
-1.  Population projections are not currently provided by the National Records Scotland (NRS) at the locality level. To explore how the population in `r LOCALITY` is expected to change in the future, the percent changes in population projection to 2025 for `r HSCP` by age group and gender were calculated using the NRS Local Authority Population Projections. These percent changes were then applied to the `r LOCALITY` 2018 mid-year population estimates (also split by age group and gender) to obtain population projection estimates for `r LOCALITY`, based on the projections for the HSCP and the current population structure of the locality.
+1.  The National Records Scotland (NRS) does not currently provide population projections at the locality level. To explore how the population in `r LOCALITY` is expected to change in the future, the percent changes in population projection to 2025 for `r HSCP` by age group and gender were calculated using the NRS Local Authority Population Projections. These percent changes were then applied to the `r LOCALITY` 2022 mid-year population estimates (also split by age group and gender) to obtain population projection estimates for `r LOCALITY`, based on the projections for the HSCP and the current population structure of the locality.
 
-2.  Care Home data included in the Services Map and Table was sourced from the [Care Inspectorate](https://www.careinspectorate.com/images/documents/5713/MDSF_data_31%20May%202020.csv). [GP Practice](https://www.opendata.nhs.scot/dataset/gp-practice-contact-details-and-list-sizes) data from October 2021, and [Hospital](https://www.opendata.nhs.scot/dataset/hospital-codes) and [A&E](https://www.opendata.nhs.scot/dataset/nhs-scotland-accident-emergency-sites) data was sourced from Public Health Scotland Open Data platform. Only services that are within the physical boundary of the HSCP or Locality are included in the map and table, so there may be services outside `r HSCP` that people may use but are not shown. Information on access deprivation was taken from [ScotPHO](https://scotland.shinyapps.io/ScotPHO_profiles_tool/).
+2.  Care Home data included in the Services Map and Table was sourced from the [Care Inspectorate](https://www.careinspectorate.com/images/documents/5713/MDSF_data_31%20May%202020.csv). [GP Practice](https://www.opendata.nhs.scot/dataset/gp-practice-contact-details-and-list-sizes) data from October 2021, and [Hospital](https://www.opendata.nhs.scot/dataset/hospital-codes) and [A&E](https://www.opendata.nhs.scot/dataset/nhs-scotland-accident-emergency-sites) data were sourced from Public Health Scotland Open Data platform. Only services within the physical boundary of the HSCP or Locality are included in the map and table, so there may be services outside `r HSCP` that people may use but are not shown. Information on access deprivation was taken from [ScotPHO](https://scotland.shinyapps.io/ScotPHO_profiles_tool/).
 
 3.  Sourced from [ScotPHO](https://scotland.shinyapps.io/ScotPHO_profiles_tool/). More recent data may be available for the indicators elsewhere.
 
-4.  Data taken from ScotPHO is often reported using the European Age-Sex Standardised Rate per 100,000. This allows for comparisons across different areas to be made. For more information on how these rates are calculated, please refer to <https://publichealthscotland.scot/services/geography-population-and-deprivation-support/population/>
+4.  Data taken from ScotPHO is often reported using the European Age-Sex Standardised Rate per 100,000. This allows for comparisons across different areas to be made. For more information on how these rates are calculated, please refer to the [PHS website: Geography, population and deprivation support](https://publichealthscotland.scot/services/geography-population-and-deprivation-support/population/){.uri}.
 
-5.  Physical long-term conditions data comes from the Source Linkage Files, and the conditions are identified using ICD-9 and ICD-10 codes in the diagnosis fields. Please note that the Source Linkage Files data only contains information on people who have had contact with the NHS through either inpatient admissions, outpatient attendances, daycase attendances, A&E attendances or through prescribed items, the data does not show all service users in Scotland who have been diagnosed with an LTC as not all of these individuals will have used these services. Also, note that LTC rates are based on an adjusted population indicator in the Source Linkage Files so that population sizes are closer to the official estimates.
+5.  Data on physical long-term conditions (LTC) is sourced from the Source Linkage Files (SLFs). These conditions are identified using ICD-9 and ICD-10 codes found in the diagnosis fields of inpatient admissions for both acute and mental health cases. It's important to note that this data does not include all service users in Scotland diagnosed with an LTC, as not all of these individuals have utilized these services. Additionally, LTC rates are based on an adjusted population indicator in the Source Linkage Files, ensuring that the population sizes align more closely with official estimates.
 
 ##### Page Break
 
 ## Appendices
 
 ### Appendix 1: Indicator Definitions
-
-\newline
 
 ```{r echo = FALSE, fig.width = 4, fig.height = 10, ft.split = TRUE}
 knitr::kable(indicator_defs, format = "markdown")
@@ -904,8 +902,6 @@ knitr::kable(indicator_defs, format = "markdown")
 ##### Page break
 
 ### Appendix 2: Date of Indicator Data Extractions
-
-\newline
 
 ```{r echo = FALSE, fig.width = 4, fig.height = 10, ft.split = TRUE}
 knitr::kable(dates_extract, col.names = c("**Section**", "**Indicator**", "**Date of data extraction**"), format = "markdown")
