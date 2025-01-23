@@ -3,7 +3,7 @@
 ## Reads in indicator info from "Indicator Tracker" excel doc and formats tables for profiles
 
 # Packages
-library(readxl) 
+library(readxl)
 library(dplyr)
 library(tidyr)
 library(fs)
@@ -26,7 +26,7 @@ indicator_defs2 <- read_excel(
   path = indicator_workbook_path,
   sheet = "Definitions",
   col_types = "text"
-) |> 
+) |>
   mutate(Indicator = glue("**{Indicator}**"))
 
 
@@ -41,8 +41,8 @@ dates_extract2 <- read_excel(
   col_names = c("Section", "Indicator", "Date of data extraction"),
   # Set the col types (also parse the dates)
   col_types = c("text", "text", "date")
-) |> 
-  replace_na(list("Date of data extraction" = Sys.Date())) |> 
+) |>
+  replace_na(list("Date of data extraction" = Sys.Date())) |>
   mutate(Section = glue("**{Section}**"))
 
 ## PPA conditions included ----
