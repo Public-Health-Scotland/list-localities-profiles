@@ -28,23 +28,23 @@ knitr::opts_chunk$set(echo = FALSE)
 
 # # Project file path
 # lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
-# 
+#
 # # Source in global functions/themes script
 # source("Master RMarkdown Document & Render Code/Global Script.R")
-# 
+#
 # # Demographics
 # source("Demographics/1. Demographics - Population.R")
 # source("Demographics/2. Demographics - SIMD.R")
-# 
+#
 # # Housing
 # source("Households/Households Code.R")
-# 
+#
 # # General Health
 # source("General Health/3. General Health Outputs.R")
-# 
+#
 # # Lifestyle & Risk Factors
 # source("Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
-# 
+#
 # # Unscheduled Care
 # source("Unscheduled Care/2. Unscheduled Care outputs.R")
 ```
