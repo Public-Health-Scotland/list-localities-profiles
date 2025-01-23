@@ -498,7 +498,7 @@ For the most recent time period available^3^, `r LOCALITY` had:
 
 In `r latest_period_alcohol_hosp`, the rate of alcohol-related admissions was **`r format_number_for_text(alcohol_hosp_latest)`** per 100,000 age-sex standardised population in `r LOCALITY`. This is `r get_article(alcohol_hosp_change)` `r format_number_for_text(alcohol_hosp_change)`% `r alcohol_hosp_change_word` overall since `r earliest_period_alcohol_hosp`. Figure `r x` shows a trend of alcohol-related hospital admissions for `r LOCALITY` locality compared with Scotland, `r HSCP` HSCP and `r HB` from financial year `r earliest_period_alcohol_hosp` to `r latest_period_alcohol_hosp`.
 
-Figure `r x + 1` then compares different areas, including the other localities in `r HSCP`, for the latest financial year. This bar chart shows that in `r latest_period_alcohol_hosp`, `r LOCALITY` locality had an `r alcohol_hosp_diff_scot` alcohol-related hospital admissions rate compared to Scotland (`r format_number_for_text(alcohol_hosp_latest)` and `r  format_number_for_text(scot_alcohol_hosp)` admissions respectively).
+Figure `r x + 1` then compares different areas, including the other localities in `r HSCP`, for the latest financial year. This bar chart shows that in `r latest_period_alcohol_hosp`, `r LOCALITY` locality had a `r alcohol_hosp_diff_scot` alcohol-related hospital admissions rate compared to Scotland (`r format_number_for_text(alcohol_hosp_latest)` and `r  format_number_for_text(scot_alcohol_hosp)` admissions respectively).
 
 ##### Page break
 
