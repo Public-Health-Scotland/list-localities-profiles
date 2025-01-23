@@ -498,7 +498,7 @@ For the most recent time period available^3^, `r LOCALITY` had:
 
 In `r latest_period_alcohol_hosp`, the rate of alcohol-related admissions was **`r format_number_for_text(alcohol_hosp_latest)`** per 100,000 age-sex standardised population in `r LOCALITY`. This is `r get_article(alcohol_hosp_change)` `r format_number_for_text(alcohol_hosp_change)`% `r alcohol_hosp_change_word` overall since `r earliest_period_alcohol_hosp`. Figure `r x` shows a trend of alcohol-related hospital admissions for `r LOCALITY` locality compared with Scotland, `r HSCP` HSCP and `r HB` from financial year `r earliest_period_alcohol_hosp` to `r latest_period_alcohol_hosp`.
 
-Figure `r x + 1` then compares different areas, including the other localities in `r HSCP`, for the latest financial year. This bar chart shows that in `r latest_period_alcohol_hosp`, `r LOCALITY` locality had a `r alcohol_hosp_diff_scot` alcohol-related hospital admissions rate compared to Scotland (`r format_number_for_text(alcohol_hosp_latest)` and `r  format_number_for_text(scot_alcohol_hosp)` admissions respectively).
+Figure `r x + 1` then compares different areas, including the other localities in `r HSCP`, for the latest financial year. This bar chart shows that in `r latest_period_alcohol_hosp`, `r LOCALITY` locality had an `r alcohol_hosp_diff_scot` alcohol-related hospital admissions rate compared to Scotland (`r format_number_for_text(alcohol_hosp_latest)` and `r  format_number_for_text(scot_alcohol_hosp)` admissions respectively).
 
 ##### Page break
 
@@ -616,25 +616,25 @@ x <- x + 1
 
 **For the most recent time periods available, `r LOCALITY` had:**
 
--   **`r latest_emergency_adm_loc1`** emergency hospital admissions per 100,000 population, compared to `r scot_emergency_adm1` in Scotland. 
- 
--   **`r latest_bed_days_loc1`** unscheduled acute specialty bed days per 100,000 population, compared to `r scot_bed_days1` in Scotland.  
- 
--   **`r latest_ae_att_loc1`** A&E attendances per 100,000 population, compared to `r scot_ae_att1` in Scotland. 
- 
--   **`r latest_dd_loc1`** delayed discharge bed days per 100,000 population aged over 65, compared to `r scot_dd1` in Scotland. 
- 
--   **`r latest_falls_loc1`** emergency hospital admissions from falls per 100,000 population aged over 65, compared to `r scot_falls1` in Scotland. 
- 
--   **`r latest_read_loc1`** emergency readmissions (28 day) per 1,000 discharges, compared to `r scot_read` in Scotland. 
- 
--   **`r latest_ppa_loc$formatted_data[2]`** potentially preventable hospital admissions per 100,000 population, compared to `r scot_ppa$formatted_data[2]` in Scotland. 
+-   **`r latest_emergency_adm_loc1`** emergency hospital admissions per 100,000 population, compared to `r scot_emergency_adm1` in Scotland.
+
+-   **`r latest_bed_days_loc1`** unscheduled acute specialty bed days per 100,000 population, compared to `r scot_bed_days1` in Scotland.
+
+-   **`r latest_ae_att_loc1`** A&E attendances per 100,000 population, compared to `r scot_ae_att1` in Scotland.
+
+-   **`r latest_dd_loc1`** delayed discharge bed days per 100,000 population aged over 65, compared to `r scot_dd1` in Scotland.
+
+-   **`r latest_falls_loc1`** emergency hospital admissions from falls per 100,000 population aged over 65, compared to `r scot_falls1` in Scotland.
+
+-   **`r latest_read_loc1`** emergency readmissions (28 day) per 1,000 discharges, compared to `r scot_read` in Scotland.
+
+-   **`r latest_ppa_loc$formatted_data[2]`** potentially preventable hospital admissions per 100,000 population, compared to `r scot_ppa$formatted_data[2]` in Scotland.
 
 ##### Page break
 
 ### Emergency Admissions
 
-Figure `r x` presents the emergency admissions rate per 100,000 population in the `r LOCALITY` locality from `r min_year_ea` to `r max_year_ea`. 
+Figure `r x` presents the emergency admissions rate per 100,000 population in the `r LOCALITY` locality from `r min_year_ea` to `r max_year_ea`.
 
 As presented in Figure `r x`, the emergency admissions rate in the `r LOCALITY` locality for `r max_year_ea` is `r latest_emergency_adm_loc1`, `r get_article(percent_rate_change)` `r percent_rate_change`% `r word_change_rate` since `r min_year_ea`. The `r HSCP` HSCP rate is `r hscp_emergency_adm1`, `r get_article(hscp_rate_change)` `r hscp_rate_change`% `r word_change_hscp` since `r min_year_ea`. The `r HB` health board rate is `r hscp_emergency_adm1` in `r max_year_ea`, `r get_article(hb_rate_change)` `r hb_rate_change`% `r word_change_hb` since `r min_year_ea` and the Scotland rate is `r scot_emergency_adm1`, `r get_article(scot_rate_change)` `r scot_rate_change`% `r word_change_scot` since `r min_year_ea`.
 
@@ -648,9 +648,9 @@ EAs_loc_ts
 x <- x + 1
 ```
 
-Figure `r x` presents the emergency admissions rate per 100,000 population in the `r LOCALITY` locality from `r min_ea_age` to `r max_ea_age` by age group. 
+Figure `r x` presents the emergency admissions rate per 100,000 population in the `r LOCALITY` locality from `r min_ea_age` to `r max_ea_age` by age group.
 
-As presented in Figure `r x`, the highest emergency admissions rate for the `r LOCALITY` locality in `r max_ea_age` is `r latest_ea_max_age1` per 100,000 population for the `r age_group_max_ea` age group with a percentage `r max_word_change_ea` of `r max_rate_change_ea`% since `r min_ea_age`. The lowest emergency admissions rate  for `r LOCALITY` in `r max_ea_age` is `r latest_ea_min_age1` per 100,000 population for the `r age_group_min_ea` age group with a percentage `r min_word_change_ea` of `r min_rate_change_ea`% since `r min_ea_age`.
+As presented in Figure `r x`, the highest emergency admissions rate for the `r LOCALITY` locality in `r max_ea_age` is `r latest_ea_max_age1` per 100,000 population for the `r age_group_max_ea` age group with a percentage `r max_word_change_ea` of `r max_rate_change_ea`% since `r min_ea_age`. The lowest emergency admissions rate for `r LOCALITY` in `r max_ea_age` is `r latest_ea_min_age1` per 100,000 population for the `r age_group_min_ea` age group with a percentage `r min_word_change_ea` of `r min_rate_change_ea`% since `r min_ea_age`.
 
 #### Figure `r x`: Emergency admissions by age group
 
