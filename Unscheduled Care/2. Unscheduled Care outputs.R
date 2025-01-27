@@ -67,9 +67,9 @@ n_loc <- count_localities(localities, HSCP)
 
 populations <- read_in_dz_pops()
 
-populations22 <- read_in_dz_pops22()
+populations_proxy_year <- read_in_dz_pops_proxy_year()
 
-populations <- rbind(populations, populations22)
+populations <- rbind(populations, populations_proxy_year)
 
 
 # compute age bands
