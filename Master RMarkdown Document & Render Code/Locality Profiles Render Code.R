@@ -22,6 +22,9 @@ lookup <- read_in_localities()
 # Specify HSCP(s) ----
 # use `unique(lookup$hscp2019name)` for all
 # or create a vector for multiple e.g. `c("Angus", "West Lothian")`
+# For a larger test, use the below to produce profiles for HSCPs likely to cause issues.
+# source("Master RMarkdown Document & Render Code/find_hscp_outliers.R")
+# hscp_list <- outlier_hscps
 hscp_list <- "Angus"
 
 # NOTE - This checks that it exactly matches the lookup
