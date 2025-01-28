@@ -110,10 +110,10 @@ make_summary_table <- function(data) {
 ```{r demographics}
 indicators <- c(
   "Total population",
-  "Gender ratio male to female",
+  "Ratio male to female",
   "Population over 65",
-  "Population in least deprived SIMD quintile",
-  "Population in most deprived SIMD quintile"
+  "Population in the least deprived SIMD quintile",
+  "Population in the most deprived SIMD quintile"
 ) |> str_wrap(width = 35)
 # List what data type they are
 datatype <- c("count", "ratio", "%", "%", "%")
