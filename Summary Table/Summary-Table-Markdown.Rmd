@@ -310,7 +310,7 @@ usc_mh_values <- tibble(
   hscp_values, scot_values
 )
 
-colnames(usc_mh_values) <- c(str_wrap("Hospial Care (Mental Health) Indicators", width = 35), headings)
+colnames(usc_mh_values) <- c(str_wrap("Hospital Care (Mental Health) Indicators", width = 35), headings)
 
 usc_mh_table <- make_summary_table(usc_mh_values)
 
