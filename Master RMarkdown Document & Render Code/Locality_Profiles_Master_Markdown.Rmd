@@ -395,7 +395,7 @@ Below is a breakdown of the physical LTCs, for the financial year `r latest_year
 
 #### Figure `r x`: The percentage of people with each physical LTC by age group. \newline
 
-```{r ltc_types_plot, echo = FALSE, fig.width = 7.5, fig.height = 3.8, fig.cap = "A graph showing the prevalence of physical long term conditions by percentage of population for Under 65s and for Over 65s."}
+```{r ltc_types_plot, echo = FALSE, fig.width = 7.5, fig.height = 5, fig.cap = "A graph showing the prevalence of physical long term conditions by percentage of population for Under 65s and for Over 65s."}
 ltc_types_plot
 
 x <- x + 1

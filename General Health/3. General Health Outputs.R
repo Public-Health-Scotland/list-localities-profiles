@@ -804,7 +804,7 @@ ltc_types_plot <- plot_grid(
   ),
   caption,
   nrow = 3,
-  rel_heights = c(0.1, 1, 0.1)
+  rel_heights = c(3, 20, 1)
 )
 
 
