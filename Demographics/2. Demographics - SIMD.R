@@ -173,21 +173,20 @@ simd_cats <- paste("SIMD", 1:5)
 simd_map <- ggplot() +
   geom_sf(
     data = zones,
-    aes(fill = factor(simd, levels = 1:5)), colour = "black"
+    aes(fill = ordered(simd, levels = 1:5)), colour = "black"
   ) +
   scale_fill_manual(values = simd_col, labels = simd_cats, drop = FALSE) +
-  geom_text_repel(
-    data = places, aes(
-      x = Longitude, y = Latitude,
-      label = name
-    ),
-    color = "black", size = 3.5,
-    max.overlaps = getOption("ggrepel.max.overlaps", default = 12)
+  geom_label_repel(
+    data = places,
+    aes(x = Longitude, y = Latitude, label = name),
+    color = "black",
+    size = 3.5,
+    fill = "#FFFFFF40", # Add a semi-transparent white background to the labels
+    label.size = NA # Labels don't have a border
   ) +
   theme_void() +
   guides(fill = guide_legend(title = "SIMD Quintile")) +
   labs(caption = "Source: Scottish Government, Public Health Scotland")
-
 
 rm(zones, places, simd_map_data)
 
