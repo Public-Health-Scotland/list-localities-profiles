@@ -16,18 +16,11 @@
 ####################### SECTION 1: Packages, file paths, etc #########################
 
 ## Libraries
-library(tidyverse)
+library(dplyr)
 library(janitor)
-library(readxl)
 library(reshape2)
-library(scales)
-library(broom)
 library(ggrepel)
 library(phsstyles)
-library(leaflet)
-library(htmlwidgets)
-library(leaflet.extras)
-library(mapview)
 library(sf)
 
 # Source in global functions/themes script
@@ -35,7 +28,7 @@ library(sf)
 
 ## Final document will loop through a list of localities
 # Create placeholder for for loop
-# LOCALITY <-  "Skye, Lochalsh and West Ross"
+# LOCALITY <- "Skye, Lochalsh and West Ross"
 # LOCALITY <- "Falkirk West"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
