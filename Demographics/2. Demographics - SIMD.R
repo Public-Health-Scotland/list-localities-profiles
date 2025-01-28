@@ -40,7 +40,7 @@ library(sf)
 ########################## SECTION 2: Data Imports ###############################
 
 ## Locality/DZ lookup
-lookup_dz <- read_in_localities(TRUE)
+lookup_dz <- read_in_localities(dz_level = TRUE)
 
 ## Population data
 pop_raw_data <- read_in_dz_pops()
