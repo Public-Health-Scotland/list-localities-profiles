@@ -166,14 +166,8 @@ simd_map_data <- simd2020 %>%
 zones <- merge(zones, simd_map_data, by = "datazone2011")
 
 # set colours for simd
-simd_col <- c("#de4243", "#f6bf87", "#ffffc2", "#b9e1eb", "#4f81bd")
-simd_cats <- c(
-  "SIMD 1",
-  "SIMD 2",
-  "SIMD 3",
-  "SIMD 4",
-  "SIMD 5"
-)
+simd_col <- RColorBrewer::brewer.pal(n = 5, name = "RdYlBu")
+simd_cats <- paste("SIMD", 1:5)
 
 # plot
 simd_map <- ggplot() +
