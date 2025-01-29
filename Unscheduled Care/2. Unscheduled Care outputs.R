@@ -34,7 +34,7 @@ library(reshape2)
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
 # LOCALITY <- "Whalsay and Skerries"
 # LOCALITY <- "North Perthshire"
-
+# LOCALITY <- "Inverclyde East"
 # Set date limit for financial year
 # Unless we're in Q4 use the previous FY as the max
 # max_fy <- ifelse(
