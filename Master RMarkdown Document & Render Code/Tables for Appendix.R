@@ -22,7 +22,7 @@ indicator_workbook_path <- path(lp_path, "Project Info & Indicators", glue("Indi
 
 ## Indicator Definitions ----
 
-indicator_defs2 <- read_excel(
+indicator_defs <- read_excel(
   path = indicator_workbook_path,
   sheet = "Definitions",
   col_types = "text"
@@ -32,7 +32,7 @@ indicator_defs2 <- read_excel(
 
 ## Data extraction dates ----
 
-dates_extract2 <- read_excel(
+dates_extract <- read_excel(
   path = indicator_workbook_path,
   sheet = "Overview",
   # Extract the the columns A:C (col 1:col 3) but skip the first 4 rows
