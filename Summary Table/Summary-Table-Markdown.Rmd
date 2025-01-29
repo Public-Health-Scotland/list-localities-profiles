@@ -260,23 +260,18 @@ time <- c(max_fy, max_fy, max_fy, max_fy, max_fy)
 
 # Values
 loc_values <- format(
-  c(latest_emergency_adm_loc$n, latest_bed_days_loc$n, latest_ae_att_loc$n, latest_dd_loc$n, latest_ppa_loc$n[2]),
+  c(latest_emergency_adm_loc$data, latest_bed_days_loc$data, latest_ae_att_loc$data, latest_dd_loc$data, filter(latest_ppa_loc, year == max(year))$data),
   big.mark = ","
 )
 other_loc_values <- bind_rows(other_loc_emergency_adm, other_loc_bed_days, other_loc_ae_att, other_loc_dd, other_loc_ppa)
 hscp_values <- format(
-  c(hscp_emergency_adm$n, hscp_bed_days$n, hscp_ae_att$n, hscp_dd$n, hscp_ppa$n[2]),
+  c(hscp_emergency_adm$data, hscp_bed_days$data, hscp_ae_att$data, hscp_dd$data, filter(hscp_ppa, year == max(year))$data),
   big.mark = ","
 )
 scot_values <- format(
-  c(scot_emergency_adm$n, scot_bed_days$n, scot_ae_att$n, scot_dd$n, scot_ppa$n[2]),
+  c(scot_emergency_adm$data, scot_bed_days$data, scot_ae_att$data, scot_dd$data, filter(scot_ppa, year == max(year))$data),
   big.mark = ","
 )
-
-
-# Ensure all columns have the same length
-n <- length(indicators)
-other_loc_values <- other_loc_values[1:n, ]
 
 usc_values <- tibble(
   indicators, datatype, time, loc_values, other_loc_values,
