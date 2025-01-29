@@ -114,7 +114,7 @@ indicators <- c(
   "Population over 65",
   "Population in the least deprived SIMD quintile",
   "Population in the most deprived SIMD quintile"
-) |> str_wrap(width = 35)
+)
 # List what data type they are
 datatype <- c("count", "ratio", "%", "%", "%")
 # Enter the time periods available
@@ -131,7 +131,7 @@ demographic_values <- tibble(
   hscp_values, scot_values
 )
 
-colnames(demographic_values) <- c(str_wrap("Demographic Indicators", width = 35), headings)
+colnames(demographic_values) <- c("Demographic Indicators", headings)
 
 demographics_table <- make_summary_table(demographic_values)
 
@@ -144,7 +144,7 @@ indicators <- c(
   "Households with single occupant tax discount",
   "Households in Council Tax Band A-C",
   "Households in Council Tax Band F-H"
-) |> str_wrap(width = 35)
+)
 
 datatype <- c("count", "%", "%", "%")
 
@@ -162,7 +162,7 @@ housing_values <- tibble(
   hscp_values, scot_values
 )
 
-colnames(housing_values) <- c(str_wrap("Housing Indicators", width = 35), headings)
+colnames(housing_values) <- c("Housing Indicators", headings)
 
 housing_table <- make_summary_table(housing_values)
 
@@ -177,7 +177,7 @@ indicators <- c(
   "Population with long-term condition",
   "Cancer registrations per 100,000",
   "Anxiety, depression & psychosis prescriptions"
-) |> str_wrap(width = 35)
+)
 
 datatype <- c("mean", "mean", "rate", "%", "rate", "%")
 
@@ -202,7 +202,7 @@ general_health_values <- tibble(
   hscp_values, scot_values
 )
 
-colnames(general_health_values) <- c(str_wrap("General Health Indicators", width = 35), headings)
+colnames(general_health_values) <- c("General Health Indicators", headings)
 
 general_health_table <- make_summary_table(general_health_values)
 
@@ -217,7 +217,7 @@ indicators <- c(
   "Alcohol-specific mortality per 100,000",
   "Drug-related hospital admissions per 100,000",
   "Bowel screening uptake"
-) |> str_wrap(width = 35)
+)
 
 datatype <- c("rate", "rate", "rate", "%")
 
@@ -240,7 +240,7 @@ lifestyle_values <- tibble(
   hscp_values, scot_values
 )
 
-colnames(lifestyle_values) <- c(str_wrap("Lifestyle and Risk Factors Indicators", width = 35), headings)
+colnames(lifestyle_values) <- c("Lifestyle & Risk Factors Indicators", headings)
 
 lifestyle_table <- make_summary_table(lifestyle_values)
 
@@ -254,7 +254,7 @@ indicators <- c(
   "A&E attendances per 100,000",
   "Delayed discharges (65+) per 100,000",
   "Potentially Preventable Admissions per 100,000"
-) |> str_wrap(width = 35)
+)
 datatype <- c("rate", "rate", "rate", "rate", "rate")
 time <- c(max_fy, max_fy, max_fy, max_fy, max_fy)
 
@@ -283,7 +283,7 @@ usc_values <- tibble(
   hscp_values, scot_values
 )
 
-colnames(usc_values) <- c(str_wrap("Hospital and Community Care Indicators", width = 35), headings)
+colnames(usc_values) <- c("Hospital & Community Care Indicators", headings)
 
 usc_table <- make_summary_table(usc_values)
 
@@ -294,7 +294,7 @@ usc_table
 indicators <- c(
   "Psychiatric patient hospitalisations per 100,000",
   "Unscheduled bed days per 100,000"
-) |> str_wrap(width = 35)
+)
 datatype <- c("rate", "rate")
 time <- c(str_wrap(latest_period_psych_hosp, 9), max_fy)
 
@@ -310,7 +310,7 @@ usc_mh_values <- tibble(
   hscp_values, scot_values
 )
 
-colnames(usc_mh_values) <- c(str_wrap("Hospital Care (Mental Health) Indicators", width = 35), headings)
+colnames(usc_mh_values) <- c("Hospital Care (Mental Health) Indicators", headings)
 
 usc_mh_table <- make_summary_table(usc_mh_values)
 
