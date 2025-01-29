@@ -52,3 +52,5 @@ ppa_def <- read_excel(
   sheet = "PPA",
   col_types = "text"
 )
+
+rm(indicator_workbook_path)
