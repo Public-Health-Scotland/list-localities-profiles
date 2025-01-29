@@ -12,7 +12,7 @@ Sys.umask("006")
 source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set file path
-lp_path <- lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/" 
+lp_path <- lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 output_dir <- path(lp_path, "Master RMarkdown Document & Render Code", "Output")
 
 # Below creates locality list of all the localities in a chosen HSCP
