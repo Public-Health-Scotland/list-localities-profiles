@@ -514,6 +514,7 @@ ptsp <- function(partnership) {
     "Clackmannanshire" ~ "Clackmannanshire and Stirling",
     "Stirling" ~ "Clackmannanshire and Stirling",
     "Na h-Eileanan Siar" ~ "Western Isles",
+    "Comhairle nan Eilean Siar" ~ "Western Isles",
     .default = partnership
   )
 }
