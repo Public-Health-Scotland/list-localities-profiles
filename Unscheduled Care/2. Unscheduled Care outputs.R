@@ -294,7 +294,7 @@ percent_change_calc <- function(numerator, denominator, digits = 1) {
 
 word_change_calc <- function(latest, first) {
   dplyr::case_when(
-    dplyr::near(latest, first) ~ "same",
+    dplyr::near(latest, first) ~ "change",
     latest > first ~ "increase",
     latest < first ~ "decrease"
   )
