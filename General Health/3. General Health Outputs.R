@@ -852,8 +852,7 @@ top5ltc_loc <- ltc_totals %>%
   filter(hscp_locality == LOCALITY) %>%
   select(-hscp_locality, -hscp2019name, -people, -slf_adj_pop) %>%
   pivot_longer(cols = everything(), names_to = "topltc", values_to = "value") %>%
-  arrange(desc(value)) %>%
-  slice_max(n = 5, order_by = value) %>%
+  slice_max(n = 5, order_by = value, with_ties = FALSE) %>%
   mutate(percent = round_half_up((value / ltc_pops_total_loc) * 100, 2)) %>%
   select(-value) %>%
   left_join(ltc_cols, by = join_by(topltc)) %>%
@@ -866,8 +865,7 @@ top5ltc_hscp <- ltc_totals %>%
   select(-hscp_locality, -hscp2019name, -people, -slf_adj_pop) %>%
   summarise(across(everything(), sum)) %>%
   pivot_longer(cols = everything(), names_to = "topltc", values_to = "value") %>%
-  arrange(desc(value)) %>%
-  slice_max(n = 5, order_by = value) %>%
+  slice_max(n = 5, order_by = value, with_ties = FALSE) %>%
   mutate(percent = round_half_up((value / ltc_pops_total_hscp) * 100, 2)) %>%
   select(-value) %>%
   left_join(ltc_cols, by = join_by(topltc)) %>%
@@ -879,8 +877,7 @@ top5ltc_scot <- ltc_totals %>%
   select(-hscp_locality, -hscp2019name, -people, -slf_adj_pop) %>%
   summarise(across(everything(), sum)) %>%
   pivot_longer(cols = everything(), names_to = "topltc", values_to = "value") %>%
-  arrange(desc(value)) %>%
-  slice_max(n = 5, order_by = value) %>%
+  slice_max(n = 5, order_by = value, with_ties = FALSE) %>%
   mutate(percent = round_half_up((value / ltc_pops_total_scot) * 100, 2)) %>%
   select(-value) %>%
   left_join(ltc_cols, by = join_by(topltc)) %>%
