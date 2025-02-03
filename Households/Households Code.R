@@ -33,9 +33,9 @@ library(gridExtra)
 library(reshape2)
 
 # Update Data Year (this is the maximum year available for both housing data sets from NRS)
-max_year_housing <- 2022
+max_year_housing <- 2023
 # Update Publication Year (the year marked on the Data folder)
-ext_year <- 2023
+ext_year <- 2024
 
 # Set Directory.
 # lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
@@ -237,11 +237,7 @@ other_locs <- lookup2 %>%
   arrange(hscp_locality)
 
 # Find number of locs per partnership
-n_loc <- lookup2 %>%
-  group_by(hscp2019name) %>%
-  summarise(locality_n = n()) %>%
-  filter(hscp2019name == HSCP) %>%
-  pull(locality_n)
+n_loc <- count_localities(lookup2, HSCP)
 
 rm(lookup2)
 

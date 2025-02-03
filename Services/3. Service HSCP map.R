@@ -27,6 +27,7 @@ library(dplyr)
 library(sf)
 library(ggrepel)
 library(ggmap)
+library(patchwork)
 
 # 2. Read in locality shape files ----
 
@@ -39,7 +40,11 @@ shp <- shp |>
   merge(lookup2, by = "hscp_locality")
 
 shp_hscp <- shp |>
-  filter(hscp2019name == HSCP)
+  filter(hscp2019name == HSCP) |>
+  mutate(
+    hscp_locality = stringr::str_wrap(hscp_locality, 24),
+    hscp_local = stringr::str_wrap(hscp_local, 24)
+  )
 
 # 3. Map Code ----
 # 3.1 Palettes ----
@@ -98,8 +103,8 @@ places <- read_csv(paste0(
     type = first(type)
   ) |>
   st_as_sf(coords = c("Longitude", "Latitude"), remove = FALSE, crs = 4326) |>
-  filter(!grepl("_", name)) |> # filter incorrect name types and remove smaller places
-  filter(type != "hamlet" & type != "village")
+  filter(!grepl("_", name)) |> # filter incorrect name types
+  filter(type != "hamlet" & type != "village") # remove smaller places
 
 # 3.3 Background map ----
 locality_map_id <- read_csv(paste0(lp_path, "Services/", "locality_map_id.csv"))
@@ -185,8 +190,10 @@ if (nrow(markers_miu) > 0) {
 # plot(service_map)
 
 # 3.5 Final map ----
-# create final service map
+# create final service map WITHOUT LEGEND
+
 service_map <- service_map +
+  labs(colour = "Service Type") +
   scale_color_manual(values = c(
     "GP Practice" = "black",
     "Care Home" = "black",
@@ -211,7 +218,99 @@ service_map <- service_map +
     axis.title.y = element_blank(),
     axis.title.x = element_blank()
   ) +
+  labs(caption = "Source: Public Health Scotland") +
+  theme(legend.position = "none")
+
+# Create Map of Just the Locality Areas in order to take its legend (of locality colours) ----
+
+service_map_1 <- ggmap(service_map_background) +
+  geom_sf(
+    data = shp_hscp,
+    mapping = aes(
+      fill = hscp_local
+    ),
+    colour = "black",
+    alpha = 0.5,
+    inherit.aes = FALSE
+  ) +
+  labs(fill = "Locality") +
+  theme(legend.title = element_blank()) +
+  scale_fill_manual(values = col_palette) +
+  theme(
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks = element_blank(),
+    rect = element_blank(),
+    axis.title.y = element_blank(),
+    axis.title.x = element_blank()
+  ) +
   labs(caption = "Source: Public Health Scotland")
+
+leg1 <- cowplot::get_legend(service_map_1)
+
+# Create Map of Just the Locations in order to use its legend (of location colours and shapes) ----
+
+all_markers <- dplyr::select(markers_miu, name, latitude, longitude) %>%
+  mutate(type = "Minor Injury Unit") %>%
+  bind_rows(dplyr::select(markers_care_home, name, latitude, longitude) %>% mutate(type = "Care Home")) %>%
+  bind_rows(dplyr::select(markers_emergency_dep, name, latitude, longitude) %>% mutate(type = "Emergency Department")) %>%
+  bind_rows(dplyr::select(markers_gp, name = gp_practice_name, latitude, longitude) %>% mutate(type = "GP Practice"))
+
+service_map_2 <- ggmap(service_map_background) +
+  geom_point(data = all_markers, aes(x = longitude, y = latitude, colour = type, fill = type, shape = type)) +
+  scale_color_manual(values = c(
+    "GP Practice" = "black",
+    "Care Home" = "black",
+    "Emergency Department" = "black",
+    "Minor Injury Unit" = "black"
+  )) +
+  scale_fill_manual(values = c(
+    "GP Practice" = "red",
+    "Care Home" = "yellow",
+    "Emergency Department" = "blue",
+    "Minor Injury Unit" = "green"
+  )) +
+  scale_shape_manual(values = c(
+    "GP Practice" = 21,
+    "Care Home" = 22,
+    "Emergency Department" = 23,
+    "Minor Injury Unit" = 24
+  )) +
+  theme(legend.title = element_blank()) +
+  theme(
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks = element_blank(),
+    rect = element_blank(),
+    axis.title.y = element_blank(),
+    axis.title.x = element_blank()
+  ) +
+  labs(caption = "Source: Public Health Scotland")
+
+
+leg2 <- cowplot::get_legend(service_map_2)
+
+# Create new legend which combines other legends ----
+
+blank_leg <- patchwork::plot_spacer() + theme_void()
+
+leg12 <- cowplot::plot_grid(blank_leg,
+  leg1,
+  blank_leg,
+  leg2,
+  blank_leg,
+  ncol = 1
+)
+
+# Combine plot of locations and localities with corrected legends
+
+service_map <- cowplot::plot_grid(service_map,
+  leg12,
+  nrow = 1,
+  align = "h",
+  axis = "t",
+  rel_widths = c(1.7, 1.0)
+)
 
 # preview final service map
 # plot(service_map)
@@ -219,16 +318,22 @@ service_map <- service_map +
 # 4 Cleanup ----
 # remove unnecessary objects
 rm(
+  blank_leg,
   Clacks_Royal,
   data,
   hosp_postcodes,
   hosp_types,
+  leg1,
+  leg2,
+  leg12,
   markers_care_home,
   markers_emergency_dep,
   markers_gp,
   markers_miu,
   other_care_type,
   postcode_lkp,
+  service_map_1,
+  service_map_2,
   service_map_background,
   shp,
   shp_hscp,

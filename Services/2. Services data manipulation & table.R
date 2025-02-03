@@ -26,7 +26,7 @@ library(grid)
 library(data.table)
 
 # Change year to be the year in the data folder name
-ext_year <- 2023
+ext_year <- 2024
 
 ## Set Locality (for testing only)
 # LOCALITY <- "Falkirk West"
@@ -50,11 +50,7 @@ lookup2 <- read_in_localities()
 HSCP <- as.character(filter(lookup2, hscp_locality == LOCALITY)$hscp2019name)
 
 # Get number of localities in HSCP
-n_loc <- lookup2 %>%
-  group_by(hscp2019name) %>%
-  summarise(locality_n = n()) %>%
-  filter(hscp2019name == HSCP) %>%
-  pull(locality_n)
+n_loc <- count_localities(lookup2, HSCP)
 
 
 ###### 2. Read in services data ######
@@ -83,26 +79,14 @@ for (file in services_file_names) {
 }
 
 # Change to more straightforward names
-access_dep <- scot
 hosp_postcodes <- curr
 hosp_types <- hosp
 care_homes <- MDSF
 
-rm(curr, hosp, MDSF, scot)
+rm(curr, hosp, MDSF)
 
 
 ###### 3. Manipulate services data ######
-
-## Access deprivtion ----
-access_dep <- clean_scotpho_dat(access_dep)
-
-latest_year_access_dep <- max(access_dep$year)
-
-access_dep_latest <- filter(
-  access_dep,
-  year == max(access_dep$year) &
-    (area_name == LOCALITY & area_type == "Locality")
-)$measure
 
 ## GP Practices ----
 

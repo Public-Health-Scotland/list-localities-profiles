@@ -288,7 +288,7 @@ pop_plot_dat <- rbind(
   mutate(plot_lab = if_else(year %% 2 == 0, format(pop, big.mark = ","), ""))
 
 pop_ts_plot <- ggplot(pop_plot_dat, aes(x = year, y = pop)) +
-  geom_line(aes(color = data), size = 1) +
+  geom_line(aes(color = data), linewidth = 1) +
   geom_point(color = "#0f243e") +
   geom_text(aes(label = plot_lab),
     vjust = 2, color = "#4a4a4a", size = 3
@@ -406,11 +406,7 @@ other_locs <- lookup %>%
   arrange(hscp_locality)
 
 # Find number of locs per partnership
-n_loc <- lookup %>%
-  group_by(hscp2019name) %>%
-  summarise(locality_n = n()) %>%
-  filter(hscp2019name == HSCP) %>%
-  pull(locality_n)
+n_loc <- count_localities(lookup, HSCP)
 
 ## Locality objects
 total_population <- format_number_for_text(gender_breakdown$total[1])

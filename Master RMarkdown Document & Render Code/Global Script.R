@@ -14,6 +14,8 @@ library(data.table)
 library(glue)
 library(magrittr)
 library(lubridate)
+library(fs)
+library(arrow)
 
 
 #### Colours & Formatting #### ----
@@ -40,8 +42,8 @@ format_number_for_text <- function(x) {
 }
 
 # This will return the correct article depending on the (max 2-digit) number supplied
-# e.g. 
-# 81.2 -> an 
+# e.g.
+# 81.2 -> an
 # 18 -> an
 # 7.2 -> an
 # To be used for "a xx increase" which could be "an xx increase"
@@ -80,13 +82,13 @@ theme_profiles <- function() {
     # The legend may often need some more manual tweaking when it comes to its
     # exact position based on the plot coordinates.
     legend.position = "bottom",
-    legend.text.align = 0,
     legend.background = ggplot2::element_blank(),
     legend.title = ggplot2::element_blank(),
     legend.key = ggplot2::element_blank(),
     legend.text = ggplot2::element_text(
       family = fontStyle,
-      size = fontSize
+      size = fontSize,
+      hjust = 0 # Replaces legend.text.align = 0
     ),
 
     # Axis format
@@ -146,6 +148,9 @@ read_in_localities <- function(dz_level = FALSE) {
   return(data)
 }
 
+count_localities <- function(locality_lookup, hscp_name) {
+  return(sum(locality_lookup[["hscp2019name"]] == hscp_name))
+}
 
 ## Function to read in latest SPD file ----
 
@@ -199,28 +204,11 @@ read_in_dz_pops <- function() {
     left_join(read_in_localities(dz_level = TRUE))
 }
 
-read_in_dz_pops22 <- function() {
-  fs::dir_ls(
-    glue(
-      "/conf/linkage/output/lookups/Unicode/",
-      "Populations/Estimates/"
-    ),
-    regexp = glue("DataZone2011_pop_est_2011_.+?\\.rds$")
-  ) %>%
-    # Read in the most up to date lookup version
-    max() %>%
-    read_rds() %>%
-    clean_names() %>%
-    select(-c(
-      intzone2011, intzone2011name,
-      ca2019, ca2019name,
-      ca2018, ca2011,
-      hscp2019, hscp2019name, hscp2018, hscp2016, hb2019, hb2019name, hb2018, hb2014
-    )) %>%
-    left_join(read_in_localities(dz_level = TRUE)) |>
-    filter(year == "2021") |>
+read_in_dz_pops_proxy_year <- function() {
+  read_in_dz_pops() |>
+    filter(year == "2022") |>
     select(-year) |>
-    mutate(year = 2022)
+    mutate(year = 2023)
 }
 
 ## Function to read in latest population projections ----
@@ -309,7 +297,7 @@ scotpho_time_trend <- function(data, chart_title, xaxis_title, yaxis_title, stri
       x = str_wrap(period_short, width = string_wrap), y = measure,
       group = area_name, fill = area_name, linetype = area_type
     )) +
-    geom_line(aes(colour = area_name), size = 1) +
+    geom_line(aes(colour = area_name), linewidth = 1) +
     geom_point(aes(colour = area_name), size = 2) +
     geom_ribbon(
       aes(
@@ -360,7 +348,7 @@ scotpho_time_trend_HSCP <- function(data, chart_title, xaxis_title, yaxis_title,
       x = str_wrap(period_short, width = string_wrap), y = measure,
       group = area_name, fill = area_name, linetype = area_type
     )) +
-    geom_line(aes(colour = area_name), size = 1) +
+    geom_line(aes(colour = area_name), linewidth = 1) +
     geom_point(aes(colour = area_name), size = 2) +
     geom_ribbon(
       aes(
@@ -421,7 +409,12 @@ scotpho_bar_chart <- function(data, chart_title, xaxis_title) {
     geom_bar(colour = "white") +
     scale_fill_manual(values = palette) +
     theme_profiles() +
-    theme(axis.text.y = element_text(colour = if_else(data_for_plot$text_highlight, "red", "black"))) +
+    theme(
+      axis.text.y = element_text(
+        colour = if_else(data_for_plot$text_highlight, "red", "black"),
+        face = if_else(data_for_plot$text_highlight, "bold", "plain")
+      )
+    ) +
     labs(
       title = chart_title,
       x = xaxis_title,

@@ -33,7 +33,7 @@ library(phsstyles)
 # LOCALITY <- "Barra"
 
 # Set year of data extracts for folder
-ext_year <- 2023
+ext_year <- 2024
 
 # Set file path
 # lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
@@ -57,11 +57,7 @@ other_locs <- lookup %>%
   arrange(hscp_locality)
 
 # Find number of locs per partnership
-n_loc <- lookup %>%
-  group_by(hscp2019name) %>%
-  summarise(locality_n = n()) %>%
-  filter(hscp2019name == HSCP) %>%
-  pull(locality_n)
+n_loc <- count_localities(lookup, HSCP)
 
 
 
