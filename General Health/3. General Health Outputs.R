@@ -928,7 +928,6 @@ title <- ggdraw() +
 
 top5_ltc_table <- plot_grid(title, top5ltc_all_table, nrow = 2, rel_heights = c(0.1, 1.2))
 
-top5ltc_loc
 rm(
   ltc_cols, ltc_loc_col, ltc_hscp_col, ltc_scot_col,
   ltc_pops_total_loc, ltc_pops_total_hscp,
