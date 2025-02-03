@@ -48,6 +48,11 @@ format_number_for_text <- function(x) {
 # 7.2 -> an
 # To be used for "a xx increase" which could be "an xx increase"
 get_article <- function(number) {
+  if (identical(number, numeric(0))) {
+    # If the number wasn't calculated we still need to deal with it.
+    return("-")
+  }
+
   if (substr(number, 1, 1) == "8" || substr(number, 1, 2) == "18") {
     return("an")
   } else {
