@@ -13,18 +13,6 @@
 
 ############# 1) PACKAGES, DIRECTORY, LOOKUPS, DATA IMPORT + CLEANING #############
 
-## load packages
-library(readxl)
-library(tidyverse) # review and either load in global or only specific
-library(reshape2)
-library(janitor)
-library(png)
-library(cowplot)
-library(knitr)
-library(gridExtra)
-library(grid)
-library(phsstyles)
-
 # Determine locality (for testing only)
 # LOCALITY <- "Falkirk West"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
@@ -101,14 +89,17 @@ check_missing_data_scotpho(bowel_screening)
 ##### 2a Drug-related hospital admissions #####
 
 ## Create variables for latest year
-latest_period_drug_hosp <- unique(filter(drug_hosp, year == max(drug_hosp$year))$period_short)
-earliest_period_drug_hosp <- unique(filter(drug_hosp, year == min(drug_hosp$year))$period_short)
+max_year_drug_hosp <- max(drug_hosp[["year"]])
+min_year_drug_hosp <- min(drug_hosp[["year"]])
+latest_period_drug_hosp <- drug_hosp[["period_short"]][which.max(drug_hosp[["year"]])]
+earliest_period_drug_hosp <- drug_hosp[["period_short"]][which.min(drug_hosp[["year"]])]
+# ScotPHO time trend will only be latest 10 years
+earliest_period_drug_hosp_trend <- drug_hosp[["period_short"]][match(max_year_drug_hosp - 10, drug_hosp[["year"]])]
 
 
 ## Time trend
 drug_hosp_time_trend <- drug_hosp %>%
   scotpho_time_trend(
-    data = .,
     chart_title = "Drug-related Hospital Admissions Time Trend",
     xaxis_title = "Financial Year Groups (3-year aggregates)",
     yaxis_title = "Drug-related admissions\n(Standardised rates per 100,000)",
@@ -121,27 +112,26 @@ drug_hosp_time_trend
 ## Bar chart
 drug_hosp_bar <- drug_hosp %>%
   scotpho_bar_chart(
-    data = .,
-    chart_title = paste0("Drug-related Hospital Admissions by Area, ", max(.$period_short)),
+    chart_title = paste0("Drug-related Hospital Admissions by Area, ", latest_period_drug_hosp),
     xaxis_title = "Drug-related admissions (Standardised rates per 100,000)"
   )
 
 drug_hosp_bar
 
-### review piping style for consistency
 ## Numbers for text
-
 drug_hosp_latest <- filter(
   drug_hosp,
-  year == max(drug_hosp$year) &
-    (area_name == LOCALITY & area_type == "Locality")
-)$measure
+  year == max_year_drug_hosp,
+  area_name == LOCALITY,
+  area_type == "Locality"
+) |> pull(measure)
 
 drug_hosp_earliest <- filter(
   drug_hosp,
-  (year == min(drug_hosp$year)) &
-    (area_name == LOCALITY & area_type == "Locality")
-)$measure
+  year == min_year_drug_hosp,
+  area_name == LOCALITY, 
+  area_type == "Locality"
+) |> pull(measure)
 
 drug_hosp_change <- abs((drug_hosp_latest - drug_hosp_earliest) / drug_hosp_earliest * 100)
 drug_hosp_change_word <- if_else(drug_hosp_latest > drug_hosp_earliest,
@@ -150,12 +140,11 @@ drug_hosp_change_word <- if_else(drug_hosp_latest > drug_hosp_earliest,
 
 scot_drug_hosp <- filter(
   drug_hosp,
-  year == max(drug_hosp$year) & area_name == "Scotland"
-)$measure
+  year == max_year_drug_hosp,
+  area_name == "Scotland"
+) |> pull(measure)
 
 drug_hosp_diff_scot <- if_else(drug_hosp_latest > scot_drug_hosp, "higher", "lower")
-
-
 
 
 ##### 2b Alcohol-related hospital admissions #####
