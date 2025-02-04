@@ -94,7 +94,8 @@ min_year_drug_hosp <- min(drug_hosp[["year"]])
 latest_period_drug_hosp <- drug_hosp[["period_short"]][which.max(drug_hosp[["year"]])]
 earliest_period_drug_hosp <- drug_hosp[["period_short"]][which.min(drug_hosp[["year"]])]
 # ScotPHO time trend will only be latest 10 years
-earliest_period_drug_hosp_trend <- drug_hosp[["period_short"]][match(max_year_drug_hosp - 10, drug_hosp[["year"]])]
+trend_years <- 10
+earliest_period_drug_hosp_trend <- drug_hosp[["period_short"]][match(max_year_drug_hosp - trend_years, drug_hosp[["year"]])]
 
 
 ## Time trend
@@ -104,6 +105,7 @@ drug_hosp_time_trend <- drug_hosp %>%
     xaxis_title = "Financial Year Groups (3-year aggregates)",
     yaxis_title = "Drug-related admissions\n(Standardised rates per 100,000)",
     string_wrap = 10,
+    trend_years = trend_years,
     rotate_xaxis = TRUE
   )
 
@@ -129,7 +131,7 @@ drug_hosp_latest <- filter(
 drug_hosp_earliest <- filter(
   drug_hosp,
   year == min_year_drug_hosp,
-  area_name == LOCALITY, 
+  area_name == LOCALITY,
   area_type == "Locality"
 ) |> pull(measure)
 
