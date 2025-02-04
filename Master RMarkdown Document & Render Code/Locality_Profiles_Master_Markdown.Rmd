@@ -127,7 +127,7 @@ Table `r y` details the percentage of the locality's 2016 population living in t
 knitr::kable(simd_diff_overall,
   col.names = c(
     "**Quintile**", "**Percent of 2016 Population (SIMD 2016 Ranking)**",
-    glue("**Percent of {pop_max_year} Population (SIMD 2020 Ranking)**"), 
+    glue("**Percent of {pop_max_year} Population (SIMD 2020 Ranking)**"),
     "**Difference**"
   ),
   align = c("l", "r", "r", "r"),
