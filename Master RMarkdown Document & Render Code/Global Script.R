@@ -273,7 +273,7 @@ clean_scotpho_dat <- function(data) {
 # (ScotPHO data uses year aggregates which don't always fit on axis unless wrapped)
 # rotate_xaxis: default F, if labels still don't fit even with wrapping (prev argument), labels can be rotated
 
-scotpho_time_trend <- function(data, chart_title, xaxis_title, yaxis_title, string_wrap, rotate_xaxis = FALSE) {
+scotpho_time_trend <- function(data, chart_title, xaxis_title, yaxis_title, string_wrap, rotate_xaxis = FALSE, trend_years = 10) {
   # rotate axis criteria if T/F
   if (rotate_xaxis) {
     rotation <- element_text(angle = 45, hjust = 1)
@@ -287,7 +287,7 @@ scotpho_time_trend <- function(data, chart_title, xaxis_title, yaxis_title, stri
       (area_name == HSCP & area_type == "HSCP") |
       area_name == HB |
       area_name == "Scotland") %>%
-    filter(year >= max(year) - 10) %>%
+    filter(year >= max(year) - trend_years) %>%
     mutate(
       area_type = factor(area_type, levels = c("Locality", "HSCP", "Health board", "Scotland")),
       area_name = fct_reorder(as.factor(str_wrap(area_name, 23)), as.numeric(area_type))
