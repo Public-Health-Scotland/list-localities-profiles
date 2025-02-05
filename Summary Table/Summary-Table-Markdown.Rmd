@@ -25,7 +25,7 @@ knitr::opts_chunk$set(echo = FALSE)
 # LOCALITY <- "Barra"
 # LOCALITY <- "Whalsay and Skerries"
 # LOCALITY <- "Inverclyde East"
-# LOCALITY <- "Kirkcaldy" 
+# LOCALITY <- "Kirkcaldy"
 
 # # Project file path
 # lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
