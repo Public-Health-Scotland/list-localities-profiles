@@ -11,7 +11,7 @@ output:
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, error = FALSE, warning = FALSE, message = FALSE)
 options(kableExtra.auto_format = FALSE)
 
 # Figure and table number objects
@@ -127,7 +127,8 @@ Table `r y` details the percentage of the locality's 2016 population living in t
 knitr::kable(simd_diff_overall,
   col.names = c(
     "**Quintile**", "**Percent of 2016 Population (SIMD 2016 Ranking)**",
-    "**Percent of 2021 Population (SIMD 2020 Ranking)**", "**Difference**"
+    glue("**Percent of {pop_max_year} Population (SIMD 2020 Ranking)**"),
+    "**Difference**"
   ),
   align = c("l", "r", "r", "r"),
   format = "markdown"
@@ -189,7 +190,6 @@ knitr::kable(services_tibble, col.names = c("**Service Type**", "**Service**", "
 
 y <- y + 1
 ```
-
 
 ##### Page break
 
@@ -387,7 +387,7 @@ knitr::kable(ltc_multimorbidity_table)
 y <- y + 1
 ```
 
-##### Page break 
+##### Page break
 
 **Most common physical Long-Term Conditions (LTCs)**
 
@@ -395,13 +395,13 @@ Below is a breakdown of the physical LTCs, for the financial year `r latest_year
 
 #### Figure `r x`: The percentage of people with each physical LTC by age group. \newline
 
-```{r ltc_types_plot, echo = FALSE, fig.width = 7.5, fig.height = 3.8, fig.cap = "A graph showing the prevalence of physical long term conditions by percentage of population for Under 65s and for Over 65s."}
+```{r ltc_types_plot, echo = FALSE, fig.width = 7.5, fig.height = 5, fig.cap = "A graph showing the prevalence of physical long term conditions by percentage of population for Under 65s and for Over 65s."}
 ltc_types_plot
 
 x <- x + 1
 ```
 
-###### \*COPD: Chronic Obstructive Pulmonary Disease
+\^\*COPD: Chronic Obstructive Pulmonary Disease\^
 
 #### Table `r y`: Prevalence of the five most common physical LTCs as a percentage of the population across geographical areas (1 is the most prevalent).
 
@@ -415,7 +415,7 @@ y <- y + 1
 
 Source: Source Linkage Files
 
-### Cancer 
+### Cancer
 
 For the period `r latest_period_cancer_reg`, there were **`r format_number_for_text(cancer_reg_total_latest)`** new cancer registrations per year on average (a rate of **`r format_number_for_text(cancer_reg_rate_latest)`** registrations per 100,000 age-sex standardised population) in `r LOCALITY` locality. For the period `r latest_period_early_deaths_cancer`, there were also **`r format_number_for_text(early_deaths_cancer_rate_latest)`** early deaths per 100,000 from cancer in the locality, this is a **`r format_number_for_text(cancer_deaths_perc_change)`%** `r cancer_deaths_changeword` compared to the rate 10 years prior.
 
@@ -552,7 +552,7 @@ x <- x + 1
 
 ### Drug-related Hospital Admissions
 
-There were **`r format_number_for_text(drug_hosp_latest)`** drug-related hospital admissions per 100,000 age-sex standardised population^4^ in the `r LOCALITY` locality in the time period `r latest_period_drug_hosp` (3-year financial year aggregate). This is `r get_article(drug_hosp_change)` `r format_number_for_text(drug_hosp_change)`% `r drug_hosp_change_word` since `r earliest_period_drug_hosp`. A trend of the change in drug-related hospital admissions for the locality and comparable areas is shown in Figure `r x` from `r earliest_period_drug_hosp` onward.
+There were **`r format_number_for_text(drug_hosp_latest)`** drug-related hospital admissions per 100,000 age-sex standardised population^4^ in the `r LOCALITY` locality in the time period `r latest_period_drug_hosp` (3-year financial year aggregate). This is `r get_article(drug_hosp_change)` `r format_number_for_text(drug_hosp_change)`% `r drug_hosp_change_word` since `r earliest_period_drug_hosp`. A trend of the change in drug-related hospital admissions for the locality and comparable areas is shown in Figure `r x` from `r earliest_period_drug_hosp_trend` onward.
 
 A comparison of areas at the most recent time period (`r latest_period_drug_hosp` aggregated financial years) is available in Figure `r x + 1` This shows the `r LOCALITY` locality has a `r drug_hosp_diff_scot` rate of drug-related hospital admissions than Scotland (`r format_number_for_text(scot_drug_hosp)` admissions per 100,000).
 
@@ -616,25 +616,25 @@ x <- x + 1
 
 **For the most recent time periods available, `r LOCALITY` had:**
 
--   **`r latest_emergency_adm_loc1`** emergency hospital admissions per 100,000 population, compared to `r scot_emergency_adm1` in Scotland. 
- 
--   **`r latest_bed_days_loc1`** unscheduled acute specialty bed days per 100,000 population, compared to `r scot_bed_days1` in Scotland.  
- 
--   **`r latest_ae_att_loc1`** A&E attendances per 100,000 population, compared to `r scot_ae_att1` in Scotland. 
- 
--   **`r latest_dd_loc1`** delayed discharge bed days per 100,000 population aged over 65, compared to `r scot_dd1` in Scotland. 
- 
--   **`r latest_falls_loc1`** emergency hospital admissions from falls per 100,000 population aged over 65, compared to `r scot_falls1` in Scotland. 
- 
--   **`r latest_read_loc1`** emergency readmissions (28 day) per 1,000 discharges, compared to `r scot_read` in Scotland. 
- 
--   **`r latest_ppa_loc$formatted_data[2]`** potentially preventable hospital admissions per 100,000 population, compared to `r scot_ppa$formatted_data[2]` in Scotland. 
+-   **`r latest_emergency_adm_loc1`** emergency hospital admissions per 100,000 population, compared to `r scot_emergency_adm1` in Scotland.
+
+-   **`r latest_bed_days_loc1`** unscheduled acute specialty bed days per 100,000 population, compared to `r scot_bed_days1` in Scotland.
+
+-   **`r latest_ae_att_loc1`** A&E attendances per 100,000 population, compared to `r scot_ae_att1` in Scotland.
+
+-   **`r latest_dd_loc1`** delayed discharge bed days per 100,000 population aged over 65, compared to `r scot_dd1` in Scotland.
+
+-   **`r latest_falls_loc1`** emergency hospital admissions from falls per 100,000 population aged over 65, compared to `r scot_falls1` in Scotland.
+
+-   **`r latest_read_loc1`** emergency readmissions (28 day) per 1,000 discharges, compared to `r scot_read` in Scotland.
+
+-   **`r latest_ppa_loc$formatted_data[2]`** potentially preventable hospital admissions per 100,000 population, compared to `r scot_ppa$formatted_data[2]` in Scotland.
 
 ##### Page break
 
 ### Emergency Admissions
 
-Figure `r x` presents the emergency admissions rate per 100,000 population in the `r LOCALITY` locality from `r min_year_ea` to `r max_year_ea`. 
+Figure `r x` presents the emergency admissions rate per 100,000 population in the `r LOCALITY` locality from `r min_year_ea` to `r max_year_ea`.
 
 As presented in Figure `r x`, the emergency admissions rate in the `r LOCALITY` locality for `r max_year_ea` is `r latest_emergency_adm_loc1`, `r get_article(percent_rate_change)` `r percent_rate_change`% `r word_change_rate` since `r min_year_ea`. The `r HSCP` HSCP rate is `r hscp_emergency_adm1`, `r get_article(hscp_rate_change)` `r hscp_rate_change`% `r word_change_hscp` since `r min_year_ea`. The `r HB` health board rate is `r hscp_emergency_adm1` in `r max_year_ea`, `r get_article(hb_rate_change)` `r hb_rate_change`% `r word_change_hb` since `r min_year_ea` and the Scotland rate is `r scot_emergency_adm1`, `r get_article(scot_rate_change)` `r scot_rate_change`% `r word_change_scot` since `r min_year_ea`.
 
@@ -648,9 +648,9 @@ EAs_loc_ts
 x <- x + 1
 ```
 
-Figure `r x` presents the emergency admissions rate per 100,000 population in the `r LOCALITY` locality from `r min_ea_age` to `r max_ea_age` by age group. 
+Figure `r x` presents the emergency admissions rate per 100,000 population in the `r LOCALITY` locality from `r min_ea_age` to `r max_ea_age` by age group.
 
-As presented in Figure `r x`, the highest emergency admissions rate for the `r LOCALITY` locality in `r max_ea_age` is `r latest_ea_max_age1` per 100,000 population for the `r age_group_max_ea` age group with a percentage `r max_word_change_ea` of `r max_rate_change_ea`% since `r min_ea_age`. The lowest emergency admissions rate  for `r LOCALITY` in `r max_ea_age` is `r latest_ea_min_age1` per 100,000 population for the `r age_group_min_ea` age group with a percentage `r min_word_change_ea` of `r min_rate_change_ea`% since `r min_ea_age`.
+As presented in Figure `r x`, the highest emergency admissions rate for the `r LOCALITY` locality in `r max_ea_age` is `r latest_ea_max_age1` per 100,000 population for the `r age_group_max_ea` age group with a percentage `r max_word_change_ea` of `r max_rate_change_ea`% since `r min_ea_age`. The lowest emergency admissions rate for `r LOCALITY` in `r max_ea_age` is `r latest_ea_min_age1` per 100,000 population for the `r age_group_min_ea` age group with a percentage `r min_word_change_ea` of `r min_rate_change_ea`% since `r min_ea_age`.
 
 #### Figure `r x`: Emergency admissions by age group
 
@@ -879,23 +879,21 @@ x <- x + 1
 
 ### Footnotes
 
-1.  Population projections are not currently provided by the National Records Scotland (NRS) at the locality level. To explore how the population in `r LOCALITY` is expected to change in the future, the percent changes in population projection to 2025 for `r HSCP` by age group and gender were calculated using the NRS Local Authority Population Projections. These percent changes were then applied to the `r LOCALITY` 2018 mid-year population estimates (also split by age group and gender) to obtain population projection estimates for `r LOCALITY`, based on the projections for the HSCP and the current population structure of the locality.
+1.  The National Records Scotland (NRS) does not currently provide population projections at the locality level. To explore how the population in `r LOCALITY` is expected to change in the future, the percent changes in population projection to 2025 for `r HSCP` by age group and gender were calculated using the NRS Local Authority Population Projections. These percent changes were then applied to the `r LOCALITY` 2022 mid-year population estimates (also split by age group and gender) to obtain population projection estimates for `r LOCALITY`, based on the projections for the HSCP and the current population structure of the locality.
 
-2.  Care Home data included in the Services Map and Table was sourced from the [Care Inspectorate](https://www.careinspectorate.com/images/documents/5713/MDSF_data_31%20May%202020.csv). [GP Practice](https://www.opendata.nhs.scot/dataset/gp-practice-contact-details-and-list-sizes) data from October 2021, and [Hospital](https://www.opendata.nhs.scot/dataset/hospital-codes) and [A&E](https://www.opendata.nhs.scot/dataset/nhs-scotland-accident-emergency-sites) data was sourced from Public Health Scotland Open Data platform. Only services that are within the physical boundary of the HSCP or Locality are included in the map and table, so there may be services outside `r HSCP` that people may use but are not shown. Information on access deprivation was taken from [ScotPHO](https://scotland.shinyapps.io/ScotPHO_profiles_tool/).
+2.  Care Home data included in the Services Map and Table was sourced from the [Care Inspectorate](https://www.careinspectorate.com/index.php/about-us). [GP Practice](https://www.opendata.nhs.scot/dataset/gp-practice-contact-details-and-list-sizes), [Hospital](https://www.opendata.nhs.scot/dataset/hospital-codes) and [A&E](https://www.opendata.nhs.scot/dataset/nhs-scotland-accident-emergency-sites) data were sourced from Public Health Scotland Open Data platform. Only services within the physical boundary of the HSCP or Locality are included in the map and table, so there may be services outside `r HSCP` that residents use but are not shown. Information on access deprivation was taken from the [ScotPHO profiles](https://scotland.shinyapps.io/ScotPHO_profiles_tool/) (The Scottish Public Health Observatory).
 
 3.  Sourced from [ScotPHO](https://scotland.shinyapps.io/ScotPHO_profiles_tool/). More recent data may be available for the indicators elsewhere.
 
-4.  Data taken from ScotPHO is often reported using the European Age-Sex Standardised Rate per 100,000. This allows for comparisons across different areas to be made. For more information on how these rates are calculated, please refer to <https://publichealthscotland.scot/services/geography-population-and-deprivation-support/population/>
+4.  ScotPHO data is often reported using the European Age-Sex Standardised Rate per 100,000. This allows for comparisons across different areas to be made. For more information on how these rates are calculated, please refer to the [PHS website: Geography, population and deprivation support](https://publichealthscotland.scot/services/geography-population-and-deprivation-support/population/){.uri}.
 
-5.  Physical long-term conditions data comes from the Source Linkage Files, and the conditions are identified using ICD-9 and ICD-10 codes in the diagnosis fields. Please note that the Source Linkage Files data only contains information on people who have had contact with the NHS through either inpatient admissions, outpatient attendances, daycase attendances, A&E attendances or through prescribed items, the data does not show all service users in Scotland who have been diagnosed with an LTC as not all of these individuals will have used these services. Also, note that LTC rates are based on an adjusted population indicator in the Source Linkage Files so that population sizes are closer to the official estimates.
+5.  Data on physical long-term conditions (LTC) is sourced from the Source Linkage Files (SLFs). These conditions are identified using ICD-9 and ICD-10 codes found in inpatient admissions' diagnosis fields for acute and mental health cases. Note that this data does not include all service users in Scotland diagnosed with an LTC, as not all of these individuals have utilized these services. Additionally, LTC rates are based on an adjusted population indicator in the Source Linkage Files, ensuring that the population sizes align more closely with official estimates.
 
 ##### Page Break
 
 ## Appendices
 
 ### Appendix 1: Indicator Definitions
-
-\newline
 
 ```{r echo = FALSE, fig.width = 4, fig.height = 10, ft.split = TRUE}
 knitr::kable(indicator_defs, format = "markdown")
@@ -904,8 +902,6 @@ knitr::kable(indicator_defs, format = "markdown")
 ##### Page break
 
 ### Appendix 2: Date of Indicator Data Extractions
-
-\newline
 
 ```{r echo = FALSE, fig.width = 4, fig.height = 10, ft.split = TRUE}
 knitr::kable(dates_extract, col.names = c("**Section**", "**Indicator**", "**Date of data extraction**"), format = "markdown")

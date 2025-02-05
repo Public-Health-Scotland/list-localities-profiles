@@ -8,13 +8,16 @@ output:
     df_print: paged
 ---
 
-
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 options(kableExtra.auto_format = FALSE)
 
-# Line below for testing only
-# LOCALITY <- "Skye, Lochalsh and West Ross"
+x <- 1 # object for figure numbers
+y <- 1 # object for table numbers
+```
+
+```{r testing_setup, include=FALSE}
+# LOCALITY <-  "Skye, Lochalsh and West Ross"
 # LOCALITY <- "Falkirk West"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
@@ -22,20 +25,20 @@ options(kableExtra.auto_format = FALSE)
 # LOCALITY <- "City of Dunfermline"
 LOCALITY <- "Inverness"
 
-# Set file path
-lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
-
 # Source in functions code
 source("Master RMarkdown Document & Render Code/Global Script.R")
 
-source("Demographics/1. Demographics - Population.R")
-source("Demographics/2. Demographics - SIMD.R")
-
-x <- 1 # object for figure numbers
-y <- 1 # object for table numbers
+# Set file path
+lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 ```
 
-#####Page break
+```{r prepare_data_populations, include = FALSE}
+source("Demographics/1. Demographics - Population.R")
+```
+
+```{r prepare_data_simd, include = FALSE}
+source("Demographics/2. Demographics - SIMD.R")
+```
 
 ## Demographics
 
@@ -124,7 +127,8 @@ Table `r y` details the percentage of the locality's 2016 population living in t
 knitr::kable(simd_diff_overall,
   col.names = c(
     "**Quintile**", "**Percent of 2016 Population (SIMD 2016 Ranking)**",
-    "**Percent of 2021 Population (SIMD 2020 Ranking)**", "**Difference**"
+    glue("**Percent of {pop_max_year} Population (SIMD 2020 Ranking)**"),
+    "**Difference**"
   ),
   align = c("l", "r", "r", "r"),
   format = "markdown"
