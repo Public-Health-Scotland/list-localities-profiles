@@ -13,17 +13,10 @@ ext_year <- 2024
 # lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 import_folder <- paste0(lp_path, "Unscheduled Care/DATA ", ext_year, "/")
 
-## Packages
-library(tidyverse)
-library(janitor)
-# library(tidylog)
-library(magrittr)
-library(lubridate)
-library(scales)
-library(broom)
-library(reshape2)
-
 ### for testing run global script and locality placeholder below
+
+## Packages
+library(scales)
 
 ## Functions
 # source("./Master RMarkdown Document & Render Code/Global Script.R")
