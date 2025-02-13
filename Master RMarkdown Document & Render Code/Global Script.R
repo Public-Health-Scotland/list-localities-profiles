@@ -8,12 +8,18 @@
 ## Packages for functions ----
 # (** note - should this contain all packages necessary for locality profiles?
 # and automatically installing missing packages?)
-library(tidyverse)
+library(dplyr)
+library(readr)
+library(tidyr)
+library(ggplot2)
+library(stringr)
+library(lubridate)
+library(forcats)
+library(purrr)
 library(janitor)
 library(data.table)
 library(glue)
 library(magrittr)
-library(lubridate)
 library(fs)
 library(arrow)
 
