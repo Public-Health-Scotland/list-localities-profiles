@@ -25,11 +25,7 @@
 ##################### Section 1 - Packages, working directory etc ########################
 
 # load in required packages
-library(tidyverse)
 library(readxl)
-library(janitor)
-library(png)
-library(gridExtra)
 library(reshape2)
 
 # Update Data Year (this is the maximum year available for both housing data sets from NRS)

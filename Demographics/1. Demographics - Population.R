@@ -15,13 +15,8 @@
 ####################### SECTION 1: Packages, file paths, etc #########################
 
 ## Libraries
-library(tidyverse)
-library(janitor)
-library(readxl)
-library(reshape2)
 library(scales)
-library(broom)
-library(phsstyles)
+library(reshape2)
 
 # Source in global functions/themes script
 # source("Master RMarkdown Document & Render Code/Global Script.R")

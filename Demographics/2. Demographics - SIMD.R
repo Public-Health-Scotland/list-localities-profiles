@@ -16,11 +16,8 @@
 ####################### SECTION 1: Packages, file paths, etc #########################
 
 ## Libraries
-library(dplyr)
-library(janitor)
 library(reshape2)
 library(ggrepel)
-library(phsstyles)
 library(sf)
 
 # Source in global functions/themes script
