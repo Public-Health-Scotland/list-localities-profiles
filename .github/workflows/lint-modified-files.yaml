@@ -21,6 +21,9 @@ jobs:
         with:
           use-public-rspm: true
 
+      - name: Remove the .Rprofile (if present)
+        run: if [ -f .Rprofile ]; then rm .Rprofile; fi
+
       - name: Install pak (will install any system dependencies too)
         run: install.packages("pak")
         shell: Rscript {0}
