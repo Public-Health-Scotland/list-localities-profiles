@@ -209,7 +209,10 @@ read_in_dz_pops <- function() {
       ca2018, ca2011,
       hscp2019, hscp2019name, hscp2018, hscp2016, hb2019, hb2019name, hb2018, hb2014
     )) %>%
-    left_join(read_in_localities(dz_level = TRUE))
+    left_join(
+      read_in_localities(dz_level = TRUE),
+      by = join_by(datazone2011)
+    )
 }
 
 read_in_dz_pops_proxy_year <- function() {
@@ -245,7 +248,7 @@ read_in_pop_proj <- function() {
     distinct()
 
 
-  left_join(proj, hscp_lkp)
+  left_join(proj, hscp_lkp, by = join_by(hscp2019))
 }
 
 #### Functions for ScotPHO data ####
