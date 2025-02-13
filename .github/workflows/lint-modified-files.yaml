@@ -10,7 +10,7 @@ name: lint-modified-files.yaml
 permissions: read-all
 
 jobs:
-  lint-project:
+  lint-modified-files:
     runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
