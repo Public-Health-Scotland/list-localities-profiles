@@ -21,7 +21,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Specify HSCP(s) ----
 # use `unique(lookup$hscp2019name)` for all
-hscp_list <- c("Angus")
+hscp_list <- unique(lookup$hscp2019name)
 
 # NOTE - This checks that it exactly matches the lookup
 stopifnot(all(hscp_list %in% unique(lookup$hscp2019name)))
@@ -155,5 +155,5 @@ for (HSCP in hscp_list) {
 
 
   # Save the workbook to a file
-  openxlsx::saveWorkbook(wb, paste0(lp_path, "background data/", HSCP, ".xlsx"), overwrite = TRUE)
+  openxlsx::saveWorkbook(wb, paste0(lp_path, "background data 2024/", HSCP, ".xlsx"), overwrite = TRUE)
 }
