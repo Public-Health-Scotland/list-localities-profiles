@@ -83,9 +83,12 @@ make_summary_table <- function(data) {
   scot_col <- ncol(data)
 
   data |>
-    # Remove odd spaces in numbers
     mutate(
-      across(all_of(c(loc_col, other_loc_cols, hscp_col, scot_col)), str_squish)
+      # Remove odd spaces in numbers
+      across(all_of(c(loc_col, other_loc_cols, hscp_col, scot_col)), str_squish),
+      # Make any missing values a dash
+      across(all_of(c(loc_col, other_loc_cols, hscp_col, scot_col)), \(x) na_if(x, "NA")),
+      across(all_of(c(loc_col, other_loc_cols, hscp_col, scot_col)), \(x) replace_na(x, "-")),
     ) |>
     flextable() |>
     # Header
