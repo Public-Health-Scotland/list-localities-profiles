@@ -296,13 +296,23 @@ datatype <- c("rate", "rate")
 time <- c(str_wrap(latest_period_psych_hosp, 9), max_fy)
 
 # Values
-loc_values <- c(psych_hosp_latest, latest_bed_days_mh_loc$data) |>
-  format(big.mark = ",")
+loc_values <- c(
+  format(psych_hosp_latest, big.mark = ","),
+  format(
+    ifelse(is_empty(latest_bed_days_mh_loc$data), NA_real_, latest_bed_days_mh_loc$data),
+    big.mark = ","
+  )
+)
 other_loc_values <- bind_rows(other_locs_psych_hosp, other_loc_bed_days_mh)
-hscp_values <- c(filter(hscp_psych_hosp, year == max(year))$measure, hscp_bed_days_mh$data) |>
-  format(big.mark = ",")
-scot_values <- c(filter(scot_psych_hosp, year == max(year))$measure, scot_bed_days_mh$data) |>
-  format(big.mark = ",")
+hscp_values <- c(
+  format(filter(hscp_psych_hosp, year == max(year))$measure, big.mark = ","),
+  format(hscp_bed_days_mh$data, big.mark = ",")
+)
+scot_values <- c(
+  format(filter(scot_psych_hosp, year == max(year))$measure, big.mark = ","),
+  format(scot_bed_days_mh$data, big.mark = ",")
+)
+
 
 usc_mh_values <- tibble(
   indicators, datatype, time, loc_values, other_loc_values,
