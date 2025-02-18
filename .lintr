@@ -1,10 +1,12 @@
 linters: all_linters(
-  packages = c("lintr", "lifecycle"),
-  undesirable_function_linter = NULL,
-  object_name_linter = object_name_linter(styles = "snake_case"),
   absolute_path_linter = NULL,
+  commented_code_linter = NULL,
+  missing_package_linter = NULL,
+  object_name_linter = object_name_linter(styles = "snake_case"),
   object_usage_linter = NULL,
-  pipe_consistency_linter = pipe_consistency_linter(pipe = "|>")
+  packages = c("lintr", "lifecycle"),
+  pipe_consistency_linter = pipe_consistency_linter(pipe = "|>"),
+  undesirable_function_linter = NULL
   ) # see vignette("lintr")
 encoding: "UTF-8"
 exclusions: list("renv", "packrat") # see ?lintr::exclude
