@@ -1,12 +1,8 @@
 ##### LOCALITY PROFILES MASTER DOC RENDER CODE #####
 
 library(readxl)
-library(janitor)
-library(tidyverse)
-library(knitr)
-library(markdown)
-library(rmarkdown)
 library(writexl)
+library(openxlsx)
 
 rm(list = ls())
 
@@ -259,7 +255,7 @@ flagged_rows3 <- do.call(rbind, lapply(flagged_dfs3, function(df) {
 
 ### Write to excel
 
-library(openxlsx)
+
 
 # Define a function to save multiple dataframes to an Excel workbook
 save_dataframes_to_excel <- function(dataframes, sheet_names, file_name) {
