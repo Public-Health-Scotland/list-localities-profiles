@@ -25,6 +25,7 @@ knitr::opts_chunk$set(echo = FALSE)
 # LOCALITY <- "Barra"
 # LOCALITY <- "Whalsay and Skerries"
 # LOCALITY <- "Inverclyde East"
+# LOCALITY <- "Kirkcaldy"
 
 # # Project file path
 # lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
@@ -89,7 +90,7 @@ make_summary_table <- function(data) {
     flextable() |>
     # Header
     font(part = "header", fontname = "Arial") |>
-    fontsize(part = "header", size = 12) |>
+    fontsize(part = "header", size = 10) |>
     bold(part = "header") |>
     color(part = "header", color = "white") |>
     bg(part = "header", bg = phs_colours("phs-purple")) |>
@@ -97,6 +98,7 @@ make_summary_table <- function(data) {
     bold(j = 1, part = "body") |>
     # Main content
     font(part = "body", fontname = "Arial") |>
+    fontsize(part = "body", size = 10) |>
     bg(j = info_cols, part = "body", bg = phs_colours("phs-graphite-30")) |>
     bg(j = loc_col, part = "body", bg = phs_colours("phs-purple-30")) |>
     bg(j = other_loc_cols, part = "body", bg = phs_colours("phs-magenta-30")) |>

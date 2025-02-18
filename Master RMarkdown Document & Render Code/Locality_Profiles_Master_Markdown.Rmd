@@ -11,7 +11,7 @@ output:
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, error = FALSE, warning = FALSE, message = FALSE)
 options(kableExtra.auto_format = FALSE)
 
 # Figure and table number objects
@@ -190,7 +190,6 @@ knitr::kable(services_tibble, col.names = c("**Service Type**", "**Service**", "
 
 y <- y + 1
 ```
-
 
 ##### Page break
 
@@ -388,7 +387,7 @@ knitr::kable(ltc_multimorbidity_table)
 y <- y + 1
 ```
 
-##### Page break 
+##### Page break
 
 **Most common physical Long-Term Conditions (LTCs)**
 
@@ -402,7 +401,7 @@ ltc_types_plot
 x <- x + 1
 ```
 
-###### \*COPD: Chronic Obstructive Pulmonary Disease
+\^\*COPD: Chronic Obstructive Pulmonary Disease\^
 
 #### Table `r y`: Prevalence of the five most common physical LTCs as a percentage of the population across geographical areas (1 is the most prevalent).
 
@@ -416,7 +415,7 @@ y <- y + 1
 
 Source: Source Linkage Files
 
-### Cancer 
+### Cancer
 
 For the period `r latest_period_cancer_reg`, there were **`r format_number_for_text(cancer_reg_total_latest)`** new cancer registrations per year on average (a rate of **`r format_number_for_text(cancer_reg_rate_latest)`** registrations per 100,000 age-sex standardised population) in `r LOCALITY` locality. For the period `r latest_period_early_deaths_cancer`, there were also **`r format_number_for_text(early_deaths_cancer_rate_latest)`** early deaths per 100,000 from cancer in the locality, this is a **`r format_number_for_text(cancer_deaths_perc_change)`%** `r cancer_deaths_changeword` compared to the rate 10 years prior.
 
@@ -553,7 +552,7 @@ x <- x + 1
 
 ### Drug-related Hospital Admissions
 
-There were **`r format_number_for_text(drug_hosp_latest)`** drug-related hospital admissions per 100,000 age-sex standardised population^4^ in the `r LOCALITY` locality in the time period `r latest_period_drug_hosp` (3-year financial year aggregate). This is `r get_article(drug_hosp_change)` `r format_number_for_text(drug_hosp_change)`% `r drug_hosp_change_word` since `r earliest_period_drug_hosp`. A trend of the change in drug-related hospital admissions for the locality and comparable areas is shown in Figure `r x` from `r earliest_period_drug_hosp` onward.
+There were **`r format_number_for_text(drug_hosp_latest)`** drug-related hospital admissions per 100,000 age-sex standardised population^4^ in the `r LOCALITY` locality in the time period `r latest_period_drug_hosp` (3-year financial year aggregate). This is `r get_article(drug_hosp_change)` `r format_number_for_text(drug_hosp_change)`% `r drug_hosp_change_word` since `r earliest_period_drug_hosp`. A trend of the change in drug-related hospital admissions for the locality and comparable areas is shown in Figure `r x` from `r earliest_period_drug_hosp_trend` onward.
 
 A comparison of areas at the most recent time period (`r latest_period_drug_hosp` aggregated financial years) is available in Figure `r x + 1` This shows the `r LOCALITY` locality has a `r drug_hosp_diff_scot` rate of drug-related hospital admissions than Scotland (`r format_number_for_text(scot_drug_hosp)` admissions per 100,000).
 

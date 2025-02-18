@@ -32,3 +32,6 @@ dyn.load("/usr/geos310/lib64/libgeos_c.so", local = FALSE)
 options(readr.read_lazy = TRUE)
 # Don't print col types on read
 options(readr.show_col_types = FALSE)
+
+# ggrepel options ----
+options("ggrepel.max.overlaps" = 12)

@@ -48,6 +48,11 @@ format_number_for_text <- function(x) {
 # 7.2 -> an
 # To be used for "a xx increase" which could be "an xx increase"
 get_article <- function(number) {
+  if (identical(number, numeric(0))) {
+    # If the number wasn't calculated we still need to deal with it.
+    return("-")
+  }
+
   if (substr(number, 1, 1) == "8" || substr(number, 1, 2) == "18") {
     return("an")
   } else {
@@ -273,7 +278,7 @@ clean_scotpho_dat <- function(data) {
 # (ScotPHO data uses year aggregates which don't always fit on axis unless wrapped)
 # rotate_xaxis: default F, if labels still don't fit even with wrapping (prev argument), labels can be rotated
 
-scotpho_time_trend <- function(data, chart_title, xaxis_title, yaxis_title, string_wrap, rotate_xaxis = FALSE) {
+scotpho_time_trend <- function(data, chart_title, xaxis_title, yaxis_title, string_wrap, rotate_xaxis = FALSE, trend_years = 10) {
   # rotate axis criteria if T/F
   if (rotate_xaxis) {
     rotation <- element_text(angle = 45, hjust = 1)
@@ -287,7 +292,7 @@ scotpho_time_trend <- function(data, chart_title, xaxis_title, yaxis_title, stri
       (area_name == HSCP & area_type == "HSCP") |
       area_name == HB |
       area_name == "Scotland") %>%
-    filter(year >= max(year) - 10) %>%
+    filter(year >= max(year) - trend_years) %>%
     mutate(
       area_type = factor(area_type, levels = c("Locality", "HSCP", "Health board", "Scotland")),
       area_name = fct_reorder(as.factor(str_wrap(area_name, 23)), as.numeric(area_type))
@@ -514,6 +519,7 @@ ptsp <- function(partnership) {
     "Clackmannanshire" ~ "Clackmannanshire and Stirling",
     "Stirling" ~ "Clackmannanshire and Stirling",
     "Na h-Eileanan Siar" ~ "Western Isles",
+    "Comhairle nan Eilean Siar" ~ "Western Isles",
     .default = partnership
   )
 }
