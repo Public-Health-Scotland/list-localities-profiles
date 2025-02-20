@@ -933,7 +933,7 @@ rm(
   ltc_cols, ltc_loc_col, ltc_hscp_col, ltc_scot_col,
   ltc_pops_total_loc, ltc_pops_total_hscp,
   loc.ltc.table, hscp.ltc.table,
-  top5ltc_loc, top5ltc_hscp, top5ltc_scot, top5ltc_all_table, title
+  top5ltc_hscp, top5ltc_scot, top5ltc_all_table, title
 )
 
 ## Objects for text
