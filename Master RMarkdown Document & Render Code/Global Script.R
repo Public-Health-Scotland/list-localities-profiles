@@ -544,3 +544,34 @@ hbres <- function(hbres_currentdate) {
     .default = "Other"
   )
 }
+
+# Define a function to save multiple dataframes to an Excel workbook
+save_dataframes_to_excel <- function(dataframes, sheet_names, file_path) {
+  # Create a new workbook using openxlsx2
+  wb <- openxlsx2::wb_workbook()
+
+  # Loop over each dataframe and corresponding sheet name
+  for (i in seq_along(dataframes)) {
+    # Define the used columns
+    cols <- seq_len(ncol(dataframes[[i]]))
+
+    # Define the header range
+    header_range <- openxlsx2::wb_dims(rows = 1, cols = cols)
+
+    wb <- wb |>
+      # Add a worksheet
+      openxlsx2::wb_add_worksheet(sheet = sheet_names[[i]]) |>
+      # Write data
+      openxlsx2::wb_add_data(x = dataframes[[i]]) |>
+      # Style the header bold
+      openxlsx2::wb_add_font(dims = header_range, bold = TRUE) |>
+      # Set column widths to auto
+      openxlsx2::wb_set_col_widths(cols = cols, widths = "auto")
+  }
+
+  # Create the directories if they don't exist
+  fs::dir_create(fs::path_dir(file_path), mode = "u=rwx,g=rwx,o=rx")
+
+  # Save the workbook to a file
+  openxlsx2::wb_save(wb, file = file_path, overwrite = TRUE)
+}
