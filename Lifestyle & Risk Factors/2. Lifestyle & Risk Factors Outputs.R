@@ -13,34 +13,21 @@
 
 ############# 1) PACKAGES, DIRECTORY, LOOKUPS, DATA IMPORT + CLEANING #############
 
-## load packages
-library(readxl)
-library(tidyverse)#review and either load in global or only specific 
-library(reshape2)
-library(janitor)
-library(png)
-library(cowplot)
-library(knitr)
-library(gridExtra)
-library(grid)
-library(tidylog)
-library(phsstyles)
-
 # Determine locality (for testing only)
-#LOCALITY <- "Falkirk West"
+# LOCALITY <- "Falkirk West"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
 # LOCALITY <- "Mid-Argyll, Kintyre and Islay"
 # LOCALITY <- "City of Dunfermline"
 # LOCALITY <- "Barra"
 
 # Set year of data extracts for folder
-ext_year <- 2023
+ext_year <- 2024
 
 # Set file path
-lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 # Source in functions code
-#source("Master RMarkdown Document & Render Code/Global Script.R")
+# source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ### Geographical lookups and objects ----
 
@@ -58,11 +45,7 @@ other_locs <- lookup %>%
   arrange(hscp_locality)
 
 # Find number of locs per partnership
-n_loc <- lookup %>%
-  group_by(hscp2019name) %>%
-  summarise(locality_n = n()) %>%
-  filter(hscp2019name == HSCP) %>%
-  pull(locality_n)
+n_loc <- count_localities(lookup, HSCP)
 
 
 
@@ -98,7 +81,7 @@ bowel_screening <- readRDS(paste0(lp_path, "Lifestyle & Risk Factors/Data ", ext
 
 check_missing_data_scotpho(bowel_screening)
 
-###check if there is any drug death data 
+### check if there is any drug death data
 
 ############################### 2) OUTPUTS ####################################
 
@@ -106,18 +89,23 @@ check_missing_data_scotpho(bowel_screening)
 ##### 2a Drug-related hospital admissions #####
 
 ## Create variables for latest year
-latest_period_drug_hosp <- unique(filter(drug_hosp, year == max(drug_hosp$year))$period_short)
-earliest_period_drug_hosp <- unique(filter(drug_hosp, year == min(drug_hosp$year))$period_short)
+max_year_drug_hosp <- max(drug_hosp[["year"]])
+min_year_drug_hosp <- min(drug_hosp[["year"]])
+latest_period_drug_hosp <- drug_hosp[["period_short"]][which.max(drug_hosp[["year"]])]
+earliest_period_drug_hosp <- drug_hosp[["period_short"]][which.min(drug_hosp[["year"]])]
+# ScotPHO time trend will only be latest 10 years
+trend_years <- 10
+earliest_period_drug_hosp_trend <- drug_hosp[["period_short"]][match(max_year_drug_hosp - trend_years, drug_hosp[["year"]])]
 
 
 ## Time trend
 drug_hosp_time_trend <- drug_hosp %>%
   scotpho_time_trend(
-    data = .,
     chart_title = "Drug-related Hospital Admissions Time Trend",
     xaxis_title = "Financial Year Groups (3-year aggregates)",
     yaxis_title = "Drug-related admissions\n(Standardised rates per 100,000)",
     string_wrap = 10,
+    trend_years = trend_years,
     rotate_xaxis = TRUE
   )
 
@@ -126,27 +114,26 @@ drug_hosp_time_trend
 ## Bar chart
 drug_hosp_bar <- drug_hosp %>%
   scotpho_bar_chart(
-    data = .,
-    chart_title = paste0("Drug-related Hospital Admissions by Area, ", max(.$period_short)),
+    chart_title = paste0("Drug-related Hospital Admissions by Area, ", latest_period_drug_hosp),
     xaxis_title = "Drug-related admissions (Standardised rates per 100,000)"
   )
 
 drug_hosp_bar
 
-###review piping style for consistency 
-## Numbers for text 
-
+## Numbers for text
 drug_hosp_latest <- filter(
   drug_hosp,
-  year == max(drug_hosp$year) &
-    (area_name == LOCALITY & area_type == "Locality")
-)$measure
+  year == max_year_drug_hosp,
+  area_name == LOCALITY,
+  area_type == "Locality"
+) |> pull(measure)
 
 drug_hosp_earliest <- filter(
   drug_hosp,
-  (year == min(drug_hosp$year)) &
-    (area_name == LOCALITY & area_type == "Locality")
-)$measure
+  year == min_year_drug_hosp,
+  area_name == LOCALITY,
+  area_type == "Locality"
+) |> pull(measure)
 
 drug_hosp_change <- abs((drug_hosp_latest - drug_hosp_earliest) / drug_hosp_earliest * 100)
 drug_hosp_change_word <- if_else(drug_hosp_latest > drug_hosp_earliest,
@@ -155,12 +142,11 @@ drug_hosp_change_word <- if_else(drug_hosp_latest > drug_hosp_earliest,
 
 scot_drug_hosp <- filter(
   drug_hosp,
-  year == max(drug_hosp$year) & area_name == "Scotland"
-)$measure
+  year == max_year_drug_hosp,
+  area_name == "Scotland"
+) |> pull(measure)
 
 drug_hosp_diff_scot <- if_else(drug_hosp_latest > scot_drug_hosp, "higher", "lower")
-
-
 
 
 ##### 2b Alcohol-related hospital admissions #####
@@ -354,7 +340,7 @@ other_locs_summary_table <- function(data, latest_year) {
     arrange(hscp_locality) %>%
     select(hscp_locality, measure) %>%
     mutate(measure = round_half_up(measure, 1)) %>%
-    spread(hscp_locality, measure)
+    pivot_wider(names_from = hscp_locality, values_from = measure)
 }
 
 # 1. Other locs
@@ -401,11 +387,3 @@ scot_alcohol_hosp <- round_half_up(scot_alcohol_hosp, 1)
 scot_alcohol_deaths <- round_half_up(scot_alcohol_deaths, 1)
 
 scot_bowel_screening <- round_half_up(scot_bowel_screening, 1)
-
-
-
-# detach(package:tidyverse, unload=TRUE)
-# detach(package:reshape2, unload=TRUE)
-# detach(package:janitor, unload=TRUE)
-# detach(package:ggthemes, unload=TRUE)
-detach(package:tidylog, unload = TRUE)
