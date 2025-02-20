@@ -7,7 +7,7 @@
 ####################### SECTION 1: Packages, file paths, etc #########################
 
 ## Manually set year that the profiles are being run (year on data folder)
-ext_year <- 2023
+ext_year <- 2024
 
 # Set locality profiles file path
 # lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
@@ -35,7 +35,7 @@ library(reshape2)
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
 # LOCALITY <- "Whalsay and Skerries"
 # LOCALITY <- "North Perthshire"
-
+# LOCALITY <- "Inverclyde East"
 # Set date limit for financial year
 # Unless we're in Q4 use the previous FY as the max
 # max_fy <- ifelse(
@@ -43,7 +43,7 @@ library(reshape2)
 #   phsmethods::extract_fin_year(Sys.Date() - years(1)),
 #   phsmethods::extract_fin_year(Sys.Date())
 # )
-max_fy <- "2022/23" # TODO Change this to be dynamic and move to general!
+max_fy <- "2023/24" # TODO Change this to be dynamic and move to general!
 
 ########################## SECTION 2: Lookups & Populations ###############################
 
@@ -68,9 +68,9 @@ n_loc <- count_localities(localities, HSCP)
 
 populations <- read_in_dz_pops()
 
-populations22 <- read_in_dz_pops22()
+populations_proxy_year <- read_in_dz_pops_proxy_year()
 
-populations <- rbind(populations, populations22)
+populations <- rbind(populations, populations_proxy_year)
 
 
 # compute age bands
@@ -295,7 +295,7 @@ percent_change_calc <- function(numerator, denominator, digits = 1) {
 
 word_change_calc <- function(latest, first) {
   dplyr::case_when(
-    dplyr::near(latest, first) ~ "same",
+    dplyr::near(latest, first) ~ "change",
     latest > first ~ "increase",
     latest < first ~ "decrease"
   )
@@ -1743,7 +1743,7 @@ scot_psych_hosp <- round_half_up(
 )
 
 
-list_years <- unique(psych_hosp_time_trend$data[6])
+list_years <- unique(psych_hosp_time_trend$data[5])
 list_years_latest <- list_years$period
 
 
