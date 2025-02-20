@@ -32,11 +32,12 @@ stopifnot(all(hscp_list %in% unique(lookup[["hscp2019name"]])))
 
 # Loop over HSCP ----
 for (HSCP in hscp_list) {
+  message(glue("Starting processing for HSCP: {HSCP}"))
   # Create list of localities within the current HSCP
   locality_list <- lookup |>
     filter(hscp2019name == HSCP) |>
     pull(hscp_locality)
-
+  
   # Initialise empty lists to store data for all localities in the current HSCP
   smr01_based_all <- vector("list", length(locality_list)) |>
     set_names(locality_list)
@@ -44,16 +45,35 @@ for (HSCP in hscp_list) {
     set_names(locality_list)
   ltc_all <- vector("list", length(locality_list)) |>
     set_names(locality_list)
-
+  
   # Save the current environment variables before processing each HSCP
   # This is used to clear up variables created within the locality loop later
   loop_env <- c(ls(), "loop_env")
-
+  
   for (LOCALITY in locality_list) {
+    message(glue("  Processing locality: {LOCALITY} (HSCP: {HSCP})"))
     # **Unscheduled Care Data Processing** ----
     # Extract and filter unscheduled care data for the current locality
     source("Unscheduled Care/2. Unscheduled Care outputs.R")
-
+    
+    # **Data Validation - Unscheduled Care**
+    stopifnot(
+      exists("ppa_areas"),
+      exists("emergency_adm_areas"),
+      exists("bed_days_areas"),
+      exists("readmissions_areas"),
+      exists("ae_att_areas"),
+      exists("delayed_disch_areas"),
+      exists("falls_areas"),
+      exists("bed_days_mh_areas"),
+      exists("emergency_adm_age"),
+      exists("bed_days_age"),
+      exists("readmissions_age"),
+      exists("ae_att_age"),
+      exists("bed_days_mh_age"),
+      msg = glue("Data validation failed for Unscheduled Care data for {LOCALITY} (HSCP: {HSCP}). Check input data files.")
+    )
+    
     smr01_based_loc <- pmap(
       list(
         data = list(
@@ -99,7 +119,7 @@ for (HSCP in hscp_list) {
         "Fall_Admissions",
         "MH_bed_days"
       ))
-
+    
     smr01_age_loc <- pmap(
       list(
         data = list(
@@ -139,20 +159,27 @@ for (HSCP in hscp_list) {
         "AE_attendances_Age",
         "bed_days_mh_age"
       ))
-
+    
     # Append locality-specific SMR01 data to the HSCP-level lists
     smr01_based_all[[LOCALITY]] <- smr01_based_loc
     smr01_age_all[[LOCALITY]] <- smr01_age_loc
-
+    
     # Clear out Unscheduled Care data objects to free up memory
     rm(list = setdiff(ls(), c(loop_env, "LOCALITY")))
     gc() # Run garbage collection to further free up memory
-
-
+    
+    
     # **General Health Data Processing** ----
     # Extract and filter general health data for the current locality
     source("General Health/3. General Health Outputs.R")
-
+    
+    stopifnot(
+      exists("ltc_multimorbidity"),
+      exists("ltc_types"),
+      exists("top5ltc_loc"),
+      msg = glue("Data validation failed for General Health data for {LOCALITY} (HSCP: {HSCP}). Check input data files.")
+    )
+    
     ltc_loc <- pmap(
       list(
         data = list(
@@ -182,15 +209,15 @@ for (HSCP in hscp_list) {
       }
     ) |>
       set_names(c("Long_Term_Conditions", "LTC_Types", "Top5_LTC"))
-
+    
     # Append locality-specific LTC data to the HSCP-level list
     ltc_all[[LOCALITY]] <- ltc_loc
-
+    
     # Clear out General Health data objects to free up memory
     rm(list = setdiff(ls(), loop_env))
     gc() # Run garbage collection
   } # End of LOCALITY loop
-
+  
   # **Write data to Excel file** ----
   # Save the processed data for all localities in the HSCP to an Excel file
   save_dataframes_to_excel(
@@ -206,4 +233,8 @@ for (HSCP in hscp_list) {
       glue("{HSCP} - Locality Profile SDC highlight.xlsx")
     )
   )
+  
+  message(glue("Finished processing for HSCP: {HSCP} - Excel file saved."))
 } # End of HSCP loop
+
+message("Script completed processing all HSCPs.") # Final completion message
