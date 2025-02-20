@@ -27,6 +27,7 @@ library(dplyr)
 library(sf)
 library(ggrepel)
 library(ggmap)
+library(patchwork)
 
 # 2. Read in locality shape files ----
 

@@ -3,54 +3,54 @@
 ## Reads in indicator info from "Indicator Tracker" excel doc and formats tables for profiles
 
 # Packages
-library(flextable)
-library(tidyverse)
-library(janitor)
 library(readxl)
-library(magrittr)
-library(kableExtra)
 library(dplyr)
+library(tidyr)
+library(fs)
+library(glue)
 
 # Set year of data extracts for folder
-ext_year <- 2023
+ext_year <- 2024
 
 # Set file path
-# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+# lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
 
 # testing locality
 # LOCALITY <- "Forres"
 
+indicator_workbook_path <- path(lp_path, "Project Info & Indicators", glue("Indicator Tracker {ext_year}.xlsx"))
+
 ## Indicator Definitions ----
 
-indicator_defs <- read_excel(paste0(lp_path, "Project Info & Indicators/Indicator Tracker ", ext_year, ".xlsx"),
-  sheet = "Definitions"
-)
-indicator_defs$format <- "**"
-indicator_defs$Indicator <- paste0(indicator_defs$format, indicator_defs$Indicator, indicator_defs$format)
-
-indicator_defs <- dplyr::select(indicator_defs, -format)
+indicator_defs <- read_excel(
+  path = indicator_workbook_path,
+  sheet = "Definitions",
+  col_types = "text"
+) |>
+  mutate(Indicator = glue("**{Indicator}**"))
 
 
 ## Data extraction dates ----
 
-dates_extract <- read_excel(paste0(lp_path, "Project Info & Indicators/Indicator Tracker ", ext_year, ".xlsx"),
+dates_extract <- read_excel(
+  path = indicator_workbook_path,
   sheet = "Overview",
-  skip = 2
-) %>%
-  clean_names() %>%
-  mutate(date_extracted_downloaded = as.Date(as.numeric(date_extracted_downloaded), origin = "1899-12-30")) %>%
-  mutate(date_extracted_downloaded = if_else(is.na(date_extracted_downloaded), Sys.Date(), date_extracted_downloaded)) %>%
-  select("Section" = chapter_heading, "Indicator" = indicator, "Date of data extraction" = date_extracted_downloaded)
-
-
-dates_extract$format <- "**"
-dates_extract$Section <- paste0(dates_extract$format, dates_extract$Section, dates_extract$format)
-
-dates_extract <- dplyr::select(dates_extract, -format)
-
+  # Extract the the columns A:C (col 1:col 3) but skip the first 4 rows
+  range = cell_limits(ul = c(4, 1), lr = c(NA, 3)),
+  # Set the headings
+  col_names = c("Section", "Indicator", "Date of data extraction"),
+  # Set the col types (also parse the dates)
+  col_types = c("text", "text", "date")
+) |>
+  replace_na(list("Date of data extraction" = Sys.Date())) |>
+  mutate(Section = glue("**{Section}**"))
 
 ## PPA conditions included ----
 
-ppa_def <- read_excel(paste0(lp_path, "Project Info & Indicators/Indicator Tracker ", ext_year, ".xlsx"),
-  sheet = "PPA"
+ppa_def <- read_excel(
+  path = indicator_workbook_path,
+  sheet = "PPA",
+  col_types = "text"
 )
+
+rm(indicator_workbook_path)

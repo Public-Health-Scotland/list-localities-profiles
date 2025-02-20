@@ -16,18 +16,11 @@
 ####################### SECTION 1: Packages, file paths, etc #########################
 
 ## Libraries
-library(tidyverse)
+library(dplyr)
 library(janitor)
-library(readxl)
 library(reshape2)
-library(scales)
-library(broom)
 library(ggrepel)
 library(phsstyles)
-library(leaflet)
-library(htmlwidgets)
-library(leaflet.extras)
-library(mapview)
 library(sf)
 
 # Source in global functions/themes script
@@ -35,7 +28,7 @@ library(sf)
 
 ## Final document will loop through a list of localities
 # Create placeholder for for loop
-# LOCALITY <-  "Skye, Lochalsh and West Ross"
+# LOCALITY <- "Skye, Lochalsh and West Ross"
 # LOCALITY <- "Falkirk West"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
@@ -47,7 +40,7 @@ library(sf)
 ########################## SECTION 2: Data Imports ###############################
 
 ## Locality/DZ lookup
-lookup_dz <- read_in_localities(TRUE)
+lookup_dz <- read_in_localities(dz_level = TRUE)
 
 ## Population data
 pop_raw_data <- read_in_dz_pops()
@@ -114,90 +107,6 @@ perc_top_quintile <- simd_perc_breakdown[5, ]$perc
 ## 5b) SIMD map ----
 
 # load in shapefile for mapping
-# zones<- sf::read_sf("//conf/linkage/output/lookups/Unicode/Geography/Shapefiles/Data Zones 2011/SG_DataZone_Bdry_2011.shp")
-
-# zones <- sf::st_transform(zones,4326)
-
-# zones$datazone2011 <- zones$DataZone
-
-
-# merge lookup and shapefile
-# zones <- merge(zones, lookup_dz, by = "datazone2011")
-
-# subset for Locality
-# zones <- subset(zones, hscp_locality == LOCALITY)
-
-# get place names
-# places <- read_csv(paste0(
-#  "/conf/linkage/output/lookups/Unicode/Geography/",
-#  "Shapefiles/Scottish Places/Places to Data",
-#  " Zone Lookup.csv"
-# )) %>%
-#  rename(datazone2011 = DataZone) %>%
-#  filter(datazone2011 %in% zones$datazone2011) %>%
-#  group_by(name) %>%
-#  dplyr::summarise(
-#    Longitude = first(Longitude),
-#    Latitude = first(Latitude),
-#   type = first(type),
-#   datazone2011 = first(datazone2011)
-# )
-
-
-# load in 2020 deprivation data
-# simd_map_data <- simd2020 %>%
-#  filter(hscp_locality == LOCALITY) %>%
-# dplyr::select(datazone2011, simd)
-
-# merge with shapefile
-# zones <- merge(zones, simd_map_data, by = "datazone2011")
-
-
-# set colours for simd
-# simd_col <- c("#de4243", "#f6bf87", "#ffffc2", "#b9e1eb", "#4f81bd")
-
-# simd_cats <- c(
-#  "SIMD 1",
-#  "SIMD 2",
-#  "SIMD 3",
-#  "SIMD 4",
-#  "SIMD 5"
-# )
-# loc.cols <- colorFactor(simd_col, domain = zones$simd, levels = 1:5)
-
-
-
-## Create Map
-# simd_map <-
-#  leaflet(options = leafletOptions(zoomControl = FALSE, attributionControl = FALSE)) %>%
-## order layers, map place names over polygon layer
-#  addMapPane("providertitles", zIndex = 430) %>%
-#  addMapPane("polygons", zIndex = 440) %>%
-## add map background and map place names
-#  addProviderTiles(providers$CartoDB.PositronNoLabels) %>%
-#  addProviderTiles(provider = providers$CartoDB.PositronOnlyLabels,
-#                   options = pathOptions(pane = "providertitles")) %>%
-## Locality shapefiles
-#  addPolygons(data=zones,
-#              fillColor = ~loc.cols(simd),
-#              fillOpacity = 0.7,
-#              color = "#2e2e30",
-#              stroke=T,
-#              weight = 2,
-#              label = ~ simd,
-#             group = "SIMD") %>%
-
-# addLegend("bottomright", pal = loc.cols, values = zones$simd,title = "SIMD",opacity = 0.7, group="SIMD")
-
-## Set file path for map
-# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
-
-## Save map in localities
-# mapshot(simd_map, file = paste0(lp_path, "/Demographics/map.png"))
-
-# rm(zones, places, simd_map_data)
-
-# load in shapefile for mapping
 zones <- read_sf(dsn = "//conf/linkage/output/lookups/Unicode/Geography/Shapefiles/Data Zones 2011/SG_DataZone_Bdry_2011.shp") %>%
   st_transform(4326) %>%
   rename(datazone2011 = datazone20)
@@ -257,34 +166,27 @@ simd_map_data <- simd2020 %>%
 zones <- merge(zones, simd_map_data, by = "datazone2011")
 
 # set colours for simd
-simd_col <- c("#de4243", "#f6bf87", "#ffffc2", "#b9e1eb", "#4f81bd")
-simd_cats <- c(
-  "SIMD 1",
-  "SIMD 2",
-  "SIMD 3",
-  "SIMD 4",
-  "SIMD 5"
-)
+simd_col <- RColorBrewer::brewer.pal(n = 5, name = "RdYlBu")
+simd_cats <- paste("SIMD", 1:5)
 
 # plot
 simd_map <- ggplot() +
   geom_sf(
     data = zones,
-    aes(fill = factor(simd, levels = 1:5)), colour = "black"
+    aes(fill = ordered(simd, levels = 1:5)), colour = "black"
   ) +
   scale_fill_manual(values = simd_col, labels = simd_cats, drop = FALSE) +
-  geom_text_repel(
-    data = places, aes(
-      x = Longitude, y = Latitude,
-      label = name
-    ),
-    color = "black", size = 3.5,
-    max.overlaps = getOption("ggrepel.max.overlaps", default = 12)
+  geom_label_repel(
+    data = places,
+    aes(x = Longitude, y = Latitude, label = name),
+    color = "black",
+    size = 3.5,
+    fill = "#FFFFFF40", # Add a semi-transparent white background to the labels
+    label.size = NA # Labels don't have a border
   ) +
   theme_void() +
   guides(fill = guide_legend(title = "SIMD Quintile")) +
   labs(caption = "Source: Scottish Government, Public Health Scotland")
-
 
 rm(zones, places, simd_map_data)
 

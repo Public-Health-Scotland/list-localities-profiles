@@ -3,6 +3,12 @@ name: Style Modified Files
 on:
   pull_request_target: # Triggers when code is pushed to a PR's target branch
     types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
     
 permissions: write-all
 

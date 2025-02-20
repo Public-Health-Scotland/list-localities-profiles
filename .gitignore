@@ -33,3 +33,6 @@ data/
 
 # MacOS folder attributes files #
 .DS_Store
+
+# Outputs
+*.[hH][tT][mM][lL]
