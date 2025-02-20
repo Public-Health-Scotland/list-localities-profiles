@@ -32,7 +32,7 @@ stopifnot(all(hscp_list %in% unique(lookup[["hscp2019name"]])))
 
 # Loop over HSCP ----
 for (HSCP in hscp_list) {
-  message(glue("Starting processing for HSCP: {HSCP}"))
+  message(glue("Starting processing for HSCP: {HSCP} ({which(hscp_list == HSCP)}/{length(hscp_list)})"))
   # Create list of localities within the current HSCP
   locality_list <- lookup |>
     filter(hscp2019name == HSCP) |>
@@ -51,7 +51,7 @@ for (HSCP in hscp_list) {
   loop_env <- c(ls(), "loop_env")
 
   for (LOCALITY in locality_list) {
-    message(glue("  Processing locality: {LOCALITY} (HSCP: {HSCP})"))
+    message(glue("  Processing locality: {LOCALITY} ({which(locality_list == LOCALITY)}/{length(locality_list)})) HSCP: {HSCP}"))
     # **Unscheduled Care Data Processing** ----
     # Extract and filter unscheduled care data for the current locality
     source("Unscheduled Care/2. Unscheduled Care outputs.R")
@@ -70,11 +70,7 @@ for (HSCP in hscp_list) {
       exists("bed_days_age"),
       exists("readmissions_age"),
       exists("ae_att_age"),
-      exists("bed_days_mh_age"),
-      msg = glue(
-        "Data validation failed for Unscheduled Care data for {LOCALITY}
-        (HSCP: {HSCP}). Check input data files."
-      )
+      exists("bed_days_mh_age")
     )
 
     smr01_based_loc <- pmap(
@@ -164,8 +160,8 @@ for (HSCP in hscp_list) {
       ))
 
     # Append locality-specific SMR01 data to the HSCP-level lists
-    smr01_based_all[[LOCALITY]] <- smr01_based_loc
-    smr01_age_all[[LOCALITY]] <- smr01_age_loc
+    smr01_based_all[[LOCALITY]] <- smr01_based_loc |> list_rbind()
+    smr01_age_all[[LOCALITY]] <- smr01_age_loc |> list_rbind()
 
     # Clear out Unscheduled Care data objects to free up memory
     rm(list = setdiff(ls(), c(loop_env, "LOCALITY")))
@@ -179,11 +175,7 @@ for (HSCP in hscp_list) {
     stopifnot(
       exists("ltc_multimorbidity"),
       exists("ltc_types"),
-      exists("top5ltc_loc"),
-      msg = glue(
-        "Data validation failed for General Health data for {LOCALITY}
-        (HSCP: {HSCP}). Check input data files."
-      )
+      exists("top5ltc_loc")
     )
 
     ltc_loc <- pmap(
@@ -203,8 +195,8 @@ for (HSCP in hscp_list) {
         data |>
           select(
             measure = any_of(c("total_ltc", "key", "Prevalence")),
-            n = any_of(c("people", "value")),
-            any_of("age_group")
+            any_of("age_group"),
+            n = any_of(c("people", "value"))
           ) |>
           mutate(
             locality = LOCALITY,
@@ -217,7 +209,7 @@ for (HSCP in hscp_list) {
       set_names(c("Long_Term_Conditions", "LTC_Types", "Top5_LTC"))
 
     # Append locality-specific LTC data to the HSCP-level list
-    ltc_all[[LOCALITY]] <- ltc_loc
+    ltc_all[[LOCALITY]] <- ltc_loc |> list_rbind()
 
     # Clear out General Health data objects to free up memory
     rm(list = setdiff(ls(), loop_env))
