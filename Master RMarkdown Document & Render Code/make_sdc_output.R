@@ -73,28 +73,16 @@ for (HSCP in hscp_list) {
       exists("bed_days_mh_age")
     )
 
-    smr01_based_loc <- pmap(
+    smr01_based_loc <- imap(
       list(
-        data = list(
-          ppa_areas,
-          emergency_adm_areas,
-          bed_days_areas,
-          readmissions_areas,
-          ae_att_areas,
-          delayed_disch_areas,
-          falls_areas,
-          bed_days_mh_areas
-        ),
-        name = c(
-          "PPA",
-          "emergency admissions",
-          "Bed days",
-          "readmissions",
-          "ae attendances",
-          "Delayed Discharges",
-          "Falls",
-          "MH Bed Days"
-        )
+        "Preventable_Admissions_PPA" = ppa_areas,
+        "Emergency_Admissions" = emergency_adm_areas,
+        "Unscheduled_Bed_Days" = bed_days_areas,
+        "Readmissions" = readmissions_areas,
+        "AE_attendances" = ae_att_areas,
+        "Delayed_Discharges" = delayed_disch_areas,
+        "Fall_Admissions" = falls_areas,
+        "MH_bed_days" = bed_days_mh_areas
       ),
       \(data, name) {
         data |>
@@ -107,34 +95,15 @@ for (HSCP in hscp_list) {
           ) |>
           filter(n < 10L) # Apply SDC filter (counts less than 10)
       }
-    ) |>
-      set_names(c(
-        "Preventable_admission_PPA",
-        "Emergency_Admissions",
-        "Unscheduled_Bed_Days",
-        "Readmissions",
-        "AE_attendances",
-        "Delayed_Discharge",
-        "Fall_Admissions",
-        "MH_bed_days"
-      ))
+    )
 
-    smr01_age_loc <- pmap(
+    smr01_age_loc <- imap(
       list(
-        data = list(
-          filter(emergency_adm_age, hscp_locality == LOCALITY),
-          filter(bed_days_age, hscp_locality == LOCALITY),
-          readmissions_age,
-          filter(ae_att_age, hscp_locality == LOCALITY),
-          filter(bed_days_mh_age, hscp_locality == LOCALITY)
-        ),
-        name = c(
-          "emergency admissions age",
-          "bed days age",
-          "readmissions age",
-          "AE attendances age",
-          "mh bed days age"
-        )
+        "Emergency_Admissions_Age" = filter(emergency_adm_age, hscp_locality == LOCALITY),
+        "Unscheduled_Bed_Days_Age" = filter(bed_days_age, hscp_locality == LOCALITY),
+        "Readmissions_Age" = readmissions_age,
+        "AE_Attendances_Age" = filter(ae_att_age, hscp_locality == LOCALITY),
+        "Bed_Days_MH_Age" = filter(bed_days_mh_age, hscp_locality == LOCALITY)
       ),
       \(data, name) {
         data |>
@@ -150,14 +119,7 @@ for (HSCP in hscp_list) {
           ) |>
           filter(n < 10L) # Apply SDC filter (counts less than 10)
       }
-    ) |>
-      set_names(c(
-        "Emergency_Admissions_Age",
-        "Unscheduled_Bed_Days_Age",
-        "Readmissions_Age",
-        "AE_attendances_Age",
-        "bed_days_mh_age"
-      ))
+    )
 
     # Append locality-specific SMR01 data to the HSCP-level lists
     smr01_based_all[[LOCALITY]] <- smr01_based_loc |> list_rbind()
@@ -178,18 +140,11 @@ for (HSCP in hscp_list) {
       exists("top5ltc_loc")
     )
 
-    ltc_loc <- pmap(
+    ltc_loc <- imap(
       list(
-        data = list(
-          ltc_multimorbidity,
-          ltc_types,
-          top5ltc_loc
-        ),
-        name = c(
-          "ltc_multimorbidity",
-          "ltc types",
-          "top5ltc"
-        )
+        "Long_Term_Conditions" = ltc_multimorbidity,
+        "LTC_Types" = ltc_types,
+        "LTC_Top_5_Prevalence" = top5ltc_loc
       ),
       \(data, name) {
         data |>
@@ -205,8 +160,7 @@ for (HSCP in hscp_list) {
           ) |>
           filter(n < 10L) # Apply SDC filter (counts less than 10)
       }
-    ) |>
-      set_names(c("Long_Term_Conditions", "LTC_Types", "Top5_LTC"))
+    )
 
     # Append locality-specific LTC data to the HSCP-level list
     ltc_all[[LOCALITY]] <- ltc_loc |> list_rbind()
