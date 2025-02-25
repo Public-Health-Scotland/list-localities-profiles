@@ -180,7 +180,7 @@ for (HSCP in hscp_list) {
     sheet_names = c("SMR01_based", "SMR01_Age_Groups", "LTCs_Age_Groups"),
     file_path = path(
       lp_path,
-      "background data 2024",
+      "background data",
       "SDC",
       glue("{HSCP} - Locality Profile SDC highlight.xlsx")
     )
