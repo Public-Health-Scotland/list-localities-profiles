@@ -167,7 +167,11 @@ pop_areas_65plus <- pop_areas %>%
   filter(age_group == "65+")
 
 # populations for other localities in the HSCP (for summary table only) - all ages
-pops_other_locs <- inner_join(loc_pop, other_locs) %>%
+pops_other_locs <- inner_join(
+  loc_pop,
+  other_locs,
+  by = join_by(hscp2019name, hscp_locality)
+) %>%
   filter(
     age_group == "Total",
     year == max(year)
@@ -175,7 +179,14 @@ pops_other_locs <- inner_join(loc_pop, other_locs) %>%
   select(financial_year, year, hscp_locality, pop)
 
 # populations for other localities in the HSCP (for summary table only) - 65+
-pops_other_locs_65plus <- inner_join(loc_pop, other_locs) %>%
+pops_other_locs_65plus <- inner_join(
+  loc_pop,
+  other_locs,
+  by = join_by(
+    hscp2019name,
+    hscp_locality
+  )
+) %>%
   filter(
     age_group == "65+",
     year == max(year)
@@ -206,7 +217,10 @@ aggregate_usc_area_data <- function(data) {
     mutate(area_type = "HSCP")
 
   pts_hb <- data %>%
-    left_join(select(localities, hscp_locality, hb2019name)) %>%
+    left_join(
+      select(localities, hscp_locality, hb2019name),
+      by = join_by(hscp_locality)
+    ) %>%
     filter(hb2019name == HB) %>%
     mutate(location = hb2019name) %>%
     group_by(financial_year, location) %>%
@@ -308,7 +322,10 @@ emergency_adm_age <- emergency_adm %>%
   group_by(financial_year, age_group) %>%
   summarise(adm = sum(admissions)) %>%
   ungroup() %>%
-  left_join(loc_pop_age1) %>%
+  left_join(
+    loc_pop_age1,
+    by = join_by(financial_year, age_group)
+  ) %>%
   mutate(data = round_half_up(adm / pop * 100000)) %>%
   drop_na(year)
 
@@ -324,7 +341,10 @@ EAs_age_ts <- age_group_trend_usc(
 emergency_adm_areas <- emergency_adm %>%
   rename(n = admissions) %>%
   aggregate_usc_area_data() %>%
-  left_join(pop_areas_all_ages) %>%
+  left_join(
+    pop_areas_all_ages,
+    by = join_by(financial_year, location)
+  ) %>%
   mutate(data = round_half_up(n / pop * 100000)) %>%
   drop_na(year)
 
@@ -425,7 +445,10 @@ other_loc_emergency_adm <- emergency_adm %>%
   group_by(financial_year, hscp_locality) %>%
   summarise(adm = sum(admissions)) %>%
   ungroup() %>%
-  right_join(pops_other_locs) %>%
+  right_join(
+    pops_other_locs,
+    by = join_by(financial_year, hscp_locality)
+  ) %>%
   mutate(adm = replace_na(adm, 0)) %>%
   mutate(data = round_half_up(adm / pop * 100000)) %>%
   mutate(data = format(data, big.mark = ",")) %>%
@@ -498,7 +521,7 @@ bed_days_age <- bed_days %>%
   group_by(financial_year, age_group) %>%
   summarise(bed_days = sum(bed_days)) %>%
   ungroup() %>%
-  left_join(loc_pop_age1) %>%
+  left_join(loc_pop_age1, by = join_by(financial_year, age_group)) %>%
   mutate(data = round_half_up(bed_days / pop * 100000)) %>%
   drop_na(year)
 
@@ -515,7 +538,7 @@ BDs_age_ts <- age_group_trend_usc(
 bed_days_areas <- bed_days %>%
   rename(n = bed_days) %>%
   aggregate_usc_area_data() %>%
-  left_join(pop_areas_all_ages) %>%
+  left_join(pop_areas_all_ages, by = join_by(financial_year, location)) %>%
   mutate(data = round_half_up(n / pop * 100000)) %>%
   drop_na(year)
 
@@ -599,7 +622,7 @@ other_loc_bed_days <- bed_days %>%
   group_by(financial_year, hscp_locality) %>%
   summarise(bed_days = sum(bed_days)) %>%
   ungroup() %>%
-  right_join(pops_other_locs) %>%
+  right_join(pops_other_locs, by = join_by(financial_year, hscp_locality)) %>%
   mutate(adm = replace_na(bed_days, 0)) %>%
   mutate(data = round_half_up(bed_days / pop * 100000)) %>%
   mutate(data = format(data, big.mark = ",")) %>%
@@ -672,7 +695,7 @@ bed_days_mh_age <- bed_days_mh %>%
   group_by(financial_year, age_group) %>%
   summarise(bed_days = sum(bed_days)) %>%
   ungroup() %>%
-  left_join(loc_pop_age1) %>%
+  left_join(loc_pop_age1, by = join_by(financial_year, age_group)) %>%
   mutate(data = round_half_up(bed_days / pop * 100000)) %>%
   drop_na(year)
 
@@ -689,7 +712,7 @@ BDMH_age_ts <- age_group_trend_usc(
 bed_days_mh_areas <- bed_days_mh %>%
   rename(n = bed_days) %>%
   aggregate_usc_area_data() %>%
-  left_join(pop_areas_all_ages) %>%
+  left_join(pop_areas_all_ages, by = join_by(financial_year, location)) %>%
   mutate(data = round_half_up(n / pop * 100000)) %>%
   drop_na(year)
 
@@ -843,7 +866,7 @@ other_loc_bed_days_mh <- bed_days_mh %>%
   group_by(financial_year, hscp_locality) %>%
   summarise(bed_days = sum(bed_days)) %>%
   ungroup() %>%
-  right_join(pops_other_locs) %>%
+  right_join(pops_other_locs, by = join_by(financial_year, hscp_locality)) %>%
   mutate(adm = replace_na(bed_days, 0)) %>%
   mutate(data = round_half_up(bed_days / pop * 100000)) %>%
   mutate(data = format(data, big.mark = ",")) %>%
@@ -866,7 +889,7 @@ ae_att_age <- ae_attendances %>%
   group_by(financial_year, age_group) %>%
   summarise(attendances = sum(attendances)) %>%
   ungroup() %>%
-  left_join(loc_pop_age1) %>%
+  left_join(loc_pop_age1, by = join_by(financial_year, age_group)) %>%
   mutate(data = round_half_up(attendances / pop * 100000)) %>%
   drop_na(year)
 
@@ -883,7 +906,7 @@ AandE_age_ts <- age_group_trend_usc(
 ae_att_areas <- ae_attendances %>%
   rename(n = attendances) %>%
   aggregate_usc_area_data() %>%
-  left_join(pop_areas_all_ages) %>%
+  left_join(pop_areas_all_ages, by = join_by(financial_year, location)) %>%
   mutate(data = round_half_up(n / pop * 100000)) %>%
   drop_na(year)
 
@@ -1037,7 +1060,7 @@ other_loc_ae_att <- ae_attendances %>%
   group_by(financial_year, hscp_locality) %>%
   summarise(attendances = sum(attendances)) %>%
   ungroup() %>%
-  right_join(pops_other_locs) %>%
+  right_join(pops_other_locs, by = join_by(financial_year, hscp_locality)) %>%
   mutate(attendances = replace_na(attendances, 0)) %>%
   mutate(data = round_half_up(attendances / pop * 100000)) %>%
   mutate(data = format(data, big.mark = ",")) %>%
@@ -1063,7 +1086,7 @@ delayed_disch <- arrow::read_parquet(paste0(import_folder, "delayed_discharges_m
 delayed_disch_areas <- delayed_disch %>%
   rename(n = dd_bed_days) %>%
   aggregate_usc_area_data() %>%
-  left_join(pop_areas_65plus) %>%
+  left_join(pop_areas_65plus, by = join_by(financial_year, location)) %>%
   mutate(data = round_half_up(n / pop * 100000)) %>%
   drop_na(year)
 
@@ -1168,7 +1191,7 @@ other_loc_dd <- delayed_disch %>%
   group_by(financial_year, hscp_locality) %>%
   summarise(dd_bed_days = sum(dd_bed_days)) %>%
   ungroup() %>%
-  right_join(pops_other_locs_65plus) %>%
+  right_join(pops_other_locs_65plus, by = join_by(financial_year, hscp_locality)) %>%
   mutate(dd_bed_days = replace_na(dd_bed_days, 0)) %>%
   mutate(data = round_half_up(dd_bed_days / pop * 100000)) %>%
   mutate(data = format(data, big.mark = ",")) %>%
@@ -1188,7 +1211,7 @@ falls <- arrow::read_parquet(paste0(import_folder, "falls_smr.parquet")) %>%
 falls_areas <- falls %>%
   rename(n = admissions) %>%
   aggregate_usc_area_data() %>%
-  left_join(pop_areas_65plus) %>%
+  left_join(pop_areas_65plus, by = join_by(financial_year, location)) %>%
   mutate(data = round_half_up(n / pop * 100000)) %>%
   drop_na(year)
 
@@ -1330,8 +1353,12 @@ read2 <- readmissions %>%
   aggregate_usc_area_data() %>%
   rename(discharges = n)
 
-readmissions_areas <- left_join(read1, read2) %>%
-  left_join(pop_areas_all_ages) %>%
+readmissions_areas <- left_join(
+  read1,
+  read2,
+  by = join_by(financial_year, location, area_type)
+) %>%
+  left_join(pop_areas_all_ages, by = join_by(financial_year, location)) %>%
   mutate(data = round_half_up(read_28 / discharges * 1000, 1)) %>%
   drop_na(year)
 
@@ -1573,8 +1600,8 @@ ppa_65plus <- ppa %>%
   rename(n = admissions) %>%
   aggregate_usc_area_data() %>%
   rename(plus65tot = n) %>%
-  left_join(ppa_total, by = c("financial_year", "location")) %>%
-  left_join(pop_areas_all_ages) %>%
+  left_join(ppa_total, by = join_by(financial_year, location)) %>%
+  left_join(pop_areas_all_ages, by = join_by(financial_year, location)) %>%
   mutate(data = round_half_up(plus65tot / n * 100, 1)) %>%
   drop_na(year)
 
@@ -1590,8 +1617,8 @@ ppa_under65 <- ppa %>%
   rename(n = admissions) %>%
   aggregate_usc_area_data() %>%
   rename(under65tot = n) %>%
-  left_join(ppa_total, by = c("financial_year", "location")) %>%
-  left_join(pop_areas_all_ages) %>%
+  left_join(ppa_total, by = join_by(financial_year, location)) %>%
+  left_join(pop_areas_all_ages, by = join_by(financial_year, location)) %>%
   mutate(data = round_half_up(under65tot / n * 100, 1)) %>%
   drop_na(year)
 
@@ -1607,7 +1634,7 @@ latest_ppa_under65 <- ppa_under65 %>%
 ppa_areas <- ppa %>%
   rename(n = admissions) %>%
   aggregate_usc_area_data() %>%
-  left_join(pop_areas_all_ages) %>%
+  left_join(pop_areas_all_ages, by = join_by(financial_year, location)) %>%
   mutate(data = round_half_up(n / pop * 100000)) %>%
   mutate(location = factor(location, levels = c(LOCALITY, HSCP, HB, "Scotland"))) %>%
   arrange(location) %>%
@@ -1672,7 +1699,7 @@ other_loc_ppa <- ppa %>%
   group_by(financial_year, hscp_locality) %>%
   summarise(admissions = sum(admissions)) %>%
   ungroup() %>%
-  right_join(pops_other_locs) %>%
+  right_join(pops_other_locs, by = join_by(financial_year, hscp_locality)) %>%
   mutate(admissions = replace_na(admissions, 0)) %>%
   mutate(data = round_half_up(admissions / pop * 100000)) %>%
   mutate(data = format(data, big.mark = ",")) %>%
@@ -1718,7 +1745,7 @@ other_locs_psych_hosp <- psych_hosp %>%
   filter(year == max(year)) %>%
   filter(area_type == "Locality") %>%
   rename("hscp_locality" = "area_name") %>%
-  right_join(other_locs) %>%
+  right_join(other_locs, by = join_by(hscp_locality)) %>%
   arrange(hscp_locality) %>%
   select(hscp_locality, measure) %>%
   mutate(measure = as.character(round_half_up(measure, 1))) %>%
