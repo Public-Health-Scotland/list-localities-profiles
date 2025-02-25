@@ -19,7 +19,7 @@ final_dir <- path(lp_path, "Final Profiles", str_glue("{year} Final Profiles"))
 
 # Get the list of HSCPs
 hscp_list <- read_in_localities() |>
-  pull(hscp2019name) |> 
+  pull(hscp2019name) |>
   unique()
 
 # Create a dataframe with some details about the files
