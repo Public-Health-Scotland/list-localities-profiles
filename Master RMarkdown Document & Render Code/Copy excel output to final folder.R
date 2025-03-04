@@ -22,8 +22,8 @@ locality_lookup <- read_in_localities() |>
   # Fix for one locality which seems to be renamed (probably due to the '/')
   mutate(
     hscp_locality = case_match(hscp_locality,
-                               "Dumbarton/Alexandria" ~ "Alexandria",
-                               .default = hscp_locality
+      "Dumbarton/Alexandria" ~ "Alexandria",
+      .default = hscp_locality
     )
   )
 

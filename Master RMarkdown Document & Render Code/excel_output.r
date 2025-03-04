@@ -33,9 +33,9 @@ for (HSCP in hscp_list) {
   # Create list of localities in chosen HSCP
   locality_list <- lookup |>
     filter(hscp2019name == HSCP) |>
-    distinct(hscp_locality) |> 
+    distinct(hscp_locality) |>
     pull(hscp_locality)
-  
+
   loop_env <- c(ls(), "loop_env")
 
   ## Loop to create the profiles for all the localities in the list
@@ -110,7 +110,6 @@ for (HSCP in hscp_list) {
       "psych_admissions" = psych_hosp[psych_hosp$area_name == LOCALITY, ], # Need to add Scotland & HB to this
       "MH_bed_days" = bed_days_mh_areas[bed_days_mh_areas$location == LOCALITY, ],
       "bed_days_mh_age" = bed_days_mh_age[bed_days_mh_age$hscp_locality == LOCALITY, ]
-      
     )
 
     # Loop over each dataframe in the df list to add locality and append to the output list
@@ -147,9 +146,8 @@ for (HSCP in hscp_list) {
 
     # Write the combined dataframe to the current sheet
     openxlsx::writeData(wb, sheet = dataframe_name, x = output)
-    
+
     openxlsx::setColWidths(wb, sheet = dataframe_name, cols = 1:ncol(output), widths = "auto")
-    
   }
 
   index_data <- data.frame(Sheet_name = excel_names)
@@ -159,13 +157,11 @@ for (HSCP in hscp_list) {
   openxlsx::addWorksheet(wb, sheetName = "Index")
 
   openxlsx::writeData(wb, sheet = "Index", x = index_data)
-  
-  
+
+
   # Save the workbook to a file
   openxlsx::saveWorkbook(wb, paste0(lp_path, "Master RMarkdown Document & Render Code/Output/background data/", HSCP, " - Locality Profile data.xlsx"), overwrite = TRUE)
   rm(list = setdiff(ls(), loop_env))
   # Force garbage collection to free up memory
   gc()
-
 }
-
