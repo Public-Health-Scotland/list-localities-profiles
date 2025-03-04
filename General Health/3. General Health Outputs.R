@@ -67,7 +67,8 @@ life_exp <- bind_rows(life_exp_male, life_exp_fem) %>%
     "Life expectancy, males" ~ "Male",
     "Life expectancy, females" ~ "Female"
   )) %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 12)))
+  mutate(period_short = str_replace(period, fixed(" to "), "-") |>
+           str_sub(end = 9))
 
 rm(life_exp_fem, life_exp_male)
 
@@ -157,7 +158,7 @@ latest_year_life_exp_loc <- max(filter(life_exp, area_type == "Locality")$year)
 latest_year_life_exp_otherareas <- max(life_exp$year)
 
 latest_period_life_exp_loc <- unique(filter(life_exp, area_type == "Locality" & year == latest_year_life_exp_loc)$period_short)
-latest_period_life_exp_otherareas <- paste0(unique(filter(life_exp, area_type == "Scotland" & year == latest_year_life_exp_otherareas)$period_short), ")")
+latest_period_life_exp_otherareas <- unique(filter(life_exp, area_type == "Scotland" & year == latest_year_life_exp_otherareas)$period_short)
 
 
 # Create time trend
