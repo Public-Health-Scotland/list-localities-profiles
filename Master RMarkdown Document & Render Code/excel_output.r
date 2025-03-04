@@ -22,7 +22,7 @@ lookup <- read_in_localities()
 # Specify HSCP(s) ----
 # use `unique(lookup$hscp2019name)` for all
 # hscp_list <- unique(lookup$hscp2019name)
-hscp_list <-  unique(lookup$hscp2019name)
+hscp_list <- "Angus"
 
 # NOTE - This checks that it exactly matches the lookup
 stopifnot(all(hscp_list %in% unique(lookup[["hscp2019name"]])))
@@ -147,6 +147,9 @@ for (HSCP in hscp_list) {
 
     # Write the combined dataframe to the current sheet
     openxlsx::writeData(wb, sheet = dataframe_name, x = output)
+    
+    openxlsx::setColWidths(wb, sheet = dataframe_name, cols = 1:ncol(output), widths = "auto")
+    
   }
 
   index_data <- data.frame(Sheet_name = excel_names)
@@ -156,10 +159,10 @@ for (HSCP in hscp_list) {
   openxlsx::addWorksheet(wb, sheetName = "Index")
 
   openxlsx::writeData(wb, sheet = "Index", x = index_data)
-
-
+  
+  
   # Save the workbook to a file
-  openxlsx::saveWorkbook(wb, paste0(lp_path, "background data 2024/", "{HSCP} - Locality Profile data.xlsx"), overwrite = TRUE)
+  openxlsx::saveWorkbook(wb, paste0(lp_path, "Master RMarkdown Document & Render Code/Output/background data/", HSCP, " - Locality Profile data.xlsx"), overwrite = TRUE)
   rm(list = setdiff(ls(), loop_env))
   # Force garbage collection to free up memory
   gc()
