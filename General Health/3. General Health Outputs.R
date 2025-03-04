@@ -68,7 +68,7 @@ life_exp <- bind_rows(life_exp_male, life_exp_fem) %>%
     "Life expectancy, females" ~ "Female"
   )) %>%
   mutate(period_short = str_replace(period, fixed(" to "), "-") |>
-           str_sub(end = 9))
+    str_sub(end = 9))
 
 rm(life_exp_fem, life_exp_male)
 
