@@ -17,6 +17,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set file path for output
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+output_dir <- path(lp_path, "Master RMarkdown Document & Render Code", "Output", "background data")
 
 # Read in locality lookup table
 lookup <- read_in_localities()
@@ -179,9 +180,7 @@ for (HSCP in hscp_list) {
     ),
     sheet_names = c("SMR01_based", "SMR01_Age_Groups", "LTCs_Age_Groups"),
     file_path = path(
-      lp_path,
-      "background data",
-      "SDC",
+      output_dir,
       glue("{HSCP} - Locality Profile SDC highlight.xlsx")
     )
   )
