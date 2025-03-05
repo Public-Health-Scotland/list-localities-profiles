@@ -21,17 +21,11 @@ library(ggrepel)
 library(sf)
 
 # Source in global functions/themes script
-# source("Master RMarkdown Document & Render Code/Global Script.R")
+source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Final document will loop through a list of localities
 # Create placeholder for for loop
-# LOCALITY <- "Skye, Lochalsh and West Ross"
-# LOCALITY <- "Falkirk West"
-# LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
-# LOCALITY <- "Ayr North and Former Coalfield Communities"
-# LOCALITY <- "Helensburgh and Lomond"
-# LOCALITY <- "City of Dunfermline"
-# LOCALITY <- "Inverness"
+HSCP <- 'Moray'
 
 
 ########################## SECTION 2: Data Imports ###############################
@@ -86,7 +80,7 @@ rm(simd_2020_all, simd_2020_dom, simd_2016_all, simd_2016_dom)
 # calculate the percent of the population within each deprivation quintile
 simd_perc_breakdown <- pop_data %>%
   mutate(simd2020v2_sc_quintile = as.factor(simd2020v2_sc_quintile)) %>%
-  filter(hscp_locality == LOCALITY) %>%
+  filter(hscp2019name == HSCP) %>%
   group_by(simd2020v2_sc_quintile, .drop = FALSE) %>%
   dplyr::summarise(pop = sum(total_pop)) %>%
   mutate(
@@ -112,7 +106,7 @@ zones <- read_sf(dsn = "//conf/linkage/output/lookups/Unicode/Geography/Shapefil
 zones <- merge(zones, lookup_dz, by = "datazone2011")
 
 # subset for Locality
-zones <- subset(zones, hscp_locality == LOCALITY)
+zones <- subset(zones, hscp2019name == HSCP)
 
 # Get latitude and longitdue co-ordinates for each datazone, find min and max.
 zones_coord <-
@@ -156,7 +150,7 @@ places <- read_csv(paste0(
 
 # load in 2020 deprivation data
 simd_map_data <- simd2020 %>%
-  filter(hscp_locality == LOCALITY) %>%
+  filter(hscp2019name == HSCP) %>%
   dplyr::select(datazone2011, simd)
 
 # merge with shapefile
@@ -198,7 +192,7 @@ plot_labels <- c(
 # SIMD topic breakdown
 
 simd_domains <- simd2020 %>%
-  filter(hscp_locality == LOCALITY) %>%
+  filter(hscp2019name == HSCP) %>%
   select(income, employment, education, access, crime, health, housing, total_pop) %>%
   reshape2::melt(id.vars = "total_pop") %>%
   group_by(variable, value) %>%
@@ -212,7 +206,7 @@ simd_domains <- simd2020 %>%
   scale_y_continuous(labels = scales::percent) +
   labs(
     x = "", y = "Proportion of Population",
-    title = paste0("Breakdown of the SIMD Domains in ", str_wrap(LOCALITY, 50)),
+    title = paste0("Breakdown of the SIMD Domains in ", str_wrap(HSCP, 50)),
     caption = "Source: Scottish Government, Public Health Scotland, National Records Scotland"
   ) +
   scale_fill_manual(
@@ -227,14 +221,14 @@ simd_domains <- simd2020 %>%
 
 # Deprivation Data 2020
 simd2020_dom <- simd2020 %>%
-  filter(hscp_locality == LOCALITY) %>%
+  filter(hscp2019name == HSCP) %>%
   select(datazone2011, simd, income, employment, education, access, crime, health, housing)
 
 names(simd2020_dom)[2:9] <- paste0(names(simd2020_dom)[2:9], "_20")
 
 # Deprivation Data 2016
 simd2016_dom <- simd2016 %>%
-  filter(hscp_locality == LOCALITY) %>%
+  filter(hscp2019name == HSCP) %>%
   select(datazone2011, simd, income, employment, education, access, crime, health, housing)
 
 names(simd2016_dom)[2:9] <- paste0(names(simd2016_dom)[2:9], "_16")
@@ -336,7 +330,7 @@ simd_diff_plot <- ggplot(simd_16_20_dom, aes(x = quintile, y = diff, fill = fact
     x = "", y = "Difference from 2016",
     title = paste0(
       "Difference in Population Living in Deprivation Quintiles by SIMD Domain\n",
-      "in 2016 and ", pop_max_year, " in ", str_wrap(LOCALITY, 50)
+      "in 2016 and ", pop_max_year, " in ", str_wrap(HSCP, 50)
     ),
     caption = "Source: Scottish Government, National Records Scotland"
   ) +
@@ -359,12 +353,13 @@ simd_diff_overall <- simd_16_20_dom %>%
 lookup <- read_in_localities()
 
 ## Relevant lookups for creating the table objects
-HSCP <- as.character(filter(lookup, hscp_locality == LOCALITY)$hscp2019name)
+#HSCP <- as.character(filter(lookup, hscp_locality == LOCALITY)$hscp2019name)
+loc <- as.character(filter(lookup, hscp2019name == HSCP)$hscp_locality)
 
 # Determine other localities based on LOCALITY object
 other_locs <- lookup %>%
   select(hscp_locality, hscp2019name) %>%
-  filter(hscp2019name == HSCP & hscp_locality != LOCALITY) %>%
+  filter(hscp2019name == HSCP) %>%
   arrange(hscp_locality)
 
 # Find number of locs per partnership
