@@ -13,7 +13,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
 
 # Set paths for the existing / new locations
-output_dir <- path(lp_path, "background data", "SDC")
+output_dir <- path(lp_path, "Master RMarkdown Document & Render Code", "Output", "background data")
 # The directory will be created automatically.
 final_dir <- path(lp_path, "Final Profiles", str_glue("{year} Final Profiles"))
 
