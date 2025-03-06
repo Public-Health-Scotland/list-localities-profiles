@@ -230,8 +230,8 @@ simd_domains <-
   scale_y_continuous(labels = scales::percent) +
   labs(
     x = "", y = "Proportion of Population",
-    title = paste0("Breakdown of the SIMD Domains in ", str_wrap(.x, 50)),
-    caption = "Source: Scottish Government, Public Health Scotland, National Records Scotland"
+    title = paste0("Breakdown of the SIMD Domains in ", str_wrap(.x, 50))#,
+   # caption = "Source: Scottish Government, Public Health Scotland, National Records Scotland"
   ) +
   scale_fill_manual(
     name = "Quintile",
