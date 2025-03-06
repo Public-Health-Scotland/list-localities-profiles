@@ -2,6 +2,7 @@
 
 library(knitr)
 library(rmarkdown)
+library(here)
 
 rm(list = ls())
 
@@ -12,7 +13,7 @@ Sys.umask("006")
 source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set file path
-lp_path <- lp_path <- "/conf/LIST_analytics/West Dunbartonshire/Locality Profiles Combined/"
+lp_path <- "/conf/LIST_analytics/West Dunbartonshire/Locality Profiles Combined/"
 output_dir <- path(lp_path, "Master RMarkdown Document & Render Code", "Output")
 
 # Below creates locality list of all the localities in a chosen HSCP
@@ -52,8 +53,8 @@ for (HSCP in hscp_list) {
     # 1a) Source in all the scripts for a given LOCALITY
 
     # Demographics ----
-    source("Demographics/1. Demographics - Population.R")
-    source("Demographics/2. Demographics - SIMD.R")
+    source(here("Demographics", "1. Demographics - Population.R"))
+    source(here("Demographics", "2. Demographics - SIMD.R"))
 
     # Housing ----
     source("Households/Households Code.R")
