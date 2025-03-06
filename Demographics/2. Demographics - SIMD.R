@@ -21,7 +21,7 @@ library(ggrepel)
 library(sf)
 
 # Source in global functions/themes script
-# source("Master RMarkdown Document & Render Code/Global Script.R")
+#source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Final document will loop through a list of localities
 # Create placeholder for for loop
@@ -31,7 +31,7 @@ library(sf)
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
 # LOCALITY <- "Helensburgh and Lomond"
 # LOCALITY <- "City of Dunfermline"
-# LOCALITY <- "Inverness"
+#LOCALITY <- "Eastwood"
 
 
 ########################## SECTION 2: Data Imports ###############################
@@ -106,7 +106,7 @@ perc_top_quintile <- simd_perc_breakdown[5, ]$perc
 # load in shapefile for mapping
 zones <- read_sf(dsn = "//conf/linkage/output/lookups/Unicode/Geography/Shapefiles/Data Zones 2011/SG_DataZone_Bdry_2011.shp") %>%
   st_transform(4326) %>%
-  rename(datazone2011 = datazone20)
+  rename(datazone2011 = DataZone)
 
 # merge lookup and shapefile
 zones <- merge(zones, lookup_dz, by = "datazone2011")
