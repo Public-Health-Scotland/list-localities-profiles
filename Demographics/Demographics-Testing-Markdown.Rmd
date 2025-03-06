@@ -6,6 +6,8 @@ output:
       Profiles/Master RMarkdown Document & Render Code/Locality_Profiles_Report_Template.docx"
   html_document:
     df_print: paged
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include = FALSE}
@@ -138,11 +140,27 @@ Figure `r x` shows the historical population of `r locality_list[2]`, along with
 \newline
 
 ```{r echo = FALSE, fig.width = 7.5, fig.height = 4, warning = FALSE, fig.cap= "A line graph showing the trend in population over time"}
-pop_ts_plot[[1]]
+pop_ts_plot[[2]]
 
 x <- x + 1
 ```
 
+#### Population Structure `r pop_min_year` - `r pop_max_year`
+
+##### `r locality_list[2]`
+Figure `r x` shows how the population structure has changed between `r pop_min_year` and `r pop_max_year`.
+
+#### Figure `r x`: Change in population structure over the last five years.
+
+\newline
+
+```{r echo = FALSE, fig.width = 9, fig.height = 4, warning = FALSE, fig.cap= "A bar chart showing the percentage change in population structure, split by age and sex, over the last five years"}
+hist_pop_change[[1]]
+
+x <- x + 1
+```
+
+##### `r locality_list[2]`
 Figure `r x` shows how the population structure has changed between `r pop_min_year` and `r pop_max_year`.
 
 #### Figure `r x`: Change in population structure over the last five years.
@@ -154,33 +172,57 @@ hist_pop_change[[2]]
 
 x <- x + 1
 ```
-
 ##### Page break
 
 ### Deprivation
 
-The following section explores the deprivation structure of `r LOCALITY` through the Scottish Index of Multiple Deprivation (SIMD). The SIMD ranks all datazones in Scotland by a number of factors; Access, Crime, Education, Employment, Health, Housing and Income. Based on these ranks, each datazone is then given an overall deprivation rank, which is used to split datazones into Deprivation Quintiles (Quintile 1 being the most deprived, and Quintile 5 the least). The most recent SIMD ranking was carried out in 2020. This section mainly focuses on the SIMD 2020 classifications, however, the 2016 classifications are used to assess how deprivation has changed in `r LOCALITY` when compared to the rest of Scotland.
+The following section explores the deprivation structure of `r locality_list[1]` and `r locality_list[2]` through the Scottish Index of Multiple Deprivation (SIMD). The SIMD ranks all datazones in Scotland by a number of factors; Access, Crime, Education, Employment, Health, Housing and Income. Based on these ranks, each datazone is then given an overall deprivation rank, which is used to split datazones into Deprivation Quintiles (Quintile 1 being the most deprived, and Quintile 5 the least). The most recent SIMD ranking was carried out in 2020. This section mainly focuses on the SIMD 2020 classifications, however, the 2016 classifications are used to assess how deprivation has changed in `r locality_list[1]` and `r locality_list[2]` when compared to the rest of Scotland.
 
-Of the `r pop_max_year` population in `r LOCALITY`, **`r perc_bottom_quintile`%** live in the most deprived Quintile (SIMD 1), and **`r perc_top_quintile`%** live in the least deprived Quintile (SIMD 5).
+Of the `r pop_max_year` population in `r locality_list[1]`, **`r perc_bottom_quintile[[1]]`%** live in the most deprived Quintile (SIMD 1), and **`r perc_top_quintile[[1]]`%** live in the least deprived Quintile (SIMD 5).  Of the `r pop_max_year` population in `r locality_list[2]`, **`r perc_bottom_quintile[[2]]`%** live in the most deprived Quintile (SIMD 1), and **`r perc_top_quintile[[2]]`%** live in the least deprived Quintile (SIMD 5).
 
-#### Figure `r x`: Map of Data Zones within `r LOCALITY` coloured by SIMD quintiles.
+#### Figure `r x`: Map of Data Zones within `r locality_list[1]` and  `r locality_list[1]` coloured by SIMD quintiles.
 
 ```{r echo = FALSE, fig.width = 8, warning = FALSE, fig.cap = 'A map of the locality which is broken down by data zones with the colouring showing the SIMD quintile for each.'}
-simd_map
+(simd_map[[1]]+simd_map[[2]])+
+  plot_layout(guides = "collect", axes = "collect")+
+  plot_annotation(caption = "Source: Scottish Government, Public Health Scotland")
 
 x <- x + 1
 ```
 
 ##### Page break
 
-Table `r y` details the percentage of the locality's 2016 population living in the 2016 SIMD Quintiles, the percentage of the `r pop_max_year` population living in the 2020 SIMD Quintiles, and their difference for comparison. Figure `r x` then breaks down SIMD by domain in `r LOCALITY`.
+##### `r locality_list[1]`
 
-#### Table `r y`: Percentage of the `r LOCALITY` population living in the 2016 and 2020 SIMD Datazone Quintiles in 2016 and `r pop_max_year` respectively.
+Table `r y` details the percentage of the locality's 2016 population living in the 2016 SIMD Quintiles, the percentage of the `r pop_max_year` population living in the 2020 SIMD Quintiles, and their difference for comparison. Figure `r x` then breaks down SIMD by domain in `r locality_list[1]`.
+
+#### Table `r y`: Percentage of the `r locality_list[1]` population living in the 2016 and 2020 SIMD Datazone Quintiles in 2016 and `r pop_max_year` respectively.
 
 \newline
 
 ```{r echo = FALSE}
-knitr::kable(simd_diff_overall,
+knitr::kable(simd_diff_overall[[1]],
+  col.names = c(
+    "**Quintile**", "**Percent of 2016 Population (SIMD 2016 Ranking)**",
+    glue("**Percent of {pop_max_year} Population (SIMD 2020 Ranking)**"),
+    "**Difference**"
+  ),
+  align = c("l", "r", "r", "r"),
+  format = "markdown"
+)
+
+y <- y + 1
+```
+##### `r locality_list[2]`
+
+Table `r y` details the percentage of the locality's 2016 population living in the 2016 SIMD Quintiles, the percentage of the `r pop_max_year` population living in the 2020 SIMD Quintiles, and their difference for comparison. 
+
+#### Table `r y`: Percentage of the `r locality_list[2]` population living in the 2016 and 2020 SIMD Datazone Quintiles in 2016 and `r pop_max_year` respectively.
+
+\newline
+
+```{r echo = FALSE}
+knitr::kable(simd_diff_overall[[2]],
   col.names = c(
     "**Quintile**", "**Percent of 2016 Population (SIMD 2016 Ranking)**",
     glue("**Percent of {pop_max_year} Population (SIMD 2020 Ranking)**"),
@@ -195,12 +237,18 @@ y <- y + 1
 
 Source: Scottish Government, Public Health Scotland, National Records Scotland. \newline
 
+Figure `r x` breaks down SIMD by domain in both `r locality_list[1]` and `r locality_list[2]`.
+
+
 #### Figure `r x`: Proportion of the population that reside in each 2020 SIMD quintile by domain in `r pop_max_year`.
 
 \newline
 
-```{r echo = FALSE, fig.width = 8, fig.height = 5, warning = FALSE, fig.cap = 'A bar graph showing the proportion of the population in each SIMD decile for each SIMD domain.'}
-simd_domains
+```{r echo = FALSE, fig.width = 8, fig.height = 8, warning = FALSE, fig.cap = 'A bar graph showing the proportion of the population in each SIMD decile for each SIMD domain in all localities.'}
+(simd_domains[[1]]+ simd_domains[[2]]) +
+  plot_layout(guides = "collect")&
+  theme(legend.position = "bottom")
+  plot_annotation(caption = "Source: Scottish Government, Public Health Scotland, National Records Scotland")
 
 x <- x + 1
 ```
