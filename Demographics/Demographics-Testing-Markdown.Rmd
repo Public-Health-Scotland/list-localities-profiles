@@ -17,27 +17,21 @@ y <- 1 # object for table numbers
 ```
 
 ```{r testing_setup, include=FALSE}
-# LOCALITY <-  "Skye, Lochalsh and West Ross"
-# LOCALITY <- "Falkirk West"
-# LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
-# LOCALITY <- "Ayr North and Former Coalfield Communities"
-# LOCALITY <- "Helensburgh and Lomond"
-# LOCALITY <- "City of Dunfermline"
-LOCALITY <- "Inverness"
+# Global Script and lp_path defined in "Locality Profiles Render Code.R"
 
 # Source in functions code
-source("Master RMarkdown Document & Render Code/Global Script.R")
+#source(here("Master RMarkdown Document & Render Code/Global Script.R"))
 
 # Set file path
-lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+#lp_path <- "/conf/LIST_analytics/West Dunbartonshire/Locality Profiles Combined/"
 ```
 
 ```{r prepare_data_populations, include = FALSE}
-source("Demographics/1. Demographics - Population.R")
+source(here("Demographics","1. Demographics - Population.R"))
 ```
 
 ```{r prepare_data_simd, include = FALSE}
-source("Demographics/2. Demographics - SIMD.R")
+source(here("Demographics", "2. Demographics - SIMD.R"))
 ```
 
 ## Demographics
@@ -45,34 +39,82 @@ source("Demographics/2. Demographics - SIMD.R")
 \newline
 
 **Summary**
+#### `r locality_list[1]`
 
-For the most recent time period available, `r LOCALITY` Locality had:
+For the most recent time period available, `r locality_list[1]` Locality had:
 
--   A total population of **`r total_population`** people, where **`r gender_breakdown[gender_breakdown$sex == "M",]$perc`** were male, and **`r over65`%** were aged over 65.
--   **`r perc_top_quintile`%** of people lived in the least deprived SIMD quintile, and **`r perc_bottom_quintile`%** lived in the most deprived quintile.
+-   A total population of **`r total_population[[1]]`** people, where **`r gender_breakdown[gender_breakdown$sex == "M",]$perc[1]`** were male, and **`r over65[[1]]`%** were aged over 65.
+-   **`r perc_top_quintile[[1]]`%** of people lived in the least deprived SIMD quintile, and **`r perc_bottom_quintile[[1]]`%** lived in the most deprived quintile.
 
 \newline
 
-### Population
+#### `r locality_list[2]`
 
+For the most recent time period available, `r locality_list[2]` Locality had:
+
+-   A total population of **`r total_population[[2]]`** people, where **`r gender_breakdown[gender_breakdown$sex == "M",]$perc[2]`** were male, and **`r over65[[2]]`%** were aged over 65.
+-   **`r perc_top_quintile[[2]]`%** of people lived in the least deprived SIMD quintile, and **`r perc_bottom_quintile[[2]]`%** lived in the most deprived quintile.
+
+\newline
+
+### Population `r pop_max_year`
+
+#### `r locality_list[1]`
 <!-- Total Population Text -->
 
-In `r pop_max_year`, the total population of `r LOCALITY` locality was `r total_population`. The graph below shows the population distribution of the locality. Overall, **`r gender_breakdown[gender_breakdown$sex == "M",]$perc`** of the population are male, and **`r gender_breakdown[gender_breakdown$sex == "F",]$perc`** are female.
+In `r pop_max_year`, the total population of `r locality_list[1]` locality was `r total_population[[1]]`. Figure `r x` shows the population distribution of the locality. Overall, **`r gender_breakdown[gender_breakdown$sex == "M",]$perc[1]`** of the population are male, and **`r gender_breakdown[gender_breakdown$sex == "F",]$perc[1]`** are female.
 
 #### Figure `r x`: Population by age and sex.
 
 \newline
 
 ```{r echo = FALSE, fig.width = 7, fig.height = 4, warning = FALSE, fig.cap = "A bar chart showing the population distribution of the locality grouped by age and sex"}
-pop_pyramid
+pop_pyramid[[1]]
 
 x <- x + 1
 ```
 
-<!-- Population over time -->
+#### `r locality_list[2]`
+<!-- Total Population Text -->
 
-Figure `r x` shows the historical population of `r LOCALITY`, along with the NRS population projections. `r pop_graph_text` `r pop_proj_text`. *Please see the footnotes for more information on how the population projections were calculated^1^.*
+In `r pop_max_year`, the total population of `r locality_list[2]` locality was `r total_population[[2]]`. Figure `r x` shows the population distribution of the locality. Overall, **`r gender_breakdown[gender_breakdown$sex == "M",]$perc[2]`** of the population are male, and **`r gender_breakdown[gender_breakdown$sex == "F",]$perc[2]`** are female.
 
+#### Figure `r x`: Population by age and sex.
+
+\newline
+
+```{r echo = FALSE, fig.width = 7, fig.height = 4, warning = FALSE, fig.cap = "A bar chart showing the population distribution of the locality grouped by age and sex"}
+pop_pyramid[[2]]
+
+x <- x + 1
+```
+
+#### Population over time 
+
+Figure `r x` shows the historical population of `r locality_list[1]`, along with the NRS population projections. `r pop_graph_text[[1]]` `r pop_proj_text[[1]]`. *Please see the footnotes for more information on how the population projections were calculated^1^.*
+
+#### `r locality_list[2]`
+<!-- Total Population Text -->
+
+In `r pop_max_year`, the total population of `r locality_list[2]` locality was `r total_population[[2]]`. Figure `r x` shows the population distribution of the locality. Overall, **`r gender_breakdown[gender_breakdown$sex == "M",]$perc[2]`** of the population are male, and **`r gender_breakdown[gender_breakdown$sex == "F",]$perc[2]`** are female.
+
+#### Figure `r x`: Population by age and sex.
+
+\newline
+
+```{r echo = FALSE, fig.width = 7, fig.height = 4, warning = FALSE, fig.cap = "A bar chart showing the population distribution of the locality grouped by age and sex"}
+pop_pyramid[[2]]
+
+x <- x + 1
+```
+
+
+
+#### Population over time
+
+##### `r locality_list[1]`
+
+Figure `r x` shows the historical population of `r locality_list[1]`, along with the NRS population projections. `r pop_graph_text[[1]]` `r pop_proj_text[[1]]`. *Please see the footnotes for more information on how the population projections were calculated^1^.*
 ##### Page break
 
 #### Figure `r x`: Population time trend and projection.
@@ -80,12 +122,26 @@ Figure `r x` shows the historical population of `r LOCALITY`, along with the NRS
 \newline
 
 ```{r echo = FALSE, fig.width = 7.5, fig.height = 4, warning = FALSE, fig.cap= "A line graph showing the trend in population over time"}
-pop_ts_plot
+pop_ts_plot[[1]]
 
 x <- x + 1
 ```
 
 \newline
+##### `r locality_list[2]`
+
+Figure `r x` shows the historical population of `r locality_list[2]`, along with the NRS population projections. `r pop_graph_text[[2]]` `r pop_proj_text[[2]]`. *Please see the footnotes for more information on how the population projections were calculated^1^.*
+##### Page break
+
+#### Figure `r x`: Population time trend and projection.
+
+\newline
+
+```{r echo = FALSE, fig.width = 7.5, fig.height = 4, warning = FALSE, fig.cap= "A line graph showing the trend in population over time"}
+pop_ts_plot[[1]]
+
+x <- x + 1
+```
 
 Figure `r x` shows how the population structure has changed between `r pop_min_year` and `r pop_max_year`.
 
@@ -94,7 +150,7 @@ Figure `r x` shows how the population structure has changed between `r pop_min_y
 \newline
 
 ```{r echo = FALSE, fig.width = 9, fig.height = 4, warning = FALSE, fig.cap= "A bar chart showing the percentage change in population structure, split by age and sex, over the last five years"}
-hist_pop_change
+hist_pop_change[[2]]
 
 x <- x + 1
 ```
