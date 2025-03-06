@@ -230,7 +230,7 @@ simd_domains <-
   scale_y_continuous(labels = scales::percent) +
   labs(
     x = "", y = "Proportion of Population",
-    title = paste0("Breakdown of the SIMD Domains in ", str_wrap(.x, 50))#,
+    title = paste0("Breakdown of the SIMD Domains in\n ", str_wrap(.x, 50))#,
    # caption = "Source: Scottish Government, Public Health Scotland, National Records Scotland"
   ) +
   scale_fill_manual(
@@ -367,9 +367,8 @@ simd_diff_plot[[loc]] <- ggplot(simd_16_20_dom[[loc]], aes(x = quintile, y = dif
   labs(
     x = "", y = "Difference from 2016",
     title = paste0(
-      "Difference in Population Living in Deprivation\n Quintiles by SIMD Domain",
-      "in 2016 and ", pop_max_year, " in\n", str_wrap(loc, 20)
-    )#,
+      "Difference in Population Living in Deprivation Quintiles by SIMD Domain\n",
+      "in 2016 and ", pop_max_year, " in", loc)#,
     # caption = "Source: Scottish Government, National Records Scotland"
   ) +
   guides(fill = guide_legend(title.position = "top"))
