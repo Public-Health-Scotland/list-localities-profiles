@@ -190,8 +190,8 @@ simd_map[[loc]] <- ggplot() +
     label.size = NA # Labels don't have a border
   ) +
   theme_void() +
-  guides(fill = guide_legend(title = "SIMD Quintile")) +
-  labs(caption = "Source: Scottish Government, Public Health Scotland")
+  guides(fill = guide_legend(title = "SIMD Quintile"))# +
+  #labs(caption = "Source: Scottish Government, Public Health Scotland")
 }
 rm(zones, places, simd_map_data)
 
@@ -212,12 +212,20 @@ simd_domains <-
   select(income, employment, education, access, crime, health, housing, total_pop) %>%
   reshape2::melt(id.vars = "total_pop") %>%
   group_by(variable, value) %>%
+  # mutate(grand_avg_pop = sum(total_pop)) %>% 
+  #   group_by(variable, value, grand_avg_pop) %>% 
   dplyr::summarise(total_pop = sum(total_pop)) %>%
+    group_by(variable) %>% 
+    mutate(grand_sum = sum(total_pop),
+    proportion = total_pop/grand_sum) %>% 
+    
+    mutate(value = factor(value, levels = rev(1:5), ordered = T)) %>% 
   ggplot(aes(
-    fill = factor(value, levels = 1:5), y = total_pop,
+    fill = value, y = proportion,
     x = factor(variable, levels = tolower(plot_labels))
   )) +
-  geom_col(position = "fill") +
+  geom_col(position = "stack") +
+    coord_flip()+
   scale_x_discrete(labels = plot_labels) +
   scale_y_continuous(labels = scales::percent) +
   labs(
@@ -227,10 +235,13 @@ simd_domains <-
   ) +
   scale_fill_manual(
     name = "Quintile",
-    labels = simd_cats,
-    values = simd_col, drop = FALSE
+    labels = rev(simd_cats),
+    values = rev(simd_col), drop = FALSE
   ) +
-  theme_profiles()
+  theme_profiles()+
+   guides(fill = guide_legend(title = NULL, 
+                              nrow = 1,
+                              reverse = T))
   )
 
 
