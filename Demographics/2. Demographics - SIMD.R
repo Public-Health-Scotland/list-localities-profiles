@@ -368,7 +368,7 @@ simd_diff_plot[[loc]] <- ggplot(simd_16_20_dom[[loc]], aes(x = quintile, y = dif
     x = "", y = "Difference from 2016",
     title = paste0(
       "Difference in Population Living in Deprivation Quintiles by SIMD Domain\n",
-      "in 2016 and ", pop_max_year, " in", loc)#,
+      "in 2016 and ", pop_max_year, " in ", loc)#,
     # caption = "Source: Scottish Government, National Records Scotland"
   ) +
   guides(fill = guide_legend(title.position = "top"))
