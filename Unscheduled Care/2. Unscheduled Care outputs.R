@@ -10,7 +10,7 @@
 ext_year <- 2024
 
 # Set locality profiles file path
-# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+ lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 import_folder <- paste0(lp_path, "Unscheduled Care/DATA ", ext_year, "/")
 
 ### for testing run global script and locality placeholder below
@@ -19,22 +19,11 @@ import_folder <- paste0(lp_path, "Unscheduled Care/DATA ", ext_year, "/")
 library(scales)
 
 ## Functions
-# source("./Master RMarkdown Document & Render Code/Global Script.R")
+source("./Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Define locality
-# LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
-# LOCALITY <- "Inverness"
-# LOCALITY <- "Ayr North and Former Coalfield Communities"
-# LOCALITY <- "Whalsay and Skerries"
-# LOCALITY <- "North Perthshire"
-# LOCALITY <- "Inverclyde East"
-# Set date limit for financial year
-# Unless we're in Q4 use the previous FY as the max
-# max_fy <- ifelse(
-#   lubridate::quarter(Sys.Date(), fiscal_start = 4) != 4,
-#   phsmethods::extract_fin_year(Sys.Date() - years(1)),
-#   phsmethods::extract_fin_year(Sys.Date())
-# )
+HSCP <- 'Moray'
+
 max_fy <- "2023/24" # TODO Change this to be dynamic and move to general!
 
 ########################## SECTION 2: Lookups & Populations ###############################
@@ -43,13 +32,13 @@ max_fy <- "2023/24" # TODO Change this to be dynamic and move to general!
 
 localities <- read_in_localities()
 
-HSCP <- as.character(filter(localities, hscp_locality == LOCALITY)$hscp2019name)
-HB <- as.character(filter(localities, hscp_locality == LOCALITY)$hb2019name)
+#HSCP <- as.character(filter(localities, hscp_locality == LOCALITY)$hscp2019name)
+HB <- as.character(filter(localities, hscp2019name == HSCP)$hb2019name)
 
 # Determine other localities based on LOCALITY object
 other_locs <- localities %>%
   select(hscp_locality, hscp2019name) %>%
-  filter(hscp2019name == HSCP & hscp_locality != LOCALITY) %>%
+  filter(hscp2019name == HSCP) %>%
   arrange(hscp_locality)
 
 # Find number of locs per partnership
@@ -75,36 +64,59 @@ populations$"Pop65Plus" <- rowSums(subset(populations, select = age65:age90plus)
 
 pops <- populations %>%
   select(
+    year, hb2019name, hscp2019name, 
+    Pop0_17, Pop18_44, Pop45_64, Pop65_74,
+    Pop75Plus, Pop65Plus, total_pop
+  ) %>%
+  mutate(financial_year = paste0(year, "/", substr(year + 1, 3, 4))) %>%
+  group_by(financial_year, year, hb2019name, hscp2019name) %>%
+  summarise(across(everything(), sum)) %>%
+  ungroup()
+
+loc_pops <- populations %>%
+  select(
     year, hb2019name, hscp2019name, hscp_locality,
     Pop0_17, Pop18_44, Pop45_64, Pop65_74,
     Pop75Plus, Pop65Plus, total_pop
   ) %>%
   mutate(financial_year = paste0(year, "/", substr(year + 1, 3, 4))) %>%
-  group_by(financial_year, year, hb2019name, hscp2019name, hscp_locality) %>%
+  group_by(financial_year, year, hb2019name, hscp2019name,hscp_locality) %>%
   summarise(across(everything(), sum)) %>%
-  ungroup()
-
+  ungroup()%>%
+  pivot_longer("Pop0_17":"total_pop", names_to = "age_group", values_to = "pop") %>%
+  mutate(age_group = case_when(
+    age_group == "Pop0_17" ~ "0 - 17",
+    age_group == "Pop18_44" ~ "18 - 44",
+    age_group == "Pop45_64" ~ "45 - 64",
+    age_group == "Pop65_74" ~ "65 - 74",
+    age_group == "Pop75Plus" ~ "75+",
+    age_group == "Pop65Plus" ~ "65+",
+    age_group == "total_pop" ~ "Total"
+  ))
 
 # Aggregate and add partnership + HB + Scotland totals
 
 pop_areas <- pops %>%
-  filter(hscp_locality == LOCALITY) %>%
-  select(-hb2019name, -hscp2019name) %>%
-  rename(location = hscp_locality) %>%
+  filter(hscp2019name == HSCP) %>%
+  select(-hb2019name) %>%
+  group_by(financial_year, year, hscp2019name) %>%
+  summarise_all(sum) %>%
+  ungroup() |> 
+  rename(location = hscp2019name) %>%
   # Add a partnership total
-  bind_rows(
-    pops %>%
-      select(-hscp_locality, -hb2019name) %>%
-      filter(hscp2019name == HSCP) %>%
-      group_by(financial_year, year, hscp2019name) %>%
-      summarise(across(everything(), sum)) %>%
-      ungroup() %>%
-      rename(location = hscp2019name)
-  ) %>%
+  #bind_rows(
+  #  pops %>%
+  #    select(-hscp_locality, -hb2019name) %>%
+  #    filter(hscp2019name == HSCP) %>%
+  #    group_by(financial_year, year, hscp2019name) %>%
+  #    summarise(across(everything(), sum)) %>%
+  #    ungroup() %>%
+  #    rename(location = hscp2019name)
+  #) %>%
   # Add HB total
   bind_rows(
     pops %>%
-      select(-hscp_locality, -hscp2019name) %>%
+      select(-hscp2019name) %>%
       filter(hb2019name == HB) %>%
       group_by(financial_year, year, hb2019name) %>%
       summarise(across(everything(), sum)) %>%
@@ -114,7 +126,7 @@ pop_areas <- pops %>%
   # Add a Scotland total
   bind_rows(
     pops %>%
-      select(-hscp_locality, -hscp2019name, -hb2019name) %>%
+      select(-hscp2019name, -hb2019name) %>%
       group_by(financial_year, year) %>%
       summarise(across(everything(), sum)) %>%
       ungroup() %>%
@@ -132,7 +144,7 @@ pop_areas <- pops %>%
   ))
 
 
-loc_pop <- pops %>%
+hscp_pop <- pops %>%
   pivot_longer("Pop0_17":"total_pop", names_to = "age_group", values_to = "pop") %>%
   mutate(age_group = case_when(
     age_group == "Pop0_17" ~ "0 - 17",
@@ -145,16 +157,16 @@ loc_pop <- pops %>%
   ))
 
 # populations for age group charts
-loc_pop_age1 <- loc_pop %>%
+hscp_pop_age1 <- hscp_pop %>%
   filter(
-    hscp_locality == LOCALITY,
+    hscp2019name == HSCP,
     age_group %in% c("0 - 17", "18 - 44", "45 - 64", "65 - 74", "75+")
   )
 
 # pop for MH emergency admissions age group chart
-loc_pop_age2 <- loc_pop %>%
+hscp_pop_age2 <- hscp_pop %>%
   filter(
-    hscp_locality == LOCALITY,
+    hscp2019name == HSCP,
     age_group %in% c("0 - 17", "18 - 44", "45 - 64", "65+")
   )
 
@@ -168,9 +180,9 @@ pop_areas_65plus <- pop_areas %>%
 
 # populations for other localities in the HSCP (for summary table only) - all ages
 pops_other_locs <- inner_join(
-  loc_pop,
+  loc_pops,
   other_locs,
-  by = join_by(hscp2019name, hscp_locality)
+  by = join_by(hscp2019name,hscp_locality)
 ) %>%
   filter(
     age_group == "Total",
@@ -180,7 +192,7 @@ pops_other_locs <- inner_join(
 
 # populations for other localities in the HSCP (for summary table only) - 65+
 pops_other_locs_65plus <- inner_join(
-  loc_pop,
+  loc_pops,
   other_locs,
   by = join_by(
     hscp2019name,
@@ -200,13 +212,13 @@ pops_other_locs_65plus <- inner_join(
 # For this function to work, the main variable of the data (ex: number of admissions) must be renamed "n"
 
 aggregate_usc_area_data <- function(data) {
-  pts_locality <- data %>%
-    filter(hscp_locality == LOCALITY) %>%
-    mutate(location = hscp_locality) %>%
-    group_by(financial_year, location) %>%
-    summarise(n = sum(n)) %>%
-    ungroup() %>%
-    mutate(area_type = "Locality")
+ # pts_locality <- data %>%
+  #  filter(hscp_locality == LOCALITY) %>%
+  #  mutate(location = hscp_locality) %>%
+  #  group_by(financial_year, location) %>%
+  #  summarise(n = sum(n)) %>%
+  #  ungroup() %>%
+  #  mutate(area_type = "Locality")
 
   pts_hscp <- data %>%
     filter(hscp2019name == HSCP) %>%
@@ -237,8 +249,8 @@ aggregate_usc_area_data <- function(data) {
       area_type = "Scotland"
     )
 
-  bind_rows(pts_locality, pts_hscp, pts_hb, pts_scot) %>%
-    mutate(area_type = factor(area_type, levels = c("Locality", "HSCP", "HB", "Scotland")))
+  bind_rows(pts_hscp, pts_hb, pts_scot) %>%
+    mutate(area_type = factor(area_type, levels = c("HSCP", "HB", "Scotland")))
 }
 
 # Functions for creating time trends
@@ -317,13 +329,13 @@ emergency_adm <- arrow::read_parquet(paste0(import_folder, "emergency_admissions
 
 # Plotting by age
 emergency_adm_age <- emergency_adm %>%
-  filter(hscp_locality == LOCALITY) %>%
+  filter(hscp2019name == HSCP) |> 
   drop_na(age_group) %>%
   group_by(financial_year, age_group) %>%
   summarise(adm = sum(admissions)) %>%
   ungroup() %>%
   left_join(
-    loc_pop_age1,
+    hscp_pop_age1,
     by = join_by(financial_year, age_group)
   ) %>%
   mutate(data = round_half_up(adm / pop * 100000)) %>%
@@ -332,7 +344,7 @@ emergency_adm_age <- emergency_adm %>%
 
 EAs_age_ts <- age_group_trend_usc(
   data_for_plot = emergency_adm_age,
-  plot_title = paste("Emergency admissions per 100,000 over time by age group\n for", LOCALITY),
+  plot_title = paste("Emergency admissions per 100,000 over time by age group\n for", HSCP),
   yaxis_title = "Emergency admission rate\n per 100,000 population",
   source = "Source: PHS SMR01"
 )
@@ -363,22 +375,22 @@ max_year_ea <- max(emergency_adm_areas$financial_year)
 first_fy_rate <- filter(
   emergency_adm_areas,
   financial_year == min(financial_year),
-  location == LOCALITY,
-  area_type == "Locality"
+  location == HSCP,
+  area_type == "HSCP"
 )$data
 
-latest_emergency_adm_loc <- emergency_adm_areas %>%
-  filter(
-    location == LOCALITY,
-    year == max(year, na.rm = TRUE)
-  ) %>%
-  mutate(formatted_data = format(data, big.mark = ","))
+#latest_emergency_adm_loc <- emergency_adm_areas %>%
+#  filter(
+#    location == LOCALITY,
+ #   year == max(year, na.rm = TRUE)
+ # ) %>%
+ # mutate(formatted_data = format(data, big.mark = ","))
 
-latest_emergency_adm_loc1 <- latest_emergency_adm_loc %>% pull(formatted_data)
-latest_emergency_adm_loc2 <- latest_emergency_adm_loc %>% pull(data)
+#latest_emergency_adm_loc1 <- latest_emergency_adm_loc %>% pull(formatted_data)
+#latest_emergency_adm_loc2 <- latest_emergency_adm_loc %>% pull(data)
 
-percent_rate_change <- percent_change_calc(latest_emergency_adm_loc2, first_fy_rate)
-word_change_rate <- word_change_calc(latest_emergency_adm_loc2, first_fy_rate)
+#percent_rate_change <- percent_change_calc(latest_emergency_adm_loc2, first_fy_rate)
+#word_change_rate <- word_change_calc(latest_emergency_adm_loc2, first_fy_rate)
 
 # HSCP
 hscp_emergency_adm <- emergency_adm_areas %>%
