@@ -13,18 +13,15 @@
 
 ############# 1) PACKAGES, DIRECTORY, LOOKUPS, DATA IMPORT + CLEANING #############
 
-# Determine locality (for testing only)
-# LOCALITY <- "Falkirk West"
-# LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
-# LOCALITY <- "Mid-Argyll, Kintyre and Islay"
-# LOCALITY <- "City of Dunfermline"
-# LOCALITY <- "Barra"
+# Determine HSCP
+
+#HSCP <- "Moray"
 
 # Set year of data extracts for folder
 ext_year <- 2024
 
 # Set file path
-# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+ #lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 # Source in functions code
 # source("Master RMarkdown Document & Render Code/Global Script.R")
@@ -35,13 +32,13 @@ ext_year <- 2024
 lookup <- read_in_localities()
 
 # Determine HSCP and HB based on Loc
-HSCP <- as.character(filter(lookup, hscp_locality == LOCALITY)$hscp2019name)
-HB <- as.character(filter(lookup, hscp_locality == LOCALITY)$hb2019name)
+#HSCP <- as.character(filter(lookup, hscp_locality == LOCALITY)$hscp2019name)
+HB <- as.character(filter(lookup, hscp2019name == HSCP)$hb2019name)
 
 # Determine other localities based on LOCALITY object
 other_locs <- lookup %>%
   select(hscp_locality, hscp2019name) %>%
-  filter(hscp2019name == HSCP & hscp_locality != LOCALITY) %>%
+  filter(hscp2019name == HSCP) %>%
   arrange(hscp_locality)
 
 # Find number of locs per partnership
@@ -94,18 +91,17 @@ min_year_drug_hosp <- min(drug_hosp[["year"]])
 latest_period_drug_hosp <- drug_hosp[["period_short"]][which.max(drug_hosp[["year"]])]
 earliest_period_drug_hosp <- drug_hosp[["period_short"]][which.min(drug_hosp[["year"]])]
 # ScotPHO time trend will only be latest 10 years
-trend_years <- 10
+
 earliest_period_drug_hosp_trend <- drug_hosp[["period_short"]][match(max_year_drug_hosp - trend_years, drug_hosp[["year"]])]
 
 
 ## Time trend
 drug_hosp_time_trend <- drug_hosp %>%
-  scotpho_time_trend(
+  scotpho_time_trend_HSCP(
     chart_title = "Drug-related Hospital Admissions Time Trend",
     xaxis_title = "Financial Year Groups (3-year aggregates)",
     yaxis_title = "Drug-related admissions\n(Standardised rates per 100,000)",
     string_wrap = 10,
-    trend_years = trend_years,
     rotate_xaxis = TRUE
   )
 
@@ -113,7 +109,7 @@ drug_hosp_time_trend
 
 ## Bar chart
 drug_hosp_bar <- drug_hosp %>%
-  scotpho_bar_chart(
+  scotpho_bar_chart_HSCP(
     chart_title = paste0("Drug-related Hospital Admissions by Area, ", latest_period_drug_hosp),
     xaxis_title = "Drug-related admissions (Standardised rates per 100,000)"
   )
@@ -124,15 +120,15 @@ drug_hosp_bar
 drug_hosp_latest <- filter(
   drug_hosp,
   year == max_year_drug_hosp,
-  area_name == LOCALITY,
-  area_type == "Locality"
+  area_name == HSCP,
+  area_type == "HSCP"
 ) |> pull(measure)
 
 drug_hosp_earliest <- filter(
   drug_hosp,
   year == min_year_drug_hosp,
-  area_name == LOCALITY,
-  area_type == "Locality"
+  area_name == HSCP,
+  area_type == "HSCP"
 ) |> pull(measure)
 
 drug_hosp_change <- abs((drug_hosp_latest - drug_hosp_earliest) / drug_hosp_earliest * 100)
@@ -158,7 +154,7 @@ earliest_period_alcohol_hosp <- unique(filter(alcohol_hosp, year == min(alcohol_
 
 ## Time trend
 alcohol_hosp_time_trend <- alcohol_hosp %>%
-  scotpho_time_trend(
+  scotpho_time_trend_HSCP(
     data = .,
     chart_title = "Alcohol-related Hospital Admissions Time Trend",
     xaxis_title = "Financial Year",
@@ -171,7 +167,7 @@ alcohol_hosp_time_trend
 
 ## Bar chart
 alcohol_hosp_bar <- alcohol_hosp %>%
-  scotpho_bar_chart(
+  scotpho_bar_chart_HSCP(
     data = .,
     chart_title = paste0("Alcohol-related Hospital Admissions by Area, ", max(.$period_short)),
     xaxis_title = "Alcohol-related admissions (Standardised rates per 100,000)"
@@ -185,13 +181,13 @@ alcohol_hosp_bar
 alcohol_hosp_latest <- filter(
   alcohol_hosp,
   year == max(alcohol_hosp$year) &
-    (area_name == LOCALITY & area_type == "Locality")
+    (area_name == HSCP & area_type == "HSCP")
 )$measure
 
 alcohol_hosp_earliest <- filter(
   alcohol_hosp,
   (year == min(alcohol_hosp$year)) &
-    (area_name == LOCALITY & area_type == "Locality")
+    (area_name == HSCP & area_type == "HSCP")
 )$measure
 
 alcohol_hosp_change <- abs((alcohol_hosp_latest - alcohol_hosp_earliest) / alcohol_hosp_earliest * 100)
@@ -217,7 +213,7 @@ earliest_period_alcohol_deaths <- unique(filter(alcohol_deaths, year == min(alco
 
 ## Time trend
 alcohol_deaths_time_trend <- alcohol_deaths %>%
-  scotpho_time_trend(
+  scotpho_time_trend_HSCP(
     data = .,
     chart_title = "Alcohol-specific Deaths Time Trend",
     xaxis_title = "Year Groups (5-year aggregates)",
@@ -229,7 +225,7 @@ alcohol_deaths_time_trend
 
 ## Bar chart
 alcohol_deaths_bar <- alcohol_deaths %>%
-  scotpho_bar_chart(
+  scotpho_bar_chart_HSCP(
     data = .,
     chart_title = paste0("Alcohol-specific Deaths by Area, ", max(.$period_short)),
     xaxis_title = "Alcohol-specific deaths (Standardised rates per 100,000)"
@@ -243,13 +239,13 @@ alcohol_deaths_bar
 alcohol_deaths_latest <- filter(
   alcohol_deaths,
   year == max(alcohol_deaths$year) &
-    (area_name == LOCALITY & area_type == "Locality")
+    (area_name == HSCP & area_type == "HSCP")
 )$measure
 
 alcohol_deaths_earliest <- filter(
   alcohol_deaths,
   (year == min(alcohol_deaths$year)) &
-    (area_name == LOCALITY & area_type == "Locality")
+    (area_name == HSCP & area_type == "HSCP")
 )$measure
 
 alcohol_deaths_change <- abs((alcohol_deaths_latest - alcohol_deaths_earliest) / alcohol_deaths_earliest * 100)
@@ -276,7 +272,7 @@ earliest_period_bowel_screening <- unique(filter(bowel_screening, year == min(bo
 
 ## Time trend
 bowel_screening_time_trend <- bowel_screening %>%
-  scotpho_time_trend(
+  scotpho_time_trend_HSCP(
     data = .,
     chart_title = "Bowel Screening Uptake Time Trend",
     xaxis_title = "Year Groups (3-year aggregates)",
@@ -288,7 +284,7 @@ bowel_screening_time_trend
 
 ## Bar chart
 bowel_screening_bar <- bowel_screening %>%
-  scotpho_bar_chart(
+  scotpho_bar_chart_HSCP(
     data = .,
     chart_title = paste0("Bowel Screening Uptake by Area, ", max(.$period_short)),
     xaxis_title = "Bowel screening uptake (%)"
@@ -302,13 +298,13 @@ bowel_screening_bar
 bowel_screening_latest <- filter(
   bowel_screening,
   year == max(bowel_screening$year) &
-    (area_name == LOCALITY & area_type == "Locality")
+    (area_name == HSCP & area_type == "HSCP")
 )$measure
 
 bowel_screening_earliest <- filter(
   bowel_screening,
   (year == min(bowel_screening$year)) &
-    (area_name == LOCALITY & area_type == "Locality")
+    (area_name == HSCP & area_type == "HSCP")
 )$measure
 
 bowel_screening_change <- abs((bowel_screening_latest - bowel_screening_earliest) / bowel_screening_earliest * 100)
