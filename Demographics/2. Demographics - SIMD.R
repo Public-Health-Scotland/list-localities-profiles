@@ -107,7 +107,7 @@ simd_perc_breakdown <- pop_data %>%
   mutate(simd2020v2_sc_quintile = as.factor(simd2020v2_sc_quintile)) %>%
   filter(hscp_locality == LOCALITY) %>%
   group_by(simd2020v2_sc_quintile, .drop = FALSE) %>%
-  dplyr::summarise(pop = sum(total_pop)) %>%
+  summarise(pop = sum(total_pop)) %>%
   mutate(
     total_pop = sum(pop),
     perc = round_half_up(100 * pop / total_pop, 1)
@@ -136,7 +136,7 @@ zones <- subset(zones, hscp_locality == LOCALITY)
 # Get latitude and longitude co-ordinates for each datazone, find min and max.
 zones_coord <-
   zones %>%
-  sf::st_coordinates() %>%
+  st_coordinates() %>%
   as_tibble() %>%
   select("long" = X, "lat" = Y) %>%
   summarise(
@@ -164,7 +164,7 @@ places <- read_csv(path(
   filter(Longitude >= min_long & Longitude <= max_long &
     Latitude >= min_lat & Latitude <= max_lat) %>%
   group_by(name) %>%
-  dplyr::summarise(
+  summarise(
     Longitude = first(Longitude),
     Latitude = first(Latitude),
     type = first(type),
@@ -176,7 +176,7 @@ places <- read_csv(path(
 # load in 2020 deprivation data
 simd_map_data <- simd2020 %>%
   filter(hscp_locality == LOCALITY) %>%
-  dplyr::select(datazone2011, simd)
+  select(datazone2011, simd)
 
 # merge with shapefile
 zones <- merge(zones, simd_map_data, by = "datazone2011")
