@@ -8,12 +8,15 @@
 ## Packages for functions ----
 # (** note - should this contain all packages necessary for locality profiles?
 # and automatically installing missing packages?)
-library(tidyverse)
+library(dplyr)
+library(readr)
+library(tidyr)
+library(ggplot2)
+library(stringr)
+library(forcats)
+library(purrr)
 library(janitor)
-library(data.table)
 library(glue)
-library(magrittr)
-library(lubridate)
 library(fs)
 library(arrow)
 
@@ -206,7 +209,10 @@ read_in_dz_pops <- function() {
       ca2018, ca2011,
       hscp2019, hscp2019name, hscp2018, hscp2016, hb2019, hb2019name, hb2018, hb2014
     )) %>%
-    left_join(read_in_localities(dz_level = TRUE))
+    left_join(
+      read_in_localities(dz_level = TRUE),
+      by = join_by(datazone2011)
+    )
 }
 
 read_in_dz_pops_proxy_year <- function() {
@@ -242,7 +248,7 @@ read_in_pop_proj <- function() {
     distinct()
 
 
-  left_join(proj, hscp_lkp)
+  left_join(proj, hscp_lkp, by = join_by(hscp2019))
 }
 
 #### Functions for ScotPHO data ####
@@ -543,4 +549,35 @@ hbres <- function(hbres_currentdate) {
     "S08000028" ~ "NHS Western Isles",
     .default = "Other"
   )
+}
+
+# Define a function to save multiple dataframes to an Excel workbook
+save_dataframes_to_excel <- function(dataframes, sheet_names, file_path) {
+  # Create a new workbook using openxlsx2
+  wb <- openxlsx2::wb_workbook()
+
+  # Loop over each dataframe and corresponding sheet name
+  for (i in seq_along(dataframes)) {
+    # Define the used columns
+    cols <- seq_len(ncol(dataframes[[i]]))
+
+    # Define the header range
+    header_range <- openxlsx2::wb_dims(rows = 1, cols = cols)
+
+    wb <- wb |>
+      # Add a worksheet
+      openxlsx2::wb_add_worksheet(sheet = sheet_names[[i]]) |>
+      # Write data
+      openxlsx2::wb_add_data(x = dataframes[[i]]) |>
+      # Style the header bold
+      openxlsx2::wb_add_font(dims = header_range, bold = TRUE) |>
+      # Set column widths to auto
+      openxlsx2::wb_set_col_widths(cols = cols, widths = "auto")
+  }
+
+  # Create the directories if they don't exist
+  fs::dir_create(fs::path_dir(file_path), mode = "u=rwx,g=rwx,o=rx")
+
+  # Save the workbook to a file
+  openxlsx2::wb_save(wb, file = file_path, overwrite = TRUE)
 }
