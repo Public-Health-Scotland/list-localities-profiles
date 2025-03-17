@@ -293,7 +293,7 @@ area_trend_usc <- function(data_for_plot, plot_title, yaxis_title, source) {
 # Functions for text variables
 
 percent_change_calc <- function(numerator, denominator, digits = 1) {
-  janitor::round_half_up(
+  round_half_up(
     abs(numerator - denominator) / denominator * 100,
     digits = digits
   )

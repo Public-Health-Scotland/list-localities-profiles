@@ -340,7 +340,7 @@ simd_diff_plot <- ggplot(simd_16_20_dom, aes(x = quintile, y = diff, fill = fact
   ) +
   geom_text(
     aes(
-      label = paste0(format(janitor::round_half_up(100 * diff, 1), nsmall = 1), "%"),
+      label = paste0(format(round_half_up(100 * diff, 1), nsmall = 1), "%"),
       vjust = v_just
     ),
     color = "black",
@@ -371,9 +371,9 @@ simd_diff_overall <- simd_16_20_dom %>%
   filter(domain == "SIMD") %>%
   mutate(
     Quintile = paste(domain, quintile),
-    perc_16 = paste0(format(janitor::round_half_up(100 * perc_16, 1), nsmall = 1), "%"),
-    perc_20 = paste0(format(janitor::round_half_up(100 * perc_20, 1), nsmall = 1), "%"),
-    Difference = paste0(format(janitor::round_half_up(100 * diff, 1), nsmall = 1), "%")
+    perc_16 = paste0(format(round_half_up(100 * perc_16, 1), nsmall = 1), "%"),
+    perc_20 = paste0(format(round_half_up(100 * perc_20, 1), nsmall = 1), "%"),
+    Difference = paste0(format(round_half_up(100 * diff, 1), nsmall = 1), "%")
   ) %>%
   select(Quintile, perc_16, perc_20, Difference)
 
