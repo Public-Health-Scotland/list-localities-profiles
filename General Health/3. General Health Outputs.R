@@ -18,16 +18,16 @@ library(png)
 
 # LOCALITY <- "Barra"
 
-HSCP <- 'Moray'
+#HSCP <- 'Moray'
 
 # Set year of data extracts for folder
 ext_year <- 2024
 
 # Source in functions code
- source("Master RMarkdown Document & Render Code/Global Script.R")
+# source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set file path
-lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
+#lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
 
 gen_health_data_dir <- path(lp_path, "General Health", glue("DATA {ext_year}"))
 
@@ -481,12 +481,20 @@ adp_presc_diff_scot <- if_else(adp_presc_latest > scot_adp_presc, "larger", "sma
 
 ############################ 3) SLF DATA (LTCs) ####################################
 
+# Keeping below in as we are still using locality outputs at the moment
 # Extract SLF adjusted populations
 slf_pops <- ltc |>
   distinct(age_group, hscp_locality, hscp2019name, slf_adj_pop)
 
 slf_pop_loc <- slf_pops %>%
-  filter(hscp2019name == HSCP)
+  distinct(age_group, hscp2019name, slf_adj_pop) |>
+  filter(hscp2019name == HSCP) |>
+  #group by to get to HSCP level
+  group_by(
+    age_group, hscp2019name
+  ) |>
+  summarise(slf_adj_pop = sum(slf_adj_pop)) |>
+  ungroup()
 
 # Determine year
 latest_year_ltc <- ltc[["year"]][1]
@@ -552,8 +560,20 @@ ltc_infographic <- ltc %>%
   group_by(hscp2019name, age_group) %>%
   summarise(people = sum(people)) %>%
   ungroup() %>%
+  # the line above gives a summary table by age_group by hscp2019_name
+  # then the slf population by locality is added onto the table
+  # this can be tidied up longer term I guess
   left_join(slf_pop_loc, by = join_by(hscp2019name, age_group)) %>%
+  # need a group by below that takes max of people and sum of slf_adj_pop
+  # by hscp2019name and by age_group drop hscp_locality
+  #select(-hscp_locality) |>
+  group_by(hscp2019name, age_group) %>%
+  summarise(people = max(people),
+            slf_adj_pop = sum(slf_adj_pop)) %>%
+  ungroup() |>
+
   mutate(perc_with_ltc = round_half_up(people / slf_adj_pop, 2))
+
 
 # objects for each percentage for text + cropping images
 ltc.percent.u65 <- filter(ltc_infographic, age_group == "Under 65")$perc_with_ltc
@@ -856,7 +876,8 @@ ltc_cols <- ltc_scot %>%
 # Top 5 HSCP
 top5ltc_hscp <- ltc_totals %>%
   filter(hscp2019name == HSCP) %>%
-  select(-hscp_locality, -hscp2019name, -people, -slf_adj_pop) %>%
+  #select(-hscp_locality, -hscp2019name, -people, -slf_adj_pop) %>%
+  select(-hscp2019name, -people, -slf_adj_pop) %>%
   summarise(across(everything(), sum)) %>%
   pivot_longer(cols = everything(), names_to = "topltc", values_to = "value") %>%
   slice_max(n = 5, order_by = value, with_ties = FALSE) %>%
@@ -868,7 +889,8 @@ top5ltc_hscp <- ltc_totals %>%
 
 # Top 5 Scotland
 top5ltc_scot <- ltc_totals %>%
-  select(-hscp_locality, -hscp2019name, -people, -slf_adj_pop) %>%
+  #select(-hscp_locality, -hscp2019name, -people, -slf_adj_pop) %>%
+  select(-hscp2019name, -people, -slf_adj_pop) %>%
   summarise(across(everything(), sum)) %>%
   pivot_longer(cols = everything(), names_to = "topltc", values_to = "value") %>%
   slice_max(n = 5, order_by = value, with_ties = FALSE) %>%
@@ -912,7 +934,7 @@ ltc_scot_col <- tableGrob(top5ltc_scot[, 1],
 )
 
 ## Combine columns
-top5ltc_all_table <- as_gtable(gtable_combine(ltc_hscp_col, ltc_scot_col)) #ltc_loc_col, 
+top5ltc_all_table <- as_gtable(gtable_combine(ltc_hscp_col, ltc_scot_col)) #ltc_loc_col,
 
 title <- ggdraw() +
   draw_label(str_wrap(
