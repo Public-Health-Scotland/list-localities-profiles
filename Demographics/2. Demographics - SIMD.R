@@ -53,24 +53,44 @@ pop_data <- pop_raw_data %>%
 
 ## SIMD Domains
 
+lookups_dir <- path("/conf/linkage/output/lookups/Unicode")
+
 # 2020
-simd_2020_all <- read_rds("/conf/linkage/output/lookups/Unicode/Deprivation/DataZone2011_simd2020v2.rds") %>%
+simd_2020_all <- read_rds(path(lookups_dir, "Deprivation", "DataZone2011_simd2020v2.rds")) %>%
   select(datazone2011, simd = "simd2020v2_sc_quintile")
 
-simd_2020_dom <- read_rds("/conf/linkage/output/lookups/Unicode/Deprivation/DataZone2011_domain_level_simd.rds") %>%
+simd_2020_dom <- read_rds(path(lookups_dir, "Deprivation", "DataZone2011_domain_level_simd.rds")) %>%
   clean_names() %>%
-  select(datazone2011, income = "simd2020v2_inc_quintile", employment = "simd2020v2_emp_quintile", education = "simd2020v2_educ_quintile", access = "simd2020v2_access_quintile", housing = "simd2020v2_house_quintile", health = "simd2020v2_hlth_quintile", crime = "simd2020v2_crime_quintile")
+  select(
+    datazone2011,
+    income = "simd2020v2_inc_quintile",
+    employment = "simd2020v2_emp_quintile",
+    education = "simd2020v2_educ_quintile",
+    access = "simd2020v2_access_quintile",
+    housing = "simd2020v2_house_quintile",
+    health = "simd2020v2_hlth_quintile",
+    crime = "simd2020v2_crime_quintile"
+  )
 
 simd2020 <- merge(simd_2020_all, simd_2020_dom, by = "datazone2011") %>%
   left_join(pop_data)
 
 # 2016
-simd_2016_all <- read_rds("/conf/linkage/output/lookups/Unicode/Deprivation/DataZone2011_simd2016.rds") %>%
+simd_2016_all <- read_rds(path(lookups_dir, "Deprivation", "DataZone2011_simd2016.rds")) %>%
   select(datazone2011 = "DataZone2011", simd = "simd2016_sc_quintile")
 
-simd_2016_dom <- read_rds("/conf/linkage/output/lookups/Unicode/Deprivation/DataZone2011_domain_level_simd.rds") %>%
+simd_2016_dom <- read_rds(path(lookups_dir, "Deprivation", "DataZone2011_domain_level_simd.rds")) %>%
   clean_names() %>%
-  select(datazone2011, income = "simd2016_inc_quintile", employment = "simd2016_emp_quintile", education = "simd2016_educ_quintile", access = "simd2016_access_quintile", housing = "simd2016_house_quintile", health = "simd2016_hlth_quintile", crime = "simd2016_crime_quintile")
+  select(
+    datazone2011,
+    income = "simd2016_inc_quintile",
+    employment = "simd2016_emp_quintile",
+    education = "simd2016_educ_quintile",
+    access = "simd2016_access_quintile",
+    housing = "simd2016_house_quintile",
+    health = "simd2016_hlth_quintile",
+    crime = "simd2016_crime_quintile"
+  )
 
 simd2016 <- merge(simd_2016_all, simd_2016_dom, by = "datazone2011") %>%
   left_join(lookup_dz)
@@ -104,7 +124,7 @@ perc_top_quintile <- simd_perc_breakdown[5, ]$perc
 ## 5b) SIMD map ----
 
 # load in shapefile for mapping
-zones <- read_sf(dsn = "//conf/linkage/output/lookups/Unicode/Geography/Shapefiles/Data Zones 2011/SG_DataZone_Bdry_2011.shp") %>%
+zones <- read_sf(path(lookups_dir, "Geography", "Shapefiles", "Data Zones 2011", "SG_DataZone_Bdry_2011.shp")) %>%
   st_transform(4326) %>%
   rename(datazone2011 = DataZone)
 
@@ -134,10 +154,10 @@ min_lat <- zones_coord$min_lat
 max_lat <- zones_coord$max_lat
 
 # get place names
-places <- read_csv(paste0(
-  "/conf/linkage/output/lookups/Unicode/Geography/",
-  "Shapefiles/Scottish Places/Places to Data",
-  " Zone Lookup.csv"
+places <- read_csv(path(
+  lookups_dir, "Geography",
+  "Shapefiles", "Scottish Places",
+  "Places to Data Zone Lookup.csv"
 )) %>%
   rename(datazone2011 = DataZone) %>%
   filter(datazone2011 %in% zones$datazone2011) %>%
