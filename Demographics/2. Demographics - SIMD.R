@@ -73,7 +73,7 @@ simd_2020_dom <- read_rds(path(lookups_dir, "Deprivation", "DataZone2011_domain_
   )
 
 simd2020 <- merge(simd_2020_all, simd_2020_dom, by = "datazone2011") %>%
-  left_join(pop_data)
+  left_join(pop_data, by = join_by(datazone2011))
 
 # 2016
 simd_2016_all <- read_rds(path(lookups_dir, "Deprivation", "DataZone2011_simd2016.rds")) %>%
@@ -93,7 +93,7 @@ simd_2016_dom <- read_rds(path(lookups_dir, "Deprivation", "DataZone2011_domain_
   )
 
 simd2016 <- merge(simd_2016_all, simd_2016_dom, by = "datazone2011") %>%
-  left_join(lookup_dz)
+  left_join(lookup_dz, by = join_by(datazone2011))
 
 rm(simd_2020_all, simd_2020_dom, simd_2016_all, simd_2016_dom)
 
@@ -274,7 +274,7 @@ pop_16_20 <- pop_raw_data %>%
 
 ## Data wrangling
 simd2016_dom <- simd2016_dom %>%
-  left_join(pop_16_20) %>%
+  left_join(pop_16_20, by = join_by(datazone2011)) %>%
   select(datazone2011, contains("_16")) %>%
   reshape2::melt(id.vars = c("datazone2011", "pop_16")) %>%
   dplyr::group_by(variable) %>%
@@ -292,7 +292,7 @@ simd2016_dom <- simd2016_dom %>%
   dplyr::select(domain, perc_16, quintile = value)
 
 simd2020_dom <- simd2020_dom %>%
-  left_join(pop_16_20) %>%
+  left_join(pop_16_20, by = join_by(datazone2011)) %>%
   select(datazone2011, contains("_20")) %>%
   reshape2::melt(id.vars = c("datazone2011", "pop_20")) %>%
   dplyr::group_by(variable) %>%
@@ -317,9 +317,13 @@ base_data <- tibble(
 
 ## Outputs
 
-simd_16_20_dom <- full_join(base_data, simd2016_dom) %>%
+simd_16_20_dom <- full_join(
+  base_data,
+  simd2016_dom,
+  by = join_by(domain, quintile)
+) %>%
   mutate(perc_16 = replace_na(perc_16, 0)) %>%
-  full_join(simd2020_dom) %>%
+  full_join(simd2020_dom, by = join_by(domain, quintile)) %>%
   mutate(perc_20 = replace_na(perc_20, 0)) %>%
   mutate(diff = perc_20 - perc_16) %>%
   mutate(
