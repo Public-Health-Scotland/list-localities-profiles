@@ -47,19 +47,13 @@ palette <- phsstyles::phs_colours(c(
 ## Function for formatting a value for R Markdown text
 # First determines how many dps the value should have
 # Then adds a comma for numbers over 1000 (becomes "1,000")
-
-format_number_for_text <- function(x) {
-  x <- ifelse(
-    abs(x) < 1,
-    round_half_up(x, 2), # if x < 1 then show 2dp
-    ifelse(
-      abs(x) < 100,
-      round_half_up(x, 1), # if 1 =< x < 100 then 1dp
-      round_half_up(x)
-    )
-  ) # if 10 =< x then no decimal places
-
-  format(x, big.mark = ",")
+format_number_for_text <- function(number) {
+  case_when(
+    abs(number) < 1L ~ round_half_up(number, 2),
+    abs(number) < 100L ~ round_half_up(number, 1),
+    .default = round_half_up(number, 0)
+  ) |>
+    format(big.mark = ",")
 }
 
 # This will return the correct article depending on the (max 2-digit) number supplied
