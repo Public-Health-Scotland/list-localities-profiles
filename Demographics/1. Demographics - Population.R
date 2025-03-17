@@ -330,10 +330,10 @@ change_point <- locality_pop_trend %>%
 change_point <- ifelse(pop_latest == pop_last, "last year", change_point)
 change_point <- ifelse(change_point == max(pops$year) - 1, "last year", change_point)
 
-pop_change <- ifelse(pop_latest > pop_last, "been rising since",
-  ifelse(pop_latest == pop_last, "remained the same as",
-    "been falling since"
-  )
+pop_change <- case_when(
+  pop_latest > pop_last ~ "been rising since",
+  pop_latest == pop_last ~ "remained the same as",
+  .default = "been falling since"
 )
 
 pop_graph_text <- ifelse(pval < 0.05,
