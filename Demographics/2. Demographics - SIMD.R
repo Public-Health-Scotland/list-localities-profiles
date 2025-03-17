@@ -1,4 +1,4 @@
-######################## LOCALITY PROFILES DEMOGRAPHICS: SIMD ########################.
+# LOCALITY PROFILES DEMOGRAPHICS: SIMD
 
 ### First Created: 08/08/2019
 ### Original Author: Aidan Morrison
@@ -13,7 +13,7 @@
 
 ### Script restructuring Nov 22 by C Puech
 
-####################### SECTION 1: Packages, file paths, etc #########################
+# SECTION 1: Packages, file paths, etc ----
 
 ## Libraries
 library(reshape2)
@@ -34,7 +34,7 @@ library(sf)
 # LOCALITY <- "Eastwood"
 
 
-########################## SECTION 2: Data Imports ###############################
+# SECTION 2: Data Imports ----
 
 ## Locality/DZ lookup
 lookup_dz <- read_in_localities(dz_level = TRUE)
@@ -98,8 +98,7 @@ simd2016 <- merge(simd_2016_all, simd_2016_dom, by = "datazone2011") %>%
 rm(simd_2020_all, simd_2020_dom, simd_2016_all, simd_2016_dom)
 
 
-
-############################# SECTION 3: Outputs #############################
+# SECTION 3: Outputs ----
 
 ## 5a) SIMD summary ----
 
