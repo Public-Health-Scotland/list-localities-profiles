@@ -25,7 +25,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Final document will loop through a list of localities
 # Create placeholder for for loop
-HSCP <- 'Moray'
+HSCP <- "Moray"
 
 
 ########################## SECTION 2: Data Imports ###############################
@@ -353,7 +353,7 @@ simd_diff_overall <- simd_16_20_dom %>%
 lookup <- read_in_localities()
 
 ## Relevant lookups for creating the table objects
-#HSCP <- as.character(filter(lookup, hscp_locality == LOCALITY)$hscp2019name)
+# HSCP <- as.character(filter(lookup, hscp_locality == LOCALITY)$hscp2019name)
 loc <- as.character(filter(lookup, hscp2019name == HSCP)$hscp_locality)
 
 # Determine other localities based on LOCALITY object

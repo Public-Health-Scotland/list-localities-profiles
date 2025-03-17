@@ -19,11 +19,11 @@ library(scales)
 library(reshape2)
 
 # Source in global functions/themes script
-#source("Master RMarkdown Document & Render Code/Global Script.R")
+# source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Final document will loop through a list of localities
 # Create placeholder for for loop
-#HSCP <- "Moray"
+# HSCP <- "Moray"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
 
@@ -212,8 +212,10 @@ hist_pop_change <- ggplot(
 
 ## Trend up to present year
 locality_pop_trend <- pops %>%
-  filter(hscp_locality == "Partnership Total",
-         hscp2019name == HSCP) %>%
+  filter(
+    hscp_locality == "Partnership Total",
+    hscp2019name == HSCP
+  ) %>%
   group_by(year) %>%
   dplyr::summarise(pop = sum(total_pop)) %>%
   ungroup()
@@ -397,7 +399,7 @@ rm(
 ##################### SECTION 5: Objects for summary table #######################
 
 ## Relevant lookups for creating the table objects
-#HSCP <- as.character(filter(lookup, hscp_locality == LOCALITY)$hscp2019name)
+# HSCP <- as.character(filter(lookup, hscp_locality == LOCALITY)$hscp2019name)
 
 # Determine other localities based on LOCALITY object
 other_locs <- lookup %>%

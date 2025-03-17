@@ -29,7 +29,7 @@ library(data.table)
 ext_year <- 2024
 
 ## Set Locality (for testing only)
-#HSCP <- 'Moray'
+# HSCP <- 'Moray'
 
 ## Set file path
 # lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
@@ -47,7 +47,7 @@ lookup <- read_in_localities(dz_level = TRUE)
 lookup2 <- read_in_localities()
 
 ## Determine HSCP
-#HSCP <- as.character(filter(lookup2, hscp_locality == LOCALITY)$hscp2019name)
+# HSCP <- as.character(filter(lookup2, hscp_locality == LOCALITY)$hscp2019name)
 
 # Get number of localities in HSCP
 n_loc <- count_localities(lookup2, HSCP)

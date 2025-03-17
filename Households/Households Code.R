@@ -37,12 +37,12 @@ ext_year <- 2024
 # lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 # Read in Global Script for RMarkdown (For testing only)
-#source("Master RMarkdown Document & Render Code/Global Script.R")
+# source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set locality (for testing only)
 # LOCALITY <- "Whalsay and Skerries"
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
-#HSCP <- 'Moray'
+# HSCP <- 'Moray'
 
 ##################### Section 2 - Households Data #############################
 
@@ -66,7 +66,7 @@ rm(temp)
 
 # Global Script Function to read in Localities Lookup
 lookup <- read_in_localities(dz_level = TRUE) %>%
-  dplyr::select(datazone2011,  hscp2019name) %>%
+  dplyr::select(datazone2011, hscp2019name) %>%
   filter(hscp2019name == HSCP)
 
 
@@ -224,7 +224,7 @@ perc_houses_FH <- format_number_for_text(sum(
 lookup2 <- read_in_localities(dz_level = FALSE)
 
 # Determine HSCP
-#HSCP <- as.character(filter(lookup2, hscp_locality == LOCALITY)$hscp2019name)
+# HSCP <- as.character(filter(lookup2, hscp_locality == LOCALITY)$hscp2019name)
 
 # Determine other localities based on LOCALITY object
 other_locs <- lookup2 %>%

@@ -15,13 +15,13 @@
 
 # Determine HSCP
 
-#HSCP <- "Moray"
+# HSCP <- "Moray"
 
 # Set year of data extracts for folder
 ext_year <- 2024
 
 # Set file path
- #lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 # Source in functions code
 # source("Master RMarkdown Document & Render Code/Global Script.R")
@@ -32,7 +32,7 @@ ext_year <- 2024
 lookup <- read_in_localities()
 
 # Determine HSCP and HB based on Loc
-#HSCP <- as.character(filter(lookup, hscp_locality == LOCALITY)$hscp2019name)
+# HSCP <- as.character(filter(lookup, hscp_locality == LOCALITY)$hscp2019name)
 HB <- as.character(filter(lookup, hscp2019name == HSCP)$hb2019name)
 
 # Determine other localities based on LOCALITY object
