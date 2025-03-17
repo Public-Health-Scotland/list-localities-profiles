@@ -1,8 +1,6 @@
 ##### LOCALITY PROFILES MASTER DOC RENDER CODE #####
 
-library(readxl)
 library(knitr)
-library(markdown)
 library(rmarkdown)
 library(fs)
 
@@ -11,26 +9,27 @@ rm(list = ls())
 # system unmask function so files have read-write permissions
 Sys.umask("006")
 
-# Set file path
-lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
-
 # Source in functions code
 source("Master RMarkdown Document & Render Code/Global Script.R")
 
-
 # Source custom localities function to overwrite the standard
 source("Master RMarkdown Document & Render Code/overwrite_with_custom_functions.R")
+
+# Set file path
+lp_path <- lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+output_dir <- path(lp_path, "Master RMarkdown Document & Render Code", "Output")
 
 # Below creates locality list of all the localities in a chosen HSCP
 lookup <- read_in_localities()
 
 # Specify HSCP(s) ----
-# use `unique(lookup$hscp2019name)` for all
-# or create a vector for multiple e.g. `c("Angus", "West Lothian")`
+# For a larger test, use the below to produce profiles for HSCPs likely to cause issues.
+# source("Master RMarkdown Document & Render Code/find_hscp_outliers.R")
+# hscp_list <- outlier_hscps
 hscp_list <- "South Ayrshire"
 
 # NOTE - This checks that it exactly matches the lookup
-stopifnot(all(hscp_list %in% unique(lookup$hscp2019name)))
+stopifnot(all(hscp_list %in% unique(lookup[["hscp2019name"]])))
 
 # We don't want to create a profile doc for 'other areas'
 # locality_list <- locality_list[locality_list != "Other areas"]
@@ -57,44 +56,44 @@ for (HSCP in hscp_list) {
   for (LOCALITY in locality_list) {
     # 1a) Source in all the scripts for a given LOCALITY
 
-
-    # Demographics
-
+    # Demographics ----
     source("Demographics/1. Demographics - Population.R")
     source("Demographics/2. Demographics - SIMD.R")
 
-    # Housing
+    # Housing ----
     source("Households/Households Code.R")
 
-    # Services
+    # Services ----
     source("Services/2. Services data manipulation & table.R")
     source("Services/3. Service HSCP map.R")
 
-    # General Health
+    # General Health ----
     source("General Health/3. General Health Outputs.R")
 
-    # Lifestyle & Risk Factors
+    # Lifestyle & Risk Factors ----
     source("Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
 
-    # Unscheduled Care
+    # Unscheduled Care ----
     source("Unscheduled Care/2. Unscheduled Care outputs.R")
 
-    # Appendices
+    # Appendices ----
     source("Master RMarkdown Document & Render Code/Tables for Appendix.R")
 
-    # 1b) Create the main body of the profiles
-
-    rmarkdown::render("Master RMarkdown Document & Render Code/Locality_Profiles_Master_Markdown.Rmd",
-      output_file = paste0(LOCALITY, " - Locality Profile.docx"),
-      output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/")
+    # Render main profile content ----
+    render(
+      input = "Master RMarkdown Document & Render Code/Locality_Profiles_Master_Markdown.Rmd",
+      output_file = glue("{LOCALITY} - Locality Profile.docx"),
+      output_dir = output_dir
     )
 
-    ## 1c) Create the summary tables
-    rmarkdown::render("Summary Table/Summary-Table-Markdown.Rmd",
-      output_file = paste0(LOCALITY, " - Summary Table.docx"),
-      output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/Summary Tables/")
+    # Render the summary table(s) ----
+    render(
+      input = "Summary Table/Summary-Table-Markdown.Rmd",
+      output_file = glue("{LOCALITY} - Summary Table.docx"),
+      output_dir = path(output_dir, "Summary Tables")
     )
 
+    # End of loop housekeeping ----
     # Clean up the environment by restoring it to the 'pre-loop' state.
     rm(list = setdiff(ls(), loop_env))
     # Force garbage collection to free up memory

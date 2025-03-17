@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 options(kableExtra.auto_format = FALSE)
 
 # Line below for testing only
-LOCALITY <- "Inverness"
+LOCALITY <- "Inverclyde East"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
 # LOCALITY <- "Helensburgh and Lomond"
@@ -33,8 +33,6 @@ y <- 1 # object for table numbers
 ```{r produce_data, include = FALSE}
 source("General Health/3. General Health Outputs.R")
 ```
-
-##### Page break
 
 ## General Health
 
@@ -148,7 +146,7 @@ knitr::kable(ltc_multimorbidity_table)
 y <- y + 1
 ```
 
-##### Page break 
+##### Page break
 
 **Most common physical Long-Term Conditions (LTCs)**
 
@@ -156,13 +154,13 @@ Below is a breakdown of the physical LTCs, for the financial year `r latest_year
 
 #### Figure `r x`: The percentage of people with each physical LTC by age group. \newline
 
-```{r ltc_types_plot, echo = FALSE, fig.width = 7.5, fig.height = 3.8, fig.cap = "A graph showing the prevalence of physical long term conditions by percentage of population for Under 65s and for Over 65s."}
+```{r ltc_types_plot, echo = FALSE, fig.width = 7.5, fig.height = 5, fig.cap = "A graph showing the prevalence of physical long term conditions by percentage of population for Under 65s and for Over 65s."}
 ltc_types_plot
 
 x <- x + 1
 ```
 
-###### \*COPD: Chronic Obstructive Pulmonary Disease
+\^\*COPD: Chronic Obstructive Pulmonary Disease\^
 
 #### Table `r y`: Prevalence of the five most common physical LTCs as a percentage of the population across geographical areas (1 is the most prevalent).
 
@@ -176,7 +174,7 @@ y <- y + 1
 
 Source: Source Linkage Files
 
-### Cancer 
+### Cancer
 
 For the period `r latest_period_cancer_reg`, there were **`r format_number_for_text(cancer_reg_total_latest)`** new cancer registrations per year on average (a rate of **`r format_number_for_text(cancer_reg_rate_latest)`** registrations per 100,000 age-sex standardised population) in `r LOCALITY` locality. For the period `r latest_period_early_deaths_cancer`, there were also **`r format_number_for_text(early_deaths_cancer_rate_latest)`** early deaths per 100,000 from cancer in the locality, this is a **`r format_number_for_text(cancer_deaths_perc_change)`%** `r cancer_deaths_changeword` compared to the rate 10 years prior.
 

@@ -68,7 +68,8 @@ life_exp <- bind_rows(life_exp_male, life_exp_fem) %>%
     "Life expectancy, males" ~ "Male",
     "Life expectancy, females" ~ "Female"
   )) %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 12)))
+  mutate(period_short = str_replace(period, fixed(" to "), "-") |>
+    str_sub(end = 9))
 
 rm(life_exp_fem, life_exp_male)
 
@@ -740,7 +741,7 @@ ltc_plot_left <- ltc_types %>%
   filter(age_group == "Under 65") %>%
   ggplot(aes(x = percent, y = key, label = round_half_up(percent, 1))) +
   geom_point(colour = palette[1], size = 3) +
-  geom_segment(aes(x = 0, y = key, xend = percent, yend = key), size = 0.4) +
+  geom_segment(aes(x = 0, y = key, xend = percent, yend = key), linewidth = 0.4) +
   labs(x = "People under 65 with\nthe condition (%)", y = "", title = "UNDER 65") +
   scale_x_continuous(breaks = seq(-100, 0, 2), labels = abs) +
   expand_limits(x = lims.un65) +
@@ -805,7 +806,7 @@ ltc_types_plot <- plot_grid(
   ),
   caption,
   nrow = 3,
-  rel_heights = c(0.1, 1, 0.1)
+  rel_heights = c(3, 20, 1)
 )
 
 
@@ -853,8 +854,7 @@ top5ltc_loc <- ltc_totals %>%
   filter(hscp_locality == LOCALITY) %>%
   select(-hscp_locality, -hscp2019name, -people, -slf_adj_pop) %>%
   pivot_longer(cols = everything(), names_to = "topltc", values_to = "value") %>%
-  arrange(desc(value)) %>%
-  slice_max(n = 5, order_by = value) %>%
+  slice_max(n = 5, order_by = value, with_ties = FALSE) %>%
   mutate(percent = round_half_up((value / ltc_pops_total_loc) * 100, 2)) %>%
   select(-value) %>%
   left_join(ltc_cols, by = join_by(topltc)) %>%
@@ -867,8 +867,7 @@ top5ltc_hscp <- ltc_totals %>%
   select(-hscp_locality, -hscp2019name, -people, -slf_adj_pop) %>%
   summarise(across(everything(), sum)) %>%
   pivot_longer(cols = everything(), names_to = "topltc", values_to = "value") %>%
-  arrange(desc(value)) %>%
-  slice_max(n = 5, order_by = value) %>%
+  slice_max(n = 5, order_by = value, with_ties = FALSE) %>%
   mutate(percent = round_half_up((value / ltc_pops_total_hscp) * 100, 2)) %>%
   select(-value) %>%
   left_join(ltc_cols, by = join_by(topltc)) %>%
@@ -880,8 +879,7 @@ top5ltc_scot <- ltc_totals %>%
   select(-hscp_locality, -hscp2019name, -people, -slf_adj_pop) %>%
   summarise(across(everything(), sum)) %>%
   pivot_longer(cols = everything(), names_to = "topltc", values_to = "value") %>%
-  arrange(desc(value)) %>%
-  slice_max(n = 5, order_by = value) %>%
+  slice_max(n = 5, order_by = value, with_ties = FALSE) %>%
   mutate(percent = round_half_up((value / ltc_pops_total_scot) * 100, 2)) %>%
   select(-value) %>%
   left_join(ltc_cols, by = join_by(topltc)) %>%
@@ -937,7 +935,7 @@ rm(
   ltc_cols, ltc_loc_col, ltc_hscp_col, ltc_scot_col,
   ltc_pops_total_loc, ltc_pops_total_hscp,
   loc.ltc.table, hscp.ltc.table,
-  top5ltc_loc, top5ltc_hscp, top5ltc_scot, top5ltc_all_table, title
+  top5ltc_hscp, top5ltc_scot, top5ltc_all_table, title
 )
 
 ## Objects for text
