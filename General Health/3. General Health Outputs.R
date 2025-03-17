@@ -766,7 +766,7 @@ ltc_plot_right <- ltc_types %>%
   filter(age_group == "65+") %>%
   ggplot(aes(x = percent, y = key, label = round_half_up(percent, 1))) +
   geom_point(colour = palette[2], size = 3) +
-  geom_segment(aes(x = 0, y = key, xend = percent, yend = key), size = 0.4) +
+  geom_segment(aes(x = 0, y = key, xend = percent, yend = key), linewidth = 0.4) +
   labs(x = "People over 65 with\nthe condition (%)", y = "", title = "OVER 65") +
   scale_x_continuous(breaks = seq(0, 100, 2)) +
   expand_limits(x = lims.ov65) +
