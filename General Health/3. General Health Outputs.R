@@ -67,7 +67,8 @@ life_exp <- bind_rows(life_exp_male, life_exp_fem) %>%
     "Life expectancy, males" ~ "Male",
     "Life expectancy, females" ~ "Female"
   )) %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 12)))
+  mutate(period_short = str_replace(period, fixed(" to "), "-") |>
+    str_sub(end = 9))
 
 rm(life_exp_fem, life_exp_male)
 
@@ -933,7 +934,7 @@ rm(
   ltc_cols, ltc_loc_col, ltc_hscp_col, ltc_scot_col,
   ltc_pops_total_loc, ltc_pops_total_hscp,
   loc.ltc.table, hscp.ltc.table,
-  top5ltc_loc, top5ltc_hscp, top5ltc_scot, top5ltc_all_table, title
+  top5ltc_hscp, top5ltc_scot, top5ltc_all_table, title
 )
 
 ## Objects for text
