@@ -134,7 +134,7 @@ zones <- merge(zones, lookup_dz, by = "datazone2011")
 # subset for Locality
 zones <- subset(zones, hscp_locality == LOCALITY)
 
-# Get latitude and longitdue co-ordinates for each datazone, find min and max.
+# Get latitude and longitude co-ordinates for each datazone, find min and max.
 zones_coord <-
   zones %>%
   sf::st_coordinates() %>%
