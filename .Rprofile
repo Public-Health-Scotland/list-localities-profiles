@@ -35,3 +35,7 @@ options(readr.show_col_types = FALSE)
 
 # ggrepel options ----
 options("ggrepel.max.overlaps" = 12)
+
+# dplyr options ----
+# Suppresses the message about using `.groups`
+options("dplyr.summarise.inform" = FALSE)
