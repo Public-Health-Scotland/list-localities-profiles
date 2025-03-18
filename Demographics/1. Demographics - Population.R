@@ -470,3 +470,18 @@ scot_over65 <- pop_scot %>%
   pull(perc_over65)
 
 rm(pop_hscp, pop_scot)
+
+# Housekeeping ----
+# These objects are left over after the script is run
+# but don't appear to be used in any 'downstream' process:
+# Main markdown, Summary Table, Excel data tables, SDC output.
+# TODO: Investigate if these can be removed earlier or not created at all.
+rm(
+  hist_pop_breakdown,
+  hscp_pop_proj,
+  n_loc,
+  other_locs,
+  pop_plot_dat,
+  pop_raw_data
+)
+gc()

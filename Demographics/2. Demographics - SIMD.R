@@ -434,3 +434,31 @@ hscp_simd <- pop_data %>%
 
 hscp_simd_top <- filter(hscp_simd, simd2020v2_sc_quintile == 5)$perc
 hscp_simd_bottom <- filter(hscp_simd, simd2020v2_sc_quintile == 1)$perc
+
+# Housekeeping ----
+# These objects are left over after the script is run
+# but don't appear to be used in any 'downstream' process:
+# Main markdown, Summary Table, Excel data tables, SDC output.
+# TODO: Investigate if these can be removed earlier or not created at all.
+rm(
+  base_data,
+  domains,
+  hscp_simd,
+  lookup_dz,
+  lookups_dir,
+  max_lat,
+  max_long,
+  min_lat,
+  min_long,
+  n_loc,
+  other_locs,
+  pop_16_20,
+  pop_data,
+  pop_raw_data,
+  simd_cats,
+  simd_col,
+  simd2016,
+  simd2020,
+  zones_coord
+)
+gc()

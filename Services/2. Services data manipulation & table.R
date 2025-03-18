@@ -175,3 +175,24 @@ services_tibble <- tibble(
     nrow(other_care_type)
   )
 )
+
+# Housekeeping ----
+# These objects are left over after the script is run
+# but don't appear to be used in any 'downstream' process:
+# Main markdown, Summary Table, Excel data tables, SDC output.
+# TODO: Investigate if these can be removed earlier or not created at all.
+rm(
+  care_homes,
+  Clacks_Royal,
+  data,
+  file,
+  hosp_lookup,
+  hosp_postcodes,
+  hosp_types,
+  name,
+  other_care_type,
+  postcode_lkp,
+  prac,
+  services_file_names
+)
+gc()

@@ -360,3 +360,22 @@ scot_perc_housesFH <- format_number_for_text(sum(house_raw_dat2$council_tax_band
   house_raw_dat2$council_tax_band_h,
   na.rm = TRUE
 ) / sum(house_raw_dat2$total_number_of_dwellings, na.rm = TRUE) * 100)
+
+# Housekeeping ----
+# These objects are left over after the script is run
+# but don't appear to be used in any 'downstream' process:
+# Main markdown, Summary Table, Excel data tables, SDC output.
+# TODO: Investigate if these can be removed earlier or not created at all.
+rm(
+  ctb,
+  ext_year,
+  house_raw_dat,
+  house_raw_dat2,
+  i,
+  n_occupied,
+  n_vacant,
+  pal_ctb,
+  perc_vacant,
+  variable
+)
+gc()

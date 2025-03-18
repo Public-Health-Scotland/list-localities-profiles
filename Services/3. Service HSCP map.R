@@ -339,3 +339,25 @@ rm(
   shp_hscp,
   zones_coord
 )
+
+# Housekeeping ----
+# These objects are left over after the script is run
+# but don't appear to be used in any 'downstream' process:
+# Main markdown, Summary Table, Excel data tables, SDC output.
+# TODO: Investigate if these can be removed earlier or not created at all.
+rm(
+  all_markers,
+  api_key,
+  col_palette,
+  ext_year,
+  hscp_loc,
+  locality_map_id,
+  lookup2,
+  max_lat,
+  max_long,
+  min_lat,
+  min_long,
+  n_loc,
+  places
+)
+gc()

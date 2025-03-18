@@ -1078,6 +1078,34 @@ scot_adp_presc <- hscp_scot_summary_table(adp_presc, latest_year = max(adp_presc
 
 scot_ltc <- round_half_up((sum(filter(ltc_scot, total_ltc > 0)$people) / ltc_pops_total_scot) * 100, 1)
 
+# Housekeeping ----
+# These objects are left over after the script is run
+# but don't appear to be used in any 'downstream' process:
+# Main markdown, Summary Table, Excel data tables, SDC output.
+# TODO: Investigate if these can be removed earlier or not created at all.
+rm(
+  create_infographic,
+  disease_hosp,
+  early_deaths_cancer_rate_earliest,
+  gen_health_data_dir,
+  HB,
+  hscp_scot_summary_table,
+  latest_year_life_exp_loc,
+  locality_missing,
+  ltc_infographic,
+  ltc_pops_total_scot,
+  ltc_scot,
+  ltc_totals,
+  ltc2,
+  other_locs,
+  other_locs_summary_table,
+  otherloc_ltc_pops,
+  prev_period_cancer_reg,
+  slf_pop_loc,
+  slf_pops,
+  table8_year_title
+)
+gc()
 
 ## Stat disclosure control for LTC
 
