@@ -10,7 +10,7 @@
 ext_year <- 2024
 
 # Set locality profiles file path
-lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 import_folder <- paste0(lp_path, "Unscheduled Care/DATA ", ext_year, "/")
 
 ### for testing run global script and locality placeholder below
@@ -19,12 +19,12 @@ import_folder <- paste0(lp_path, "Unscheduled Care/DATA ", ext_year, "/")
 library(scales)
 
 ## Functions
-source("./Master RMarkdown Document & Render Code/Global Script.R")
+#source("./Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Define locality
-HSCP <- "Moray"
+#HSCP <- 'Moray'
 
-max_fy <- "2023/24" # TODO Change this to be dynamic and move to general!
+max_fy <- "2023/24" #TODO Change this to be dynamic and move to general!
 
 ########################## SECTION 2: Lookups & Populations ###############################
 
@@ -32,7 +32,7 @@ max_fy <- "2023/24" # TODO Change this to be dynamic and move to general!
 
 localities <- read_in_localities()
 
-# HSCP <- as.character(filter(localities, hscp_locality == LOCALITY)$hscp2019name)
+#HSCP <- as.character(filter(localities, hscp_locality == LOCALITY)$hscp2019name)
 HB <- as.character(filter(localities, hscp2019name == HSCP)$hb2019name)
 
 # Determine other localities based on LOCALITY object
@@ -64,7 +64,7 @@ populations$"Pop65Plus" <- rowSums(subset(populations, select = age65:age90plus)
 
 pops <- populations %>%
   select(
-    year, hb2019name, hscp2019name,
+    year, hb2019name, hscp2019name, 
     Pop0_17, Pop18_44, Pop45_64, Pop65_74,
     Pop75Plus, Pop65Plus, total_pop
   ) %>%
@@ -80,9 +80,9 @@ loc_pops <- populations %>%
     Pop75Plus, Pop65Plus, total_pop
   ) %>%
   mutate(financial_year = paste0(year, "/", substr(year + 1, 3, 4))) %>%
-  group_by(financial_year, year, hb2019name, hscp2019name, hscp_locality) %>%
+  group_by(financial_year, year, hb2019name, hscp2019name,hscp_locality) %>%
   summarise(across(everything(), sum)) %>%
-  ungroup() %>%
+  ungroup()%>%
   pivot_longer("Pop0_17":"total_pop", names_to = "age_group", values_to = "pop") %>%
   mutate(age_group = case_when(
     age_group == "Pop0_17" ~ "0 - 17",
@@ -101,10 +101,10 @@ pop_areas <- pops %>%
   select(-hb2019name) %>%
   group_by(financial_year, year, hscp2019name) %>%
   summarise_all(sum) %>%
-  ungroup() |>
+  ungroup() |> 
   rename(location = hscp2019name) %>%
   # Add a partnership total
-  # bind_rows(
+  #bind_rows(
   #  pops %>%
   #    select(-hscp_locality, -hb2019name) %>%
   #    filter(hscp2019name == HSCP) %>%
@@ -112,17 +112,17 @@ pop_areas <- pops %>%
   #    summarise(across(everything(), sum)) %>%
   #    ungroup() %>%
   #    rename(location = hscp2019name)
-  # ) %>%
+  #) %>%
   # Add HB total
-  bind_rows(
-    pops %>%
-      select(-hscp2019name) %>%
-      filter(hb2019name == HB) %>%
-      group_by(financial_year, year, hb2019name) %>%
-      summarise(across(everything(), sum)) %>%
-      ungroup() %>%
-      rename(location = hb2019name)
-  ) %>%
+bind_rows(
+  pops %>%
+    select(-hscp2019name) %>%
+    filter(hb2019name == HB) %>%
+    group_by(financial_year, year, hb2019name) %>%
+    summarise(across(everything(), sum)) %>%
+    ungroup() %>%
+    rename(location = hb2019name)
+) %>%
   # Add a Scotland total
   bind_rows(
     pops %>%
@@ -182,7 +182,7 @@ pop_areas_65plus <- pop_areas %>%
 pops_other_locs <- inner_join(
   loc_pops,
   other_locs,
-  by = join_by(hscp2019name, hscp_locality)
+  by = join_by(hscp2019name,hscp_locality)
 ) %>%
   filter(
     age_group == "Total",
@@ -219,7 +219,7 @@ aggregate_usc_area_data <- function(data) {
   #  summarise(n = sum(n)) %>%
   #  ungroup() %>%
   #  mutate(area_type = "Locality")
-
+  
   pts_hscp <- data %>%
     filter(hscp2019name == HSCP) %>%
     mutate(location = hscp2019name) %>%
@@ -227,7 +227,7 @@ aggregate_usc_area_data <- function(data) {
     summarise(n = sum(n)) %>%
     ungroup() %>%
     mutate(area_type = "HSCP")
-
+  
   pts_hb <- data %>%
     left_join(
       select(localities, hscp_locality, hb2019name),
@@ -239,7 +239,7 @@ aggregate_usc_area_data <- function(data) {
     summarise(n = sum(n)) %>%
     ungroup() %>%
     mutate(area_type = "HB")
-
+  
   pts_scot <- data %>%
     group_by(financial_year) %>%
     summarise(n = sum(n)) %>%
@@ -248,7 +248,7 @@ aggregate_usc_area_data <- function(data) {
       location = "Scotland",
       area_type = "Scotland"
     )
-
+  
   bind_rows(pts_hscp, pts_hb, pts_scot) %>%
     mutate(area_type = factor(area_type, levels = c("HSCP", "HB", "Scotland")))
 }
@@ -329,7 +329,7 @@ emergency_adm <- arrow::read_parquet(paste0(import_folder, "emergency_admissions
 
 # Plotting by age
 emergency_adm_age <- emergency_adm %>%
-  filter(hscp2019name == HSCP) |>
+  filter(hscp2019name == HSCP) |> 
   drop_na(age_group) %>%
   group_by(financial_year, age_group) %>%
   summarise(adm = sum(admissions)) %>%
@@ -379,18 +379,18 @@ first_fy_rate <- filter(
   area_type == "HSCP"
 )$data
 
-# latest_emergency_adm_loc <- emergency_adm_areas %>%
+#latest_emergency_adm_loc <- emergency_adm_areas %>%
 #  filter(
 #    location == LOCALITY,
 #   year == max(year, na.rm = TRUE)
 # ) %>%
 # mutate(formatted_data = format(data, big.mark = ","))
 
-# latest_emergency_adm_loc1 <- latest_emergency_adm_loc %>% pull(formatted_data)
-# latest_emergency_adm_loc2 <- latest_emergency_adm_loc %>% pull(data)
+#latest_emergency_adm_loc1 <- latest_emergency_adm_loc %>% pull(formatted_data)
+#latest_emergency_adm_loc2 <- latest_emergency_adm_loc %>% pull(data)
 
-# percent_rate_change <- percent_change_calc(latest_emergency_adm_loc2, first_fy_rate)
-# word_change_rate <- word_change_calc(latest_emergency_adm_loc2, first_fy_rate)
+#percent_rate_change <- percent_change_calc(latest_emergency_adm_loc2, first_fy_rate)
+#word_change_rate <- word_change_calc(latest_emergency_adm_loc2, first_fy_rate)
 
 # HSCP
 hscp_emergency_adm <- emergency_adm_areas %>%
@@ -528,19 +528,19 @@ bed_days <- arrow::read_parquet(paste0(import_folder, "bed_days_msg.parquet")) %
 
 # Plotting by age
 bed_days_age <- bed_days %>%
-  filter(hscp_locality == LOCALITY) %>%
+  filter(hscp2019name == HSCP) %>%
   drop_na(age_group) %>%
   group_by(financial_year, age_group) %>%
   summarise(bed_days = sum(bed_days)) %>%
   ungroup() %>%
-  left_join(loc_pop_age1, by = join_by(financial_year, age_group)) %>%
+  left_join(hscp_pop_age1, by = join_by(financial_year, age_group)) %>%
   mutate(data = round_half_up(bed_days / pop * 100000)) %>%
   drop_na(year)
 
 
 BDs_age_ts <- age_group_trend_usc(
   data_for_plot = bed_days_age,
-  plot_title = paste("Unscheduled bed days per 100,000 over time by age group\n for", LOCALITY),
+  plot_title = paste("Unscheduled bed days per 100,000 over time by age group\n for",HSCP),
   yaxis_title = "Unscheduled bed day rate\n per 100,000 population",
   source = "Source: PHS SMR01"
 )
@@ -569,17 +569,17 @@ max_year_ubd <- max(bed_days_areas$financial_year)
 first_fy_rate_ubd <- filter(
   bed_days_areas,
   financial_year == min(financial_year),
-  location == LOCALITY & area_type == "Locality"
+  location == HSCP & area_type == "HSCP"
 )$data
 
-latest_bed_days_loc <- bed_days_areas %>%
-  filter(location == LOCALITY, year == max(year)) %>%
-  mutate(formatted_data = format(data, big.mark = ","))
-latest_bed_days_loc1 <- latest_bed_days_loc %>% pull(formatted_data)
-latest_bed_days_loc2 <- latest_bed_days_loc %>% pull(data)
+#latest_bed_days_loc <- bed_days_areas %>%
+#  filter(location == LOCALITY, year == max(year)) %>%
+#  mutate(formatted_data = format(data, big.mark = ","))
+#latest_bed_days_loc1 <- latest_bed_days_loc %>% pull(formatted_data)
+#latest_bed_days_loc2 <- latest_bed_days_loc %>% pull(data)
 
-rate_change_ubd <- percent_change_calc(latest_bed_days_loc2, first_fy_rate_ubd)
-word_change_ubd <- word_change_calc(latest_bed_days_loc2, first_fy_rate_ubd)
+#rate_change_ubd <- percent_change_calc(latest_bed_days_loc2, first_fy_rate_ubd)
+#word_change_ubd <- word_change_calc(latest_bed_days_loc2, first_fy_rate_ubd)
 # HSCP
 first_fy_hscp_ubd <- filter(
   bed_days_areas, (financial_year == min(bed_days_areas$financial_year)) & (area_type == "HSCP")
@@ -702,19 +702,19 @@ bed_days_mh <- arrow::read_parquet(paste0(import_folder, "bed_days_mh_msg.parque
 
 # Plotting by age
 bed_days_mh_age <- bed_days_mh %>%
-  filter(hscp_locality == LOCALITY) %>%
+  filter(hscp2019name == HSCP) %>%
   drop_na(age_group) %>%
   group_by(financial_year, age_group) %>%
   summarise(bed_days = sum(bed_days)) %>%
   ungroup() %>%
-  left_join(loc_pop_age1, by = join_by(financial_year, age_group)) %>%
+  left_join(hscp_pop_age1, by = join_by(financial_year, age_group)) %>%
   mutate(data = round_half_up(bed_days / pop * 100000)) %>%
   drop_na(year)
 
 
 BDMH_age_ts <- age_group_trend_usc(
   data_for_plot = bed_days_mh_age,
-  plot_title = paste("Unscheduled bed days (MH) per 100,000 over time by age group\n for", LOCALITY),
+  plot_title = paste("Unscheduled bed days (MH) per 100,000 over time by age group\n for", HSCP),
   yaxis_title = "Unscheduled bed day (MH) rate\n per 100,000 population",
   source = "Source: PHS SMR04"
 )
@@ -793,26 +793,26 @@ min_word_change_beds_mh <- word_change_calc(latest_bd_mh_min_age2, first_bd_mh_m
 max_year_bd_mh_areas <- max(bed_days_mh_areas$financial_year)
 min_year_bd_mh_areas <- min(bed_days_mh_areas$financial_year)
 
-latest_bed_days_mh_loc <- bed_days_mh_areas %>%
-  filter(
-    location == LOCALITY,
-    year == max(year)
-  ) %>%
-  mutate(formatted_data = format(data, big.mark = ","))
+#latest_bed_days_mh_loc <- bed_days_mh_areas %>%
+#  filter(
+#    location == LOCALITY,
+#    year == max(year)
+#  ) %>%
+#  mutate(formatted_data = format(data, big.mark = ","))
 
-latest_bed_days_mh_loc1 <- latest_bed_days_mh_loc %>% pull(formatted_data)
-latest_bed_days_mh_loc2 <- latest_bed_days_mh_loc %>% pull(data)
-latest_bed_days_mh_loc1 <- ifelse(is_empty(latest_bed_days_mh_loc1), "NA", latest_bed_days_mh_loc1)
+#latest_bed_days_mh_loc1 <- latest_bed_days_mh_loc %>% pull(formatted_data)
+#latest_bed_days_mh_loc2 <- latest_bed_days_mh_loc %>% pull(data)
+#latest_bed_days_mh_loc1 <- ifelse(is_empty(latest_bed_days_mh_loc1), "NA", latest_bed_days_mh_loc1)
 
-first_bed_days_mh_loc <- bed_days_mh_areas %>%
-  filter(
-    location == LOCALITY,
-    year == min(year)
-  ) %>%
-  pull(data)
+#first_bed_days_mh_loc <- bed_days_mh_areas %>%
+#  filter(
+#    location == LOCALITY,
+#    year == min(year)
+#  ) %>%
+#  pull(data)
 
-loc_rate_change_beds_mh <- percent_change_calc(latest_bed_days_mh_loc2, first_bed_days_mh_loc)
-loc_word_change_beds_mh <- word_change_calc(latest_bed_days_mh_loc2, first_bed_days_mh_loc)
+#loc_rate_change_beds_mh <- percent_change_calc(latest_bed_days_mh_loc2, first_bed_days_mh_loc)
+#loc_word_change_beds_mh <- word_change_calc(latest_bed_days_mh_loc2, first_bed_days_mh_loc)
 
 hscp_bed_days_mh <- bed_days_mh_areas %>%
   filter(
@@ -895,20 +895,20 @@ ae_attendances <- arrow::read_parquet(paste0(import_folder, "ae_attendances_msg.
 # Plotting by age
 ae_att_age <- ae_attendances %>%
   filter(
-    hscp_locality == LOCALITY,
+    hscp2019name == HSCP,
     age_group != "NA"
   ) %>%
   group_by(financial_year, age_group) %>%
   summarise(attendances = sum(attendances)) %>%
   ungroup() %>%
-  left_join(loc_pop_age1, by = join_by(financial_year, age_group)) %>%
+  left_join(hscp_pop_age1, by = join_by(financial_year, age_group)) %>%
   mutate(data = round_half_up(attendances / pop * 100000)) %>%
   drop_na(year)
 
 
 AandE_age_ts <- age_group_trend_usc(
   data_for_plot = ae_att_age,
-  plot_title = paste("A&E attendances per 100,000 over time by age group\n for", LOCALITY),
+  plot_title = paste("A&E attendances per 100,000 over time by age group\n for", HSCP),
   yaxis_title = "A&E attendance rate\n per 100,000 population",
   source = "Source: PHS A&E Datamart"
 )
@@ -993,24 +993,24 @@ word_change_rate_ae_age2 <- word_change_calc(latest_ae_att_loc2_age_min, first_a
 min_year_ae_area <- min(ae_att_areas$financial_year)
 max_year_ae_area <- max(ae_att_areas$financial_year)
 
-first_fy_rate_ae_areas <- filter(
-  ae_att_areas,
-  financial_year == min(financial_year),
-  location == LOCALITY & area_type == "Locality",
-)$data
+#first_fy_rate_ae_areas <- filter(
+#  ae_att_areas,
+#  financial_year == min(financial_year),
+#  location == LOCALITY & area_type == "Locality",
+#)$data
 
-latest_ae_att_loc <- ae_att_areas %>%
-  filter(
-    location == LOCALITY,
-    year == max(year)
-  ) %>%
-  mutate(formatted_data = format(data, big.mark = ","))
+#latest_ae_att_loc <- ae_att_areas %>%
+#  filter(
+#    location == LOCALITY,
+#    year == max(year)
+#  ) %>%
+# mutate(formatted_data = format(data, big.mark = ","))
 
-latest_ae_att_loc1 <- latest_ae_att_loc %>% pull(formatted_data)
-latest_ae_att_loc2 <- latest_ae_att_loc %>% pull(data)
+#latest_ae_att_loc1 <- latest_ae_att_loc %>% pull(formatted_data)
+#latest_ae_att_loc2 <- latest_ae_att_loc %>% pull(data)
 
-percent_rate_change_ae_areas <- percent_change_calc(latest_ae_att_loc2, first_fy_rate_ae_areas)
-word_change_rate_ae_areas <- word_change_calc(latest_ae_att_loc2, first_fy_rate_ae_areas)
+#percent_rate_change_ae_areas <- percent_change_calc(latest_ae_att_loc2, first_fy_rate_ae_areas)
+#word_change_rate_ae_areas <- word_change_calc(latest_ae_att_loc2, first_fy_rate_ae_areas)
 
 hscp_ae_att <- ae_att_areas %>%
   filter(
@@ -1117,25 +1117,25 @@ DD_loc_ts <- area_trend_usc(
 min_year_dd <- min(delayed_disch_areas$financial_year)
 max_year_dd <- max(delayed_disch_areas$financial_year)
 
-latest_dd_loc <- delayed_disch_areas %>%
-  filter(
-    location == LOCALITY,
-    year == max(year)
-  ) %>%
-  mutate(formatted_data = format(data, big.mark = ","))
+#latest_dd_loc <- delayed_disch_areas %>%
+#  filter(
+#    location == LOCALITY,
+#   year == max(year)
+# ) %>%
+#  mutate(formatted_data = format(data, big.mark = ","))
 
-latest_dd_loc1 <- latest_dd_loc %>% pull(formatted_data)
-latest_dd_loc2 <- latest_dd_loc %>% pull(data)
+#latest_dd_loc1 <- latest_dd_loc %>% pull(formatted_data)
+#latest_dd_loc2 <- latest_dd_loc %>% pull(data)
 
-first_dd_loc <- delayed_disch_areas %>%
-  filter(
-    location == LOCALITY,
-    year == min(year)
-  ) %>%
-  pull(data)
+#first_dd_loc <- delayed_disch_areas %>%
+# filter(
+#    location == LOCALITY,
+#   year == min(year)
+# ) %>%
+# pull(data)
 
-percent_rate_change_dd_loc <- percent_change_calc(latest_dd_loc2, first_dd_loc)
-word_change_rate_dd_loc <- word_change_calc(latest_dd_loc2, first_dd_loc)
+#percent_rate_change_dd_loc <- percent_change_calc(latest_dd_loc2, first_dd_loc)
+#word_change_rate_dd_loc <- word_change_calc(latest_dd_loc2, first_dd_loc)
 
 
 hscp_dd <- delayed_disch_areas %>%
@@ -1242,25 +1242,25 @@ Falls_loc_ts <- area_trend_usc(
 min_year_falls <- min(falls_areas$financial_year)
 max_year_falls <- max(falls_areas$financial_year)
 
-latest_falls_loc <- falls_areas %>%
-  filter(
-    location == LOCALITY,
-    year == max(year)
-  ) %>%
-  mutate(formatted_data = format(data, big.mark = ","))
+#latest_falls_loc <- falls_areas %>%
+#  filter(
+#    location == LOCALITY,
+#    year == max(year)
+#  ) %>%
+#  mutate(formatted_data = format(data, big.mark = ","))
 
-latest_falls_loc1 <- latest_falls_loc %>% pull(formatted_data)
-latest_falls_loc2 <- latest_falls_loc %>% pull(data)
+#latest_falls_loc1 <- latest_falls_loc %>% pull(formatted_data)
+#latest_falls_loc2 <- latest_falls_loc %>% pull(data)
 
-first_falls_loc <- falls_areas %>%
-  filter(
-    location == LOCALITY,
-    year == min(year)
-  ) %>%
-  pull(data)
+#first_falls_loc <- falls_areas %>%
+#  filter(
+#    location == LOCALITY,
+#    year == min(year)
+#  ) %>%
+#  pull(data)
 
-percent_rate_change_falls_loc <- percent_change_calc(latest_falls_loc2, first_falls_loc)
-word_change_rate_falls_loc <- word_change_calc(latest_falls_loc2, first_falls_loc)
+#percent_rate_change_falls_loc <- percent_change_calc(latest_falls_loc2, first_falls_loc)
+#word_change_rate_falls_loc <- word_change_calc(latest_falls_loc2, first_falls_loc)
 
 hscp_falls <- falls_areas %>%
   filter(
@@ -1331,7 +1331,7 @@ readmissions <- arrow::read_parquet(paste0(import_folder, "readmissions_smr.parq
 # Plotting by age
 
 readmissions_age <- readmissions %>%
-  filter(hscp_locality == LOCALITY) %>%
+  filter(hscp2019name == HSCP) %>%
   drop_na(age_group) %>%
   group_by(financial_year, age_group) %>%
   summarise(
@@ -1343,7 +1343,7 @@ readmissions_age <- readmissions %>%
 
 read_age_ts <- age_group_trend_usc(
   data_for_plot = readmissions_age,
-  plot_title = paste("Readmission rate (28 days) per 1,000 discharges by age group\n for", LOCALITY),
+  plot_title = paste("Readmission rate (28 days) per 1,000 discharges by age group\n for", HSCP),
   yaxis_title = "Readmission rate (28 days)\n per 1,000 discharges",
   source = "Source: PHS SMR01"
 )
@@ -1432,24 +1432,24 @@ word_change_rate_re_age_min <- word_change_calc(latest_re_min_age_data, first_re
 min_year_re_area <- min(readmissions_areas$financial_year)
 max_year_re_area <- max(readmissions_areas$financial_year)
 
-first_read_loc <- readmissions_areas %>%
-  filter(
-    location == LOCALITY,
-    year == min(year)
-  )
+#first_read_loc <- readmissions_areas %>%
+# filter(
+#   location == LOCALITY,
+#   year == min(year)
+# )
 
-first_read_loc1 <- first_read_loc %>% pull(data)
+#first_read_loc1 <- first_read_loc %>% pull(data)
 
-latest_read_loc <- readmissions_areas %>%
-  filter(
-    location == LOCALITY,
-    year == max(year)
-  )
+#latest_read_loc <- readmissions_areas %>%
+#  filter(
+#    location == LOCALITY,
+#   year == max(year)
+# )
+#
+#latest_read_loc1 <- latest_read_loc %>% pull(data)
 
-latest_read_loc1 <- latest_read_loc %>% pull(data)
-
-percent_rate_change_re_area <- percent_change_calc(latest_read_loc1, first_read_loc1)
-word_change_rate_re_area <- word_change_calc(latest_read_loc1, first_read_loc1)
+#percent_rate_change_re_area <- percent_change_calc(latest_read_loc1, first_read_loc1)
+#word_change_rate_re_area <- word_change_calc(latest_read_loc1, first_read_loc1)
 
 first_hscp_read <- readmissions_areas %>%
   filter(
@@ -1619,7 +1619,7 @@ ppa_65plus <- ppa %>%
 
 latest_ppa_65plus <- ppa_65plus %>%
   filter(
-    location == LOCALITY,
+    location == HSCP,
     year == max(year)
   ) %>%
   pull(data)
@@ -1636,7 +1636,7 @@ ppa_under65 <- ppa %>%
 
 latest_ppa_under65 <- ppa_under65 %>%
   filter(
-    location == LOCALITY,
+    location == HSCP,
     year == max(year)
   ) %>%
   pull(data)
@@ -1647,10 +1647,10 @@ ppa_areas <- ppa %>%
   rename(n = admissions) %>%
   aggregate_usc_area_data() %>%
   left_join(pop_areas_all_ages, by = join_by(financial_year, location)) %>%
-  mutate(data = round_half_up(n / pop * 100000)) %>%
-  mutate(location = factor(location, levels = c(LOCALITY, HSCP, HB, "Scotland"))) %>%
-  arrange(location) %>%
-  drop_na(year)
+  mutate(data = round_half_up(n / pop * 100000)) #%>%
+#mutate(location = factor(location, levels = c(HSCP, HB, "Scotland"))) %>%
+# arrange(location) %>%
+# drop_na(year)
 
 
 ppa_loc_ts <- area_trend_usc(
@@ -1666,15 +1666,15 @@ max_year_ppa_areas <- max(ppa_areas$financial_year)
 min_year_ppa_areas <- min(ppa_areas$financial_year)
 
 
-latest_ppa_loc <- ppa_areas %>%
-  filter(
-    location == LOCALITY,
-    year == max(year) | year == min(year)
-  ) %>%
-  mutate(formatted_data = format(data, big.mark = ","))
+#latest_ppa_loc <- ppa_areas %>%
+#  filter(
+#    location == LOCALITY,
+#    year == max(year) | year == min(year)
+#  ) %>%
+#  mutate(formatted_data = format(data, big.mark = ","))
 
-ppa_diff <- percent_change_calc(latest_ppa_loc$data[2], latest_ppa_loc$data[1])
-ppa_word_change <- word_change_calc(latest_ppa_loc$data[2], latest_ppa_loc$data[1])
+#ppa_diff <- percent_change_calc(latest_ppa_loc$data[2], latest_ppa_loc$data[1])
+#ppa_word_change <- word_change_calc(latest_ppa_loc$data[2], latest_ppa_loc$data[1])
 
 hscp_ppa <- ppa_areas %>%
   filter(
@@ -1733,7 +1733,7 @@ latest_period_psych_hosp <- unique(filter(psych_hosp, year == max(psych_hosp$yea
 
 ## Time trend
 psych_hosp_time_trend <- psych_hosp %>%
-  scotpho_time_trend(
+  scotpho_time_trend_HSCP(
     data = .,
     chart_title = "Psychiatric Patient Hospitalisations Time Trend",
     xaxis_title = "Financial Year Groups (3-year aggregates)",
@@ -1750,7 +1750,7 @@ psych_hosp_time_trend <- psych_hosp %>%
 psych_hosp_latest <- round_half_up(filter(
   psych_hosp,
   year == max(psych_hosp$year) &
-    (area_name == LOCALITY & area_type == "Locality")
+    (area_name == HSCP & area_type == "HSCP")
 )$measure, 1)
 
 other_locs_psych_hosp <- psych_hosp %>%
@@ -1779,17 +1779,17 @@ list_years_latest <- list_years$period
 
 
 # Locality
-loc_psych_hosp <- psych_hosp %>%
-  filter(period %in% list_years_latest) %>%
-  filter(
-    area_name == LOCALITY &
-      area_type == "Locality",
-    year == min(year) | year == max(year)
-  ) %>%
-  mutate(measure2 = format(measure, big.mark = ","))
+#loc_psych_hosp <- psych_hosp %>%
+#  filter(period %in% list_years_latest) %>%
+#  filter(
+#    area_name == LOCALITY &
+#      area_type == "Locality",
+#    year == min(year) | year == max(year)
+#  ) %>%
+#  mutate(measure2 = format(measure, big.mark = ","))
 
-diff_loc_psych <- percent_change_calc(loc_psych_hosp$measure[2], loc_psych_hosp$measure[1])
-word_change_loc_psych <- word_change_calc(loc_psych_hosp$measure[2], loc_psych_hosp$measure[1])
+#diff_loc_psych <- percent_change_calc(loc_psych_hosp$measure[2], loc_psych_hosp$measure[1])
+#word_change_loc_psych <- word_change_calc(loc_psych_hosp$measure[2], loc_psych_hosp$measure[1])
 
 # HSCP
 hscp_psych_hosp <- psych_hosp %>%
@@ -1831,22 +1831,3 @@ diff_scot_psych <- percent_change_calc(scot_psych_hosp$measure[2], scot_psych_ho
 word_change_scot_psych <- word_change_calc(scot_psych_hosp$measure[2], scot_psych_hosp$measure[1])
 
 
-
-## Stat disclosure control
-
-# writexl::write_xlsx(x = list("Emergency Adm" = emergency_adm,
-#                              "Unsch Bed Days" = bed_days,
-#                              "Unsch Bed Days (SMR4)" = bed_days_mh,
-#                              "A&E Att" = ae_attendances,
-#                              "Delayed Disch" = delayed_disch),
-#                     path = paste0(lp_path, "Publishing/MSG Data.xlsx"))
-
-# falls_sdc <- falls %>%
-#   group_by(financial_year, hscp2019name, hscp_locality) %>%
-#   summarise(falls_admission = sum(admissions)) %>%
-#   ungroup()
-
-# writexl::write_xlsx(x = list("Falls" = falls_sdc,
-#                              "Readmissions 28" = readmissions,
-#                              "PPA" = ppa),
-#                     path = paste0(lp_path, "Publishing/SMR Data.xlsx"))
