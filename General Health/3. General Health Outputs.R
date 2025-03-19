@@ -1088,7 +1088,6 @@ rm(
   disease_hosp,
   early_deaths_cancer_rate_earliest,
   gen_health_data_dir,
-  HB,
   hscp_scot_summary_table,
   latest_year_life_exp_loc,
   locality_missing,
