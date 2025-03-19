@@ -450,7 +450,6 @@ rm(
   max_long,
   min_lat,
   min_long,
-  n_loc,
   other_locs,
   pop_16_20,
   pop_data,
