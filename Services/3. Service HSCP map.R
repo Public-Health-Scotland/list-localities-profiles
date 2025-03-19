@@ -357,7 +357,6 @@ rm(
   max_long,
   min_lat,
   min_long,
-  n_loc,
   places
 )
 gc()
