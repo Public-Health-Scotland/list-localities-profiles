@@ -479,7 +479,6 @@ rm(pop_hscp, pop_scot)
 rm(
   hist_pop_breakdown,
   hscp_pop_proj,
-  other_locs,
   pop_plot_dat,
   pop_raw_data
 )
