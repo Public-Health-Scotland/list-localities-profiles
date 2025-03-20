@@ -24,18 +24,18 @@ lookup <- read_in_localities()
 # For a larger test, use the below to produce profiles for HSCPs likely to cause issues.
 # source("Master RMarkdown Document & Render Code/find_hscp_outliers.R")
 # hscp_list <- outlier_hscps
-hscp_list <- "Angus"
-
+hscp_list <- unique(lookup$hscp2019name)
+#HSCP <- 'Angus'
 # NOTE - This checks that it exactly matches the lookup
 stopifnot(all(hscp_list %in% unique(lookup[["hscp2019name"]])))
 
 # Loop over HSCP ----
 # 'looping' over one HSCP is fine.
-for (HSCP in hscp_list) {
+#for (HSCP in hscp_list) {
   # Create list of localities in chosen HSCP
-  locality_list <- lookup |>
-    filter(hscp2019name == HSCP) |>
-    pull(hscp_locality)
+ # locality_list <- lookup |>
+ #   filter(hscp2019name == HSCP) |>
+ #   pull(hscp_locality)
 
   # Loop to create the profiles for all the localities in the list
 
@@ -48,7 +48,7 @@ for (HSCP in hscp_list) {
   loop_env <- c(ls(), "loop_env")
 
   # 1. Loop through each locality to create the main body of the profiles and the summary table
-  for (LOCALITY in locality_list) {
+  for (HSCP in hscp_list) {
     # 1a) Source in all the scripts for a given LOCALITY
 
     # Demographics ----
@@ -77,14 +77,14 @@ for (HSCP in hscp_list) {
     # Render main profile content ----
     render(
       input = "Master RMarkdown Document & Render Code/Locality_Profiles_Master_Markdown.Rmd",
-      output_file = glue("{LOCALITY} - Locality Profile.docx"),
+      output_file = glue("{HSCP} - HSCP Profile.docx"),
       output_dir = output_dir
     )
 
     # Render the summary table(s) ----
     render(
       input = "Summary Table/Summary-Table-Markdown.Rmd",
-      output_file = glue("{LOCALITY} - Summary Table.docx"),
+      output_file = glue("{HSCP} - Summary Table.docx"),
       output_dir = path(output_dir, "Summary Tables")
     )
 
@@ -94,4 +94,4 @@ for (HSCP in hscp_list) {
     # Force garbage collection to free up memory
     gc()
   }
-}
+#}
