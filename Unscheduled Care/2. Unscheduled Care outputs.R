@@ -33,7 +33,8 @@ max_fy <- "2023/24" # TODO Change this to be dynamic and move to general!
 localities <- read_in_localities()
 
 # HSCP <- as.character(filter(localities, hscp_locality == LOCALITY)$hscp2019name)
-HB <- as.character(filter(localities, hscp2019name == HSCP)$hb2019name)
+#HB <- as.character(filter(localities, hscp2019name == HSCP)$hb2019name)
+HB <- unique(as.character(filter(lookup, hscp2019name == HSCP)$hb2019name))
 
 # Determine other localities based on LOCALITY object
 other_locs <- localities %>%
