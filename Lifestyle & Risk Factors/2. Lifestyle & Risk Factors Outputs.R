@@ -91,7 +91,7 @@ min_year_drug_hosp <- min(drug_hosp[["year"]])
 latest_period_drug_hosp <- drug_hosp[["period_short"]][which.max(drug_hosp[["year"]])]
 earliest_period_drug_hosp <- drug_hosp[["period_short"]][which.min(drug_hosp[["year"]])]
 # ScotPHO time trend will only be latest 10 years
-
+trend_years <- 10
 earliest_period_drug_hosp_trend <- drug_hosp[["period_short"]][match(max_year_drug_hosp - trend_years, drug_hosp[["year"]])]
 
 
