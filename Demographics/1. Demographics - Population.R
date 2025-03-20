@@ -261,12 +261,10 @@ hscp_pop_proj_weight <- hscp_pop_proj %>%
 ## Apply weights to localities
 locality_pop_proj <- hscp_pop_proj_weight %>%
   # merge with lookup file
-  left_join(lookup) %>%
+  left_join(lookup, by = join_by(hscp2019, hscp2019name)) %>%
   select(-hscp2019, -pop, -hb2019name, -hb2019) %>%
   # merge with locality populations data
   full_join(loc_pops, by = c("sex", "age_group", "hscp2019name", "hscp_locality")) %>%
-  as_tibble() %>%
-  ungroup() %>%
   # calculate population projections based on weights
   arrange(hscp2019name, hscp_locality, age_group, sex, year) %>%
   mutate(pop = round_half_up(pop_change * value, 0)) %>%
@@ -479,3 +477,16 @@ scot_over65 <- pop_scot %>%
   pull(perc_over65)
 
 rm(pop_hscp, pop_scot)
+
+# Housekeeping ----
+# These objects are left over after the script is run
+# but don't appear to be used in any 'downstream' process:
+# Main markdown, Summary Table, Excel data tables, SDC output.
+# TODO: Investigate if these can be removed earlier or not created at all.
+rm(
+  hist_pop_breakdown,
+  hscp_pop_proj,
+  pop_plot_dat,
+  pop_raw_data
+)
+gc()

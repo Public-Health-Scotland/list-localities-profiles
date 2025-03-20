@@ -305,7 +305,7 @@ area_trend_usc <- function(data_for_plot, plot_title, yaxis_title, source) {
 # Functions for text variables
 
 percent_change_calc <- function(numerator, denominator, digits = 1) {
-  janitor::round_half_up(
+  round_half_up(
     abs(numerator - denominator) / denominator * 100,
     digits = digits
   )
@@ -324,7 +324,7 @@ word_change_calc <- function(latest, first) {
 # 1. Emergency Admissions ----
 # _________________________________________________________________________
 
-emergency_adm <- arrow::read_parquet(paste0(import_folder, "emergency_admissions_msg.parquet")) %>%
+emergency_adm <- read_parquet(paste0(import_folder, "emergency_admissions_msg.parquet")) %>%
   filter(financial_year <= max_fy)
 
 # Plotting by age
@@ -523,7 +523,7 @@ min_word_change_ea <- word_change_calc(latest_ea_min_age2, first_ea_min_age1)
 # 2a. Unscheduled bed days ----
 # _________________________________________________________________________
 
-bed_days <- arrow::read_parquet(paste0(import_folder, "bed_days_msg.parquet")) %>%
+bed_days <- read_parquet(paste0(import_folder, "bed_days_msg.parquet")) %>%
   filter(financial_year <= max_fy)
 
 # Plotting by age
@@ -697,7 +697,7 @@ min_word_change_ubd <- word_change_calc(latest_ubd_min_age2, first_ubd_min_age1)
 # 2b. Unscheduled bed days - Mental Health ----
 # _________________________________________________________________________
 
-bed_days_mh <- arrow::read_parquet(paste0(import_folder, "bed_days_mh_msg.parquet")) %>%
+bed_days_mh <- read_parquet(paste0(import_folder, "bed_days_mh_msg.parquet")) %>%
   filter(financial_year <= max_fy)
 
 # Plotting by age
@@ -889,7 +889,7 @@ other_loc_bed_days_mh <- bed_days_mh %>%
 # 3. A&E Attendances ----
 # _________________________________________________________________________
 
-ae_attendances <- arrow::read_parquet(paste0(import_folder, "ae_attendances_msg.parquet")) %>%
+ae_attendances <- read_parquet(paste0(import_folder, "ae_attendances_msg.parquet")) %>%
   filter(financial_year <= max_fy)
 
 # Plotting by age
@@ -1083,7 +1083,7 @@ other_loc_ae_att <- ae_attendances %>%
 # 4. Delayed Discharges ----
 # _________________________________________________________________________
 
-delayed_disch <- arrow::read_parquet(paste0(import_folder, "delayed_discharges_msg.parquet")) %>%
+delayed_disch <- read_parquet(paste0(import_folder, "delayed_discharges_msg.parquet")) %>%
   filter(financial_year <= max_fy) %>%
   filter(age_group %in% c("65 - 74", "75+")) %>%
   group_by(financial_year, hscp2019name, hscp_locality) %>%
@@ -1215,7 +1215,7 @@ other_loc_dd <- delayed_disch %>%
 # 5. Fall Admissions ----
 # _________________________________________________________________________
 
-falls <- arrow::read_parquet(paste0(import_folder, "falls_smr.parquet")) %>%
+falls <- read_parquet(paste0(import_folder, "falls_smr.parquet")) %>%
   filter(financial_year <= max_fy) %>%
   filter(age_group %in% c("65 - 74", "75+"))
 
@@ -1325,7 +1325,7 @@ word_change_hb_falls <- word_change_calc(hb_falls2, first_fy_hb_falls)
 # 6. Readmissions (28 days) ----
 # _________________________________________________________________________
 
-readmissions <- arrow::read_parquet(paste0(import_folder, "readmissions_smr.parquet")) %>%
+readmissions <- read_parquet(paste0(import_folder, "readmissions_smr.parquet")) %>%
   filter(financial_year <= max_fy)
 
 # Plotting by age
@@ -1599,7 +1599,7 @@ word_change_hb_read <- word_change_calc(hb_read2, first_fy_hb_read)
 # 8. Potentially Preventable Admissions ----
 # _______________________________________________________________________________________________________
 
-ppa <- arrow::read_parquet(paste0(import_folder, "ppa_smr.parquet")) %>%
+ppa <- read_parquet(paste0(import_folder, "ppa_smr.parquet")) %>%
   filter(financial_year <= max_fy)
 
 # % PPAs in locality under and over 65
@@ -1829,3 +1829,143 @@ scot_psych_hosp <- psych_hosp %>%
 
 diff_scot_psych <- percent_change_calc(scot_psych_hosp$measure[2], scot_psych_hosp$measure[1])
 word_change_scot_psych <- word_change_calc(scot_psych_hosp$measure[2], scot_psych_hosp$measure[1])
+
+# Housekeeping ----
+# These objects are left over after the script is run
+# but don't appear to be used in any 'downstream' process:
+# Main markdown, Summary Table, Excel data tables, SDC output.
+# TODO: Investigate if these can be removed earlier or not created at all.
+rm(
+  ae_attendances,
+  age_group_trend_usc,
+  aggregate_usc_area_data,
+  area_trend_usc,
+  bed_days,
+  bed_days_mh,
+  delayed_disch,
+  emergency_adm,
+  falls,
+  first_ae_att_max_age,
+  first_ae_att_max_age_data,
+  first_ae_att_min_age,
+  first_ae_att_min_data,
+  first_bd_mh_max_age,
+  first_bd_mh_min_age,
+  first_bd_mh_min_age1,
+  first_bed_days_mh_loc,
+  first_dd_loc,
+  first_ea_max_age,
+  first_ea_min_age,
+  first_ea_min_age1,
+  first_falls_hscp,
+  first_falls_loc,
+  first_falls_scot,
+  first_fy_hb,
+  first_fy_hb_ae,
+  first_fy_hb_dd,
+  first_fy_hb_falls,
+  first_fy_hb_mh,
+  first_fy_hb_read,
+  first_fy_hb_ubd,
+  first_fy_hscp,
+  first_fy_hscp_ae,
+  first_fy_hscp_ubd,
+  first_fy_rate,
+  first_fy_rate_ae_areas,
+  first_fy_rate_ubd,
+  first_fy_scot,
+  first_fy_scot_ae,
+  first_fy_scot_ubd,
+  first_hscp_bed_days_mh,
+  first_hscp_dd,
+  first_hscp_read,
+  first_re_max_age,
+  first_re_min_age,
+  first_read_loc,
+  first_read_loc1,
+  first_scot_bed_days_mh,
+  first_scot_dd,
+  first_scot_read,
+  first_ubd_max_age,
+  first_ubd_min_age,
+  first_ubd_min_age1,
+  hb_ae_att,
+  hb_ae2,
+  hb_bed_days,
+  hb_bed_days2,
+  hb_dd,
+  hb_dd2,
+  hb_emergency_adm,
+  hb_emergency_adm1,
+  hb_emergency_adm2,
+  hb_falls,
+  hb_falls2,
+  hb_mh_beddays,
+  hb_mh_beddays2,
+  hb_read,
+  hb_read2,
+  hscp_ae_att2,
+  hscp_bed_days_mh2,
+  hscp_bed_days2,
+  hscp_dd2,
+  hscp_emergency_adm2,
+  hscp_falls,
+  hscp_falls2,
+  import_folder,
+  latest_ae_att_loc2,
+  latest_ae_att_loc2_age,
+  latest_ae_att_loc2_age_min,
+  latest_ae_att_max_age,
+  latest_ae_att_min_age,
+  latest_bd_mh_max_age,
+  latest_bd_mh_max_age2,
+  latest_bd_mh_min_age,
+  latest_bd_mh_min_age2,
+  latest_bed_days_loc2,
+  latest_bed_days_mh_loc2,
+  latest_dd_loc2,
+  latest_ea_max_age,
+  latest_ea_max_age2,
+  latest_ea_min_age,
+  latest_ea_min_age2,
+  latest_emergency_adm_loc2,
+  latest_falls_loc,
+  latest_falls_loc2,
+  latest_re_max_age,
+  latest_re_min_age,
+  latest_read_loc,
+  latest_ubd_max_age,
+  latest_ubd_max_age2,
+  latest_ubd_min_age,
+  latest_ubd_min_age2,
+  list_years,
+  list_years_latest,
+  loc_pop,
+  loc_pop_age1,
+  loc_pop_age2,
+  localities,
+  # max_fy,
+  min_year_ea_age1,
+  min_year_ubd_age1,
+  percent_change_calc,
+  pop_areas_65plus,
+  pop_areas_all_ages,
+  pops_other_locs,
+  pops_other_locs_65plus,
+  populations,
+  populations_proxy_year,
+  ppa,
+  ppa_65plus,
+  ppa_total,
+  ppa_under65,
+  readmissions,
+  scot_ae_att2,
+  scot_bed_days_mh2,
+  scot_bed_days2,
+  scot_dd2,
+  scot_emergency_adm2,
+  scot_falls,
+  scot_falls2,
+  word_change_calc
+)
+gc()

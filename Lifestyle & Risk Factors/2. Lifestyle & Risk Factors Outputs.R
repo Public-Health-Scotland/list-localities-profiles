@@ -332,7 +332,7 @@ other_locs_summary_table <- function(data, latest_year) {
     filter(year == latest_year) %>%
     filter(area_type == "Locality") %>%
     rename("hscp_locality" = "area_name") %>%
-    right_join(other_locs) %>%
+    right_join(other_locs, by = join_by(hscp_locality)) %>%
     arrange(hscp_locality) %>%
     select(hscp_locality, measure) %>%
     mutate(measure = round_half_up(measure, 1)) %>%
@@ -383,3 +383,19 @@ scot_alcohol_hosp <- round_half_up(scot_alcohol_hosp, 1)
 scot_alcohol_deaths <- round_half_up(scot_alcohol_deaths, 1)
 
 scot_bowel_screening <- round_half_up(scot_bowel_screening, 1)
+
+# Housekeeping ----
+# These objects are left over after the script is run
+# but don't appear to be used in any 'downstream' process:
+# Main markdown, Summary Table, Excel data tables, SDC output.
+# TODO: Investigate if these can be removed earlier or not created at all.
+rm(
+  alcohol_deaths_earliest,
+  alcohol_hosp_earliest,
+  bowel_screening_earliest,
+  drug_hosp_earliest,
+  max_year_drug_hosp,
+  min_year_drug_hosp,
+  trend_years
+)
+gc()
