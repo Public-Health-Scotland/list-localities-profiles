@@ -1123,4 +1123,3 @@ rm(
   table8_year_title
 )
 gc()
-
