@@ -10,6 +10,7 @@ library(knitr)
 library(flextable)
 library(officer)
 library(officedown)
+library(phsstyles)
 ```
 
 ```{r setup, include = FALSE}
@@ -52,8 +53,8 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ```{r locality_names, include=FALSE}
 # Set locality name object (with automatic wrapping)
-loc_name <- paste(LOCALITY, "Locality", sep = "\n") |>
-  str_wrap(width = case_when(n_loc < 4 ~ 20, n_loc == 4 ~ 15, n_loc > 4 ~ 8))
+#loc_name <- paste(LOCALITY, "Locality", sep = "\n") |>
+#  str_wrap(width = case_when(n_loc < 4 ~ 20, n_loc == 4 ~ 15, n_loc > 4 ~ 8))
 
 # Set other localities names
 other_loc_names <- paste(other_locs$hscp_locality, "Locality", sep = "\n") |>
@@ -67,7 +68,7 @@ hscp_name <- paste(HSCP, "HSCP") |>
 headings <- c(
   "Data Type",
   "Time Period",
-  loc_name,
+ # loc_name,
   other_loc_names,
   hscp_name,
   "Scotland"
@@ -77,18 +78,18 @@ headings <- c(
 ```{r summary_table_func, include=FALSE}
 make_summary_table <- function(data) {
   info_cols <- 1:3
-  loc_col <- 4
-  other_loc_cols <- 5:(ncol(data) - 2)
+  #loc_col <- 4
+  other_loc_cols <- 4:(ncol(data) - 2)
   hscp_col <- ncol(data) - 1
   scot_col <- ncol(data)
 
   data |>
     mutate(
       # Remove odd spaces in numbers
-      across(all_of(c(loc_col, other_loc_cols, hscp_col, scot_col)), str_squish),
+      across(all_of(c(other_loc_cols, hscp_col, scot_col)), str_squish),
       # Make any missing values a dash
-      across(all_of(c(loc_col, other_loc_cols, hscp_col, scot_col)), \(x) na_if(x, "NA")),
-      across(all_of(c(loc_col, other_loc_cols, hscp_col, scot_col)), \(x) replace_na(x, "-")),
+      across(all_of(c(other_loc_cols, hscp_col, scot_col)), \(x) na_if(x, "NA")),
+      across(all_of(c(other_loc_cols, hscp_col, scot_col)), \(x) replace_na(x, "-")),
     ) |>
     flextable() |>
     # Header
@@ -103,7 +104,7 @@ make_summary_table <- function(data) {
     font(part = "body", fontname = "Arial") |>
     fontsize(part = "body", size = 10) |>
     bg(j = info_cols, part = "body", bg = phs_colours("phs-graphite-30")) |>
-    bg(j = loc_col, part = "body", bg = phs_colours("phs-purple-30")) |>
+   # bg(j = loc_col, part = "body", bg = phs_colours("phs-purple-30")) |>
     bg(j = other_loc_cols, part = "body", bg = phs_colours("phs-magenta-30")) |>
     bg(j = hscp_col, part = "body", bg = phs_colours("phs-blue-30")) |>
     bg(j = scot_col, part = "body", bg = phs_colours("phs-green-30")) |>
@@ -125,14 +126,14 @@ datatype <- c("count", "ratio", "%", "%", "%")
 # Enter the time periods available
 time <- c(pop_max_year, pop_max_year, pop_max_year, "2020", "2020")
 
-loc_values <- c(total_population, paste0("1:", gender_ratio), over65, perc_top_quintile, perc_bottom_quintile)
+#loc_values <- c(total_population, paste0("1:", gender_ratio), over65, perc_top_quintile, perc_bottom_quintile)
 
 other_loc_values <- rbind(other_locs_total_pop, other_locs_gender_ratio, other_locs_over65, other_locs_simd)
 hscp_values <- c(hscp_total_pop, hscp_gender_ratio, hscp_over65, hscp_simd_top, hscp_simd_bottom)
 scot_values <- c(scot_total_pop, scot_gender_ratio, scot_over65, 20, 20)
 
 demographic_values <- tibble(
-  indicators, datatype, time, loc_values, other_loc_values,
+  indicators, datatype, time, other_loc_values,
   hscp_values, scot_values
 )
 
@@ -156,14 +157,14 @@ datatype <- c("count", "%", "%", "%")
 time <- as.character(c(max_year_housing, max_year_housing, max_year_housing, max_year_housing))
 
 # Values
-loc_values <- c(n_houses, perc_single_discount, perc_houses_AC, perc_houses_FH)
+#loc_values <- c(n_houses, perc_single_discount, perc_houses_AC, perc_houses_FH)
 other_loc_values <- rbind(other_locs_n_houses, other_locs_perc_discount, other_locs_perc_housesAC, other_locs_perc_housesFH)
 hscp_values <- c(hscp_n_houses, hscp_perc_discount, hscp_perc_housesAC, hscp_perc_housesFH)
 scot_values <- c(scot_n_houses, scot_perc_discount, scot_perc_housesAC, scot_perc_housesFH)
 
 
 housing_values <- tibble(
-  indicators, datatype, time, loc_values, other_loc_values,
+  indicators, datatype, time, other_loc_values,
   hscp_values, scot_values
 )
 
@@ -197,13 +198,13 @@ time <- c(
 
 # Values
 
-loc_values <- round_half_up(c(avg_life_exp_latest_male, avg_life_exp_latest_fem, deaths_15_44_latest, ltc_percent_total_latest, cancer_reg_rate_latest, adp_presc_latest), 1)
+#loc_values <- round_half_up(c(avg_life_exp_latest_male, avg_life_exp_latest_fem, deaths_15_44_latest, ltc_percent_total_latest, cancer_reg_rate_latest, adp_presc_latest), 1)
 other_loc_values <- rbind(other_locs_life_exp_male, other_locs_life_exp_fem, other_locs_deaths_15_44, other_locs_ltc, other_locs_cancer, other_locs_adp)
 hscp_values <- c(hscp_life_exp_male, hscp_life_exp_fem, hscp_deaths_15_44, hscp_ltc, hscp_cancer, hscp_adp)
 scot_values <- c(scot_life_exp_male, scot_life_exp_fem, scot_deaths_15_44, scot_ltc, scot_cancer, scot_adp_presc)
 
 general_health_values <- tibble(
-  indicators, datatype, time, loc_values, other_loc_values,
+  indicators, datatype, time, other_loc_values,
   hscp_values, scot_values
 )
 
@@ -234,14 +235,14 @@ time <- c(
 )
 
 # Values
-loc_values <- round_half_up(c(alcohol_hosp_latest, alcohol_deaths_latest, drug_hosp_latest, bowel_screening_latest), 1)
+#loc_values <- round_half_up(c(alcohol_hosp_latest, alcohol_deaths_latest, drug_hosp_latest, bowel_screening_latest), 1)
 other_loc_values <- rbind(other_locs_alcohol_hosp, other_locs_alcohol_deaths, other_locs_drug_hosp, other_locs_bowel_screening)
 hscp_values <- c(hscp_alcohol_hosp, hscp_alcohol_deaths, hscp_drug_hosp, hscp_bowel_screening)
 scot_values <- c(scot_alcohol_hosp, scot_alcohol_deaths, scot_drug_hosp, scot_bowel_screening)
 
 
 lifestyle_values <- tibble(
-  indicators, datatype, time, loc_values, other_loc_values,
+  indicators, datatype, time, other_loc_values,
   hscp_values, scot_values
 )
 
@@ -264,10 +265,10 @@ datatype <- c("rate", "rate", "rate", "rate", "rate")
 time <- c(max_fy, max_fy, max_fy, max_fy, max_fy)
 
 # Values
-loc_values <- format(
-  c(latest_emergency_adm_loc$data, latest_bed_days_loc$data, latest_ae_att_loc$data, latest_dd_loc$data, filter(latest_ppa_loc, year == max(year))$data),
-  big.mark = ","
-)
+#loc_values <- format(
+ # c(latest_emergency_adm_loc$data, latest_bed_days_loc$data, latest_ae_att_loc$data, latest_dd_loc$data, filter(latest_ppa_loc, year == max(year))$data),
+ # big.mark = ","
+#)
 other_loc_values <- bind_rows(other_loc_emergency_adm, other_loc_bed_days, other_loc_ae_att, other_loc_dd, other_loc_ppa)
 hscp_values <- format(
   c(hscp_emergency_adm$data, hscp_bed_days$data, hscp_ae_att$data, hscp_dd$data, filter(hscp_ppa, year == max(year))$data),
@@ -279,7 +280,7 @@ scot_values <- format(
 )
 
 usc_values <- tibble(
-  indicators, datatype, time, loc_values, other_loc_values,
+  indicators, datatype, time, other_loc_values,
   hscp_values, scot_values
 )
 
@@ -299,13 +300,13 @@ datatype <- c("rate", "rate")
 time <- c(str_wrap(latest_period_psych_hosp, 9), max_fy)
 
 # Values
-loc_values <- c(
-  format(psych_hosp_latest, big.mark = ","),
-  format(
-    ifelse(is_empty(latest_bed_days_mh_loc$data), NA_real_, latest_bed_days_mh_loc$data),
-    big.mark = ","
-  )
-)
+#loc_values <- c(
+#  format(psych_hosp_latest, big.mark = ","),
+#  format(
+#    ifelse(is_empty(latest_bed_days_mh_loc$data), NA_real_, latest_bed_days_mh_loc$data),
+ #   big.mark = ","
+#  )
+#)
 other_loc_values <- bind_rows(other_locs_psych_hosp, other_loc_bed_days_mh)
 hscp_values <- c(
   format(filter(hscp_psych_hosp, year == max(year))$measure, big.mark = ","),
@@ -318,7 +319,7 @@ scot_values <- c(
 
 
 usc_mh_values <- tibble(
-  indicators, datatype, time, loc_values, other_loc_values,
+  indicators, datatype, time, other_loc_values,
   hscp_values, scot_values
 )
 
