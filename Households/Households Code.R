@@ -42,7 +42,7 @@ ext_year <- 2024
 # Set locality (for testing only)
 # LOCALITY <- "Whalsay and Skerries"
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
-
+# HSCP <- 'Moray'
 
 ##################### Section 2 - Households Data #############################
 
@@ -66,8 +66,8 @@ rm(temp)
 
 # Global Script Function to read in Localities Lookup
 lookup <- read_in_localities(dz_level = TRUE) %>%
-  dplyr::select(datazone2011, hscp_locality) %>%
-  filter(hscp_locality == LOCALITY)
+  dplyr::select(datazone2011, hscp2019name) %>%
+  filter(hscp2019name == HSCP)
 
 
 # filter housing data for locality of interest
@@ -119,7 +119,7 @@ houses_ts <- ggplot(house_dat1, aes(x = year, y = total_dwellings, group = 1)) +
   scale_y_continuous(labels = scales::comma, limits = c(0, 1.1 * max(house_dat1$total_dwellings))) +
   labs(
     x = "Year", y = "Number of Dwellings",
-    title = paste0("Number of Dwellings by Year in ", str_wrap(`LOCALITY`, 40), " ", max_year_housing),
+    title = paste0("Number of Dwellings by Year in ", str_wrap(`HSCP`, 40), " ", max_year_housing),
     caption = "Source: Council Tax billing system (via NRS)"
   ) +
   theme(plot.title = element_text(size = 12))
@@ -223,13 +223,13 @@ perc_houses_FH <- format_number_for_text(sum(
 # Global Script Function to read in Localities Lookup
 lookup2 <- read_in_localities(dz_level = FALSE)
 
-# Determine HSCP and HB based on Loc
-HSCP <- as.character(filter(lookup2, hscp_locality == LOCALITY)$hscp2019name)
+# Determine HSCP
+# HSCP <- as.character(filter(lookup2, hscp_locality == LOCALITY)$hscp2019name)
 
 # Determine other localities based on LOCALITY object
 other_locs <- lookup2 %>%
   select(hscp_locality, hscp2019name) %>%
-  filter(hscp2019name == HSCP & hscp_locality != LOCALITY) %>%
+  filter(hscp2019name == HSCP) %>%
   arrange(hscp_locality)
 
 # Find number of locs per partnership
