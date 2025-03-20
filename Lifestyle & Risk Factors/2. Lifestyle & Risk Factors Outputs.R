@@ -14,16 +14,16 @@
 ############# 1) PACKAGES, DIRECTORY, LOOKUPS, DATA IMPORT + CLEANING #############
 
 # Determine HSCP
-#HSCP <- "Moray"
+# HSCP <- "Moray"
 
 # Set year of data extracts for folder
 ext_year <- 2024
 
 # Set file path
-#lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 # Source in functions code
-#source("Master RMarkdown Document & Render Code/Global Script.R")
+# source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ### Geographical lookups and objects ----
 
