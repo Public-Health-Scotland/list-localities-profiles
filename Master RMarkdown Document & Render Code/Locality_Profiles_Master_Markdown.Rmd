@@ -57,7 +57,7 @@ For the most recent time period available, `r HSCP` HSCP had:
 
 <!-- Total Population Text -->
 
-In `r pop_max_year`, the total population of `r HSCP` HSCP was `r total_population`. The graph below shows the population distribution of the HSCP. Overall, **`r gender_breakdown[gender_breakdown$sex == "M",]$perc`** of the population are male, and **`r gender_breakdown[gender_breakdown$sex == "F",]$perc`** are female.
+In `r pop_max_year`, the total population of `r HSCP` HSCP was `r total_population`. The graph below shows the population distribution of the HSCP. Overall, **`r gender_breakdown[gender_breakdown$sex == "M",]$perc`** of the population are male, and **`r gender_breakdown[gender_breakdown$sex == "F",]$perc`** are female.*Please see the footnotes for more information on how the population projections were calculated^1^.*
 
 #### Figure `r x`: Population by age and sex.
 
@@ -71,7 +71,7 @@ x <- x + 1
 
 <!-- Population over time -->
 
-Figure `r x` shows the historical population of `r HSCP`, along with the NRS population projections. `r pop_graph_text` `r pop_proj_text`. *Please see the footnotes for more information on how the population projections were calculated^1^.*
+Figure `r x` shows the historical population of `r HSCP`, along with the NRS population projections. `r pop_graph_text` `r pop_proj_text`. *Please see the footnotes for more information on how the population projections were calculated^2^.*
 
 ##### Page break
 
@@ -169,7 +169,7 @@ x <- x + 1
 
 ## Services
 
-#### Figure `r x`: Map of services by locality in `r HSCP` HSCP^2^.
+#### Figure `r x`: Map of services by locality in `r HSCP` HSCP^3^.
 
 \newline
 
@@ -181,7 +181,7 @@ x <- x + 1
 
 \newline
 
-#### Table `r y`: Number of each type of service in `r HSCP` HSCP^2^.
+#### Table `r y`: Number of each type of service in `r HSCP` HSCP^3^.
 
 \newline
 
@@ -281,7 +281,7 @@ Source: Scottish Assessors' Association (via NRS)
 
 \newline
 
-For the most recent time period available^3^, `r HSCP` HSCP had:
+For the most recent time period available^4^, `r HSCP` HSCP had:
 
 ```{r life_exp_text, echo = FALSE}
 if (is.na(avg_life_exp_latest_male)) {
@@ -369,7 +369,7 @@ x <- x + 1
 
 \newline
 
-In the financial year `r latest_year_ltc`, in `r HSCP` HSCP, it is estimated that **`r format_number_for_text(ltc_percent_total_latest)`%** of the population had at least one physical long-term condition (LTC). These include cardiovascular, neurodegenerative, and respiratory conditions, as well as other organ conditions (namely liver disease and renal failure), arthritis, cancer, diabetes, and epilepsy. *Please note that estimates for this section are based on people who had contact with NHS services - see footnotes for further information and caveats on identifying LTCs.^5^*
+In the financial year `r latest_year_ltc`, in `r HSCP` HSCP, it is estimated that **`r format_number_for_text(ltc_percent_total_latest)`%** of the population had at least one physical long-term condition (LTC). These include cardiovascular, neurodegenerative, and respiratory conditions, as well as other organ conditions (namely liver disease and renal failure), arthritis, cancer, diabetes, and epilepsy. *Please note that estimates for this section are based on people who had contact with NHS services - see footnotes for further information and caveats on identifying LTCs.^6^*
 
 ```{r ltc_waffles, echo = FALSE, fig.width = 9, fig.height = 3.5, fig.cap = 'Infographic split by age group showing the number of people out of ten that have at least one LTC. The age groups shown are under 65, 65-74, 75-84, and over 85.'}
 ltc_waffles
@@ -485,11 +485,11 @@ x <- x + 1
 
 Mental and physical well-being has close ties with people's lifestyles and behaviours. Financial security, employment and location are influences that often have a bearing on these choices. Issues can develop when alcohol, smoking or drug use shape lives. This section provides data on drug-related hospital admissions, alcohol-related hospital admissions, alcohol-specific deaths and bowel screening uptake, to give an overview of some of the lifestyles and behaviours for the `r HSCP` HSCP. These can give an idea of quality of life and prosperity.
 
-For the most recent time period available^3^, `r HSCP` had:
+For the most recent time period available^4^, `r HSCP` had:
 
--   **`r format_number_for_text(alcohol_hosp_latest)`** alcohol-related hospital admissions per 100,000 age-sex standardised population. This is `r alcohol_hosp_diff_scot` than Scotland (`r  format_number_for_text(scot_alcohol_hosp)` admissions per 100,000)^4^.
--   **`r format_number_for_text(alcohol_deaths_latest)`** alcohol-specific deaths per 100,000 age-sex standardised population. This is `r alcohol_deaths_diff_scot` than Scotland (`r  format_number_for_text(scot_alcohol_deaths)` deaths per 100,000)^4^.
--   **`r format_number_for_text(drug_hosp_latest)`** drug-related hospital admissions per 100,000 age-sex standardised population. This is `r drug_hosp_diff_scot` than Scotland (`r format_number_for_text(scot_drug_hosp)` admissions per 100,000)^4^.
+-   **`r format_number_for_text(alcohol_hosp_latest)`** alcohol-related hospital admissions per 100,000 age-sex standardised population. This is `r alcohol_hosp_diff_scot` than Scotland (`r  format_number_for_text(scot_alcohol_hosp)` admissions per 100,000)^5^.
+-   **`r format_number_for_text(alcohol_deaths_latest)`** alcohol-specific deaths per 100,000 age-sex standardised population. This is `r alcohol_deaths_diff_scot` than Scotland (`r  format_number_for_text(scot_alcohol_deaths)` deaths per 100,000)^5^.
+-   **`r format_number_for_text(drug_hosp_latest)`** drug-related hospital admissions per 100,000 age-sex standardised population. This is `r drug_hosp_diff_scot` than Scotland (`r format_number_for_text(scot_drug_hosp)` admissions per 100,000)^5^.
 -   **`r format_number_for_text(bowel_screening_latest)`%** uptake of bowel screening among the eligible population, compared to `r format_number_for_text(scot_bowel_screening)`% in Scotland.
 
 \newline
@@ -636,7 +636,7 @@ x <- x + 1
 
 Figure `r x` presents the emergency admissions rate per 100,000 population in the `r HSCP` HSCP from `r min_year_ea` to `r max_year_ea`.
 
-As presented in Figure `r x`, the emergency admissions rate in the `r HSCP` HSCP rate is `r hscp_emergency_adm1`, `r get_article(hscp_rate_change)` `r hscp_rate_change`% `r word_change_hscp` since `r min_year_ea`. The `r HB` health board rate is `r hb_emergency_adm1` in `r max_year_ea`, `r get_article(hb_rate_change)` `r hb_rate_change`% `r word_change_hb` since `r min_year_ea` and the Scotland rate is `r scot_emergency_adm1`, `r get_article(scot_rate_change)` `r scot_rate_change`% `r word_change_scot` since `r min_year_ea`.
+As presented in Figure `r x`, the emergency admissions rate in the `r HSCP` HSCP is `r hscp_emergency_adm1`, `r get_article(hscp_rate_change)` `r hscp_rate_change`% `r word_change_hscp` since `r min_year_ea`. The `r HB` health board rate is `r hb_emergency_adm1` in `r max_year_ea`, `r get_article(hb_rate_change)` `r hb_rate_change`% `r word_change_hb` since `r min_year_ea` and the Scotland rate is `r scot_emergency_adm1`, `r get_article(scot_rate_change)` `r scot_rate_change`% `r word_change_scot` since `r min_year_ea`.
 
 #### Figure `r x`: Emergency admissions by geographical area
 
@@ -822,7 +822,7 @@ x <- x + 1
 
 This section looks at mental health-related unscheduled care indicators. For the most recent time period available, `r HSCP` had:
 
--   **`r psych_hosp_latest`** psychiatric patient hospitalisations per 100,000, compared to `r scot_psych_hosp$measure[2]` in Scotland^4^.
+-   **`r psych_hosp_latest`** psychiatric patient hospitalisations per 100,000, compared to `r scot_psych_hosp$measure[2]` in Scotland^5^.
 -   **`r hscp_bed_days_mh1`** unscheduled mental health specialty bed days per 100,000, compared to `r scot_bed_days_mh1` in Scotland.
 
 \newline
@@ -879,7 +879,9 @@ x <- x + 1
 
 ### Footnotes
 
-1. 
+1. As of February 2025, the NRS population estimate files are in a transitional phase. The small area population estimates (SAPE) for localities extend only to 2022 and are based on the 2011 data zones. NRS will not rebase estimates for 2011-2021 in these SAPE files. Only the 2022 data zone SAPE will include updated figures for the years 2011-2022, expected to be available in summer 2025. While rebased estimates are available at the HSCP level up to 2023, they have been excluded from locality profiles to ensure consistency between locality and HSCP population estimates and rates.
+
+2. Currently, NRS does not provide population projections at the locality level. To estimate future population changes in Angus by age and gender, percentage changes from NRS Local Authority Population Projections up to 2025 were calculated and applied to the 2022 mid-year population estimates. Note that NRS does produce HSCP-level population projections, which are used in HSCP profiles; the method described here only applies to locality-level projections.
 
 2.  Care Home data included in the Services Map and Table was sourced from the [Care Inspectorate](https://www.careinspectorate.com/index.php/about-us). [GP Practice](https://www.opendata.nhs.scot/dataset/gp-practice-contact-details-and-list-sizes), [Hospital](https://www.opendata.nhs.scot/dataset/hospital-codes) and [A&E](https://www.opendata.nhs.scot/dataset/nhs-scotland-accident-emergency-sites) data were sourced from Public Health Scotland Open Data platform. Only services within the physical boundary of the HSCP or Locality are included in the map and table, so there may be services outside `r HSCP` that residents use but are not shown. Information on access deprivation was taken from the [ScotPHO profiles](https://scotland.shinyapps.io/ScotPHO_profiles_tool/) (The Scottish Public Health Observatory).
 
