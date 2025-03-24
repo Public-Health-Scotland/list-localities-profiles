@@ -460,7 +460,12 @@ scotpho_bar_chart_HSCP <- function(data, chart_title, xaxis_title) {
     geom_bar(colour = "white") +
     scale_fill_manual(values = palette) +
     theme_profiles() +
-    theme(axis.text.y = element_text(colour = if_else(data_for_plot$text_highlight, "red", "black"))) +
+    theme(
+      axis.text.y = element_text(
+        colour = if_else(data_for_plot$text_highlight, "red", "black"),
+        face = if_else(data_for_plot$text_highlight, "bold", "plain")
+      )
+    ) +
     labs(
       title = chart_title,
       x = xaxis_title,
