@@ -18,16 +18,16 @@ library(png)
 
 # LOCALITY <- "Barra"
 
-#HSCP <- 'East Renfrewshire'
+# HSCP <- 'East Renfrewshire'
 
 # Set year of data extracts for folder
 ext_year <- 2024
 
 # Source in functions code
-#source("Master RMarkdown Document & Render Code/Global Script.R")
+# source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set file path
-#lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
+# lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
 
 gen_health_data_dir <- path(lp_path, "General Health", glue("DATA {ext_year}"))
 
@@ -182,7 +182,7 @@ life_exp_trend <- life_exp %>%
   geom_point(size = 2) +
   scale_colour_manual(values = palette) +
   theme_profiles() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   expand_limits(y = 0) +
   labs(
     title = str_wrap(glue("Average Life Expectancy in {HSCP} HSCP"), width = 65),
