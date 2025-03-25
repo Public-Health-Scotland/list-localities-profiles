@@ -19,7 +19,7 @@ library(scales)
 library(reshape2)
 
 # Source in global functions/themes script
-# source("Master RMarkdown Document & Render Code/Global Script.R")
+#source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Final document will loop through a list of localities
 # Create placeholder for for loop
@@ -285,7 +285,10 @@ pop_plot_dat <- rbind(
   clean_names(mutate(locality_pop_trend, data = "HISTORICAL")),
   clean_names(mutate(pop_proj_dat, data = "PROJECTION"))
 ) %>%
-  mutate(plot_lab = if_else(year %% 2 == 0, format(pop, big.mark = ","), ""))
+  mutate(plot_lab = if_else(year %% 2 == 0, format(pop, big.mark = ","), "")) 
+
+pop_plot_dat$pop[13] <- pop_plot_dat$pop[12]
+pop_plot_dat$plot_lab[13] <- pop_plot_dat$plot_lab[12]
 
 pop_ts_plot <- ggplot(pop_plot_dat, aes(x = year, y = pop)) +
   geom_line(aes(color = data), linewidth = 1) +
