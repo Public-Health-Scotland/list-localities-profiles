@@ -39,12 +39,12 @@ profile_lookup <- tibble(
   )
 ) |>
   # Drop any rows which didn't match a hscp (usually temp files etc.)
-  drop_na(hscp) |> 
-# Add columns for the new directory (HSCP name) and the new path
-mutate(
-  new_dir = path(final_dir, hscp),
-  new_path = path(new_dir, file_name)
-)
+  drop_na(hscp) |>
+  # Add columns for the new directory (HSCP name) and the new path
+  mutate(
+    new_dir = path(final_dir, hscp),
+    new_path = path(new_dir, file_name)
+  )
 
 # Create the new directories (if needed)
 # Set the permissions correctly so we can edit the files if needed
