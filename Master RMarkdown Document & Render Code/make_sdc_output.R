@@ -32,29 +32,29 @@ hscp_list <- unique(lookup[["hscp2019name"]])
 stopifnot(all(hscp_list %in% unique(lookup[["hscp2019name"]])))
 
 # Loop over HSCP ----
-for (HSCP in hscp_list) {
-  message(glue("Starting processing for HSCP: {HSCP} ({which(hscp_list == HSCP)}/{length(hscp_list)})"))
+#for (HSCP in hscp_list) {
+#  message(glue("Starting processing for HSCP: {HSCP} ({which(hscp_list == HSCP)}/{length(hscp_list)})"))
   # Create list of localities within the current HSCP
-  locality_list <- lookup |>
-    filter(hscp2019name == HSCP) |>
-    pull(hscp_locality)
+ # locality_list <- lookup |>
+ #   filter(hscp2019name == HSCP) |>
+ #   pull(hscp_locality)
 
   # Initialise empty lists to store data for all localities in the current HSCP
-  smr01_based_all <- vector("list", length(locality_list)) |>
-    set_names(locality_list)
-  smr01_age_all <- vector("list", length(locality_list)) |>
-    set_names(locality_list)
-  ltc_all <- vector("list", length(locality_list)) |>
-    set_names(locality_list)
+  smr01_based_all <- vector("list", length(hscp_list)) |>
+    set_names(hscp_list)
+  smr01_age_all <- vector("list", length(hscp_list)) |>
+    set_names(hscp_list)
+  ltc_all <- vector("list", length(hscp_list)) |>
+    set_names(hscp_list)
 
   # Save the current environment variables before processing each HSCP
   # This is used to clear up variables created within the locality loop later
   loop_env <- c(ls(), "loop_env")
 
-  for (LOCALITY in locality_list) {
-    message(glue("  Processing locality: {LOCALITY} ({which(locality_list == LOCALITY)}/{length(locality_list)})) HSCP: {HSCP}"))
+  for (HSCP in hscp_list) {
+    message(glue("  Processing hscp: {HSCP} ({which(hscp_list == HSCP)}/{length(hscp_list)})) HSCP: {HSCP}"))
     # **Unscheduled Care Data Processing** ----
-    # Extract and filter unscheduled care data for the current locality
+    # Extract and filter unscheduled care data for the current hscp
     source("Unscheduled Care/2. Unscheduled Care outputs.R")
 
     # **Data Validation - Unscheduled Care**
@@ -87,10 +87,10 @@ for (HSCP in hscp_list) {
       ),
       \(data, name) {
         data |>
-          filter(location == LOCALITY) |>
+          filter(location == HSCP) |>
           select(financial_year, n = any_of(c("read_28", "n"))) |>
           mutate(
-            locality = LOCALITY,
+            HSCP = HSCP,
             name = name,
             .before = everything()
           ) |>
@@ -100,11 +100,11 @@ for (HSCP in hscp_list) {
 
     smr01_age_loc <- imap(
       list(
-        "Emergency_Admissions_Age" = filter(emergency_adm_age, hscp_locality == LOCALITY),
-        "Unscheduled_Bed_Days_Age" = filter(bed_days_age, hscp_locality == LOCALITY),
+        "Emergency_Admissions_Age" = filter(emergency_adm_age, hscp2019name == HSCP),
+        "Unscheduled_Bed_Days_Age" = filter(bed_days_age, hscp2019name == HSCP),
         "Readmissions_Age" = readmissions_age,
-        "AE_Attendances_Age" = filter(ae_att_age, hscp_locality == LOCALITY),
-        "Bed_Days_MH_Age" = filter(bed_days_mh_age, hscp_locality == LOCALITY)
+        "AE_Attendances_Age" = filter(ae_att_age, hscp2019name == HSCP),
+        "Bed_Days_MH_Age" = filter(bed_days_mh_age, hscp2019name == HSCP)
       ),
       \(data, name) {
         data |>
@@ -114,7 +114,7 @@ for (HSCP in hscp_list) {
             n = any_of(c("adm", "bed_days", "read_28", "attendances"))
           ) |>
           mutate(
-            locality = LOCALITY,
+            HSCP = HSCP,
             name = name,
             .before = everything()
           ) |>
@@ -123,11 +123,11 @@ for (HSCP in hscp_list) {
     )
 
     # Append locality-specific SMR01 data to the HSCP-level lists
-    smr01_based_all[[LOCALITY]] <- smr01_based_loc |> list_rbind()
-    smr01_age_all[[LOCALITY]] <- smr01_age_loc |> list_rbind()
+    smr01_based_all[[HSCP]] <- smr01_based_loc |> list_rbind()
+    smr01_age_all[[HSCP]] <- smr01_age_loc |> list_rbind()
 
     # Clear out Unscheduled Care data objects to free up memory
-    rm(list = setdiff(ls(), c(loop_env, "LOCALITY")))
+    rm(list = setdiff(ls(), c(loop_env, "HSCP")))
     gc() # Run garbage collection to further free up memory
 
 
@@ -138,7 +138,7 @@ for (HSCP in hscp_list) {
     stopifnot(
       exists("ltc_multimorbidity"),
       exists("ltc_types"),
-      exists("top5ltc_loc")
+      exists("top5ltc_hscp")
     )
 
     ltc_loc <- imap(
@@ -155,7 +155,7 @@ for (HSCP in hscp_list) {
             n = any_of(c("people", "value"))
           ) |>
           mutate(
-            locality = LOCALITY,
+            HSCP = HSCP,
             name = name,
             .before = everything()
           ) |>
@@ -164,7 +164,7 @@ for (HSCP in hscp_list) {
     )
 
     # Append locality-specific LTC data to the HSCP-level list
-    ltc_all[[LOCALITY]] <- ltc_loc |> list_rbind()
+    ltc_all[[HSCP]] <- ltc_loc |> list_rbind()
 
     # Clear out General Health data objects to free up memory
     rm(list = setdiff(ls(), loop_env))
@@ -181,7 +181,7 @@ for (HSCP in hscp_list) {
     sheet_names = c("SMR01_based", "SMR01_Age_Groups", "LTCs_Age_Groups"),
     file_path = path(
       output_dir,
-      glue("{HSCP} - Locality Profile SDC highlight.xlsx")
+      glue("{HSCP} - HSCP Profile SDC highlight.xlsx")
     )
   )
 
