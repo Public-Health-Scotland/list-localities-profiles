@@ -23,7 +23,7 @@ library(reshape2)
 
 ## Final document will loop through a list of localities
 # Create placeholder for for loop
-# LOCALITY <- "Inverness"
+# HSCP <- "Moray"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
 
@@ -96,7 +96,8 @@ pops <- pops %>%
 ## Gender
 gender_breakdown <- pops %>%
   filter(
-    hscp_locality == LOCALITY,
+    hscp_locality == "Partnership Total",
+    hscp2019name == HSCP,
     year == max(year)
   ) %>%
   select(sex, total_pop) %>%
@@ -108,7 +109,8 @@ gender_breakdown <- pops %>%
 ## Age & Gender
 pop_breakdown <- pops %>%
   filter(
-    hscp_locality == LOCALITY,
+    hscp_locality == "Partnership Total",
+    hscp2019name == HSCP,
     year == max(year)
   ) %>%
   select(-year, -hscp_locality, -total_pop, -hscp2019name, -Pop65Plus) %>%
@@ -150,7 +152,7 @@ pop_pyramid <- ggplot(
   labs(
     x = "Population",
     y = "Age Group",
-    title = paste0(str_wrap(`LOCALITY`, 50), " population pyramid ", pop_max_year)
+    title = paste0(str_wrap(`HSCP`, 50), " population pyramid ", pop_max_year)
   )
 
 
@@ -159,7 +161,8 @@ pop_pyramid <- ggplot(
 
 hist_pop_breakdown <- pops %>%
   filter(
-    hscp_locality == LOCALITY,
+    hscp_locality == "Partnership Total",
+    hscp2019name == HSCP,
     year %in% c(max(year), max(year) - 5)
   ) %>%
   select(-hscp_locality, -total_pop, -hscp2019name, -Pop65Plus) %>%
@@ -197,7 +200,7 @@ hist_pop_change <- ggplot(
     x = "Age Group", y = "Percent Change",
     title = paste(
       "Percent Change in Population from", pop_max_year - 5,
-      "to", pop_max_year, "by Age and Sex in\n", LOCALITY
+      "to", pop_max_year, "by Age and Sex in\n", HSCP
     ),
     caption = "Source: National Records Scotland"
   )
@@ -209,7 +212,10 @@ hist_pop_change <- ggplot(
 
 ## Trend up to present year
 locality_pop_trend <- pops %>%
-  filter(hscp_locality == LOCALITY) %>%
+  filter(
+    hscp_locality == "Partnership Total",
+    hscp2019name == HSCP
+  ) %>%
   group_by(year) %>%
   dplyr::summarise(pop = sum(total_pop)) %>%
   ungroup()
@@ -265,8 +271,9 @@ locality_pop_proj <- hscp_pop_proj_weight %>%
   select(-value, -pop_change)
 
 
-pop_proj_dat <- locality_pop_proj %>%
-  filter(hscp_locality == LOCALITY) %>%
+pop_proj_dat <- hscp_pop_proj_weight %>%
+  select(-pop_change) %>%
+  filter(hscp2019name == HSCP) %>%
   group_by(year) %>%
   dplyr::summarise(pop = sum(pop)) %>%
   ungroup()
@@ -279,6 +286,9 @@ pop_plot_dat <- rbind(
   clean_names(mutate(pop_proj_dat, data = "PROJECTION"))
 ) %>%
   mutate(plot_lab = if_else(year %% 2 == 0, format(pop, big.mark = ","), ""))
+
+pop_plot_dat$pop[13] <- pop_plot_dat$pop[12]
+pop_plot_dat$plot_lab[13] <- pop_plot_dat$plot_lab[12]
 
 pop_ts_plot <- ggplot(pop_plot_dat, aes(x = year, y = pop)) +
   geom_line(aes(color = data), linewidth = 1) +
@@ -298,7 +308,7 @@ pop_ts_plot <- ggplot(pop_plot_dat, aes(x = year, y = pop)) +
   ) +
   labs(
     y = "Population", x = "Year",
-    title = paste0("Population Over Time in ", str_wrap(`LOCALITY`, 45)),
+    title = paste0("Population Over Time in ", str_wrap(`HSCP`, 45)),
     caption = "Source: National Records Scotland"
   )
 
@@ -369,7 +379,7 @@ pop_proj_change <- 100 * abs(pop_proj_dat[1, 2] - pop_proj_dat[6, 2]) / pop_proj
 pop_proj_change <- round_half_up(pop_proj_change, 1) %>% as.character()
 
 pop_proj_text <- paste(
-  "The population in", LOCALITY, "is estimated to",
+  "The population in", HSCP, "is estimated to",
   ifelse(pop_proj_dat[1, 2] < pop_proj_dat[6, 2],
     paste0("increase by ", pop_proj_change, "%"),
     ifelse(pop_proj_dat[1, 2] == pop_proj_dat[6, 2],
@@ -390,12 +400,12 @@ rm(
 ##################### SECTION 5: Objects for summary table #######################
 
 ## Relevant lookups for creating the table objects
-HSCP <- as.character(filter(lookup, hscp_locality == LOCALITY)$hscp2019name)
+# HSCP <- as.character(filter(lookup, hscp_locality == LOCALITY)$hscp2019name)
 
 # Determine other localities based on LOCALITY object
 other_locs <- lookup %>%
   select(hscp_locality, hscp2019name) %>%
-  filter(hscp2019name == HSCP & hscp_locality != LOCALITY) %>%
+  filter(hscp2019name == HSCP) |> # & hscp_locality != LOCALITY) %>%
   arrange(hscp_locality)
 
 # Find number of locs per partnership
