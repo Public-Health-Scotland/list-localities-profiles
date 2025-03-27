@@ -186,7 +186,7 @@ life_exp_trend <- life_exp %>%
   expand_limits(y = 0) +
   labs(
     title = str_wrap(glue("Average Life Expectancy in {HSCP} HSCP"), width = 65),
-    x = "Year Groups (5-year aggregates)",
+    x = "Year Groups (3-year aggregates)",
     y = str_wrap("Average Life Expectancy (in years)", width = 35),
     caption = "Source: ScotPHO"
   ) +
