@@ -18,16 +18,16 @@ library(png)
 
 # LOCALITY <- "Barra"
 
-# HSCP <- 'East Renfrewshire'
+#HSCP <- 'East Renfrewshire'
 
 # Set year of data extracts for folder
 ext_year <- 2024
 
 # Source in functions code
-# source("Master RMarkdown Document & Render Code/Global Script.R")
+#source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set file path
-# lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
+#lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
 
 gen_health_data_dir <- path(lp_path, "General Health", glue("DATA {ext_year}"))
 
@@ -154,10 +154,10 @@ ltc <- read_parquet(path(gen_health_data_dir, "LTC_from_SLF.parquet")) %>%
 
 # Time objects
 
-latest_year_life_exp_loc <- max(filter(life_exp, area_type == "Locality")$year)
+latest_year_life_exp_loc <- max(filter(life_exp, area_type == "HSCP")$year)
 latest_year_life_exp_otherareas <- max(life_exp$year)
 
-latest_period_life_exp_loc <- unique(filter(life_exp, area_type == "Locality" & year == latest_year_life_exp_loc)$period_short)
+latest_period_life_exp_loc <- unique(filter(life_exp, area_type == "HSCP" & year == latest_year_life_exp_loc)$period_short)
 latest_period_life_exp_otherareas <- unique(filter(life_exp, area_type == "Scotland" & year == latest_year_life_exp_otherareas)$period_short)
 
 
