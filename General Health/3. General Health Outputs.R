@@ -408,7 +408,6 @@ highest_hosp_disease <- disease_hosp %>%
 disease_hosp_table <- disease_hosp |>
   mutate(
     area_order = case_when(
-      # area_name == LOCALITY ~ 1L,
       area_name == HSCP ~ 2L,
       str_starts(area_name, "NHS") ~ 4L,
       area_name == "Scotland" ~ 5L,
