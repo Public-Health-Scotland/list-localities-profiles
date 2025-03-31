@@ -860,16 +860,6 @@ ltc_cols <- ltc_scot %>%
   )))
 
 # Top 5 locality
-# top5ltc_loc <- ltc_totals %>%
-#  filter(hscp_locality == LOCALITY) %>%
-#  select(-hscp_locality, -hscp2019name, -people, -slf_adj_pop) %>%
-# pivot_longer(cols = everything(), names_to = "topltc", values_to = "value") %>%
-# slice_max(n = 5, order_by = value, with_ties = FALSE) %>%
-# mutate(percent = round_half_up((value / ltc_pops_total_loc) * 100, 2)) %>%
-# select(-value) %>%
-# left_join(ltc_cols, by = join_by(topltc)) %>%
-#  unite("Prevalence", topltc, percent, sep = "\n") %>%
-# mutate(Prevalence = paste(Prevalence, "%"))
 
 # Top 5 HSCP
 top5ltc_hscp <- ltc_totals %>%
