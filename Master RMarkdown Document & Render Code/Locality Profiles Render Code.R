@@ -25,7 +25,6 @@ lookup <- read_in_localities()
 # source("Master RMarkdown Document & Render Code/find_hscp_outliers.R")
 # hscp_list <- outlier_hscps
 hscp_list <- unique(lookup$hscp2019name)
-# HSCP <- 'Angus'
 # NOTE - This checks that it exactly matches the lookup
 stopifnot(all(hscp_list %in% unique(lookup[["hscp2019name"]])))
 
