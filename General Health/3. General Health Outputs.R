@@ -162,7 +162,9 @@ latest_period_life_exp_otherareas <- unique(filter(life_exp, area_type == "Scotl
 # Create time trend
 life_exp_trend <- life_exp %>%
   filter(
-    area_name == HSCP & area_type == "HSCP" & year >= max(year) - 10
+    area_name == HSCP,
+    area_type == "HSCP",
+    year >= max(year) - 10
   ) %>%
   mutate(
     period_short = str_wrap(period_short, width = 10),
