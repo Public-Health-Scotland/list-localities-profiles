@@ -32,8 +32,6 @@ hscp_list <- unique(lookup[["hscp2019name"]])
 stopifnot(all(hscp_list %in% unique(lookup[["hscp2019name"]])))
 
 # Loop over HSCP ----
-#for (HSCP in hscp_list) {
-#  message(glue("Starting processing for HSCP: {HSCP} ({which(hscp_list == HSCP)}/{length(hscp_list)})"))
   # Create list of localities within the current HSCP
  # locality_list <- lookup |>
  #   filter(hscp2019name == HSCP) |>
