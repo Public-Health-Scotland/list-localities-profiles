@@ -907,7 +907,7 @@ ltc_scot_col <- tableGrob(top5ltc_scot[, 1],
 )
 
 ## Combine columns
-top5ltc_all_table <- as_gtable(gtable_combine(ltc_hscp_col, ltc_scot_col)),
+top5ltc_all_table <- as_gtable(gtable_combine(ltc_hscp_col, ltc_scot_col))
 
 title <- ggdraw() +
   draw_label(str_wrap(
