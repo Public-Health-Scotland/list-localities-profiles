@@ -889,14 +889,6 @@ top5ltc_scot <- ltc_totals %>%
 hscp.ltc.table <- str_wrap(glue("{HSCP} HSCP"), width = 25)
 
 
-# ltc_loc_col <- tableGrob(top5ltc_loc[, 1],
-# cols = loc.ltc.table,
-# rows = 1:5,
-#  theme = ttheme_default(
-#    core = list(bg_params = list(fill = top5ltc_loc$colours), fg_params = list(col = "white", fontface = 2, fontsize = 11)),
-#    colhead = list(bg_params = list(fill = "white"), fg_params = list(fontface = 3, fontsize = 11))
-# )
-# )
 ltc_hscp_col <- tableGrob(top5ltc_hscp[, 1],
   cols = hscp.ltc.table,
   rows = NULL,
