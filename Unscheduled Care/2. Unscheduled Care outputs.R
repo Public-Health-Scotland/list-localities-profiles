@@ -1160,8 +1160,6 @@ min_year_falls <- min(falls_areas$financial_year)
 max_year_falls <- max(falls_areas$financial_year)
 
 
-# latest_falls_loc1 <- latest_falls_loc %>% pull(formatted_data)
-# latest_falls_loc2 <- latest_falls_loc %>% pull(data)
 
 # first_falls_loc <- falls_areas %>%
 #  filter(
