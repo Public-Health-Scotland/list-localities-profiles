@@ -203,7 +203,6 @@ pops_other_locs_65plus <- inner_join(
 # For this function to work, the main variable of the data (ex: number of admissions) must be renamed "n"
 
 aggregate_usc_area_data <- function(data) {
-
   pts_hscp <- data %>%
     filter(hscp2019name == HSCP) %>%
     mutate(location = hscp2019name) %>%
