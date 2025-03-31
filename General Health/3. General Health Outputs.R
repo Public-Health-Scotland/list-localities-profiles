@@ -872,7 +872,6 @@ top5ltc_hscp <- ltc_totals %>%
 
 # Top 5 Scotland
 top5ltc_scot <- ltc_totals %>%
-  # select(-hscp_locality, -hscp2019name, -people, -slf_adj_pop) %>%
   select(-hscp2019name, -people, -slf_adj_pop) %>%
   summarise(across(everything(), sum)) %>%
   pivot_longer(cols = everything(), names_to = "topltc", values_to = "value") %>%
