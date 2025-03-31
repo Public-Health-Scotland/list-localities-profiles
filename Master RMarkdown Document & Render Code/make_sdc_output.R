@@ -33,9 +33,6 @@ stopifnot(all(hscp_list %in% unique(lookup[["hscp2019name"]])))
 
 # Loop over HSCP ----
   # Create list of localities within the current HSCP
- # locality_list <- lookup |>
- #   filter(hscp2019name == HSCP) |>
- #   pull(hscp_locality)
 
   # Initialise empty lists to store data for all localities in the current HSCP
   smr01_based_all <- vector("list", length(hscp_list)) |>
