@@ -1605,8 +1605,6 @@ min_year_ppa_areas <- min(ppa_areas$financial_year)
 
 
 
-# ppa_diff <- percent_change_calc(latest_ppa_loc$data[2], latest_ppa_loc$data[1])
-# ppa_word_change <- word_change_calc(latest_ppa_loc$data[2], latest_ppa_loc$data[1])
 
 hscp_ppa <- ppa_areas %>%
   filter(
