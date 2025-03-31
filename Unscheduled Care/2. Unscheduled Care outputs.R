@@ -1709,17 +1709,6 @@ list_years_latest <- list_years$period
 
 
 # Locality
-# loc_psych_hosp <- psych_hosp %>%
-#  filter(period %in% list_years_latest) %>%
-#  filter(
-#    area_name == LOCALITY &
-#      area_type == "Locality",
-#    year == min(year) | year == max(year)
-#  ) %>%
-#  mutate(measure2 = format(measure, big.mark = ","))
-
-# diff_loc_psych <- percent_change_calc(loc_psych_hosp$measure[2], loc_psych_hosp$measure[1])
-# word_change_loc_psych <- word_change_calc(loc_psych_hosp$measure[2], loc_psych_hosp$measure[1])
 
 # HSCP
 hscp_psych_hosp <- psych_hosp %>%
