@@ -221,8 +221,6 @@ perc_houses_FH <- format_number_for_text(sum(
 # Global Script Function to read in Localities Lookup
 lookup2 <- read_in_localities(dz_level = FALSE)
 
-# Determine HSCP
-# HSCP <- as.character(filter(lookup2, hscp_locality == LOCALITY)$hscp2019name)
 
 # Determine other localities based on LOCALITY object
 other_locs <- lookup2 %>%
