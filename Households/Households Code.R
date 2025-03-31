@@ -40,8 +40,6 @@ ext_year <- 2024
 # source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set locality (for testing only)
-# LOCALITY <- "Whalsay and Skerries"
-# LOCALITY <- "Ayr North and Former Coalfield Communities"
 # HSCP <- 'Moray'
 
 ##################### Section 2 - Households Data #############################
