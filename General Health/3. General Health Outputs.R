@@ -885,7 +885,6 @@ top5ltc_scot <- ltc_totals %>%
 
 ## Create column headers
 
-# loc.ltc.table <- str_wrap(glue("{LOCALITY} Locality"), width = if_else(n_loc < 5, 30, 25))
 
 hscp.ltc.table <- str_wrap(glue("{HSCP} HSCP"), width = 25)
 
