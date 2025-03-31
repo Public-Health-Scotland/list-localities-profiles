@@ -400,7 +400,6 @@ rm(
 ##################### SECTION 5: Objects for summary table #######################
 
 ## Relevant lookups for creating the table objects
-# HSCP <- as.character(filter(lookup, hscp_locality == LOCALITY)$hscp2019name)
 
 # Determine other localities based on LOCALITY object
 other_locs <- lookup %>%

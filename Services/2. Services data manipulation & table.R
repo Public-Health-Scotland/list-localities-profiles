@@ -47,7 +47,6 @@ lookup <- read_in_localities(dz_level = TRUE)
 lookup2 <- read_in_localities()
 
 ## Determine HSCP
-# HSCP <- as.character(filter(lookup2, hscp_locality == LOCALITY)$hscp2019name)
 
 # Get number of localities in HSCP
 n_loc <- count_localities(lookup2, HSCP)

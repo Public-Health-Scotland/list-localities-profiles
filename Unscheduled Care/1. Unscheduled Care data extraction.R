@@ -49,7 +49,6 @@ postcodes <- read_in_postcodes() %>%
 
 # Localities/Datazones
 datazones <- read_in_localities(dz_level = TRUE)
-# localities <- read_in_localities()
 hscp <- read_in_localities()
 
 ########################## SECTION 2: MSG Data ###############################

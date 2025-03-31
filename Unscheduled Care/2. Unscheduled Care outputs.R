@@ -32,7 +32,6 @@ max_fy <- "2023/24" # TODO Change this to be dynamic and move to general!
 
 localities <- read_in_localities()
 
-# HSCP <- as.character(filter(localities, hscp_locality == LOCALITY)$hscp2019name)
 # HB <- as.character(filter(localities, hscp2019name == HSCP)$hb2019name)
 HB <- unique(as.character(filter(lookup, hscp2019name == HSCP)$hb2019name))
 
@@ -105,15 +104,6 @@ pop_areas <- pops %>%
   ungroup() |>
   rename(location = hscp2019name) %>%
   # Add a partnership total
-  # bind_rows(
-  #  pops %>%
-  #    select(-hscp_locality, -hb2019name) %>%
-  #    filter(hscp2019name == HSCP) %>%
-  #    group_by(financial_year, year, hscp2019name) %>%
-  #    summarise(across(everything(), sum)) %>%
-  #    ungroup() %>%
-  #    rename(location = hscp2019name)
-  # ) %>%
   # Add HB total
   bind_rows(
     pops %>%
@@ -213,13 +203,6 @@ pops_other_locs_65plus <- inner_join(
 # For this function to work, the main variable of the data (ex: number of admissions) must be renamed "n"
 
 aggregate_usc_area_data <- function(data) {
-  # pts_locality <- data %>%
-  #  filter(hscp_locality == LOCALITY) %>%
-  #  mutate(location = hscp_locality) %>%
-  #  group_by(financial_year, location) %>%
-  #  summarise(n = sum(n)) %>%
-  #  ungroup() %>%
-  #  mutate(area_type = "Locality")
 
   pts_hscp <- data %>%
     filter(hscp2019name == HSCP) %>%
@@ -380,18 +363,8 @@ first_fy_rate <- filter(
   area_type == "HSCP"
 )$data
 
-# latest_emergency_adm_loc <- emergency_adm_areas %>%
-#  filter(
-#    location == LOCALITY,
-#   year == max(year, na.rm = TRUE)
-# ) %>%
-# mutate(formatted_data = format(data, big.mark = ","))
 
-# latest_emergency_adm_loc1 <- latest_emergency_adm_loc %>% pull(formatted_data)
-# latest_emergency_adm_loc2 <- latest_emergency_adm_loc %>% pull(data)
 
-# percent_rate_change <- percent_change_calc(latest_emergency_adm_loc2, first_fy_rate)
-# word_change_rate <- word_change_calc(latest_emergency_adm_loc2, first_fy_rate)
 
 # HSCP
 hscp_emergency_adm <- emergency_adm_areas %>%
@@ -573,14 +546,7 @@ first_fy_rate_ubd <- filter(
   location == HSCP & area_type == "HSCP"
 )$data
 
-# latest_bed_days_loc <- bed_days_areas %>%
-#  filter(location == LOCALITY, year == max(year)) %>%
-#  mutate(formatted_data = format(data, big.mark = ","))
-# latest_bed_days_loc1 <- latest_bed_days_loc %>% pull(formatted_data)
-# latest_bed_days_loc2 <- latest_bed_days_loc %>% pull(data)
 
-# rate_change_ubd <- percent_change_calc(latest_bed_days_loc2, first_fy_rate_ubd)
-# word_change_ubd <- word_change_calc(latest_bed_days_loc2, first_fy_rate_ubd)
 # HSCP
 first_fy_hscp_ubd <- filter(
   bed_days_areas, (financial_year == min(bed_days_areas$financial_year)) & (area_type == "HSCP")
@@ -794,26 +760,9 @@ min_word_change_beds_mh <- word_change_calc(latest_bd_mh_min_age2, first_bd_mh_m
 max_year_bd_mh_areas <- max(bed_days_mh_areas$financial_year)
 min_year_bd_mh_areas <- min(bed_days_mh_areas$financial_year)
 
-# latest_bed_days_mh_loc <- bed_days_mh_areas %>%
-#  filter(
-#    location == LOCALITY,
-#    year == max(year)
-#  ) %>%
-#  mutate(formatted_data = format(data, big.mark = ","))
 
-# latest_bed_days_mh_loc1 <- latest_bed_days_mh_loc %>% pull(formatted_data)
-# latest_bed_days_mh_loc2 <- latest_bed_days_mh_loc %>% pull(data)
-# latest_bed_days_mh_loc1 <- ifelse(is_empty(latest_bed_days_mh_loc1), "NA", latest_bed_days_mh_loc1)
 
-# first_bed_days_mh_loc <- bed_days_mh_areas %>%
-#  filter(
-#    location == LOCALITY,
-#    year == min(year)
-#  ) %>%
-#  pull(data)
 
-# loc_rate_change_beds_mh <- percent_change_calc(latest_bed_days_mh_loc2, first_bed_days_mh_loc)
-# loc_word_change_beds_mh <- word_change_calc(latest_bed_days_mh_loc2, first_bed_days_mh_loc)
 
 hscp_bed_days_mh <- bed_days_mh_areas %>%
   filter(
@@ -994,18 +943,7 @@ word_change_rate_ae_age2 <- word_change_calc(latest_ae_att_loc2_age_min, first_a
 min_year_ae_area <- min(ae_att_areas$financial_year)
 max_year_ae_area <- max(ae_att_areas$financial_year)
 
-# first_fy_rate_ae_areas <- filter(
-#  ae_att_areas,
-#  financial_year == min(financial_year),
-#  location == LOCALITY & area_type == "Locality",
-# )$data
 
-# latest_ae_att_loc <- ae_att_areas %>%
-#  filter(
-#    location == LOCALITY,
-#    year == max(year)
-#  ) %>%
-# mutate(formatted_data = format(data, big.mark = ","))
 
 # latest_ae_att_loc1 <- latest_ae_att_loc %>% pull(formatted_data)
 # latest_ae_att_loc2 <- latest_ae_att_loc %>% pull(data)
