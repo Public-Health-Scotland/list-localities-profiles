@@ -16,7 +16,6 @@ library(png)
 
 # Determine locality (for testing only)
 
-# LOCALITY <- "Barra"
 
 # HSCP <- 'East Renfrewshire'
 
