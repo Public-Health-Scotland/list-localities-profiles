@@ -842,12 +842,6 @@ ltc_totals <- ltc2 %>%
   summarise(across(everything(), sum)) %>%
   ungroup()
 
-# ltc_totals <- left_join(
-#  ltc_totals,
-#  select(lookup, hscp_locality, hscp2019name),
-# by = join_by(hscp_locality),
-# relationship = "one-to-one"
-# )
 
 # Extract population totals to make %
 ltc_pops_total_loc <- sum(slf_pop_loc$slf_adj_pop)
