@@ -15,8 +15,6 @@ library(gridExtra)
 library(png)
 
 # Determine locality (for testing only)
-
-
 # HSCP <- 'East Renfrewshire'
 
 # Set year of data extracts for folder
