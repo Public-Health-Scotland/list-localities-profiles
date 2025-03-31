@@ -943,8 +943,6 @@ max_year_ae_area <- max(ae_att_areas$financial_year)
 
 
 
-# latest_ae_att_loc1 <- latest_ae_att_loc %>% pull(formatted_data)
-# latest_ae_att_loc2 <- latest_ae_att_loc %>% pull(data)
 
 # percent_rate_change_ae_areas <- percent_change_calc(latest_ae_att_loc2, first_fy_rate_ae_areas)
 # word_change_rate_ae_areas <- word_change_calc(latest_ae_att_loc2, first_fy_rate_ae_areas)
