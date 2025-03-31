@@ -575,7 +575,6 @@ ltc_infographic <- ltc %>%
   ungroup() |>
   mutate(perc_with_ltc = round_half_up(people / slf_adj_pop, 2))
 
-
 # objects for each percentage for text + cropping images
 ltc.percent.u65 <- filter(ltc_infographic, age_group == "Under 65")$perc_with_ltc
 ltc.percent.6574 <- filter(ltc_infographic, age_group == "65-74")$perc_with_ltc
