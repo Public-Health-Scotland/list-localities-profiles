@@ -1533,10 +1533,7 @@ ppa_areas <- ppa %>%
   rename(n = admissions) %>%
   aggregate_usc_area_data() %>%
   left_join(pop_areas_all_ages, by = join_by(financial_year, location)) %>%
-  mutate(data = round_half_up(n / pop * 100000)) # %>%
-# mutate(location = factor(location, levels = c(HSCP, HB, "Scotland"))) %>%
-# arrange(location) %>%
-# drop_na(year)
+  mutate(data = round_half_up(n / pop * 100000))
 
 
 ppa_loc_ts <- area_trend_usc(
