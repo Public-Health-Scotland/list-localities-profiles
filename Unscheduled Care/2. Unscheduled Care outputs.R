@@ -1604,12 +1604,6 @@ max_year_ppa_areas <- max(ppa_areas$financial_year)
 min_year_ppa_areas <- min(ppa_areas$financial_year)
 
 
-# latest_ppa_loc <- ppa_areas %>%
-#  filter(
-#    location == LOCALITY,
-#    year == max(year) | year == min(year)
-#  ) %>%
-#  mutate(formatted_data = format(data, big.mark = ","))
 
 # ppa_diff <- percent_change_calc(latest_ppa_loc$data[2], latest_ppa_loc$data[1])
 # ppa_word_change <- word_change_calc(latest_ppa_loc$data[2], latest_ppa_loc$data[1])
