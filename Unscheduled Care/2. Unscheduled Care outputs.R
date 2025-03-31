@@ -1334,7 +1334,6 @@ min_year_re_area <- min(readmissions_areas$financial_year)
 max_year_re_area <- max(readmissions_areas$financial_year)
 
 
-# first_read_loc1 <- first_read_loc %>% pull(data)
 
 # latest_read_loc <- readmissions_areas %>%
 #  filter(
