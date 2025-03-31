@@ -864,7 +864,6 @@ ltc_cols <- ltc_scot %>%
 # Top 5 HSCP
 top5ltc_hscp <- ltc_totals %>%
   filter(hscp2019name == HSCP) %>%
-  # select(-hscp_locality, -hscp2019name, -people, -slf_adj_pop) %>%
   select(-hscp2019name, -people, -slf_adj_pop) %>%
   summarise(across(everything(), sum)) %>%
   pivot_longer(cols = everything(), names_to = "topltc", values_to = "value") %>%
