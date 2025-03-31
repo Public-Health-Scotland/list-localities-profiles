@@ -1336,8 +1336,6 @@ max_year_re_area <- max(readmissions_areas$financial_year)
 
 
 
-# percent_rate_change_re_area <- percent_change_calc(latest_read_loc1, first_read_loc1)
-# word_change_rate_re_area <- word_change_calc(latest_read_loc1, first_read_loc1)
 
 first_hscp_read <- readmissions_areas %>%
   filter(
