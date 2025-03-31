@@ -1333,11 +1333,6 @@ word_change_rate_re_age_min <- word_change_calc(latest_re_min_age_data, first_re
 min_year_re_area <- min(readmissions_areas$financial_year)
 max_year_re_area <- max(readmissions_areas$financial_year)
 
-# first_read_loc <- readmissions_areas %>%
-# filter(
-#   location == LOCALITY,
-#   year == min(year)
-# )
 
 # first_read_loc1 <- first_read_loc %>% pull(data)
 
