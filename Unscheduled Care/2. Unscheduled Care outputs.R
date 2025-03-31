@@ -1162,8 +1162,6 @@ max_year_falls <- max(falls_areas$financial_year)
 
 
 
-# percent_rate_change_falls_loc <- percent_change_calc(latest_falls_loc2, first_falls_loc)
-# word_change_rate_falls_loc <- word_change_calc(latest_falls_loc2, first_falls_loc)
 
 hscp_falls <- falls_areas %>%
   filter(
