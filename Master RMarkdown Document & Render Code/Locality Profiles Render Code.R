@@ -86,4 +86,3 @@ for (HSCP in hscp_list) {
   # Force garbage collection to free up memory
   gc()
 }
-# }
