@@ -1161,12 +1161,6 @@ max_year_falls <- max(falls_areas$financial_year)
 
 
 
-# first_falls_loc <- falls_areas %>%
-#  filter(
-#    location == LOCALITY,
-#    year == min(year)
-#  ) %>%
-#  pull(data)
 
 # percent_rate_change_falls_loc <- percent_change_calc(latest_falls_loc2, first_falls_loc)
 # word_change_rate_falls_loc <- word_change_calc(latest_falls_loc2, first_falls_loc)
