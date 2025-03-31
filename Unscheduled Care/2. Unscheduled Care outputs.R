@@ -1050,12 +1050,6 @@ DD_loc_ts <- area_trend_usc(
 min_year_dd <- min(delayed_disch_areas$financial_year)
 max_year_dd <- max(delayed_disch_areas$financial_year)
 
-# latest_dd_loc <- delayed_disch_areas %>%
-#  filter(
-#    location == LOCALITY,
-#   year == max(year)
-# ) %>%
-#  mutate(formatted_data = format(data, big.mark = ","))
 
 # latest_dd_loc1 <- latest_dd_loc %>% pull(formatted_data)
 # latest_dd_loc2 <- latest_dd_loc %>% pull(data)
