@@ -30,13 +30,6 @@ stopifnot(all(hscp_list %in% unique(lookup[["hscp2019name"]])))
 
 # Loop over HSCP ----
 # 'looping' over one HSCP is fine.
-# for (HSCP in hscp_list) {
-# Create list of localities in chosen HSCP
-# locality_list <- lookup |>
-#   filter(hscp2019name == HSCP) |>
-#   pull(hscp_locality)
-
-# Loop to create the profiles for all the localities in the list
 
 # There are several stages to the profiles:
 # 1. Looping through each locality in the HSCP doing the following:
