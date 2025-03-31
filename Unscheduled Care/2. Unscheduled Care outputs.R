@@ -1052,12 +1052,6 @@ max_year_dd <- max(delayed_disch_areas$financial_year)
 
 
 
-# first_dd_loc <- delayed_disch_areas %>%
-# filter(
-#    location == LOCALITY,
-#   year == min(year)
-# ) %>%
-# pull(data)
 
 # percent_rate_change_dd_loc <- percent_change_calc(latest_dd_loc2, first_dd_loc)
 # word_change_rate_dd_loc <- word_change_calc(latest_dd_loc2, first_dd_loc)
