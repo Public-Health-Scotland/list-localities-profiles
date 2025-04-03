@@ -47,7 +47,6 @@ lookup <- read_in_localities(dz_level = TRUE)
 lookup2 <- read_in_localities()
 
 ## Determine HSCP
-# HSCP <- as.character(filter(lookup2, hscp_locality == LOCALITY)$hscp2019name)
 
 # Get number of localities in HSCP
 n_loc <- count_localities(lookup2, HSCP)
@@ -110,7 +109,7 @@ hosp_postcodes <- hosp_postcodes %>%
 hosp_lookup <- hosp_types %>%
   filter(status == "Open") %>%
   select(name = treatment_location_name, location = treatment_location_code, type = current_department_type) %>%
-  left_join(select(hosp_postcodes, location, postcode)) %>%
+  left_join(select(hosp_postcodes, location, postcode), by = join_by(location)) %>%
   mutate(postcode = gsub(" ", "", postcode)) %>%
   left_join(postcode_lkp, by = "postcode")
 

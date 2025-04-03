@@ -15,7 +15,7 @@ ext_year <- 2024
 latest_msg_folder <- "2024-12 December"
 
 # Set locality profiles file path
-lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 ## Packages
 library(tidyverse)
@@ -49,7 +49,6 @@ postcodes <- read_in_postcodes() %>%
 
 # Localities/Datazones
 datazones <- read_in_localities(dz_level = TRUE)
-# localities <- read_in_localities()
 hscp <- read_in_localities()
 
 ########################## SECTION 2: MSG Data ###############################

@@ -15,7 +15,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 lp_path <- lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 output_dir <- path(lp_path, "Master RMarkdown Document & Render Code", "Output")
 
-# Below creates locality list of all the localities in a chosen HSCP
+# Below creates locality list of all the localities
 lookup <- read_in_localities()
 
 # Specify HSCP(s) ----
@@ -25,31 +25,24 @@ lookup <- read_in_localities()
 # source("Master RMarkdown Document & Render Code/find_hscp_outliers.R")
 # hscp_list <- outlier_hscps
 hscp_list <- unique(lookup$hscp2019name)
-# HSCP <- 'Angus'
+
 # NOTE - This checks that it exactly matches the lookup
 stopifnot(all(hscp_list %in% unique(lookup[["hscp2019name"]])))
 
 # Loop over HSCP ----
 # 'looping' over one HSCP is fine.
-# for (HSCP in hscp_list) {
-# Create list of localities in chosen HSCP
-# locality_list <- lookup |>
-#   filter(hscp2019name == HSCP) |>
-#   pull(hscp_locality)
-
-# Loop to create the profiles for all the localities in the list
 
 # There are several stages to the profiles:
-# 1. Looping through each locality in the HSCP doing the following:
+# 1. Looping through each HSCP doing the following:
 # 1a. Run each section script for that locality
 # 1b. Run the Rmd for the main body of the profiles
 # 1c. Run the Rmd for the summary tables
 
 loop_env <- c(ls(), "loop_env")
 
-# 1. Loop through each locality to create the main body of the profiles and the summary table
+# 1. Loop through each HSCP to create the main body of the profiles and the summary table
 for (HSCP in hscp_list) {
-  # 1a) Source in all the scripts for a given LOCALITY
+  # 1a) Source in all the scripts for a given HSCP
 
   # Demographics ----
   source("Demographics/1. Demographics - Population.R")
@@ -94,4 +87,3 @@ for (HSCP in hscp_list) {
   # Force garbage collection to free up memory
   gc()
 }
-# }
