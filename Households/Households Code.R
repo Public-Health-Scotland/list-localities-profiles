@@ -64,17 +64,16 @@ rm(temp)
 
 # Global Script Function to read in Localities Lookup
 lookup <- read_in_localities(dz_level = TRUE) %>%
-  dplyr::select(datazone2011, hscp2019name) %>%
+  select(datazone2011, hscp2019name) %>%
   filter(hscp2019name == HSCP)
-
 
 # filter housing data for locality of interest
 house_dat <- house_raw_dat %>% filter(data_zone_code %in% lookup$datazone2011)
 
 # aggregate data
 house_dat1 <- house_dat %>%
-  dplyr::group_by(year) %>%
-  dplyr::summarise(
+  group_by(year) %>%
+  summarise(
     total_dwellings = sum(total_number_of_dwellings),
     occupied_dwellings = sum(occupied_dwellings),
     vacant_dwellings = sum(vacant_dwellings),
@@ -82,8 +81,8 @@ house_dat1 <- house_dat %>%
     tax_exempt = sum(occupied_dwellings_exempt_from_paying_council_tax),
     tax_discount = sum(dwellings_with_a_single_adult_council_tax_discount)
   ) %>%
-  dplyr::ungroup() %>%
-  dplyr::mutate(dplyr::across(3:7, list(perc = ~ 100 * .x / total_dwellings)))
+  ungroup() %>%
+  mutate(across(3:7, list(perc = ~ 100 * .x / total_dwellings)))
 
 
 ## 2b) Text objects ----
@@ -239,7 +238,7 @@ rm(lookup2)
 # Global Script Function to read in Localities Lookup
 other_locs_dz <- read_in_localities(dz_level = TRUE) %>%
   arrange() %>%
-  dplyr::select(datazone2011, hscp_locality) %>%
+  select(datazone2011, hscp_locality) %>%
   inner_join(other_locs, by = c("hscp_locality" = "hscp_locality"))
 
 house_dat_otherlocs <- house_raw_dat %>%
@@ -250,7 +249,7 @@ house_dat_otherlocs <- house_raw_dat %>%
     total_dwellings = sum(total_number_of_dwellings),
     tax_discount = sum(dwellings_with_a_single_adult_council_tax_discount)
   ) %>%
-  dplyr::ungroup() %>%
+  ungroup() %>%
   mutate(tax_discount_perc = round_half_up(tax_discount / total_dwellings * 100, 1))
 
 other_locs_n_houses <- house_dat_otherlocs %>%

@@ -216,7 +216,7 @@ simd_domains <- simd2020 %>%
   select(income, employment, education, access, crime, health, housing, total_pop) %>%
   reshape2::melt(id.vars = "total_pop") %>%
   group_by(variable, value) %>%
-  dplyr::summarise(total_pop = sum(total_pop)) %>%
+  summarise(total_pop = sum(total_pop)) %>%
   ggplot(aes(
     fill = factor(value, levels = 1:5), y = total_pop,
     x = factor(variable, levels = tolower(plot_labels))
@@ -258,8 +258,8 @@ names(simd2016_dom)[2:9] <- paste0(names(simd2016_dom)[2:9], "_16")
 pop_16_20 <- pop_raw_data %>%
   filter(year %in% c(2016, pop_max_year)) %>%
   select(year, datazone2011, sex, pop = total_pop) %>%
-  dplyr::group_by(datazone2011, year) %>%
-  dplyr::summarise(pop = sum(pop)) %>%
+  group_by(datazone2011, year) %>%
+  summarise(pop = sum(pop)) %>%
   ungroup() %>%
   mutate(simd_rank_year = if_else(year == 2016, "pop_16", "pop_20")) %>%
   select(-year) %>%
@@ -270,37 +270,37 @@ simd2016_dom <- simd2016_dom %>%
   left_join(pop_16_20, by = join_by(datazone2011)) %>%
   select(datazone2011, contains("_16")) %>%
   reshape2::melt(id.vars = c("datazone2011", "pop_16")) %>%
-  dplyr::group_by(variable) %>%
-  dplyr::mutate(total_pop = sum(pop_16)) %>%
-  dplyr::group_by(variable, value) %>%
-  dplyr::summarise(
+  group_by(variable) %>%
+  mutate(total_pop = sum(pop_16)) %>%
+  group_by(variable, value) %>%
+  summarise(
     pop = sum(pop_16),
     total_pop = max(total_pop)
   ) %>%
-  dplyr::mutate(
+  mutate(
     perc_16 = pop / total_pop,
     domain = gsub("_16", "", variable)
   ) %>%
-  dplyr::ungroup() %>%
-  dplyr::select(domain, perc_16, quintile = value)
+  ungroup() %>%
+  select(domain, perc_16, quintile = value)
 
 simd2020_dom <- simd2020_dom %>%
   left_join(pop_16_20, by = join_by(datazone2011)) %>%
   select(datazone2011, contains("_20")) %>%
   reshape2::melt(id.vars = c("datazone2011", "pop_20")) %>%
-  dplyr::group_by(variable) %>%
-  dplyr::mutate(total_pop = sum(pop_20)) %>%
-  dplyr::group_by(variable, value) %>%
-  dplyr::summarise(
+  group_by(variable) %>%
+  mutate(total_pop = sum(pop_20)) %>%
+  group_by(variable, value) %>%
+  summarise(
     pop = sum(pop_20),
     total_pop = max(total_pop)
   ) %>%
-  dplyr::mutate(
+  mutate(
     perc_20 = pop / total_pop,
     domain = gsub("_20", "", variable)
   ) %>%
-  dplyr::ungroup() %>%
-  dplyr::select(domain, perc_20, quintile = value)
+  ungroup() %>%
+  select(domain, perc_20, quintile = value)
 
 domains <- simd2020_dom$domain %>% unique()
 base_data <- tibble(

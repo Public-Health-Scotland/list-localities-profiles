@@ -21,6 +21,9 @@ library(fs)
 library(arrow)
 library(phsstyles)
 
+# Prefer dplyr functions if there's a conflict
+conflicted::conflict_prefer_all("dplyr", quiet = TRUE)
+
 #### Colours & Formatting #### ----
 
 ## PHS colour palette from phsstyles

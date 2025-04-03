@@ -122,7 +122,7 @@ pop_breakdown <- pops %>%
       gsub("Pop", "", variable)
     )
   )) %>%
-  dplyr::rename(Gender = sex, Age = variable, Population = value) %>%
+  rename(Gender = sex, Age = variable, Population = value) %>%
   mutate(Gender = case_when(
     Gender == "M" ~ "Male",
     Gender == "F" ~ "Female"
@@ -174,10 +174,10 @@ hist_pop_breakdown <- pops %>%
       gsub("Pop", "", variable)
     )
   )) %>%
-  dplyr::rename(Gender = sex, Age = variable, Population = value) %>%
-  dplyr::group_by(Gender, Age) %>%
+  rename(Gender = sex, Age = variable, Population = value) %>%
+  group_by(Gender, Age) %>%
   arrange(year) %>%
-  dplyr::summarise(change = (last(Population) - first(Population)) / first(Population)) %>%
+  summarise(change = (last(Population) - first(Population)) / first(Population)) %>%
   ungroup() %>%
   mutate(Gender = ifelse(Gender == "F", "Female", "Male"))
 
@@ -217,7 +217,7 @@ locality_pop_trend <- pops %>%
     hscp2019name == HSCP
   ) %>%
   group_by(year) %>%
-  dplyr::summarise(pop = sum(total_pop)) %>%
+  summarise(pop = sum(total_pop)) %>%
   ungroup()
 
 ## Population projections by locality
@@ -228,7 +228,7 @@ loc_pops <- pops %>%
   filter(year == pop_max_year) %>%
   filter(!(hscp_locality %in% c("Partnership Total", "Scotland Total"))) %>%
   reshape2::melt(id.vars = c("year", "sex", "hscp2019name", "hscp_locality")) %>%
-  dplyr::rename(age_group = variable) %>%
+  rename(age_group = variable) %>%
   as_tibble() %>%
   select(-year)
 
@@ -247,7 +247,7 @@ hscp_pop_proj_weight <- hscp_pop_proj %>%
   filter(year %in% pop_max_year:2028) %>%
   # aggregate to age groups
   group_by(year, hscp2019, hscp2019name, sex, age_group) %>%
-  dplyr::summarise(pop = sum(pop)) %>%
+  summarise(pop = sum(pop)) %>%
   ungroup() %>%
   # change sex variable coding
   mutate(sex = ifelse(sex == 1, "M", "F")) %>%
@@ -275,7 +275,7 @@ pop_proj_dat <- hscp_pop_proj_weight %>%
   select(-pop_change) %>%
   filter(hscp2019name == HSCP) %>%
   group_by(year) %>%
-  dplyr::summarise(pop = sum(pop)) %>%
+  summarise(pop = sum(pop)) %>%
   ungroup()
 
 
