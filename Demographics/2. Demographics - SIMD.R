@@ -327,7 +327,7 @@ simd_16_20_dom <- full_join(
   mutate(perc_20 = replace_na(perc_20, 0)) %>%
   mutate(diff = perc_20 - perc_16) %>%
   mutate(
-    domain = ifelse(domain == "simd", "SIMD", tools::toTitleCase(domain)),
+    domain = ifelse(domain == "simd", "SIMD", str_to_title(domain)),
     v_just = ifelse(diff < 0, 1.5, -1)
   )
 
