@@ -15,16 +15,6 @@
 
 ###### 1. Set up ######
 
-## Load packages
-
-library(tidyverse)
-library(readxl)
-library(janitor)
-library(knitr)
-library(gridExtra)
-library(grid)
-library(data.table)
-
 # Change year to be the year in the data folder name
 ext_year <- 2024
 
