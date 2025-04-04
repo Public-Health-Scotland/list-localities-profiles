@@ -1,6 +1,5 @@
 ##### LOCALITY PROFILES MASTER DOC RENDER CODE #####
 
-library(knitr)
 library(rmarkdown)
 
 rm(list = ls())
