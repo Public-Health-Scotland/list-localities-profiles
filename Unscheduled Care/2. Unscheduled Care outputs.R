@@ -23,7 +23,7 @@ library(scales)
 
 ## Define locality
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
-# LOCALITY <- "Inverness"
+# LOCALITY <- "Wigtownshire"
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
 # LOCALITY <- "Whalsay and Skerries"
 # LOCALITY <- "North Perthshire"
@@ -1660,6 +1660,9 @@ latest_ppa_loc <- ppa_areas %>%
     year == max(year) | year == min(year)
   ) %>%
   mutate(formatted_data = format(data, big.mark = ","))
+
+# create for text and summary table
+latest_ppa_loc1 <- latest_ppa_loc$formatted_data[2]
 
 ppa_diff <- percent_change_calc(latest_ppa_loc$data[2], latest_ppa_loc$data[1])
 ppa_word_change <- word_change_calc(latest_ppa_loc$data[2], latest_ppa_loc$data[1])
