@@ -23,7 +23,7 @@ library(scales)
 
 ## Define locality
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
-# LOCALITY <- "Wigtownshire"
+# LOCALITY <- "Inverness"
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
 # LOCALITY <- "Whalsay and Skerries"
 # LOCALITY <- "North Perthshire"
@@ -1661,9 +1661,6 @@ latest_ppa_loc <- ppa_areas %>%
   ) %>%
   mutate(formatted_data = format(data, big.mark = ","))
 
-# create for text and summary table
-latest_ppa_loc1 <- latest_ppa_loc$formatted_data[2]
-
 ppa_diff <- percent_change_calc(latest_ppa_loc$data[2], latest_ppa_loc$data[1])
 ppa_word_change <- word_change_calc(latest_ppa_loc$data[2], latest_ppa_loc$data[1])
 
@@ -1902,6 +1899,7 @@ rm(
   hscp_falls,
   hscp_falls2,
   import_folder,
+  latest_ae_att_loc,
   latest_ae_att_loc2,
   latest_ae_att_loc2_age,
   latest_ae_att_loc2_age_min,
@@ -1911,16 +1909,20 @@ rm(
   latest_bd_mh_max_age2,
   latest_bd_mh_min_age,
   latest_bd_mh_min_age2,
+  latest_bed_days_loc,
   latest_bed_days_loc2,
   latest_bed_days_mh_loc2,
+  latest_dd_loc,
   latest_dd_loc2,
   latest_ea_max_age,
   latest_ea_max_age2,
   latest_ea_min_age,
   latest_ea_min_age2,
+  latest_emergency_adm_loc,
   latest_emergency_adm_loc2,
   latest_falls_loc,
   latest_falls_loc2,
+  latest_ppa_loc,
   latest_re_max_age,
   latest_re_min_age,
   latest_read_loc,
