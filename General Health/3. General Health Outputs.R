@@ -944,7 +944,6 @@ ltc_perc_scot <- round_half_up((sum(filter(ltc_scot, total_ltc > 0)$people) / lt
 ltc_diff_scot <- if_else(ltc_percent_total_latest > ltc_perc_scot, "higher", "lower")
 
 
-
 ############################### 4) CODE FOR SUMMARY TABLE ###############################
 
 
@@ -1075,8 +1074,6 @@ scot_deaths_15_44 <- hscp_scot_summary_table(deaths_15_44, latest_year = max(dea
 scot_cancer <- hscp_scot_summary_table(cancer_reg, latest_year = max(cancer_reg$year), area = "Scotland")
 scot_cancer_deaths <- hscp_scot_summary_table(early_deaths_cancer, latest_year = max(early_deaths_cancer$year), area = "Scotland")
 scot_adp_presc <- hscp_scot_summary_table(adp_presc, latest_year = max(adp_presc$year), area = "Scotland")
-
-scot_ltc <- round_half_up((sum(filter(ltc_scot, total_ltc > 0)$people) / ltc_pops_total_scot) * 100, 1)
 
 # Housekeeping ----
 # These objects are left over after the script is run
