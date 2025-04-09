@@ -24,7 +24,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Get the HSCP list
 hscp_lookup <- read_in_localities() |>
- distinct(hscp2019name)
+  distinct(hscp2019name)
 
 # Create a dataframe with some details about the files
 profile_lookup <- tibble(
@@ -40,11 +40,11 @@ profile_lookup <- tibble(
 ) |>
   # Drop any rows which didn't match a hscp (usually temp files etc.)
   drop_na(hscp)
-  # Add columns for the new directory (HSCP name) and the new path
-  mutate(
-    new_dir = path(final_dir, hscp),
-    new_path = path(new_dir, file_name)
-  )
+# Add columns for the new directory (HSCP name) and the new path
+mutate(
+  new_dir = path(final_dir, hscp),
+  new_path = path(new_dir, file_name)
+)
 
 # Create the new directories (if needed)
 # Set the permissions correctly so we can edit the files if needed
