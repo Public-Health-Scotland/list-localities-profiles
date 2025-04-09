@@ -46,21 +46,21 @@ ext_year <- 2024
 
 ## 2a) Data imports & cleaning ----
 
-house_raw_dat <- data.frame()
-
-# get historic housing data, each year is on a separate sheet so do a for loop
-for (i in 2014:max_year_housing) {
-  temp <- read_excel(paste0(lp_path, "Households/", "Data ", ext_year, "/household_estimates.xlsx"),
-    sheet = paste(i), skip = 3
-  ) %>%
-    mutate(year = i) %>%
-    clean_names() %>%
-    select(year, 1:12)
-
-  house_raw_dat <- rbind(house_raw_dat, temp)
-}
-
-rm(temp)
+# get historic housing data, each year is on a separate sheet so map over it
+house_raw_dat <- map(
+  2014L:max_year_housing,
+  \(year) {
+    read_excel(
+      path(lp_path, "Households", glue("Data {ext_year}"), "household_estimates.xlsx"),
+      col_types = c(rep("text", 4L), rep("numeric", 8L), rep("skip", 7L)),
+      sheet = as.character(year),
+      skip = 3L,
+      .name_repair = make_clean_names # janitor::make_clean_names()
+    ) |>
+      mutate(year = year, .before = everything())
+  }
+) |>
+  list_rbind()
 
 # Global Script Function to read in Localities Lookup
 lookup <- read_in_localities(dz_level = TRUE) %>%
@@ -152,10 +152,10 @@ house_dat2 <- house_raw_dat2 %>%
 ## 3b) Plots & tables ----
 
 ctb <- house_dat2 %>%
-  select(council_tax_band_a:council_tax_band_h) %>%
-  melt()
+  select(matches("council_tax_band_[a-h]")) %>%
+  pivot_longer(cols = everything(), names_to = "variable")
 
-variable <- ctb$variable
+variable <- ctb[["variable"]]
 
 pal_ctb <- phsstyles::phs_colours(c(
   "phs-magenta", "phs-magenta-80", "phs-magenta-50", "phs-magenta-10",
