@@ -120,7 +120,7 @@ pop_breakdown <- pops %>%
       gsub("Pop", "", variable)
     )
   )) %>%
-  dplyr::rename(Gender = sex, Age = variable, Population = value) %>%
+  rename(Gender = sex, Age = variable, Population = value) %>%
   mutate(Gender = case_when(
     Gender == "M" ~ "Male",
     Gender == "F" ~ "Female"
@@ -171,10 +171,10 @@ hist_pop_breakdown <- pops %>%
       gsub("Pop", "", variable)
     )
   )) %>%
-  dplyr::rename(Gender = sex, Age = variable, Population = value) %>%
-  dplyr::group_by(Gender, Age) %>%
+  rename(Gender = sex, Age = variable, Population = value) %>%
+  group_by(Gender, Age) %>%
   arrange(year) %>%
-  dplyr::summarise(change = (last(Population) - first(Population)) / first(Population)) %>%
+  summarise(change = (last(Population) - first(Population)) / first(Population)) %>%
   ungroup() %>%
   mutate(Gender = ifelse(Gender == "F", "Female", "Male"))
 
@@ -211,7 +211,7 @@ hist_pop_change <- ggplot(
 locality_pop_trend <- pops %>%
   filter(hscp_locality == LOCALITY) %>%
   group_by(year) %>%
-  dplyr::summarise(pop = sum(total_pop)) %>%
+  summarise(pop = sum(total_pop)) %>%
   ungroup()
 
 ## Population projections by locality
@@ -222,7 +222,7 @@ loc_pops <- pops %>%
   filter(year == pop_max_year) %>%
   filter(!(hscp_locality %in% c("Partnership Total", "Scotland Total"))) %>%
   reshape2::melt(id.vars = c("year", "sex", "hscp2019name", "hscp_locality")) %>%
-  dplyr::rename(age_group = variable) %>%
+  rename(age_group = variable) %>%
   as_tibble() %>%
   select(-year)
 
@@ -241,7 +241,7 @@ hscp_pop_proj_weight <- hscp_pop_proj %>%
   filter(year %in% pop_max_year:2028) %>%
   # aggregate to age groups
   group_by(year, hscp2019, hscp2019name, sex, age_group) %>%
-  dplyr::summarise(pop = sum(pop)) %>%
+  summarise(pop = sum(pop)) %>%
   ungroup() %>%
   # change sex variable coding
   mutate(sex = ifelse(sex == 1, "M", "F")) %>%
@@ -268,7 +268,7 @@ locality_pop_proj <- hscp_pop_proj_weight %>%
 pop_proj_dat <- locality_pop_proj %>%
   filter(hscp_locality == LOCALITY) %>%
   group_by(year) %>%
-  dplyr::summarise(pop = sum(pop)) %>%
+  summarise(pop = sum(pop)) %>%
   ungroup()
 
 
@@ -470,3 +470,16 @@ scot_over65 <- pop_scot %>%
   pull(perc_over65)
 
 rm(pop_hscp, pop_scot)
+
+# Housekeeping ----
+# These objects are left over after the script is run
+# but don't appear to be used in any 'downstream' process:
+# Main markdown, Summary Table, Excel data tables, SDC output.
+# TODO: Investigate if these can be removed earlier or not created at all.
+rm(
+  hist_pop_breakdown,
+  hscp_pop_proj,
+  pop_plot_dat,
+  pop_raw_data
+)
+gc()

@@ -48,25 +48,25 @@ ext_year <- 2024
 
 ## 2a) Data imports & cleaning ----
 
-house_raw_dat <- data.frame()
-
-# get historic housing data, each year is on a separate sheet so do a for loop
-for (i in 2014:max_year_housing) {
-  temp <- read_excel(paste0(lp_path, "Households/", "Data ", ext_year, "/household_estimates.xlsx"),
-    sheet = paste(i), skip = 3
-  ) %>%
-    mutate(year = i) %>%
-    clean_names() %>%
-    select(year, 1:12)
-
-  house_raw_dat <- rbind(house_raw_dat, temp)
-}
-
-rm(temp)
+# get historic housing data, each year is on a separate sheet so map over it
+house_raw_dat <- map(
+  2014L:max_year_housing,
+  \(year) {
+    read_excel(
+      path(lp_path, "Households", glue("Data {ext_year}"), "household_estimates.xlsx"),
+      col_types = c(rep("text", 4L), rep("numeric", 8L), rep("skip", 7L)),
+      sheet = as.character(year),
+      skip = 3L,
+      .name_repair = make_clean_names # janitor::make_clean_names()
+    ) |>
+      mutate(year = year, .before = everything())
+  }
+) |>
+  list_rbind()
 
 # Global Script Function to read in Localities Lookup
 lookup <- read_in_localities(dz_level = TRUE) %>%
-  dplyr::select(datazone2011, hscp_locality) %>%
+  select(datazone2011, hscp_locality) %>%
   filter(hscp_locality == LOCALITY)
 
 
@@ -75,8 +75,8 @@ house_dat <- house_raw_dat %>% filter(data_zone_code %in% lookup$datazone2011)
 
 # aggregate data
 house_dat1 <- house_dat %>%
-  dplyr::group_by(year) %>%
-  dplyr::summarise(
+  group_by(year) %>%
+  summarise(
     total_dwellings = sum(total_number_of_dwellings),
     occupied_dwellings = sum(occupied_dwellings),
     vacant_dwellings = sum(vacant_dwellings),
@@ -84,8 +84,8 @@ house_dat1 <- house_dat %>%
     tax_exempt = sum(occupied_dwellings_exempt_from_paying_council_tax),
     tax_discount = sum(dwellings_with_a_single_adult_council_tax_discount)
   ) %>%
-  dplyr::ungroup() %>%
-  dplyr::mutate(dplyr::across(3:7, list(perc = ~ 100 * .x / total_dwellings)))
+  ungroup() %>%
+  mutate(across(3:7, list(perc = ~ 100 * .x / total_dwellings)))
 
 
 ## 2b) Text objects ----
@@ -155,10 +155,10 @@ house_dat2 <- house_raw_dat2 %>%
 ## 3b) Plots & tables ----
 
 ctb <- house_dat2 %>%
-  select(council_tax_band_a:council_tax_band_h) %>%
-  melt()
+  select(matches("council_tax_band_[a-h]")) %>%
+  pivot_longer(cols = everything(), names_to = "variable")
 
-variable <- ctb$variable
+variable <- ctb[["variable"]]
 
 pal_ctb <- phsstyles::phs_colours(c(
   "phs-magenta", "phs-magenta-80", "phs-magenta-50", "phs-magenta-10",
@@ -243,7 +243,7 @@ rm(lookup2)
 # Global Script Function to read in Localities Lookup
 other_locs_dz <- read_in_localities(dz_level = TRUE) %>%
   arrange() %>%
-  dplyr::select(datazone2011, hscp_locality) %>%
+  select(datazone2011, hscp_locality) %>%
   inner_join(other_locs, by = c("hscp_locality" = "hscp_locality"))
 
 house_dat_otherlocs <- house_raw_dat %>%
@@ -254,7 +254,7 @@ house_dat_otherlocs <- house_raw_dat %>%
     total_dwellings = sum(total_number_of_dwellings),
     tax_discount = sum(dwellings_with_a_single_adult_council_tax_discount)
   ) %>%
-  dplyr::ungroup() %>%
+  ungroup() %>%
   mutate(tax_discount_perc = round_half_up(tax_discount / total_dwellings * 100, 1))
 
 other_locs_n_houses <- house_dat_otherlocs %>%
@@ -360,3 +360,22 @@ scot_perc_housesFH <- format_number_for_text(sum(house_raw_dat2$council_tax_band
   house_raw_dat2$council_tax_band_h,
   na.rm = TRUE
 ) / sum(house_raw_dat2$total_number_of_dwellings, na.rm = TRUE) * 100)
+
+# Housekeeping ----
+# These objects are left over after the script is run
+# but don't appear to be used in any 'downstream' process:
+# Main markdown, Summary Table, Excel data tables, SDC output.
+# TODO: Investigate if these can be removed earlier or not created at all.
+rm(
+  ctb,
+  ext_year,
+  house_raw_dat,
+  house_raw_dat2,
+  i,
+  n_occupied,
+  n_vacant,
+  pal_ctb,
+  perc_vacant,
+  variable
+)
+gc()

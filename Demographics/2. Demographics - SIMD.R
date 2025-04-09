@@ -223,7 +223,7 @@ simd_domains <- simd2020 %>%
   select(income, employment, education, access, crime, health, housing, total_pop) %>%
   reshape2::melt(id.vars = "total_pop") %>%
   group_by(variable, value) %>%
-  dplyr::summarise(total_pop = sum(total_pop)) %>%
+  summarise(total_pop = sum(total_pop)) %>%
   ggplot(aes(
     fill = factor(value, levels = 1:5), y = total_pop,
     x = factor(variable, levels = tolower(plot_labels))
@@ -265,8 +265,8 @@ names(simd2016_dom)[2:9] <- paste0(names(simd2016_dom)[2:9], "_16")
 pop_16_20 <- pop_raw_data %>%
   filter(year %in% c(2016, pop_max_year)) %>%
   select(year, datazone2011, sex, pop = total_pop) %>%
-  dplyr::group_by(datazone2011, year) %>%
-  dplyr::summarise(pop = sum(pop)) %>%
+  group_by(datazone2011, year) %>%
+  summarise(pop = sum(pop)) %>%
   ungroup() %>%
   mutate(simd_rank_year = if_else(year == 2016, "pop_16", "pop_20")) %>%
   select(-year) %>%
@@ -277,37 +277,37 @@ simd2016_dom <- simd2016_dom %>%
   left_join(pop_16_20, by = join_by(datazone2011)) %>%
   select(datazone2011, contains("_16")) %>%
   reshape2::melt(id.vars = c("datazone2011", "pop_16")) %>%
-  dplyr::group_by(variable) %>%
-  dplyr::mutate(total_pop = sum(pop_16)) %>%
-  dplyr::group_by(variable, value) %>%
-  dplyr::summarise(
+  group_by(variable) %>%
+  mutate(total_pop = sum(pop_16)) %>%
+  group_by(variable, value) %>%
+  summarise(
     pop = sum(pop_16),
     total_pop = max(total_pop)
   ) %>%
-  dplyr::mutate(
+  mutate(
     perc_16 = pop / total_pop,
     domain = gsub("_16", "", variable)
   ) %>%
-  dplyr::ungroup() %>%
-  dplyr::select(domain, perc_16, quintile = value)
+  ungroup() %>%
+  select(domain, perc_16, quintile = value)
 
 simd2020_dom <- simd2020_dom %>%
   left_join(pop_16_20, by = join_by(datazone2011)) %>%
   select(datazone2011, contains("_20")) %>%
   reshape2::melt(id.vars = c("datazone2011", "pop_20")) %>%
-  dplyr::group_by(variable) %>%
-  dplyr::mutate(total_pop = sum(pop_20)) %>%
-  dplyr::group_by(variable, value) %>%
-  dplyr::summarise(
+  group_by(variable) %>%
+  mutate(total_pop = sum(pop_20)) %>%
+  group_by(variable, value) %>%
+  summarise(
     pop = sum(pop_20),
     total_pop = max(total_pop)
   ) %>%
-  dplyr::mutate(
+  mutate(
     perc_20 = pop / total_pop,
     domain = gsub("_20", "", variable)
   ) %>%
-  dplyr::ungroup() %>%
-  dplyr::select(domain, perc_20, quintile = value)
+  ungroup() %>%
+  select(domain, perc_20, quintile = value)
 
 domains <- simd2020_dom$domain %>% unique()
 base_data <- tibble(
@@ -340,7 +340,7 @@ simd_diff_plot <- ggplot(simd_16_20_dom, aes(x = quintile, y = diff, fill = fact
   ) +
   geom_text(
     aes(
-      label = paste0(format(janitor::round_half_up(100 * diff, 1), nsmall = 1), "%"),
+      label = paste0(format(round_half_up(100 * diff, 1), nsmall = 1), "%"),
       vjust = v_just
     ),
     color = "black",
@@ -371,9 +371,9 @@ simd_diff_overall <- simd_16_20_dom %>%
   filter(domain == "SIMD") %>%
   mutate(
     Quintile = paste(domain, quintile),
-    perc_16 = paste0(format(janitor::round_half_up(100 * perc_16, 1), nsmall = 1), "%"),
-    perc_20 = paste0(format(janitor::round_half_up(100 * perc_20, 1), nsmall = 1), "%"),
-    Difference = paste0(format(janitor::round_half_up(100 * diff, 1), nsmall = 1), "%")
+    perc_16 = paste0(format(round_half_up(100 * perc_16, 1), nsmall = 1), "%"),
+    perc_20 = paste0(format(round_half_up(100 * perc_20, 1), nsmall = 1), "%"),
+    Difference = paste0(format(round_half_up(100 * diff, 1), nsmall = 1), "%")
   ) %>%
   select(Quintile, perc_16, perc_20, Difference)
 
@@ -434,3 +434,29 @@ hscp_simd <- pop_data %>%
 
 hscp_simd_top <- filter(hscp_simd, simd2020v2_sc_quintile == 5)$perc
 hscp_simd_bottom <- filter(hscp_simd, simd2020v2_sc_quintile == 1)$perc
+
+# Housekeeping ----
+# These objects are left over after the script is run
+# but don't appear to be used in any 'downstream' process:
+# Main markdown, Summary Table, Excel data tables, SDC output.
+# TODO: Investigate if these can be removed earlier or not created at all.
+rm(
+  base_data,
+  domains,
+  hscp_simd,
+  lookup_dz,
+  lookups_dir,
+  max_lat,
+  max_long,
+  min_lat,
+  min_long,
+  pop_16_20,
+  pop_data,
+  pop_raw_data,
+  simd_cats,
+  simd_col,
+  simd2016,
+  simd2020,
+  zones_coord
+)
+gc()

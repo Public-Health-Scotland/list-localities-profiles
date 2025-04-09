@@ -1,12 +1,6 @@
 ##### LOCALITY PROFILES MASTER DOC RENDER CODE #####
 
-library(readxl)
-library(janitor)
-library(tidyverse)
-library(knitr)
-library(markdown)
-library(rmarkdown)
-library(writexl)
+library(openxlsx)
 
 rm(list = ls())
 
@@ -127,7 +121,7 @@ for (HSCP in hscp_list) {
     }
   }
 
-  wb <- openxlsx::createWorkbook()
+  wb <- createWorkbook()
 
   names(excel_output) <- names(df)
 
@@ -144,24 +138,24 @@ for (HSCP in hscp_list) {
     dataframe_name <- excel_names[[i]]
 
     # Create a new sheet with the dataframe name as the sheet name
-    openxlsx::addWorksheet(wb, sheetName = dataframe_name)
+    addWorksheet(wb, sheetName = dataframe_name)
 
     # Write the combined dataframe to the current sheet
-    openxlsx::writeData(wb, sheet = dataframe_name, x = output)
+    writeData(wb, sheet = dataframe_name, x = output)
 
-    openxlsx::setColWidths(wb, sheet = dataframe_name, cols = 1:ncol(output), widths = "auto")
+    setColWidths(wb, sheet = dataframe_name, cols = 1:ncol(output), widths = "auto")
   }
 
   index_data <- data.frame(Sheet_name = excel_names)
 
   excel_output <- c(index_data, excel_output)
 
-  openxlsx::addWorksheet(wb, sheetName = "Index")
+  addWorksheet(wb, sheetName = "Index")
 
-  openxlsx::writeData(wb, sheet = "Index", x = index_data)
+  writeData(wb, sheet = "Index", x = index_data)
 
   # Save the workbook to a file
-  openxlsx::saveWorkbook(wb, paste0(lp_path, "Master RMarkdown Document & Render Code/Output/background data/", "custom South Ayrshire.xlsx"), overwrite = TRUE)
+  saveWorkbook(wb, paste0(lp_path, "Master RMarkdown Document & Render Code/Output/background data/", "custom South Ayrshire.xlsx"), overwrite = TRUE)
   rm(list = setdiff(ls(), loop_env))
   # Force garbage collection to free up memory
   gc()

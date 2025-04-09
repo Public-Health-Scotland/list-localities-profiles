@@ -3,8 +3,7 @@ title: ''
 output:
   word_document:
     fig_caption: false
-    reference_docx: //conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality
-      Profiles/Master RMarkdown Document & Render Code/Locality_Profiles_Report_Template.docx
+    reference_docx: "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/Locality_Profiles_Report_Template.docx"
   html_document:
     fig_caption: false
     df_print: paged
@@ -636,7 +635,7 @@ x <- x + 1
 
 Figure `r x` presents the emergency admissions rate per 100,000 population in the `r LOCALITY` locality from `r min_year_ea` to `r max_year_ea`.
 
-As presented in Figure `r x`, the emergency admissions rate in the `r LOCALITY` locality for `r max_year_ea` is `r latest_emergency_adm_loc1`, `r get_article(percent_rate_change)` `r percent_rate_change`% `r word_change_rate` since `r min_year_ea`. The `r HSCP` HSCP rate is `r hscp_emergency_adm1`, `r get_article(hscp_rate_change)` `r hscp_rate_change`% `r word_change_hscp` since `r min_year_ea`. The `r HB` health board rate is `r hscp_emergency_adm1` in `r max_year_ea`, `r get_article(hb_rate_change)` `r hb_rate_change`% `r word_change_hb` since `r min_year_ea` and the Scotland rate is `r scot_emergency_adm1`, `r get_article(scot_rate_change)` `r scot_rate_change`% `r word_change_scot` since `r min_year_ea`.
+As presented in Figure `r x`, the emergency admissions rate in the `r LOCALITY` locality for `r max_year_ea` is `r latest_emergency_adm_loc1`, `r get_article(percent_rate_change)` `r percent_rate_change`% `r word_change_rate` since `r min_year_ea`. The `r HSCP` HSCP rate is `r hscp_emergency_adm1`, `r get_article(hscp_rate_change)` `r hscp_rate_change`% `r word_change_hscp` since `r min_year_ea`. The `r HB` health board rate is `r hb_emergency_adm1` in `r max_year_ea`, `r get_article(hb_rate_change)` `r hb_rate_change`% `r word_change_hb` since `r min_year_ea` and the Scotland rate is `r scot_emergency_adm1`, `r get_article(scot_rate_change)` `r scot_rate_change`% `r word_change_scot` since `r min_year_ea`.
 
 #### Figure `r x`: Emergency admissions by geographical area
 
