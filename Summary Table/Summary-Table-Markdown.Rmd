@@ -200,7 +200,7 @@ time <- c(
 loc_values <- round_half_up(c(avg_life_exp_latest_male, avg_life_exp_latest_fem, deaths_15_44_latest, ltc_percent_total_latest, cancer_reg_rate_latest, adp_presc_latest), 1)
 other_loc_values <- rbind(other_locs_life_exp_male, other_locs_life_exp_fem, other_locs_deaths_15_44, other_locs_ltc, other_locs_cancer, other_locs_adp)
 hscp_values <- c(hscp_life_exp_male, hscp_life_exp_fem, hscp_deaths_15_44, hscp_ltc, hscp_cancer, hscp_adp)
-scot_values <- c(scot_life_exp_male, scot_life_exp_fem, scot_deaths_15_44, scot_ltc, scot_cancer, scot_adp_presc)
+scot_values <- c(scot_life_exp_male, scot_life_exp_fem, scot_deaths_15_44, ltc_perc_scot, scot_cancer, scot_adp_presc)
 
 general_health_values <- tibble(
   indicators, datatype, time, loc_values, other_loc_values,
