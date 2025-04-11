@@ -215,25 +215,6 @@ life_exp_table <- life_exp %>%
   pivot_wider(names_from = area_name, values_from = measure)
 
 
-# Table breaking down intermediate zones
-
-life_exp_table <- life_exp %>%
-  filter((year == latest_year_life_exp_loc &
-    (area_name == LOCALITY & area_type == "Locality")) |
-    year == latest_year_life_exp_otherareas &
-      ((area_name == HSCP & area_type == "HSCP") |
-        area_name == HB | area_name == "Scotland")) %>%
-  select("Sex" = sex, area_name, area_type, measure) %>%
-  mutate(
-    measure = round_half_up(measure, 1),
-    area_type = factor(area_type, levels = c("Locality", "HSCP", "Health board", "Scotland")),
-    area_name = fct_reorder(as.factor(area_name), as.numeric(area_type))
-  ) %>%
-  arrange(area_name) %>%
-  select(-area_type) %>%
-  pivot_wider(names_from = area_name, values_from = measure)
-
-
 ## Numbers for text
 locality_missing <- LOCALITY %in% check_missing_data_scotpho(life_exp)$area_name
 
