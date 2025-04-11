@@ -10,7 +10,7 @@
 ext_year <- 2024
 
 # Set locality profiles file path
-# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 import_folder <- paste0(lp_path, "Unscheduled Care/DATA ", ext_year, "/")
 
 ### for testing run global script and locality placeholder below
@@ -19,11 +19,11 @@ import_folder <- paste0(lp_path, "Unscheduled Care/DATA ", ext_year, "/")
 library(scales)
 
 ## Functions
-# source("./Master RMarkdown Document & Render Code/Global Script.R")
+source("./Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Define locality
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
-# LOCALITY <- "Inverness"
+LOCALITY <- "Inverness"
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
 # LOCALITY <- "Whalsay and Skerries"
 # LOCALITY <- "North Perthshire"
@@ -1661,6 +1661,8 @@ latest_ppa_loc <- ppa_areas %>%
   ) %>%
   mutate(formatted_data = format(data, big.mark = ","))
 
+latest_ppa_loc1 <- latest_ppa_loc$formatted_data[2]
+
 ppa_diff <- percent_change_calc(latest_ppa_loc$data[2], latest_ppa_loc$data[1])
 ppa_word_change <- word_change_calc(latest_ppa_loc$data[2], latest_ppa_loc$data[1])
 
@@ -1922,7 +1924,6 @@ rm(
   latest_emergency_adm_loc2,
   latest_falls_loc,
   latest_falls_loc2,
-  latest_ppa_loc,
   latest_re_max_age,
   latest_re_min_age,
   latest_read_loc,
