@@ -1,0 +1,23 @@
+# Services
+
+#### Figure `r x`: Map of services by locality in `r HSCP` HSCP^2^.
+
+\newline
+
+```{r fig.width=6, fig.cap= "A map of the health and social care partnership including a breakdown on localities with the locations of all the GP practices, care homes, emergency depertments and minor injury units."}
+service_map
+
+x <- x + 1
+```
+
+\newline
+
+#### Table `r y`: Number of each type of service in `r LOCALITY` Locality^2^.
+
+\newline
+
+```{r }
+knitr::kable(services_tibble, col.names = c("**Service Type**", "**Service**", "**Number**"), format = "markdown")
+
+y <- y + 1
+```
