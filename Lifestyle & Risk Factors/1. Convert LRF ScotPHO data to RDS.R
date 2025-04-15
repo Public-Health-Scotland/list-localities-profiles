@@ -3,7 +3,7 @@
 ## This script takes all the csv files in the data folder,
 # saves RDS versions and deletes the csv versions to save space.
 
-library(tidyverse)
+source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Change year to be the year in the data folder name
 ext_year <- 2024
@@ -18,9 +18,9 @@ lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality
 filt_and_save <- function(file_name) {
   data <- read_csv(paste0(lp_path, ext_year, "/", file_name, ".csv"))
 
-  saveRDS(data, paste0(lp_path, ext_year, "/", file_name, ".RDS"))
+  write_rds(data, paste0(lp_path, ext_year, "/", file_name, ".RDS"))
 
-  unlink(paste0(lp_path, ext_year, "/", file_name, ".csv"))
+  file_delete(paste0(lp_path, ext_year, "/", file_name, ".csv"))
 }
 
 # Extract all file names from the ScotPHO folder
