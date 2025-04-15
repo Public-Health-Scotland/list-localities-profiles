@@ -18,19 +18,11 @@ latest_msg_folder <- "2024-12 December"
 # lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 ## Packages
-library(tidyverse)
-library(janitor)
-# library(tidylog)
-library(magrittr)
 library(lubridate)
-library(scales)
-library(broom)
-library(reshape2)
 library(odbc)
-library(arrow)
 
 ## Functions
-source("./Master RMarkdown Document & Render Code/Global Script.R")
+source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Read/write permissions
 # Sys.umask("006")
