@@ -15,7 +15,7 @@ library(gridExtra)
 library(png)
 
 # Determine locality (for testing only)
-# LOCALITY <- "Inverness"
+# LOCALITY <- "Eastwood"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
 # LOCALITY <- "Mid-Argyll, Kintyre and Islay"
 # LOCALITY <- "City of Dunfermline"
@@ -1036,7 +1036,23 @@ hscp_deaths_15_44 <- hscp_scot_summary_table(deaths_15_44, latest_year = max(dea
 hscp_cancer <- hscp_scot_summary_table(cancer_reg, latest_year = max(cancer_reg$year), area = HSCP)
 hscp_adp <- hscp_scot_summary_table(adp_presc, latest_year = max(adp_presc$year), area = HSCP)
 
-hscp_ltc <- round_half_up((sum(other_locs_ltc) + ltc_percent_total_latest) / n_loc, 1)
+slf_pop_hscp <- slf_pops %>%
+  filter(hscp2019name == HSCP) %>% 
+  group_by(hscp2019name) %>% 
+  summarise(slf_adj_pop = sum(slf_adj_pop)) %>% 
+  ungroup()
+
+ltc_hscp <- ltc %>%
+  filter(hscp2019name == HSCP) %>%
+  filter(total_ltc > 0) %>%
+  group_by(hscp2019name) %>%
+  summarise(people = sum(people)) %>%
+  ungroup() %>%
+  left_join(slf_pop_hscp, by = join_by(hscp2019name)) %>%
+  mutate(perc_with_ltc = round_half_up(people / slf_adj_pop *100, 1))
+
+
+hscp_ltc <- ltc_hscp$perc_with_ltc
 
 # 3. Scotland
 
