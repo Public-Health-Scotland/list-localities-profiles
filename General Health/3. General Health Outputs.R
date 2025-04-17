@@ -15,16 +15,16 @@ library(gridExtra)
 library(png)
 
 # Determine locality (for testing only)
-# HSCP <- 'East Renfrewshire'
+#HSCP <- 'East Renfrewshire'
 
 # Set year of data extracts for folder
 ext_year <- 2024
 
 # Source in functions code
-# source("Master RMarkdown Document & Render Code/Global Script.R")
+#source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set file path
-# lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
+#lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
 
 gen_health_data_dir <- path(lp_path, "General Health", glue("DATA {ext_year}"))
 
@@ -618,6 +618,7 @@ ltc_waffles <- plot_grid(waffle.u65, waffle.6574, waffle.7584, waffle.o85, nrow 
 
 ## Numbers for text
 ltc_percent_total_latest <- (sum(ltc_infographic$people) / sum(ltc_infographic$slf_adj_pop)) * 100
+
 
 
 # Remove unnecessary objects

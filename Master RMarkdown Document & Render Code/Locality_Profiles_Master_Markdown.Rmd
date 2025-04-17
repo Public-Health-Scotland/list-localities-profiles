@@ -51,7 +51,7 @@ For the most recent time period available, `r HSCP` HSCP had:
 
 <!-- Total Population Text -->
 
-In `r pop_max_year`, the total population of `r HSCP` HSCP was `r total_population`. The graph below shows the population distribution of the HSCP. Overall, **`r gender_breakdown[gender_breakdown$sex == "M",]$perc`** of the population are male, and **`r gender_breakdown[gender_breakdown$sex == "F",]$perc`** are female. *Please see the footnotes for more information on how the population projections were calculated^1^.*
+In `r pop_max_year`, the total population of `r HSCP` HSCP was `r total_population`. The graph below shows the population distribution of the HSCP. Overall, **`r gender_breakdown[gender_breakdown$sex == "M",]$perc`** of the population are male, and **`r gender_breakdown[gender_breakdown$sex == "F",]$perc`** are female. *Please see the footnotes for more information on NRS population estimates^1^.*
 
 #### Figure `r x`: Population by age and sex.
 
