@@ -169,7 +169,7 @@ life_exp_trend <- life_exp %>%
     year >= max(year) - 10
   ) %>%
   mutate(
-    period_short = str_wrap(period_short, width = 10),
+    period_short = period_short,
     measure = round_half_up(measure, 1)
   ) %>%
   ggplot(aes(
@@ -184,6 +184,7 @@ life_exp_trend <- life_exp %>%
   geom_point(size = 2) +
   scale_colour_manual(values = palette) +
   theme_profiles() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   expand_limits(y = 0) +
   labs(
     title = str_wrap(glue("Average Life Expectancy in {LOCALITY} locality"), width = 65),
