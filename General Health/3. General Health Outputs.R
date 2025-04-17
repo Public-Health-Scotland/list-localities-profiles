@@ -164,7 +164,7 @@ life_exp_trend <- life_exp %>%
     year >= max(year) - 10
   ) %>%
   mutate(
-    period_short = str_wrap(period_short, width = 10),
+    period_short = period_short,
     measure = round_half_up(measure, 1)
   ) %>%
   ggplot(aes(
@@ -903,7 +903,7 @@ top5_ltc_table <- plot_grid(title, top5ltc_all_table, nrow = 2, rel_heights = c(
 
 rm(
   ltc_cols, ltc_loc_col, ltc_hscp_col, ltc_scot_col,
-  ltc_pops_total_loc, ltc_pops_total_hscp,
+  ltc_pops_total_loc,
   loc.ltc.table, hscp.ltc.table,
   top5ltc_hscp, top5ltc_scot, top5ltc_all_table, title
 )
@@ -1025,7 +1025,8 @@ hscp_deaths_15_44 <- hscp_scot_summary_table(deaths_15_44, latest_year = max(dea
 hscp_cancer <- hscp_scot_summary_table(cancer_reg, latest_year = max(cancer_reg$year), area = HSCP)
 hscp_adp <- hscp_scot_summary_table(adp_presc, latest_year = max(adp_presc$year), area = HSCP)
 
-hscp_ltc <- round_half_up((sum(other_locs_ltc) + ltc_percent_total_latest) / n_loc, 1)
+ltc_hscp <- sum(filter(ltc, hscp2019name == HSCP, total_ltc > 0)$people)
+hscp_ltc <- round_half_up(ltc_hscp / ltc_pops_total_hscp * 100, 1)
 
 # 3. Scotland
 
@@ -1060,7 +1061,9 @@ rm(
   latest_year_life_exp_loc,
   locality_missing,
   ltc_infographic,
+  ltc_pops_total_hscp,
   ltc_pops_total_scot,
+  ltc_hscp,
   ltc_scot,
   ltc_totals,
   ltc2,
