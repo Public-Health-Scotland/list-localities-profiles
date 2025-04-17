@@ -15,16 +15,16 @@ library(gridExtra)
 library(png)
 
 # Determine locality (for testing only)
-# HSCP <- 'East Renfrewshire'
+#HSCP <- 'East Renfrewshire'
 
 # Set year of data extracts for folder
 ext_year <- 2024
 
 # Source in functions code
-# source("Master RMarkdown Document & Render Code/Global Script.R")
+#source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set file path
-# lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
+#lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
 
 gen_health_data_dir <- path(lp_path, "General Health", glue("DATA {ext_year}"))
 
@@ -637,6 +637,7 @@ ltc_waffles <- plot_grid(waffle.u65, waffle.6574, waffle.7584, waffle.o85, nrow 
 ltc_percent_total_latest <- (sum(ltc_infographic$people) / sum(ltc_infographic$slf_adj_pop)) * 100
 
 
+
 # Remove unnecessary objects
 rm(
   ppl_bold_u65, ppl_faint_u65, ppl_faint_o85, ppl_bold_o85,
@@ -1043,7 +1044,9 @@ hscp_deaths_15_44 <- hscp_scot_summary_table(deaths_15_44, latest_year = max(dea
 hscp_cancer <- hscp_scot_summary_table(cancer_reg, latest_year = max(cancer_reg$year), area = HSCP)
 hscp_adp <- hscp_scot_summary_table(adp_presc, latest_year = max(adp_presc$year), area = HSCP)
 
-hscp_ltc <- round_half_up((sum(other_locs_ltc) + ltc_percent_total_latest) / n_loc, 1)
+hscp_ltc <- round_half_up(ltc_percent_total_latest,1)
+
+
 
 # 3. Scotland
 
