@@ -84,15 +84,15 @@ Sub InsertSummaryTable()
     
     'Identify locality to select correct summary table
     Selection.HomeKey Unit:=wdStory
-    Dim Locality    As String
-    Locality = ActiveDocument.FullName
-    Locality = Left(Locality, InStrRev(Locality, "-") - 1)
-    Locality = Right(Locality, Len(Locality) - InStrRev(Locality, "\"))
+    Dim HSCP        As String
+    HSCP = ActiveDocument.FullName
+    HSCP = Left(HSCP, InStrRev(HSCP, "-") - 1)
+    HSCP = Right(HSCP, Len(HSCP) - InStrRev(HSCP, "\"))
     Debug.Print "File Extension: " & myOutput
     
     'Insert summary table
     Selection.InsertBreak Type:=wdSectionBreakNextPage
-    Selection.InsertFile ("\\stats\LIST_analytics\West Hub\02 - Scaled Up Work\RMarkdown\Locality Profiles\Master RMarkdown Document & Render Code\Output\Summary Tables\" & Locality & "- Summary Table.docx")
+    Selection.InsertFile ("\\stats\LIST_analytics\West Hub\02 - Scaled Up Work\RMarkdown\Locality Profiles\Master RMarkdown Document & Render Code\Output\Summary Tables\" & HSCP & "- Summary Table.docx")
     
     'Convert summary table pages to landscape
     Selection.InsertBreak Type:=wdPageBreak
@@ -124,27 +124,27 @@ Sub TableOfContents()
                                         AddedStyles:="Heading 2, Heading 3"
 End Sub
 
-Sub LocalityName()
-    Dim Locality    As String
-    Locality = ActiveDocument.FullName
-    Locality = Left(Locality, InStrRev(Locality, "-") - 1)
-    Locality = Right(Locality, Len(Locality) - InStrRev(Locality, "\"))
+Sub HSCPName()
+    Dim HSCP        As String
+    HSCP = ActiveDocument.FullName
+    HSCP = Left(HSCP, InStrRev(HSCP, "-") - 1)
+    HSCP = Right(HSCP, Len(HSCP) - InStrRev(HSCP, "\"))
     Debug.Print "File Extension: " & myOutput
-    Selection.TypeText (Locality)
+    Selection.TypeText (HSCP)
 End Sub
 
 Sub CoverName()
-    Dim Locality    As String
-    Locality = ActiveDocument.FullName
-    Locality = Left(Locality, InStrRev(Locality, "-") - 1)
-    Locality = Right(Locality, Len(Locality) - InStrRev(Locality, "\"))
+    Dim HSCP        As String
+    HSCP = ActiveDocument.FullName
+    HSCP = Left(HSCP, InStrRev(HSCP, "-") - 1)
+    HSCP = Right(HSCP, Len(HSCP) - InStrRev(HSCP, "\"))
     Debug.Print "File Extension: " & myOutput
     
     Dim rngStory    As Range
     For Each rngStory In ActiveDocument.StoryRanges
         With rngStory.Find
-            .Text = "[Insert Locality Name]"
-            .Replacement.Text = Locality
+            .Text = "[Insert HSCP Name]"
+            .Replacement.Text = HSCP
             .Wrap = wdFindContinue
             .Execute Replace:=wdReplaceAll
         End With
@@ -173,7 +173,7 @@ Sub Cover_Page()
         Where:=Selection.Range, RichText:=True
         
         'Find and replace
-        ActiveDocument.BuiltInDocumentProperties("Title") = "Locality Profile"
+        ActiveDocument.BuiltInDocumentProperties("Title") = "HSCP Profile"
         
     End If
 End Sub
