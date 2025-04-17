@@ -164,7 +164,7 @@ life_exp_trend <- life_exp %>%
     year >= max(year) - 10
   ) %>%
   mutate(
-    period_short = str_wrap(period_short, width = 10),
+    period_short = period_short,
     measure = round_half_up(measure, 1)
   ) %>%
   ggplot(aes(
@@ -207,23 +207,6 @@ life_exp_table <- life_exp %>%
   ) %>%
   arrange(area_type) %>%
   select("Sex" = sex, area_name, measure) %>%
-  pivot_wider(names_from = area_name, values_from = measure)
-
-
-# Table breaking down intermediate zones
-
-life_exp_table <- life_exp %>%
-  filter(year == latest_year_life_exp_otherareas &
-    ((area_name == HSCP & area_type == "HSCP") |
-      area_name == HB | area_name == "Scotland")) %>%
-  select("Sex" = sex, area_name, area_type, measure) %>%
-  mutate(
-    measure = round_half_up(measure, 1),
-    area_type = factor(area_type, levels = c("Locality", "HSCP", "Health board", "Scotland")),
-    area_name = fct_reorder(as.factor(area_name), as.numeric(area_type))
-  ) %>%
-  arrange(area_name) %>%
-  select(-area_type) %>%
   pivot_wider(names_from = area_name, values_from = measure)
 
 
@@ -921,7 +904,7 @@ top5_ltc_table <- plot_grid(title, top5ltc_all_table, nrow = 2, rel_heights = c(
 
 rm(
   ltc_cols, ltc_loc_col, ltc_hscp_col, ltc_scot_col,
-  ltc_pops_total_loc, ltc_pops_total_hscp,
+  ltc_pops_total_loc,
   loc.ltc.table, hscp.ltc.table,
   top5ltc_hscp, top5ltc_scot, top5ltc_all_table, title
 )
@@ -931,7 +914,6 @@ rm(
 ltc_perc_scot <- round_half_up((sum(filter(ltc_scot, total_ltc > 0)$people) / ltc_pops_total_scot) * 100, 1)
 
 ltc_diff_scot <- if_else(ltc_percent_total_latest > ltc_perc_scot, "higher", "lower")
-
 
 
 ############################### 4) CODE FOR SUMMARY TABLE ###############################
@@ -1044,9 +1026,8 @@ hscp_deaths_15_44 <- hscp_scot_summary_table(deaths_15_44, latest_year = max(dea
 hscp_cancer <- hscp_scot_summary_table(cancer_reg, latest_year = max(cancer_reg$year), area = HSCP)
 hscp_adp <- hscp_scot_summary_table(adp_presc, latest_year = max(adp_presc$year), area = HSCP)
 
-hscp_ltc <- round_half_up(ltc_percent_total_latest,1)
-
-
+ltc_hscp <- sum(filter(ltc, hscp2019name == HSCP, total_ltc > 0)$people)
+hscp_ltc <- round_half_up(ltc_hscp / ltc_pops_total_hscp * 100, 1)
 
 # 3. Scotland
 
@@ -1067,8 +1048,6 @@ scot_cancer <- hscp_scot_summary_table(cancer_reg, latest_year = max(cancer_reg$
 scot_cancer_deaths <- hscp_scot_summary_table(early_deaths_cancer, latest_year = max(early_deaths_cancer$year), area = "Scotland")
 scot_adp_presc <- hscp_scot_summary_table(adp_presc, latest_year = max(adp_presc$year), area = "Scotland")
 
-scot_ltc <- round_half_up((sum(filter(ltc_scot, total_ltc > 0)$people) / ltc_pops_total_scot) * 100, 1)
-
 # Housekeeping ----
 # These objects are left over after the script is run
 # but don't appear to be used in any 'downstream' process:
@@ -1083,7 +1062,9 @@ rm(
   latest_year_life_exp_loc,
   locality_missing,
   ltc_infographic,
+  ltc_pops_total_hscp,
   ltc_pops_total_scot,
+  ltc_hscp,
   ltc_scot,
   ltc_totals,
   ltc2,
