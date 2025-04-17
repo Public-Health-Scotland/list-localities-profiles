@@ -184,6 +184,7 @@ life_exp_trend <- life_exp %>%
   geom_point(size = 2) +
   scale_colour_manual(values = palette) +
   theme_profiles() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   expand_limits(y = 0) +
   labs(
     title = str_wrap(glue("Average Life Expectancy in {LOCALITY} locality"), width = 65),
