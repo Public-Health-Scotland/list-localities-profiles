@@ -169,7 +169,7 @@ life_exp_trend <- life_exp %>%
     year >= max(year) - 10
   ) %>%
   mutate(
-    period_short = str_wrap(period_short, width = 10),
+    period_short = period_short,
     measure = round_half_up(measure, 1)
   ) %>%
   ggplot(aes(
