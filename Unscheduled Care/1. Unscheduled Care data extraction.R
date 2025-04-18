@@ -30,7 +30,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 # Sys.getenv("R_ZIPCMD", "zip")
 
 # Folder to export to
-exportfolder <- paste0(lp_path, "Unscheduled Care/DATA ", ext_year, "/")
+exportfolder <- paste0(lp_path, "Unscheduled Care/DATA ", ext_year, "/HSCP/")
 
 
 ## Lookups ----
@@ -41,8 +41,7 @@ postcodes <- read_in_postcodes() %>%
 
 # Localities/Datazones
 datazones <- read_in_localities(dz_level = TRUE)
-localities <- read_in_localities()
-
+hscp <- read_in_localities()
 
 ########################## SECTION 2: MSG Data ###############################
 
@@ -81,7 +80,7 @@ msg_emergency_adm <- msg_emerg_adm_raw %>%
   mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
   mutate(hscp_locality = gsub("&", "and", locality)) %>%
   # join with localities lookup to get hscp
-  left_join(localities, by = "hscp_locality") %>%
+  left_join(hscp, by = "hscp_locality") %>%
   # aggregate
   group_by(financial_year, hscp2019name, hscp_locality, age_group) %>%
   summarise(admissions = sum(admissions)) %>%
@@ -96,7 +95,7 @@ msg_bed_days <- msg_beddays_raw %>%
   mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
   mutate(hscp_locality = gsub("&", "and", locality)) %>%
   # join with localities lookup to get hscp
-  left_join(localities, by = "hscp_locality") %>%
+  left_join(hscp, by = "hscp_locality") %>%
   # aggregate
   group_by(financial_year, hscp2019name, hscp_locality, age_group) %>%
   summarise(bed_days = sum(unplanned_beddays)) %>%
@@ -111,7 +110,7 @@ msg_bed_days_mh <- msg_mh_beddays_raw %>%
   mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
   mutate(hscp_locality = gsub("&", "and", locality)) %>%
   # join with localities lookup to get hscp
-  left_join(localities, by = "hscp_locality") %>%
+  left_join(hscp, by = "hscp_locality") %>%
   # aggregate
   group_by(financial_year, hscp2019name, hscp_locality, age_group) %>%
   summarise(bed_days = sum(unplanned_beddays)) %>%
@@ -126,7 +125,7 @@ msg_ae <- msg_ae_raw %>%
   mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
   mutate(hscp_locality = gsub("&", "and", locality)) %>%
   # join with localities lookup to get hscp
-  left_join(localities, by = "hscp_locality") %>%
+  left_join(hscp, by = "hscp_locality") %>%
   # aggregate
   group_by(financial_year, hscp2019name, hscp_locality, age_group) %>%
   summarise(attendances = sum(attendances)) %>%

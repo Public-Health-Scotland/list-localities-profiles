@@ -24,12 +24,12 @@ hscp_list <- read_in_localities() |>
 
 # Create a dataframe with some details about the files
 file_lookup <- tibble(
-  path = dir_ls(path = output_dir, glob = "* - Locality Profile SDC highlight.xlsx$"),
+  path = dir_ls(path = output_dir, glob = "* - HSCP Profile SDC highlight.xlsx$"),
   file_name = path_file(path),
   hscp = str_extract(
     string = file_name,
     # Regular expression, the brackets create a 'capture group'
-    pattern = "^([A-Z].+?) - Locality Profile SDC highlight.xlsx$",
+    pattern = "^([A-Z].+?) - HSCP Profile SDC highlight.xlsx$",
     # We only want 'group 1' i.e. the bit in the brackets
     group = 1
   )
