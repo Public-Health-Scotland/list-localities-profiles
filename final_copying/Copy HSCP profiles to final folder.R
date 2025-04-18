@@ -9,7 +9,7 @@ library(tidyr)
 library(stringr)
 
 # Update the year as needed. The directory will be named '{year} Final Profiles'
-year <- "2024"
+year <- "2025-April"
 
 # Set top level file path
 lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
