@@ -1,4 +1,4 @@
-Sub LocalityProfilesMacro()
+Sub HSCPProfilesMacro()
     Dim file
     Dim path        As String
     path = "\\Isdsf00d03\LIST_analytics\West Hub\02 - Scaled Up Work\RMarkdown\Locality Profiles\Master RMarkdown Document & Render Code\Output\"
@@ -11,14 +11,14 @@ Sub LocalityProfilesMacro()
         Call SetStyleOfAllTablesAndPreserveAlignment
         Selection.HomeKey Unit:=wdStory        'go back to beginning of document
         ' Saves the file
-        Call InsertSummaryTable        'Insert summary table and convert pages to landscape
+        Call InsertSummaryTableHSCP        'Insert summary table and convert pages to landscape
         Call TableOfContents
         Selection.HomeKey Unit:=wdStory        'go back to beginning of document
-        Call Cover_Page        'Insert Cover Page
+        Call Cover_PageHSCP        'Insert Cover Page
         ' Saves the file
         'Insert Cover Page
         ActiveDocument.TablesOfContents(1).Update
-        Call CoverName
+        Call CoverNameHSCP
         ActiveDocument.Sections.First.PageSetup.DifferentFirstPageHeaderFooter = TRUE
         ActiveDocument.Save
         ActiveDocument.Close
@@ -80,9 +80,9 @@ Next objTable
 
 End Sub
 
-Sub InsertSummaryTable()
+Sub InsertSummaryTableHSCP()
     
-    'Identify locality to select correct summary table
+    'Identify HSCP to select the correct summary table
     Selection.HomeKey Unit:=wdStory
     Dim HSCP        As String
     HSCP = ActiveDocument.FullName
@@ -133,7 +133,7 @@ Sub HSCPName()
     Selection.TypeText (HSCP)
 End Sub
 
-Sub CoverName()
+Sub CoverNameHSCP()
     Dim HSCP        As String
     HSCP = ActiveDocument.FullName
     HSCP = Left(HSCP, InStrRev(HSCP, "-") - 1)
@@ -154,7 +154,7 @@ Sub CoverName()
     
 End Sub
 
-Sub Cover_Page()
+Sub Cover_PageHSCP()
     
     Selection.HomeKey Unit:=wdStory
     
