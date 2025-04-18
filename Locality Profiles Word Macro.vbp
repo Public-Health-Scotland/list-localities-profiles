@@ -138,12 +138,17 @@ Sub CoverNameHSCP()
     HSCP = ActiveDocument.FullName
     HSCP = Left(HSCP, InStrRev(HSCP, "-") - 1)
     HSCP = Right(HSCP, Len(HSCP) - InStrRev(HSCP, "\"))
+
+    ' Add " HSCP" to the name
+    HSCP = HSCP & " HSCP"
+
+
     Debug.Print "File Extension: " & myOutput
     
     Dim rngStory    As Range
     For Each rngStory In ActiveDocument.StoryRanges
         With rngStory.Find
-            .Text = "[Insert HSCP Name]"
+            .Text = "[Insert HSCP Name]Locality"
             .Replacement.Text = HSCP
             .Wrap = wdFindContinue
             .Execute Replace:=wdReplaceAll
