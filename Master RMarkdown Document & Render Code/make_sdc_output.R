@@ -44,9 +44,9 @@ ltc_all <- vector("list", length(hscp_list)) |>
 
 # Save the current environment variables before processing each HSCP
 # This is used to clear up variables created within the locality loop later
-loop_env <- c(ls(), "loop_env")
 
 for (HSCP in hscp_list) {
+  loop_env <- c(ls(), "loop_env")
   message(glue("  Processing hscp: {HSCP} ({which(hscp_list == HSCP)}/{length(hscp_list)})) HSCP: {HSCP}"))
   # **Unscheduled Care Data Processing** ----
   # Extract and filter unscheduled care data for the current hscp
@@ -122,7 +122,7 @@ for (HSCP in hscp_list) {
   smr01_age_all[[HSCP]] <- smr01_age_loc |> list_rbind()
 
   # Clear out Unscheduled Care data objects to free up memory
-  rm(list = setdiff(ls(), c(loop_env, "HSCP")))
+  rm(list = setdiff(ls(), loop_env))
   gc() # Run garbage collection to further free up memory
 
 
@@ -140,7 +140,7 @@ for (HSCP in hscp_list) {
     list(
       "Long_Term_Conditions" = ltc_multimorbidity,
       "LTC_Types" = ltc_types,
-      "LTC_Top_5_Prevalence" = top5ltc_loc
+      "LTC_Top_5_Prevalence" = top5ltc_hscp
     ),
     \(data, name) {
       data |>
@@ -182,4 +182,5 @@ for (HSCP in hscp_list) {
   message(glue("Finished processing for HSCP: {HSCP} - Excel file saved."))
 } # End of HSCP loop
 
-message("Script completed processing all HSCPs.") # Final completion message
+message("Script completed processing all HSCPs.")
+rm(list = ls())
