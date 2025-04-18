@@ -1548,6 +1548,15 @@ ppa_loc_ts <- area_trend_usc(
 max_year_ppa_areas <- max(ppa_areas$financial_year)
 min_year_ppa_areas <- min(ppa_areas$financial_year)
 
+latest_ppa_loc <- ppa_areas %>%
+  filter(
+    location == HSCP,
+    area_type == "HSCP",
+    year == max(year) | year == min(year)
+  ) %>%
+  mutate(formatted_data = format(data, big.mark = ","))
+
+
 
 latest_ppa_loc1 <- latest_ppa_loc$formatted_data[2]
 
@@ -1656,7 +1665,18 @@ list_years <- unique(psych_hosp_time_trend$data[5])
 list_years_latest <- list_years$period
 
 
-# Locality
+# Locality (HSCP)
+loc_psych_hosp <- psych_hosp %>%
+  filter(period %in% list_years_latest) %>%
+  filter(
+    area_name == HSCP,
+    area_type == "HSCP",
+    year == min(year) | year == max(year)
+  ) %>%
+  mutate(measure2 = format(measure, big.mark = ","))
+
+diff_loc_psych <- percent_change_calc(loc_psych_hosp$measure[2], loc_psych_hosp$measure[1])
+word_change_loc_psych <- word_change_calc(loc_psych_hosp$measure[2], loc_psych_hosp$measure[1])
 
 # HSCP
 hscp_psych_hosp <- psych_hosp %>%
