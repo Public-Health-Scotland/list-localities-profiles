@@ -26,7 +26,7 @@ lookup <- read_in_localities()
 hscp_list <- "Angus"
 
 # NOTE - This checks that it exactly matches the lookup
-stopifnot(all(hscp_list %in% unique(lookup[["hscp2019name"]])))
+stopifnot(hscp_list %in% unique(lookup[["hscp2019name"]]))
 
 # Loop over HSCP ----
 # 'looping' over one HSCP is fine.
