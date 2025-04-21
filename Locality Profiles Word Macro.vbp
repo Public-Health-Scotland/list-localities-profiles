@@ -253,30 +253,6 @@ Sub insert_table_of_contents()
 
 End Sub
 
-Sub type_locality_name()
-    ' Description:
-    '   Determines the locality name from the active document's file name
-    '   and types this name at the current cursor position.
-
-    ' --- Variables ---
-    ' Variable to hold the extracted locality name.
-    Dim locality_name As String
-
-    ' Get the full file path of the active document.
-    locality_name = ActiveDocument.FullName
-    ' Extract the part of the string before the last hyphen.
-    locality_name = Left(locality_name, InStrRev(locality_name, "-") - 1)
-    ' Extract the part of the string after the last backslash (the file name part).
-    locality_name = Right(locality_name, Len(locality_name) - InStrRev(locality_name, "\"))
-
-    ' Debug Print statement from original code (myOutput is not defined here).
-    Debug.Print "File Extension: " & myOutput
-
-    ' Type the extracted locality name at the current Selection point.
-    Selection.TypeText (locality_name)
-
-End Sub
-
 Sub update_locality_name_placeholder()
     ' Description:
     '   Determines the locality name from the active document's file name
