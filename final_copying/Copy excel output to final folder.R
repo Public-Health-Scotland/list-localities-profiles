@@ -27,7 +27,7 @@ profile_lookup <- tibble(
   file_name = path_file(path),
   hscp = str_extract(
     string = file_name,
-    # Regular expresion, the brackets create a 'capture group'
+    # Regular expression, the brackets create a 'capture group'
     pattern = "^([A-Z].+?) - Locality Profile data.xlsx$",
     # We only want 'group 1' i.e. the bit in the brackets
     group = 1
