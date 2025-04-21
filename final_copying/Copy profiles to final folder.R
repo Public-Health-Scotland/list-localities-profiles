@@ -30,7 +30,8 @@ locality_lookup <- read_in_localities() |>
       "Dumbarton/Alexandria" ~ "Alexandria",
       .default = hscp_locality
     )
-  )
+  ) |>
+  distinct(hscp_locality, hscp2019name)
 
 # Create a dataframe with some details about the files
 profile_lookup <- tibble(
