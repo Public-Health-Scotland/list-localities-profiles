@@ -50,11 +50,19 @@ shp_hscp <- shp |>
 # 3.1 Palettes ----
 
 # Create colour palettes for different numbers of localities
-# Take the colours from the PHS palette (8 main colours)
-col_palette <- phs_colors() |>
-  head(n_loc) # Take the first n_loc colours
+if (n_loc < 5) {
+  col_palette <- c("#3F3685", "#9B4393", "#0078D4", "#83BB26")
+} else if (n_loc %in% c(5, 6)) {
+  col_palette <- c("#3F3685", "#9B4393", "#0078D4", "#83BB26", "#948DA3", "#1E7F84")
+} else if (n_loc == 7) {
+  col_palette <- c("#3F3685", "#9B4393", "#0078D4", "#83BB26", "#948DA3", "#1E7F84", "#6B5C85")
+} else if (n_loc == 8) {
+  col_palette <- c("#3F3685", "#9B4393", "#0078D4", "#83BB26", "#948DA3", "#1E7F84", "#6B5C85", "#C73918")
+} else if (n_loc == 9) {
+  col_palette <- c("#3F3685", "#9B4393", "#0078D4", "#83BB26", "#948DA3", "#1E7F84", "#6B5C85", "#C73918", "orchid3")
+}
 
-# 3.2 Locality shapes ----
+# 3.2 Loaclity shapes ----
 # Get latitude and longitude co-ordinates for each data locality, find min and max.
 zones_coord <- shp_hscp |>
   st_coordinates() |>
