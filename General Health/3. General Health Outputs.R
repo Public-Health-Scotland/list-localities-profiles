@@ -154,11 +154,26 @@ ltc <- read_parquet(path(gen_health_data_dir, "LTC_from_SLF.parquet")) %>%
 
 # Time objects
 
-latest_year_life_exp_loc <- max(filter(life_exp, area_type == "Locality")$year)
-latest_year_life_exp_otherareas <- max(life_exp$year)
+latest_year_life_exp_loc <- life_exp |>
+  filter(area_type == "Locality") |>
+  pull(year) |>
+  max()
+latest_year_life_exp_otherareas <- max(life_exp[["year"]])
 
-latest_period_life_exp_loc <- unique(filter(life_exp, area_type == "Locality" & year == latest_year_life_exp_loc)$period_short)
-latest_period_life_exp_otherareas <- unique(filter(life_exp, area_type == "Scotland" & year == latest_year_life_exp_otherareas)$period_short)
+latest_period_life_exp_loc <- life_exp |>
+  filter(
+    area_type == "Locality",
+    year == latest_year_life_exp_loc
+  ) |>
+  pull(period_short) |>
+  unique()
+latest_period_life_exp_otherareas <- life_exp |>
+  filter(
+    area_type == "Scotland",
+    year == latest_year_life_exp_otherareas
+  ) |>
+  pull(period_short) |>
+  unique()
 
 
 # Create time trend
@@ -219,7 +234,7 @@ life_exp_table <- life_exp %>%
 ## Numbers for text
 locality_missing <- LOCALITY %in% check_missing_data_scotpho(life_exp)$area_name
 
-avg_life_exp_latest_male <- ifelse(
+avg_life_exp_latest_male <- if_else(
   locality_missing,
   NA_real_,
   filter(
@@ -233,7 +248,7 @@ avg_life_exp_latest_male <- ifelse(
     round_half_up(digits = 1)
 )
 
-avg_life_exp_latest_fem <- ifelse(
+avg_life_exp_latest_fem <- if_else(
   locality_missing,
   NA_real_,
   filter(
