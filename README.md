@@ -1,5 +1,6 @@
-#LIST Localities Profiles
-*Description of project*
+# LIST Localities Profiles
+This is the code used to produce the Locality Profiles.
+
 
 ### Directories
 
