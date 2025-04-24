@@ -630,7 +630,7 @@ x <- x + 1
 
 Figure `r x` presents the emergency admissions rate per 100,000 population in the `r HSCP` HSCP from `r min_year_ea` to `r max_year_ea`.
 
-As presented in Figure `r x`, the emergency admissions rate in the `r HSCP` HSCP rate for `r max_year_ea` is `r hscp_emergency_adm1`, `r get_article(hscp_rate_change)` `r hscp_rate_change`% `r word_change_hscp` since `r min_year_ea`. The `r HB` health board rate is `r hb_emergency_adm1` in `r max_year_ea`, `r get_article(hb_rate_change)` `r hb_rate_change`% `r word_change_hb` since `r min_year_ea` and the Scotland rate is `r scot_emergency_adm1`, `r get_article(scot_rate_change)` `r scot_rate_change`% `r word_change_scot` since `r min_year_ea`.
+As presented in Figure `r x`, the emergency admissions rate in the `r HSCP` HSCP for `r max_year_ea` is `r hscp_emergency_adm1`, `r get_article(hscp_rate_change)` `r hscp_rate_change`% `r word_change_hscp` since `r min_year_ea`. The `r HB` health board rate is `r hb_emergency_adm1` in `r max_year_ea`, `r get_article(hb_rate_change)` `r hb_rate_change`% `r word_change_hb` since `r min_year_ea` and the Scotland rate is `r scot_emergency_adm1`, `r get_article(scot_rate_change)` `r scot_rate_change`% `r word_change_scot` since `r min_year_ea`.
 
 #### Figure `r x`: Emergency admissions by geographical area
 
@@ -662,7 +662,7 @@ x <- x + 1
 
 Figure `r x` presents the unscheduled bed days rate per 100,000 population in the `r HSCP` HSCP from `r min_year_ubd` to `r max_year_ubd`.
 
-As presented in Figure `r x`, the unscheduled bed days rate in the `r HSCP` HSCP rate is `r hscp_bed_days1`, `r get_article(hscp_rate_ubd)` `r hscp_rate_ubd`% `r hscp_change_ubd` since `r min_year_ubd`. The `r HB` health board rate for `r max_year_ubd` is `r hb_bed_days1`, `r get_article(hb_rate_change_ubd)` `r hb_rate_change_ubd`% `r word_change_hb_ubd` since `r min_year_ubd` and the Scotland rate is `r scot_bed_days1`, `r get_article(scot_rate_ubd)` `r scot_rate_ubd`% `r scot_change_ubd` since `r min_year_ubd`.
+As presented in Figure `r x`, the unscheduled bed days rate in the `r HSCP` HSCP is `r hscp_bed_days1`, `r get_article(hscp_rate_ubd)` `r hscp_rate_ubd`% `r hscp_change_ubd` since `r min_year_ubd`. The `r HB` health board rate for `r max_year_ubd` is `r hb_bed_days1`, `r get_article(hb_rate_change_ubd)` `r hb_rate_change_ubd`% `r word_change_hb_ubd` since `r min_year_ubd` and the Scotland rate is `r scot_bed_days1`, `r get_article(scot_rate_ubd)` `r scot_rate_ubd`% `r scot_change_ubd` since `r min_year_ubd`.
 
 #### Figure `r x`: Unscheduled acute bed days by geographical area
 
@@ -694,7 +694,7 @@ x <- x + 1
 
 Figure `r x` presents the A&E attendance rate per 100,000 population in the `r HSCP` HSCP from `r min_year_ae_area` to `r max_year_ae_area`.
 
-As presented in Figure `r x`, the A&E attendance rate per 100,000 in the `r HSCP` HSCP rate is `r hscp_ae_att1`, `r get_article(percent_rate_change_ae_areas_hscp)` `r percent_rate_change_ae_areas_hscp`% `r word_change_rate_ae_areas_hscp` since `r min_year_ae_area`. The `r HB` health board rate for `r max_year_ae_area` is `r hb_ae1`, `r get_article(hb_rate_change_ae)` `r hb_rate_change_ae`% `r word_change_hb_ae` since `r min_year_ae_area` and the Scotland rate is `r scot_ae_att1`, `r get_article(percent_rate_change_ae_areas_scot)` `r percent_rate_change_ae_areas_scot`% `r word_change_rate_ae_areas_scot` since `r min_year_ae_area`.
+As presented in Figure `r x`, the A&E attendance rate per 100,000 in the `r HSCP` HSCP is `r hscp_ae_att1`, `r get_article(percent_rate_change_ae_areas_hscp)` `r percent_rate_change_ae_areas_hscp`% `r word_change_rate_ae_areas_hscp` since `r min_year_ae_area`. The `r HB` health board rate for `r max_year_ae_area` is `r hb_ae1`, `r get_article(hb_rate_change_ae)` `r hb_rate_change_ae`% `r word_change_hb_ae` since `r min_year_ae_area` and the Scotland rate is `r scot_ae_att1`, `r get_article(percent_rate_change_ae_areas_scot)` `r percent_rate_change_ae_areas_scot`% `r word_change_rate_ae_areas_scot` since `r min_year_ae_area`.
 
 #### Figure `r x`: A&E attendances by geographical area
 
@@ -726,7 +726,7 @@ x <- x + 1
 
 Figure `r x` presents the emergency readmission (28 days) rate per 1,000 discharges in the `r HSCP` HSCP from `r min_year_re_area` to `r max_year_re_area`.
 
-As presented in Figure `r x`, the emergency readmission (28 days) rate per 1,000 discharges in the `r HSCP` HSCP rate is `r hscp_read`, `r get_article(percent_rate_change_re_area_hscp)` `r percent_rate_change_re_area_hscp`% `r word_change_rate_re_area_hscp` since `r min_year_re_area`. The `r HB` health board rate for `r max_year_re_area` is `r hb_read1`, `r get_article(hb_rate_change_read)` `r hb_rate_change_read`% `r word_change_hb_read` since `r min_year_re_area` and the Scotland rate is `r scot_read`, `r get_article(percent_rate_change_re_area_scot)` `r percent_rate_change_re_area_scot`% `r word_change_rate_re_area_scot` since `r min_year_re_area`.
+As presented in Figure `r x`, the emergency readmission (28 days) rate per 1,000 discharges in the `r HSCP` HSCP is `r hscp_read`, `r get_article(percent_rate_change_re_area_hscp)` `r percent_rate_change_re_area_hscp`% `r word_change_rate_re_area_hscp` since `r min_year_re_area`. The `r HB` health board rate for `r max_year_re_area` is `r hb_read1`, `r get_article(hb_rate_change_read)` `r hb_rate_change_read`% `r word_change_hb_read` since `r min_year_re_area` and the Scotland rate is `r scot_read`, `r get_article(percent_rate_change_re_area_scot)` `r percent_rate_change_re_area_scot`% `r word_change_rate_re_area_scot` since `r min_year_re_area`.
 
 #### Figure `r x`: Emergency readmissions (28 days) by geographical area
 
@@ -758,7 +758,7 @@ x <- x + 1
 
 Figure `r x` presents the number of delayed discharge bed days per 100,000 population aged over 65+ in the `r HSCP` HSCP from `r min_year_dd` to `r max_year_dd`.
 
-As presented in Figure `r x`, the number of delayed discharge bed days per 100,000 population aged over 65+ in the `r HSCP` HSCP rate is `r hscp_dd1`, `r get_article(percent_rate_change_dd_hscp)` `r percent_rate_change_dd_hscp`% `r word_change_rate_dd_hscp` since `r min_year_dd`. The `r HB` health board rate for `r max_year_dd` is `r hb_dd1`, `r get_article(hb_rate_change_dd)` `r hb_rate_change_dd`% `r word_change_hb_dd` since `r min_year_dd` and the Scotland rate is `r scot_dd1`, `r get_article(percent_rate_change_dd_scot)` `r percent_rate_change_dd_scot`% `r  word_change_rate_dd_scot` since `r min_year_dd`.
+As presented in Figure `r x`, the number of delayed discharge bed days per 100,000 population aged over 65+ in the `r HSCP` HSCP is `r hscp_dd1`, `r get_article(percent_rate_change_dd_hscp)` `r percent_rate_change_dd_hscp`% `r word_change_rate_dd_hscp` since `r min_year_dd`. The `r HB` health board rate for `r max_year_dd` is `r hb_dd1`, `r get_article(hb_rate_change_dd)` `r hb_rate_change_dd`% `r word_change_hb_dd` since `r min_year_dd` and the Scotland rate is `r scot_dd1`, `r get_article(percent_rate_change_dd_scot)` `r percent_rate_change_dd_scot`% `r  word_change_rate_dd_scot` since `r min_year_dd`.
 
 #### Figure `r x`: Delayed discharge bed days in the population aged 65+ by geographical area
 
@@ -774,7 +774,7 @@ x <- x + 1
 
 Figure `r x` presents the emergency admissions from falls rate per 100,000 population aged 65 and over in the `r HSCP` HSCP from `r min_year_falls` to `r max_year_falls`.
 
-As presented in Figure `r x`, the emergency admissions from falls rate per 100,000 population aged over 65+ in the `r HSCP` HSCP rate is `r hscp_falls1`, `r get_article(percent_rate_change_falls_hscp)` `r percent_rate_change_falls_hscp`% `r word_change_rate_falls_hscp` since `r min_year_falls`. The `r HB` health board rate for `r max_year_falls` is `r hb_falls1`, `r get_article(hb_rate_change_falls)` `r hb_rate_change_falls`% `r word_change_hb_falls` since `r min_year_falls` and the Scotland rate is `r scot_falls1`, `r get_article(percent_rate_change_falls_scot)` `r percent_rate_change_falls_scot`% `r  word_change_rate_falls_scot` since `r min_year_falls`.
+As presented in Figure `r x`, the emergency admissions from falls rate per 100,000 population aged over 65+ in the `r HSCP` HSCP is `r hscp_falls1`, `r get_article(percent_rate_change_falls_hscp)` `r percent_rate_change_falls_hscp`% `r word_change_rate_falls_hscp` since `r min_year_falls`. The `r HB` health board rate for `r max_year_falls` is `r hb_falls1`, `r get_article(hb_rate_change_falls)` `r hb_rate_change_falls`% `r word_change_hb_falls` since `r min_year_falls` and the Scotland rate is `r scot_falls1`, `r get_article(percent_rate_change_falls_scot)` `r percent_rate_change_falls_scot`% `r  word_change_rate_falls_scot` since `r min_year_falls`.
 
 #### Figure `r x`: Falls in the population aged 65+ by geographical area
 
@@ -843,7 +843,7 @@ x <- x + 1
 
 Figure `r x` presents the unscheduled mental health bed days rate per 100,000 population in the `r HSCP` HSCP from `r min_year_bd_mh_areas` to `r max_year_bd_mh_areas`.
 
-As presented in Figure `r x`, the unscheduled mental health bed days rate per 100,000 population in the `r HSCP` HSCP rate is `r hscp_bed_days_mh1`, `r get_article(hscp_rate_change_beds_mh)` `r hscp_rate_change_beds_mh`% `r hscp_word_change_beds_mh` since `r min_year_bd_mh_areas`. The `r HB` health board rate for `r max_year_bd_mh_areas` is `r hb_mh_beddays1`, `r get_article(hb_rate_change_mh)` `r hb_rate_change_mh`% `r word_change_hb_mh` since `r  min_year_bd_mh_areas` and the Scotland rate is `r scot_bed_days_mh1`, `r get_article(scot_rate_change_beds_mh)` `r scot_rate_change_beds_mh`% `r  scot_word_change_beds_mh` since `r min_year_bd_mh_areas`.
+As presented in Figure `r x`, the unscheduled mental health bed days rate per 100,000 population in the `r HSCP` HSCP is `r hscp_bed_days_mh1`, `r get_article(hscp_rate_change_beds_mh)` `r hscp_rate_change_beds_mh`% `r hscp_word_change_beds_mh` since `r min_year_bd_mh_areas`. The `r HB` health board rate for `r max_year_bd_mh_areas` is `r hb_mh_beddays1`, `r get_article(hb_rate_change_mh)` `r hb_rate_change_mh`% `r word_change_hb_mh` since `r  min_year_bd_mh_areas` and the Scotland rate is `r scot_bed_days_mh1`, `r get_article(scot_rate_change_beds_mh)` `r scot_rate_change_beds_mh`% `r  scot_word_change_beds_mh` since `r min_year_bd_mh_areas`.
 
 #### Figure `r x`: Unscheduled mental health specialty bed days by geographical area
 
