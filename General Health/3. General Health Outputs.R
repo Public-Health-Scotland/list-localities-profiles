@@ -232,35 +232,29 @@ life_exp_table <- life_exp %>%
 
 
 ## Numbers for text
-locality_missing <- LOCALITY %in% check_missing_data_scotpho(life_exp)$area_name
 
-avg_life_exp_latest_male <- if_else(
-  locality_missing,
-  NA_real_,
-  filter(
-    life_exp,
-    sex == "Male",
-    year == latest_year_life_exp_loc,
-    area_name == LOCALITY,
-    area_type == "Locality"
-  ) |>
+if (LOCALITY %in% check_missing_data_scotpho(life_exp)$area_name) {
+  avg_life_exp_latest_male <- NA_real_
+  avg_life_exp_latest_fem <- NA_real_
+} else {
+  avg_life_exp_latest <- life_exp |>
+    filter(
+      year == latest_year_life_exp_loc,
+      area_name == LOCALITY,
+      area_type == "Locality"
+    )
+
+  avg_life_exp_latest_male <- avg_life_exp_latest |>
+    filter(sex == "Male") |>
     pull(measure) |>
     round_half_up(digits = 1)
-)
-
-avg_life_exp_latest_fem <- if_else(
-  locality_missing,
-  NA_real_,
-  filter(
-    life_exp,
-    sex == "Female",
-    year == latest_year_life_exp_loc,
-    area_name == LOCALITY,
-    area_type == "Locality"
-  ) |>
+  avg_life_exp_latest_fem <- avg_life_exp_latest |>
+    filter(sex == "Female") |>
     pull(measure) |>
     round_half_up(digits = 1)
-)
+  rm(avg_life_exp_latest)
+}
+
 
 ##### 2b Deaths aged 15-44 #####
 
@@ -1085,7 +1079,6 @@ rm(
   gen_health_data_dir,
   hscp_scot_summary_table,
   latest_year_life_exp_loc,
-  locality_missing,
   ltc_infographic,
   ltc_pops_total_hscp,
   ltc_pops_total_scot,
