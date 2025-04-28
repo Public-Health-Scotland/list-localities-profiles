@@ -149,12 +149,26 @@ ltc <- read_parquet(path(gen_health_data_dir, "LTC_from_SLF.parquet")) %>%
 
 # Time objects
 
-latest_year_life_exp_loc <- max(filter(life_exp, area_type == "HSCP")$year)
-latest_year_life_exp_otherareas <- max(life_exp$year)
+latest_year_life_exp_loc <- life_exp |>
+  filter(area_type == "Locality") |>
+  pull(year) |>
+  max()
+latest_year_life_exp_otherareas <- max(life_exp[["year"]])
 
-latest_period_life_exp_loc <- unique(filter(life_exp, area_type == "HSCP" & year == latest_year_life_exp_loc)$period_short)
-latest_period_life_exp_otherareas <- unique(filter(life_exp, area_type == "Scotland" & year == latest_year_life_exp_otherareas)$period_short)
-
+latest_period_life_exp_loc <- life_exp |>
+  filter(
+    area_type == "Locality",
+    year == latest_year_life_exp_loc
+  ) |>
+  pull(period_short) |>
+  unique()
+latest_period_life_exp_otherareas <- life_exp |>
+  filter(
+    area_type == "Scotland",
+    year == latest_year_life_exp_otherareas
+  ) |>
+  pull(period_short) |>
+  unique()
 
 # Create time trend
 life_exp_trend <- life_exp %>%
@@ -211,35 +225,28 @@ life_exp_table <- life_exp %>%
 
 
 ## Numbers for text
-locality_missing <- HSCP %in% check_missing_data_scotpho(life_exp)$area_name
+if (HSCP %in% check_missing_data_scotpho(life_exp)$area_name) {
+  avg_life_exp_latest_male <- NA_real_
+  avg_life_exp_latest_fem <- NA_real_
+} else {
+  avg_life_exp_latest <- life_exp |>
+    filter(
+      year == latest_year_life_exp_otherareas,
+      area_name == HSCP,
+      area_type == "HSCP"
+    )
 
-avg_life_exp_latest_male <- ifelse(
-  locality_missing,
-  NA_real_,
-  filter(
-    life_exp,
-    sex == "Male",
-    year == latest_year_life_exp_loc,
-    area_name == HSCP,
-    area_type == "HSCP"
-  ) |>
+  avg_life_exp_latest_male <- avg_life_exp_latest |>
+    filter(sex == "Male") |>
     pull(measure) |>
     round_half_up(digits = 1)
-)
-
-avg_life_exp_latest_fem <- ifelse(
-  locality_missing,
-  NA_real_,
-  filter(
-    life_exp,
-    sex == "Female",
-    year == latest_year_life_exp_loc,
-    area_name == HSCP,
-    area_type == "HSCP"
-  ) |>
+  avg_life_exp_latest_fem <- avg_life_exp_latest |>
+    filter(sex == "Female") |>
     pull(measure) |>
     round_half_up(digits = 1)
-)
+  rm(avg_life_exp_latest)
+}
+
 
 ##### 2b Deaths aged 15-44 #####
 
@@ -1060,7 +1067,6 @@ rm(
   gen_health_data_dir,
   hscp_scot_summary_table,
   latest_year_life_exp_loc,
-  locality_missing,
   ltc_infographic,
   ltc_pops_total_hscp,
   ltc_pops_total_scot,
