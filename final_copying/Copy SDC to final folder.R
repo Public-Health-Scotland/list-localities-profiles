@@ -19,8 +19,7 @@ final_dir <- path(lp_path, "Final Profiles", str_glue("{year} Final Profiles"))
 
 # Get the list of HSCPs
 hscp_list <- read_in_localities() |>
-  pull(hscp2019name) |>
-  unique()
+  distinct(hscp2019name)
 
 # Create a dataframe with some details about the files
 file_lookup <- tibble(
@@ -35,7 +34,7 @@ file_lookup <- tibble(
   )
 ) |>
   # Drop any rows which didn't match a hscp (usually temp files etc.)
-  drop_na(hscp) |>
+  semi_join(hscp_list, by = join_by(hscp == hscp2019name)) |>
   # Add columns for the new directory (HSCP name) and the new path
   mutate(
     new_dir = path(final_dir, hscp),
