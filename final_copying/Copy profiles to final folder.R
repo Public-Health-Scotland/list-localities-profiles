@@ -30,7 +30,8 @@ locality_lookup <- read_in_localities() |>
       "Dumbarton/Alexandria" ~ "Alexandria",
       .default = hscp_locality
     )
-  )
+  ) |>
+  distinct(hscp_locality, hscp2019name)
 
 # Create a dataframe with some details about the files
 profile_lookup <- tibble(
@@ -38,7 +39,7 @@ profile_lookup <- tibble(
   file_name = path_file(path),
   locality = str_extract(
     string = file_name,
-    # Regular expresion, the brackets create a 'capture group'
+    # Regular expression, the brackets create a 'capture group'
     pattern = "^([A-Z].+?) - Locality Profile.docx$",
     # We only want 'group 1' i.e. the bit in the brackets
     group = 1
