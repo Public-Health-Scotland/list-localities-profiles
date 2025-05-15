@@ -12,7 +12,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
-output_dir <- path(lp_path, "Master RMarkdown Document & Render Code", "Output")
+output_dir <- "/conf/LIST_analytics/Tayside/Other Health Board Work/Example R Outputs/Josie/Localities/"
 
 # Below creates locality list of all the localities in a chosen HSCP
 lookup <- read_in_localities()
@@ -74,12 +74,19 @@ for (HSCP in hscp_list) {
     source("Master RMarkdown Document & Render Code/Tables for Appendix.R")
 
     # Render main profile content ----
-    render(
+   render(
       input = "Master RMarkdown Document & Render Code/Locality_Profiles_Master_Markdown.Rmd",
+      output_format = phstemplates::phs_report_docx(
+        reference_docx = "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/phstemplate.docx",
+        cover_page = "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/Locality Profiles Cover Page.docx",
+        cover_title = "My Report Title",
+        cover_subtitle = "My Report Subtitle",
+        cover_date = "01 01 2024",
+        toc_depth = 3
+      ),
       output_file = glue("{LOCALITY} - Locality Profile.docx"),
       output_dir = output_dir
     )
-
     # Render the summary table(s) ----
     render(
       input = "Summary Table/Summary-Table-Markdown.Rmd",
