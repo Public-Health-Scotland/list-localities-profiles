@@ -386,17 +386,16 @@ y <- y + 1
 Figure `r x` shows the Long-Term condition prevalence estimates for `r LOCALITY` Locality in the financial year `r latest_year_ltc` for under 65s and over 65s. 
 Table `r y` orders the prevalance estimates to show the most common five physical LTCs across all ages at the locality, partnership, and Scotland levels.
 
-#### Figure `r x`: The percentage of people with each physical LTC by age group. \newline
+#### Figure `r x`: Prevalence estimates for physical LTC by age group for `r LOCALITY` Locality. \newline
 
 ```{r ltc_types_plot, echo = FALSE, fig.width = 7.5, fig.height = 5, fig.cap = "A graph showing the prevalence estimates of physical long-term conditions by percentage of population for under 65s and for over 65s."}
 ltc_types_plot
 
 x <- x + 1
 ```
-
 \*COPD: Chronic Obstructive Pulmonary Disease
 
-#### Table `r y`: Prevalence estimates of the five most common physical LTCs as a percentage of the population across geographical areas (1 is the most prevalent).
+#### Table `r y`: Prevalence estimates of the five most common physical long-term conditions as a percentage of the population across areas (1 indicates the most prevalent).
 
 ```{r top5_ltc_table, echo = FALSE, fig.width = 7.5, fig.height = 3.5}
 top5_ltc_table
