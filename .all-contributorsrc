@@ -17,6 +17,16 @@
         "review",
         "projectManagement"
       ]
+    },
+    {
+      "login": "khansh01",
+      "name": "Khansa Hussain",
+      "avatar_url": "https://avatars.githubusercontent.com/u/114073136?v=4",
+      "profile": "https://github.com/khansh01",
+      "contributions": [
+        "code",
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
