@@ -17,6 +17,16 @@
         "review",
         "projectManagement"
       ]
+    },
+    {
+      "login": "JosieSteele",
+      "name": "Josie Steele",
+      "avatar_url": "https://avatars.githubusercontent.com/u/166606214?v=4",
+      "profile": "https://github.com/JosieSteele",
+      "contributions": [
+        "code",
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
