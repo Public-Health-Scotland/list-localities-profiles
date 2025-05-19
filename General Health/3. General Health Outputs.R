@@ -906,7 +906,7 @@ top5_ltc_table <- bind_cols(
   border(border = fp_border(color = "white", width = 5), part = "body")
 
 rm(
-  ltc_cols, ltc_pops_total_loc, 
+  ltc_cols, ltc_pops_total_loc,
   loc.ltc.table, hscp.ltc.table,
   top5ltc_loc, top5ltc_hscp, top5ltc_scot
 )
