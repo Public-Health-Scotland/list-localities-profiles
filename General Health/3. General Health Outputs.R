@@ -15,7 +15,7 @@ library(gridExtra)
 library(png)
 
 # Determine locality (for testing only)
-# LOCALITY <- "Inverness"
+# LOCALITY <- "Eastwood"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
 # LOCALITY <- "Mid-Argyll, Kintyre and Islay"
 # LOCALITY <- "City of Dunfermline"
@@ -155,11 +155,26 @@ ltc <- read_parquet(path(import_folder_southayrshire, "LTC_from_SLF_South_Ayrshi
 
 # Time objects
 
-latest_year_life_exp_loc <- max(filter(life_exp, area_type == "Locality")$year)
-latest_year_life_exp_otherareas <- max(life_exp$year)
+latest_year_life_exp_loc <- life_exp |>
+  filter(area_type == "Locality") |>
+  pull(year) |>
+  max()
+latest_year_life_exp_otherareas <- max(life_exp[["year"]])
 
-latest_period_life_exp_loc <- unique(filter(life_exp, area_type == "Locality" & year == latest_year_life_exp_loc)$period_short)
-latest_period_life_exp_otherareas <- unique(filter(life_exp, area_type == "Scotland" & year == latest_year_life_exp_otherareas)$period_short)
+latest_period_life_exp_loc <- life_exp |>
+  filter(
+    area_type == "Locality",
+    year == latest_year_life_exp_loc
+  ) |>
+  pull(period_short) |>
+  unique()
+latest_period_life_exp_otherareas <- life_exp |>
+  filter(
+    area_type == "Scotland",
+    year == latest_year_life_exp_otherareas
+  ) |>
+  pull(period_short) |>
+  unique()
 
 
 # Create time trend
@@ -170,7 +185,7 @@ life_exp_trend <- life_exp %>%
     year >= max(year) - 10
   ) %>%
   mutate(
-    period_short = str_wrap(period_short, width = 10),
+    period_short = period_short,
     measure = round_half_up(measure, 1)
   ) %>%
   ggplot(aes(
@@ -185,6 +200,7 @@ life_exp_trend <- life_exp %>%
   geom_point(size = 2) +
   scale_colour_manual(values = palette) +
   theme_profiles() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   expand_limits(y = 0) +
   labs(
     title = str_wrap(glue("Average Life Expectancy in {LOCALITY} locality"), width = 65),
@@ -216,55 +232,30 @@ life_exp_table <- life_exp %>%
   pivot_wider(names_from = area_name, values_from = measure)
 
 
-# Table breaking down intermediate zones
-
-life_exp_table <- life_exp %>%
-  filter((year == latest_year_life_exp_loc &
-    (area_name == LOCALITY & area_type == "Locality")) |
-    year == latest_year_life_exp_otherareas &
-      ((area_name == HSCP & area_type == "HSCP") |
-        area_name == HB | area_name == "Scotland")) %>%
-  select("Sex" = sex, area_name, area_type, measure) %>%
-  mutate(
-    measure = round_half_up(measure, 1),
-    area_type = factor(area_type, levels = c("Locality", "HSCP", "Health board", "Scotland")),
-    area_name = fct_reorder(as.factor(area_name), as.numeric(area_type))
-  ) %>%
-  arrange(area_name) %>%
-  select(-area_type) %>%
-  pivot_wider(names_from = area_name, values_from = measure)
-
-
 ## Numbers for text
-locality_missing <- LOCALITY %in% check_missing_data_scotpho(life_exp)$area_name
 
-avg_life_exp_latest_male <- ifelse(
-  locality_missing,
-  NA_real_,
-  filter(
-    life_exp,
-    sex == "Male",
-    year == latest_year_life_exp_loc,
-    area_name == LOCALITY,
-    area_type == "Locality"
-  ) |>
+if (LOCALITY %in% check_missing_data_scotpho(life_exp)$area_name) {
+  avg_life_exp_latest_male <- NA_real_
+  avg_life_exp_latest_fem <- NA_real_
+} else {
+  avg_life_exp_latest <- life_exp |>
+    filter(
+      year == latest_year_life_exp_loc,
+      area_name == LOCALITY,
+      area_type == "Locality"
+    )
+
+  avg_life_exp_latest_male <- avg_life_exp_latest |>
+    filter(sex == "Male") |>
     pull(measure) |>
     round_half_up(digits = 1)
-)
-
-avg_life_exp_latest_fem <- ifelse(
-  locality_missing,
-  NA_real_,
-  filter(
-    life_exp,
-    sex == "Female",
-    year == latest_year_life_exp_loc,
-    area_name == LOCALITY,
-    area_type == "Locality"
-  ) |>
+  avg_life_exp_latest_fem <- avg_life_exp_latest |>
+    filter(sex == "Female") |>
     pull(measure) |>
     round_half_up(digits = 1)
-)
+  rm(avg_life_exp_latest)
+}
+
 
 ##### 2b Deaths aged 15-44 #####
 
@@ -766,7 +757,7 @@ ltc_plot_right <- ltc_types %>%
   filter(age_group == "65+") %>%
   ggplot(aes(x = percent, y = key, label = round_half_up(percent, 1))) +
   geom_point(colour = palette[2], size = 3) +
-  geom_segment(aes(x = 0, y = key, xend = percent, yend = key), size = 0.4) +
+  geom_segment(aes(x = 0, y = key, xend = percent, yend = key), linewidth = 0.4) +
   labs(x = "People over 65 with\nthe condition (%)", y = "", title = "OVER 65") +
   scale_x_continuous(breaks = seq(0, 100, 2)) +
   expand_limits(x = lims.ov65) +
@@ -933,7 +924,7 @@ top5_ltc_table <- plot_grid(title, top5ltc_all_table, nrow = 2, rel_heights = c(
 
 rm(
   ltc_cols, ltc_loc_col, ltc_hscp_col, ltc_scot_col,
-  ltc_pops_total_loc, ltc_pops_total_hscp,
+  ltc_pops_total_loc,
   loc.ltc.table, hscp.ltc.table,
   top5ltc_hscp, top5ltc_scot, top5ltc_all_table, title
 )
@@ -943,7 +934,6 @@ rm(
 ltc_perc_scot <- round_half_up((sum(filter(ltc_scot, total_ltc > 0)$people) / ltc_pops_total_scot) * 100, 1)
 
 ltc_diff_scot <- if_else(ltc_percent_total_latest > ltc_perc_scot, "higher", "lower")
-
 
 
 ############################### 4) CODE FOR SUMMARY TABLE ###############################
@@ -1056,7 +1046,8 @@ hscp_deaths_15_44 <- hscp_scot_summary_table(deaths_15_44, latest_year = max(dea
 hscp_cancer <- hscp_scot_summary_table(cancer_reg, latest_year = max(cancer_reg$year), area = HSCP)
 hscp_adp <- hscp_scot_summary_table(adp_presc, latest_year = max(adp_presc$year), area = HSCP)
 
-hscp_ltc <- round_half_up((sum(other_locs_ltc) + ltc_percent_total_latest) / n_loc, 1)
+ltc_hscp <- sum(filter(ltc, hscp2019name == HSCP, total_ltc > 0)$people)
+hscp_ltc <- round_half_up(ltc_hscp / ltc_pops_total_hscp * 100, 1)
 
 # 3. Scotland
 
@@ -1077,8 +1068,6 @@ scot_cancer <- hscp_scot_summary_table(cancer_reg, latest_year = max(cancer_reg$
 scot_cancer_deaths <- hscp_scot_summary_table(early_deaths_cancer, latest_year = max(early_deaths_cancer$year), area = "Scotland")
 scot_adp_presc <- hscp_scot_summary_table(adp_presc, latest_year = max(adp_presc$year), area = "Scotland")
 
-scot_ltc <- round_half_up((sum(filter(ltc_scot, total_ltc > 0)$people) / ltc_pops_total_scot) * 100, 1)
-
 # Housekeeping ----
 # These objects are left over after the script is run
 # but don't appear to be used in any 'downstream' process:
@@ -1091,9 +1080,10 @@ rm(
   gen_health_data_dir,
   hscp_scot_summary_table,
   latest_year_life_exp_loc,
-  locality_missing,
   ltc_infographic,
+  ltc_pops_total_hscp,
   ltc_pops_total_scot,
+  ltc_hscp,
   ltc_scot,
   ltc_totals,
   ltc2,
