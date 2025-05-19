@@ -87,6 +87,15 @@
         "review",
         "projectManagement"
       ]
+    },
+    {
+      "login": "robbiemac01",
+      "name": "robbiemac01",
+      "avatar_url": "https://avatars.githubusercontent.com/u/109292606?v=4",
+      "profile": "https://github.com/robbiemac01",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
