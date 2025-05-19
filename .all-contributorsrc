@@ -3,9 +3,9 @@
     "README.md"
   ],
   "imageSize": 100,
-  "commit": false,
+  "commit": true,
   "commitType": "docs",
-  "commitConvention": "angular",
+  "commitConvention": "atom",
   "contributors": [
     {
       "login": "Moohan",
@@ -20,6 +20,7 @@
     }
   ],
   "contributorsPerLine": 7,
+  "contributorsSortAlphabetically": true
   "skipCi": true,
   "repoType": "github",
   "repoHost": "https://github.com",
