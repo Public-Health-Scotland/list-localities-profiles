@@ -160,7 +160,7 @@ ltc_types_plot
 x <- x + 1
 ```
 
-\^\*COPD: Chronic Obstructive Pulmonary Disease\^
+\*COPD: Chronic Obstructive Pulmonary Disease
 
 #### Table `r y`: Prevalence of the five most common physical LTCs as a percentage of the population across geographical areas (1 is the most prevalent).
 

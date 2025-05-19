@@ -2,8 +2,7 @@
 title: ''
 output:
   word_document:
-    reference_docx: //conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality
-      Profiles/Master RMarkdown Document & Render Code/Locality_Profiles_Report_Template.docx
+    reference_docx: "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/Locality_Profiles_Report_Template.docx"
   html_document:
     df_print: paged
 ---
@@ -222,7 +221,7 @@ x <- x + 1
 
 Information on the conditions included in Potentially Preventable Admissions (PPA)s is available in Appendix 3. In `r max_fy`, **`r latest_ppa_65plus`%** of PPAs in `r LOCALITY` were amongst those aged 65 and over, and **`r latest_ppa_under65`%** were amongst those aged under 65.
 
-Figure `r x` presents the PPA rate per 100,000 population in the `r LOCALITY` locality from `r min_year_ppa_areas` to `r max_year_ppa_areas`. The rate per 100,000 population for PPAs in the `r LOCALITY` locality for `r max_year_ppa_areas` is `r latest_ppa_loc$formatted_data[2]`, `r get_article(ppa_diff)` `r ppa_diff`% `r ppa_word_change` since `r latest_ppa_loc$financial_year[1]` and the `r HSCP` HSCP rate is `r hscp_ppa$data[2]`, `r get_article(ppa_diff_hscp)` `r ppa_diff_hscp`% `r ppa_word_change_hscp` since `r latest_ppa_loc$financial_year[1]`. The `r HB` health board rate for `r hb_ppa$financial_year[2]` is `r hb_ppa$formatted_data[2]`, `r get_article(diff_hb_ppa)` `r diff_hb_ppa`% `r word_change_hb_ppa` since `r hb_ppa$financial_year[]` and the Scotland rate is `r scot_ppa$formatted_data[2]`, `r get_article(diff_scot_ppa)` `r diff_scot_ppa`% `r  word_change_scot_ppa` since `r hb_ppa$financial_year[1]`.
+Figure `r x` presents the PPA rate per 100,000 population in the `r LOCALITY` locality from `r min_year_ppa_areas` to `r max_year_ppa_areas`. The rate per 100,000 population for PPAs in the `r LOCALITY` locality for `r max_year_ppa_areas` is `r latest_ppa_loc1`, `r get_article(ppa_diff)` `r ppa_diff`% `r ppa_word_change` since `r latest_ppa_loc$financial_year[1]` and the `r HSCP` HSCP rate is `r hscp_ppa$data[2]`, `r get_article(ppa_diff_hscp)` `r ppa_diff_hscp`% `r ppa_word_change_hscp` since `r latest_ppa_loc$financial_year[1]`. The `r HB` health board rate for `r hb_ppa$financial_year[2]` is `r hb_ppa$formatted_data[2]`, `r get_article(diff_hb_ppa)` `r diff_hb_ppa`% `r word_change_hb_ppa` since `r hb_ppa$financial_year[]` and the Scotland rate is `r scot_ppa$formatted_data[2]`, `r get_article(diff_scot_ppa)` `r diff_scot_ppa`% `r  word_change_scot_ppa` since `r hb_ppa$financial_year[1]`.
 
 #### Figure `r x`: Potentially Preventable Admissions (PPAs) by geographical area
 
@@ -255,7 +254,7 @@ This section looks at mental health-related unscheduled care indicators. For the
 
 Figure `r x` presents the psychiatric patient hospitalisation 3-year aggregate rate per 100,000 population in the `r LOCALITY` locality from `r loc_psych_hosp$period_short[1]` to `r loc_psych_hosp$period_short[2]`.
 
-As presented in Figure `r x`, the 3-year aggregate psychiatric patient hospitalisation rate per 100,000 population in the `r LOCALITY` locality for `r loc_psych_hosp$period_short[2]` is `r loc_psych_hosp$measure[2]`, `r get_article(diff_loc_psych)` `r diff_loc_psych`% `r word_change_loc_psych` since `r loc_psych_hosp$period_short[1]` and the `r HSCP` HSCP rate is `r hscp_psych_hosp$measure[2]`, `r get_article(diff_hscp_psych)` `r diff_hscp_psych`% `r word_change_hscp_psych` since `r loc_psych_hosp$period_short[1]`. The `r HB` health board the 3-year aggregate rate for `r loc_psych_hosp$period_short[2]` is `r hb_psych_hosp$measure[2]`, `r get_article(diff_hb_psych)` `r diff_hb_psych`% `r word_change_hb_psych` since `r loc_psych_hosp$period_short[1]` and the Scotland the 3-year aggregate rate is `r scot_psych_hosp$measure[2]`, `r get_article(diff_scot_psych)` `r diff_scot_psych`% `r word_change_scot_psych` since `r loc_psych_hosp$period_short[1]`.
+As presented in Figure `r x`, the 3-year aggregate psychiatric patient hospitalisation rate per 100,000 population in the `r LOCALITY` locality for `r loc_psych_hosp$period_short[2]` is `r psych_hosp_latest`, `r get_article(diff_loc_psych)` `r diff_loc_psych`% `r word_change_loc_psych` since `r loc_psych_hosp$period_short[1]` and the `r HSCP` HSCP rate is `r hscp_psych_hosp$measure[2]`, `r get_article(diff_hscp_psych)` `r diff_hscp_psych`% `r word_change_hscp_psych` since `r loc_psych_hosp$period_short[1]`. The `r HB` health board the 3-year aggregate rate for `r loc_psych_hosp$period_short[2]` is `r hb_psych_hosp$measure[2]`, `r get_article(diff_hb_psych)` `r diff_hb_psych`% `r word_change_hb_psych` since `r loc_psych_hosp$period_short[1]` and the Scotland the 3-year aggregate rate is `r scot_psych_hosp$measure[2]`, `r get_article(diff_scot_psych)` `r diff_scot_psych`% `r word_change_scot_psych` since `r loc_psych_hosp$period_short[1]`.
 
 #### Figure `r x`: Psychiatric patient hospitalisations by geographical area
 
@@ -298,3 +297,4 @@ BDMH_age_ts
 
 x <- x + 1
 ```
+
