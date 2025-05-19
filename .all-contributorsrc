@@ -17,6 +17,16 @@
         "review",
         "projectManagement"
       ]
+    },
+    {
+      "login": "RyanDuffy01",
+      "name": "RyanDuffy01",
+      "avatar_url": "https://avatars.githubusercontent.com/u/82060940?v=4",
+      "profile": "https://github.com/RyanDuffy01",
+      "contributions": [
+        "code",
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
