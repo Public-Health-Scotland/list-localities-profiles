@@ -211,10 +211,10 @@ life_exp_trend <- life_exp %>%
 # Make a table to compare with other areas
 
 life_exp_table <- life_exp %>%
-  filter((year == latest_year_life_exp_loc &
-    (area_name == HSCP & area_type == "HSCP")) |
-    year == latest_year_life_exp_otherareas &
-      (area_name == HB | area_name == "Scotland")) %>%
+  filter(
+    year == latest_year_life_exp_otherareas,
+    area_name %in% c(HB, HSCP, "Scotland")
+  ) %>%
   mutate(
     measure = round_half_up(measure, 1),
     area_type = ordered(area_type, levels = c("HSCP", "Health board", "Scotland"))

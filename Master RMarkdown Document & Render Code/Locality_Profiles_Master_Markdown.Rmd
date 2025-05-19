@@ -283,7 +283,7 @@ if (is.na(avg_life_exp_latest_male)) {
   life_exp_text2 <- "No data available for life expectancy at locality level."
 } else {
   life_exp_text <- glue("An average life expectancy of **{avg_life_exp_latest_male}** years for males and **{avg_life_exp_latest_fem}** years for females, compared to the national average of {scot_life_exp_male} and {scot_life_exp_fem} years of age respectively.")
-  life_exp_text2 <- glue("In the latest time period available from {latest_period_life_exp_loc} (3-year aggregate), the average life expectancy in {HSCP} HSCP was {avg_life_exp_latest_male} years for men, and {avg_life_exp_latest_fem} years for women. A 10-year time trend can be seen in figure {x}.")
+  life_exp_text2 <- glue("In the latest time period available from {latest_period_life_exp_otherareas} (3-year aggregate), the average life expectancy in {HSCP} HSCP was {avg_life_exp_latest_male} years for men, and {avg_life_exp_latest_fem} years for women. A 10-year time trend can be seen in figure {x}.")
 }
 ```
 
