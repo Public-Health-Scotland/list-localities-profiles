@@ -1,0 +1,29 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "commitType": "docs",
+  "commitConvention": "atom",
+  "contributors": [
+    {
+      "login": "Moohan",
+      "name": "James McMahon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5982260?v=4",
+      "profile": "https://publichealthscotland.scot/",
+      "contributions": [
+        "code",
+        "review",
+        "projectManagement"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "contributorsSortAlphabetically": true
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "list-localities-profiles",
+  "projectOwner": "Public-Health-Scotland"
+}
