@@ -20,7 +20,7 @@
     }
   ],
   "contributorsPerLine": 7,
-  "contributorsSortAlphabetically": true
+  "contributorsSortAlphabetically": true,
   "skipCi": true,
   "repoType": "github",
   "repoHost": "https://github.com",
