@@ -33,7 +33,7 @@ y <- 1 # object for table numbers
 
 **Summary**
 
-For the most recent time period available, `r LOCALITY` Locality had:
+For the most recent time period available, `r HSCP` HSCP had:
 
 -   **`r n_houses`** dwellings, of which: **`r perc_occupied`%** were occupied and **`r perc_second_homes`%** were second homes.
 -   **`r perc_single_discount`%** of dwellers received a single-occupant council tax discount, and **`r perc_exempt`%** were exempt from council tax entirely.
@@ -41,7 +41,7 @@ For the most recent time period available, `r LOCALITY` Locality had:
 
 \newline
 
-The graph below shows the number of dwellings in `r LOCALITY` from `r min(house_dat$year)` to `r max_year_housing`.
+The graph below shows the number of dwellings in `r HSCP` from `r min(house_dat$year)` to `r max_year_housing`.
 
 #### Figure `r x`: Number of dwellings time trend.
 
@@ -55,11 +55,11 @@ x <- x + 1
 
 Of the total number of dwellings in `r max_year_housing`, `r perc_single_discount`% (`r n_single_discount` households) were occupied by an individual receiving a single-occupant council tax discount. Furthermore, `r perc_exempt`% (`r n_exempt` households) were occupied and exempt from council tax.
 
-There were `r n_second_homes` dwellings classed as a second home in `r max_year_housing`, these dwellings made up `r perc_second_homes`% of the households in `r LOCALITY`.
+There were `r n_second_homes` dwellings classed as a second home in `r max_year_housing`, these dwellings made up `r perc_second_homes`% of the households in `r HSCP`.
 
 ##### Page break
 
-#### Table `r y`: Breakdown of dwelling types by year for `r LOCALITY` locality.
+#### Table `r y`: Breakdown of dwelling types by year for `r HSCP` HSCP.
 
 \newline
 
@@ -79,7 +79,7 @@ Source: Scottish Assessors' Association (via NRS) \newline
 
 The proportion of households within each council tax band are displayed in the chart below, figures are shown in Table `r y`.
 
-#### Figure `r x`: Breakdown of households by council tax band for `r LOCALITY` in `r max_year_housing`.
+#### Figure `r x`: Breakdown of households by council tax band for `r HSCP` in `r max_year_housing`.
 
 \newline
 
@@ -89,7 +89,7 @@ ctb_plot
 x <- x + 1
 ```
 
-#### Table `r y`: Percentage of households by council tax band for `r LOCALITY` in `r max_year_housing`.
+#### Table `r y`: Percentage of households by council tax band for `r HSCP` in `r max_year_housing`.
 
 \newline
 

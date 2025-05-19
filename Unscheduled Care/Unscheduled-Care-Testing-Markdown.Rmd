@@ -37,43 +37,43 @@ y <- 1 # object for table numbers
 
 **Summary**
 
-**For the most recent time periods available, `r LOCALITY` had:**
+**For the most recent time periods available, `r HSCP` had:**
 
--   **`r latest_emergency_adm_loc1`** emergency hospital admissions per 100,000 population, compared to `r scot_emergency_adm1` in Scotland.
+-   **`r hscp_emergency_adm1 `** emergency hospital admissions per 100,000 population, compared to `r scot_emergency_adm1` in Scotland.
 
--   **`r latest_bed_days_loc1`** unscheduled acute specialty bed days per 100,000 population, compared to `r scot_bed_days1` in Scotland.
+-   **`r hscp_bed_days1 `** unscheduled acute specialty bed days per 100,000 population, compared to `r scot_bed_days1` in Scotland.
 
--   **`r latest_ae_att_loc1`** A&E attendances per 100,000 population, compared to `r scot_ae_att1` in Scotland.
+-   **`r hscp_ae_att1`** A&E attendances per 100,000 population, compared to `r scot_ae_att1` in Scotland.
 
--   **`r latest_dd_loc1`** delayed discharge bed days per 100,000 population aged over 65, compared to `r scot_dd1` in Scotland.
+-   **`r hscp_dd1`** delayed discharge bed days per 100,000 population aged over 65, compared to `r scot_dd1` in Scotland.
 
--   **`r latest_falls_loc1`** emergency hospital admissions from falls per 100,000 population aged over 65, compared to `r scot_falls1` in Scotland.
+-   **`r hscp_falls1`** emergency hospital admissions from falls per 100,000 population aged over 65, compared to `r scot_falls1` in Scotland.
 
--   **`r latest_read_loc1`** emergency readmissions (28 day) per 1,000 discharges, compared to `r scot_read` in Scotland.
+-   **`r hscp_read`** emergency readmissions (28 day) per 1,000 discharges, compared to `r scot_read` in Scotland.
 
--   **`r latest_ppa_loc$formatted_data[2]`** potentially preventable hospital admissions per 100,000 population, compared to `r scot_ppa$formatted_data[2]` in Scotland.
+-   **`r hscp_ppa$formatted_data[2]`** potentially preventable hospital admissions per 100,000 population, compared to `r scot_ppa$formatted_data[2]` in Scotland.
 
 ##### Page break
 
 ### Emergency Admissions
 
-Figure `r x` presents the emergency admissions rate per 100,000 population in the `r LOCALITY` locality from `r min_year_ea` to `r max_year_ea`.
+Figure `r x` presents the emergency admissions rate per 100,000 population in the `r HSCP` HSCP from `r min_year_ea` to `r max_year_ea`.
 
-As presented in Figure `r x`, the emergency admissions rate in the `r LOCALITY` locality for `r max_year_ea` is `r latest_emergency_adm_loc1`, `r get_article(percent_rate_change)` `r percent_rate_change`% `r word_change_rate` since `r min_year_ea`. The `r HSCP` HSCP rate is `r hscp_emergency_adm1`, `r get_article(hscp_rate_change)` `r hscp_rate_change`% `r word_change_hscp` since `r min_year_ea`. The `r HB` health board rate is `r hb_emergency_adm1` in `r max_year_ea`, `r get_article(hb_rate_change)` `r hb_rate_change`% `r word_change_hb` since `r min_year_ea` and the Scotland rate is `r scot_emergency_adm1`, `r get_article(scot_rate_change)` `r scot_rate_change`% `r word_change_scot` since `r min_year_ea`.
+As presented in Figure `r x`, the emergency admissions rate in the `r HSCP` HSCP for `r max_year_ea` is `r hscp_emergency_adm1`, `r get_article(hscp_rate_change)` `r hscp_rate_change`% `r word_change_hscp` since `r min_year_ea`. The `r HB` health board rate is `r hb_emergency_adm1` in `r max_year_ea`, `r get_article(hb_rate_change)` `r hb_rate_change`% `r word_change_hb` since `r min_year_ea` and the Scotland rate is `r scot_emergency_adm1`, `r get_article(scot_rate_change)` `r scot_rate_change`% `r word_change_scot` since `r min_year_ea`.
 
 #### Figure `r x`: Emergency admissions by geographical area
 
 \newline
 
-```{r echo = FALSE, fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing six-year time trends for emergency admissions per 100,000 population for Locality, HSCP, Health Board and all Scotland."}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing six-year time trends for emergency admissions per 100,000 population for HSCP, Health Board and all Scotland."}
 EAs_loc_ts
 
 x <- x + 1
 ```
 
-Figure `r x` presents the emergency admissions rate per 100,000 population in the `r LOCALITY` locality from `r min_ea_age` to `r max_ea_age` by age group.
+Figure `r x` presents the emergency admissions rate per 100,000 population in the `r HSCP` HSCP from `r min_ea_age` to `r max_ea_age` by age group.
 
-As presented in Figure `r x`, the highest emergency admissions rate for the `r LOCALITY` locality in `r max_ea_age` is `r latest_ea_max_age1` per 100,000 population for the `r age_group_max_ea` age group with a percentage `r max_word_change_ea` of `r max_rate_change_ea`% since `r min_ea_age`. The lowest emergency admissions rate for `r LOCALITY` in `r max_ea_age` is `r latest_ea_min_age1` per 100,000 population for the `r age_group_min_ea` age group with a percentage `r min_word_change_ea` of `r min_rate_change_ea`% since `r min_ea_age`.
+As presented in Figure `r x`, the highest emergency admissions rate for the `r HSCP` HSCP in `r max_ea_age` is `r latest_ea_max_age1` per 100,000 population for the `r age_group_max_ea` age group with a percentage `r max_word_change_ea` of `r max_rate_change_ea`% since `r min_ea_age`. The lowest emergency admissions rate for `r HSCP` in `r max_ea_age` is `r latest_ea_min_age1` per 100,000 population for the `r age_group_min_ea` age group with a percentage `r min_word_change_ea` of `r min_rate_change_ea`% since `r min_ea_age`.
 
 #### Figure `r x`: Emergency admissions by age group
 
@@ -89,23 +89,23 @@ x <- x + 1
 
 ### Unscheduled Acute Bed Days
 
-Figure `r x` presents the unscheduled bed days rate per 100,000 population in the `r LOCALITY` locality from `r min_year_ubd` to `r max_year_ubd`.
+Figure `r x` presents the unscheduled bed days rate per 100,000 population in the `r HSCP` HSCP from `r min_year_ubd` to `r max_year_ubd`.
 
-As presented in Figure `r x`, the unscheduled bed days rate in the `r LOCALITY` locality for `r max_year_ubd` is `r latest_bed_days_loc1`, `r get_article(rate_change_ubd)` `r rate_change_ubd`% `r word_change_ubd` since `r min_year_ubd` and the `r HSCP` HSCP rate is `r hscp_bed_days1`, `r get_article(hscp_rate_ubd)` `r hscp_rate_ubd`% `r hscp_change_ubd` since `r min_year_ubd`. The `r HB` health board rate for `r max_year_ubd` is `r hb_bed_days1`, `r get_article(hb_rate_change_ubd)` `r hb_rate_change_ubd`% `r word_change_hb_ubd` since `r min_year_ubd` and the Scotland rate is `r scot_bed_days1`, `r get_article(scot_rate_ubd)` `r scot_rate_ubd`% `r scot_change_ubd` since `r min_year_ubd`.
+As presented in Figure `r x`, the unscheduled bed days rate in the `r HSCP` HSCP is `r hscp_bed_days1`, `r get_article(hscp_rate_ubd)` `r hscp_rate_ubd`% `r hscp_change_ubd` since `r min_year_ubd`. The `r HB` health board rate for `r max_year_ubd` is `r hb_bed_days1`, `r get_article(hb_rate_change_ubd)` `r hb_rate_change_ubd`% `r word_change_hb_ubd` since `r min_year_ubd` and the Scotland rate is `r scot_bed_days1`, `r get_article(scot_rate_ubd)` `r scot_rate_ubd`% `r scot_change_ubd` since `r min_year_ubd`.
 
 #### Figure `r x`: Unscheduled acute bed days by geographical area
 
 \newline
 
-```{r echo = FALSE, fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing six-year time trends for unscheduled acute bed days per 100,000 population for Locality, HSCP, Health Board and all Scotland."}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing six-year time trends for unscheduled acute bed days per 100,000 population for  HSCP, Health Board and all Scotland."}
 BDs_loc_ts
 
 x <- x + 1
 ```
 
-Figure `r x` presents the unscheduled bed days rate per 100,000 population in the `r LOCALITY` locality from `r min_ubd_age` to `r max_ubd_age` by age group.
+Figure `r x` presents the unscheduled bed days rate per 100,000 population in the `r HSCP` HSCP from `r min_ubd_age` to `r max_ubd_age` by age group.
 
-As presented in Figure `r x`, the highest unscheduled bed days rate for the `r LOCALITY` locality in `r max_ubd_age` is `r latest_ubd_max_age1` bed days per 100,000 population for the `r age_group_max_ubd` age group with a percentage `r max_word_change_ubd` of `r max_rate_change_ubd`% since `r min_ubd_age`. The lowest unscheduled bed days rate for `r LOCALITY` in `r max_ubd_age` is `r latest_ubd_min_age1` bed days per 100,000 population for the `r age_group_min_ubd` age group with a percentage `r min_word_change_ubd` of `r min_rate_change_ubd`% since `r min_ubd_age`.
+As presented in Figure `r x`, the highest unscheduled bed days rate for the `r HSCP` HSCP in `r max_ubd_age` is `r latest_ubd_max_age1` bed days per 100,000 population for the `r age_group_max_ubd` age group with a percentage `r max_word_change_ubd` of `r max_rate_change_ubd`% since `r min_ubd_age`. The lowest unscheduled bed days rate for `r HSCP` in `r max_ubd_age` is `r latest_ubd_min_age1` bed days per 100,000 population for the `r age_group_min_ubd` age group with a percentage `r min_word_change_ubd` of `r min_rate_change_ubd`% since `r min_ubd_age`.
 
 #### Figure `r x`: Unscheduled acute bed days by age group
 
@@ -121,23 +121,23 @@ x <- x + 1
 
 ### A&E Attendances
 
-Figure `r x` presents the A&E attendance rate per 100,000 population in the `r LOCALITY` locality from `r min_year_ae_area` to `r max_year_ae_area`.
+Figure `r x` presents the A&E attendance rate per 100,000 population in the `r HSCP` HSCP from `r min_year_ae_area` to `r max_year_ae_area`.
 
-As presented in Figure `r x`, the A&E attendance rate per 100,000 in the `r LOCALITY` locality for `r max_year_ae_area` is `r latest_ae_att_loc1`, `r get_article(percent_rate_change_ae_areas)` `r percent_rate_change_ae_areas`% `r word_change_rate_ae_areas` since `r min_year_ae_area` and the `r HSCP` HSCP rate is `r hscp_ae_att1`, `r get_article(percent_rate_change_ae_areas_hscp)` `r percent_rate_change_ae_areas_hscp`% `r word_change_rate_ae_areas_hscp` since `r min_year_ae_area`. The `r HB` health board rate for `r max_year_ae_area` is `r hb_ae1`, `r get_article(hb_rate_change_ae)` `r hb_rate_change_ae`% `r word_change_hb_ae` since `r min_year_ae_area` and the Scotland rate is `r scot_ae_att1`, `r get_article(percent_rate_change_ae_areas_scot)` `r percent_rate_change_ae_areas_scot`% `r word_change_rate_ae_areas_scot` since `r min_year_ae_area`.
+As presented in Figure `r x`, the A&E attendance rate per 100,000 in the `r HSCP` HSCP is `r hscp_ae_att1`, `r get_article(percent_rate_change_ae_areas_hscp)` `r percent_rate_change_ae_areas_hscp`% `r word_change_rate_ae_areas_hscp` since `r min_year_ae_area`. The `r HB` health board rate for `r max_year_ae_area` is `r hb_ae1`, `r get_article(hb_rate_change_ae)` `r hb_rate_change_ae`% `r word_change_hb_ae` since `r min_year_ae_area` and the Scotland rate is `r scot_ae_att1`, `r get_article(percent_rate_change_ae_areas_scot)` `r percent_rate_change_ae_areas_scot`% `r word_change_rate_ae_areas_scot` since `r min_year_ae_area`.
 
 #### Figure `r x`: A&E attendances by geographical area
 
 \newline
 
-```{r echo = FALSE, fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing six-year time trends for A&E attendancess per 100,000 population for Locality, HSCP, Health Board and all Scotland."}
+```{r echo = FALSE, fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing six-year time trends for A&E attendancess per 100,000 population for HSCP, Health Board and all Scotland."}
 AandE_loc_ts
 
 x <- x + 1
 ```
 
-Figure `r x` presents the A&E attendance rate per 100,000 population in the `r LOCALITY` locality from `r min_year_ae_area` to `r max_year_ae_area` by age group.
+Figure `r x` presents the A&E attendance rate per 100,000 population in the `r HSCP` HSCP from `r min_year_ae_area` to `r max_year_ae_area` by age group.
 
-As presented in Figure `r x`, the highest A&E attendance rate for the `r LOCALITY` locality in `r max_year_ae_age` is `r latest_ae_att_loc1_age` per 100,000 population for the `r age_group_max` age group with a percentage `r word_change_rate_ae_age` of `r percent_rate_change_ae_age`% since `r min_year_ae_age`. The lowest A&E attendance rate for `r LOCALITY` in `r max_year_ae_age` is `r latest_ae_att_loc1_age_min` per 100,000 population for the `r age_group_min` age group with a percentage `r word_change_rate_ae_age2` of `r percent_rate_change_ae_age2`% since `r min_year_ae_age`.
+As presented in Figure `r x`, the highest A&E attendance rate for the `r HSCP` HSCP in `r max_year_ae_age` is `r latest_ae_att_loc1_age` per 100,000 population for the `r age_group_max` age group with a percentage `r word_change_rate_ae_age` of `r percent_rate_change_ae_age`% since `r min_year_ae_age`. The lowest A&E attendance rate for `r HSCP` in `r max_year_ae_age` is `r latest_ae_att_loc1_age_min` per 100,000 population for the `r age_group_min` age group with a percentage `r word_change_rate_ae_age2` of `r percent_rate_change_ae_age2`% since `r min_year_ae_age`.
 
 #### Figure `r x`: A&E attendances by age group
 
@@ -153,9 +153,9 @@ x <- x + 1
 
 ### Emergency Readmissions (28 days)
 
-Figure `r x` presents the emergency readmission (28 days) rate per 1,000 discharges in the `r LOCALITY` locality from `r min_year_re_area` to `r max_year_re_area`.
+Figure `r x` presents the emergency readmission (28 days) rate per 1,000 discharges in the `r HSCP` HSCP from `r min_year_re_area` to `r max_year_re_area`.
 
-As presented in Figure `r x`, the emergency readmission (28 days) rate per 1,000 discharges in the `r LOCALITY` locality for `r max_year_re_area` is `r latest_read_loc1`, `r get_article(percent_rate_change_re_area)` `r percent_rate_change_re_area`% `r word_change_rate_re_area` since `r min_year_re_area` and the `r HSCP` HSCP rate is `r hscp_read`, `r get_article(percent_rate_change_re_area_hscp)` `r percent_rate_change_re_area_hscp`% `r word_change_rate_re_area_hscp` since `r min_year_re_area`. The `r HB` health board rate for `r max_year_re_area` is `r hb_read1`, `r get_article(hb_rate_change_read)` `r hb_rate_change_read`% `r word_change_hb_read` since `r min_year_re_area` and the Scotland rate is `r scot_read`, `r get_article(percent_rate_change_re_area_scot)` `r percent_rate_change_re_area_scot`% `r word_change_rate_re_area_scot` since `r min_year_re_area`.
+As presented in Figure `r x`, the emergency readmission (28 days) rate per 1,000 discharges in the `r HSCP` HSCP is `r hscp_read`, `r get_article(percent_rate_change_re_area_hscp)` `r percent_rate_change_re_area_hscp`% `r word_change_rate_re_area_hscp` since `r min_year_re_area`. The `r HB` health board rate for `r max_year_re_area` is `r hb_read1`, `r get_article(hb_rate_change_read)` `r hb_rate_change_read`% `r word_change_hb_read` since `r min_year_re_area` and the Scotland rate is `r scot_read`, `r get_article(percent_rate_change_re_area_scot)` `r percent_rate_change_re_area_scot`% `r word_change_rate_re_area_scot` since `r min_year_re_area`.
 
 #### Figure `r x`: Emergency readmissions (28 days) by geographical area
 
@@ -167,9 +167,9 @@ read_loc_ts
 x <- x + 1
 ```
 
-Figure `r x` presents the emergency readmission (28 days) rate per 1,000 discharges in the `r LOCALITY` locality from `r min_year_re_age` to `r max_year_re_age` by age group.
+Figure `r x` presents the emergency readmission (28 days) rate per 1,000 discharges in the `r HSCP` HSCP from `r min_year_re_age` to `r max_year_re_age` by age group.
 
-As presented in Figure `r x`, the highest emergency readmission (28 days) rate for the `r LOCALITY` locality in `r max_year_re_age` is `r latest_re_max_age_data` per 1,000 discharges for the `r latest_re_max_age_group` age group with a percentage `r word_change_rate_re_age` of `r percent_rate_change_re_age`% since `r min_year_re_age`. The lowest emergency readmission (28 days) rate for the `r LOCALITY` locality in `r max_year_re_age` is `r latest_re_min_age_data` per 1,000 discharges for the `r latest_re_min_age_group` age group with a percentage `r word_change_rate_re_age_min` of `r percent_rate_change_re_age_min`% since `r min_year_re_age`.
+As presented in Figure `r x`, the highest emergency readmission (28 days) rate for the `r HSCP` HSCP in `r max_year_re_age` is `r latest_re_max_age_data` per 1,000 discharges for the `r latest_re_max_age_group` age group with a percentage `r word_change_rate_re_age` of `r percent_rate_change_re_age`% since `r min_year_re_age`. The lowest emergency readmission (28 days) rate for the `r HSCP` HSCP in `r max_year_re_age` is `r latest_re_min_age_data` per 1,000 discharges for the `r latest_re_min_age_group` age group with a percentage `r word_change_rate_re_age_min` of `r percent_rate_change_re_age_min`% since `r min_year_re_age`.
 
 #### Figure `r x`: Emergency readmissions (28 days) by age group
 
@@ -185,9 +185,9 @@ x <- x + 1
 
 ### Delayed Discharge Bed Days
 
-Figure `r x` presents the number of delayed discharge bed days per 100,000 population aged over 65+ in the `r LOCALITY` locality from `r min_year_dd` to `r max_year_dd`.
+Figure `r x` presents the number of delayed discharge bed days per 100,000 population aged over 65+ in the `r HSCP` HSCP from `r min_year_dd` to `r max_year_dd`.
 
-As presented in Figure `r x`, the number of delayed discharge bed days per 100,000 population aged over 65+ in the `r LOCALITY` locality for `r max_year_dd` is `r latest_dd_loc1`, `r get_article(percent_rate_change_dd_loc)` `r percent_rate_change_dd_loc`% `r word_change_rate_dd_loc` since `r min_year_dd` and the `r HSCP` HSCP rate is `r hscp_dd1`, `r get_article(percent_rate_change_dd_hscp)` `r percent_rate_change_dd_hscp`% `r word_change_rate_dd_hscp` since `r min_year_dd`. The `r HB` health board rate for `r max_year_dd` is `r hb_dd1`, `r get_article(hb_rate_change_dd)` `r hb_rate_change_dd`% `r word_change_hb_dd` since `r min_year_dd` and the Scotland rate is `r scot_dd1`, `r get_article(percent_rate_change_dd_scot)` `r percent_rate_change_dd_scot`% `r  word_change_rate_dd_scot` since `r min_year_dd`.
+As presented in Figure `r x`, the number of delayed discharge bed days per 100,000 population aged over 65+ in the `r HSCP` HSCP is `r hscp_dd1`, `r get_article(percent_rate_change_dd_hscp)` `r percent_rate_change_dd_hscp`% `r word_change_rate_dd_hscp` since `r min_year_dd`. The `r HB` health board rate for `r max_year_dd` is `r hb_dd1`, `r get_article(hb_rate_change_dd)` `r hb_rate_change_dd`% `r word_change_hb_dd` since `r min_year_dd` and the Scotland rate is `r scot_dd1`, `r get_article(percent_rate_change_dd_scot)` `r percent_rate_change_dd_scot`% `r  word_change_rate_dd_scot` since `r min_year_dd`.
 
 #### Figure `r x`: Delayed discharge bed days in the population aged 65+ by geographical area
 
@@ -201,9 +201,9 @@ x <- x + 1
 
 ### Emergency admissions from a fall
 
-Figure `r x` presents the emergency admissions from falls rate per 100,000 population aged 65 and over in the `r LOCALITY` locality from `r min_year_falls` to `r max_year_falls`.
+Figure `r x` presents the emergency admissions from falls rate per 100,000 population aged 65 and over in the `r HSCP` HSCP from `r min_year_falls` to `r max_year_falls`.
 
-As presented in Figure `r x`, the emergency admissions from falls rate per 100,000 population aged over 65+ in the `r LOCALITY` locality for `r max_year_falls` is `r latest_falls_loc1`, `r get_article(percent_rate_change_falls_loc)` `r percent_rate_change_falls_loc`% `r word_change_rate_falls_loc` since `r min_year_falls` and the `r HSCP` HSCP rate is `r hscp_falls1`, `r get_article(percent_rate_change_falls_hscp)` `r percent_rate_change_falls_hscp`% `r word_change_rate_falls_hscp` since `r min_year_falls`. The `r HB` health board rate for `r max_year_falls` is `r hb_falls1`, `r get_article(hb_rate_change_falls)` `r hb_rate_change_falls`% `r word_change_hb_falls` since `r min_year_falls` and the Scotland rate is `r scot_falls1`, `r get_article(percent_rate_change_falls_scot)` `r percent_rate_change_falls_scot`% `r  word_change_rate_falls_scot` since `r min_year_falls`.
+As presented in Figure `r x`, the emergency admissions from falls rate per 100,000 population aged over 65+ in the `r HSCP` HSCP is `r hscp_falls1`, `r get_article(percent_rate_change_falls_hscp)` `r percent_rate_change_falls_hscp`% `r word_change_rate_falls_hscp` since `r min_year_falls`. The `r HB` health board rate for `r max_year_falls` is `r hb_falls1`, `r get_article(hb_rate_change_falls)` `r hb_rate_change_falls`% `r word_change_hb_falls` since `r min_year_falls` and the Scotland rate is `r scot_falls1`, `r get_article(percent_rate_change_falls_scot)` `r percent_rate_change_falls_scot`% `r  word_change_rate_falls_scot` since `r min_year_falls`.
 
 #### Figure `r x`: Falls in the population aged 65+ by geographical area
 
@@ -219,9 +219,9 @@ x <- x + 1
 
 ### Potentially Preventable Admissions (PPAs)
 
-Information on the conditions included in Potentially Preventable Admissions (PPA)s is available in Appendix 3. In `r max_fy`, **`r latest_ppa_65plus`%** of PPAs in `r LOCALITY` were amongst those aged 65 and over, and **`r latest_ppa_under65`%** were amongst those aged under 65.
+Information on the conditions included in Potentially Preventable Admissions (PPA)s is available in Appendix 3. In `r max_fy`, **`r latest_ppa_65plus`%** of PPAs in `r HSCP` were amongst those aged 65 and over, and **`r latest_ppa_under65`%** were amongst those aged under 65.
 
-Figure `r x` presents the PPA rate per 100,000 population in the `r LOCALITY` locality from `r min_year_ppa_areas` to `r max_year_ppa_areas`. The rate per 100,000 population for PPAs in the `r LOCALITY` locality for `r max_year_ppa_areas` is `r latest_ppa_loc1`, `r get_article(ppa_diff)` `r ppa_diff`% `r ppa_word_change` since `r latest_ppa_loc$financial_year[1]` and the `r HSCP` HSCP rate is `r hscp_ppa$data[2]`, `r get_article(ppa_diff_hscp)` `r ppa_diff_hscp`% `r ppa_word_change_hscp` since `r latest_ppa_loc$financial_year[1]`. The `r HB` health board rate for `r hb_ppa$financial_year[2]` is `r hb_ppa$formatted_data[2]`, `r get_article(diff_hb_ppa)` `r diff_hb_ppa`% `r word_change_hb_ppa` since `r hb_ppa$financial_year[]` and the Scotland rate is `r scot_ppa$formatted_data[2]`, `r get_article(diff_scot_ppa)` `r diff_scot_ppa`% `r  word_change_scot_ppa` since `r hb_ppa$financial_year[1]`.
+Figure `r x` presents the PPA rate per 100,000 population in the `r HSCP` HSCP from `r min_year_ppa_areas` to `r max_year_ppa_areas`. The rate per 100,000 population for PPAs in the `r HSCP` HSCP for `r max_year_ppa_areas` is `r hscp_ppa$data[2]`, `r get_article(ppa_diff_hscp)` `r ppa_diff_hscp`% `r ppa_word_change_hscp` since `r hscp_ppa$financial_year[1]`. The `r HB` health board rate for `r hb_ppa$financial_year[2]` is `r hb_ppa$formatted_data[2]`, `r get_article(diff_hb_ppa)` `r diff_hb_ppa`% `r word_change_hb_ppa` since `r hb_ppa$financial_year[]` and the Scotland rate is `r scot_ppa$formatted_data[2]`, `r get_article(diff_scot_ppa)` `r diff_scot_ppa`% `r  word_change_scot_ppa` since `r hb_ppa$financial_year[1]`.
 
 #### Figure `r x`: Potentially Preventable Admissions (PPAs) by geographical area
 
@@ -243,18 +243,18 @@ x <- x + 1
 
 **Summary**
 
-This section looks at mental health-related unscheduled care indicators. For the most recent time period available, `r LOCALITY` had:
+This section looks at mental health-related unscheduled care indicators. For the most recent time period available, `r HSCP` had:
 
--   **`r psych_hosp_latest`** psychiatric patient hospitalisations per 100,000, compared to `r scot_psych_hosp$measure[2]` in Scotland^4^.
--   **`r latest_bed_days_mh_loc1`** unscheduled mental health specialty bed days per 100,000, compared to `r scot_bed_days_mh1` in Scotland.
+-   **`r psych_hosp_latest`** psychiatric patient hospitalisations per 100,000, compared to `r scot_psych_hosp$measure[2]` in Scotland^5^.
+-   **`r hscp_bed_days_mh1`** unscheduled mental health specialty bed days per 100,000, compared to `r scot_bed_days_mh1` in Scotland.
 
 \newline
 
 ### Psychiatric patient hospitalisations
 
-Figure `r x` presents the psychiatric patient hospitalisation 3-year aggregate rate per 100,000 population in the `r LOCALITY` locality from `r loc_psych_hosp$period_short[1]` to `r loc_psych_hosp$period_short[2]`.
+Figure `r x` presents the psychiatric patient hospitalisation 3-year aggregate rate per 100,000 population in the `r HSCP` HSCP from `r hscp_psych_hosp$period_short[1]` to `r hscp_psych_hosp$period_short[2]`.
 
-As presented in Figure `r x`, the 3-year aggregate psychiatric patient hospitalisation rate per 100,000 population in the `r LOCALITY` locality for `r loc_psych_hosp$period_short[2]` is `r psych_hosp_latest`, `r get_article(diff_loc_psych)` `r diff_loc_psych`% `r word_change_loc_psych` since `r loc_psych_hosp$period_short[1]` and the `r HSCP` HSCP rate is `r hscp_psych_hosp$measure[2]`, `r get_article(diff_hscp_psych)` `r diff_hscp_psych`% `r word_change_hscp_psych` since `r loc_psych_hosp$period_short[1]`. The `r HB` health board the 3-year aggregate rate for `r loc_psych_hosp$period_short[2]` is `r hb_psych_hosp$measure[2]`, `r get_article(diff_hb_psych)` `r diff_hb_psych`% `r word_change_hb_psych` since `r loc_psych_hosp$period_short[1]` and the Scotland the 3-year aggregate rate is `r scot_psych_hosp$measure[2]`, `r get_article(diff_scot_psych)` `r diff_scot_psych`% `r word_change_scot_psych` since `r loc_psych_hosp$period_short[1]`.
+As presented in Figure `r x`, the 3-year aggregate psychiatric patient hospitalisation rate per 100,000 population in the `r HSCP` HSCP for `r loc_psych_hosp$period_short[2]` is `r hscp_psych_hosp$measure[2]`, `r get_article(diff_hscp_psych)` `r diff_hscp_psych`% `r word_change_hscp_psych` since `r hscp_psych_hosp$period_short[1]`. The `r HB` health board the 3-year aggregate rate for `r hb_psych_hosp$period_short[2]` is `r hb_psych_hosp$measure[2]`, `r get_article(diff_hb_psych)` `r diff_hb_psych`% `r word_change_hb_psych` since `r hscp_psych_hosp$period_short[1]` and the Scotland the 3-year aggregate rate is `r scot_psych_hosp$measure[2]`, `r get_article(diff_scot_psych)` `r diff_scot_psych`% `r word_change_scot_psych` since `r hscp_psych_hosp$period_short[1]`.
 
 #### Figure `r x`: Psychiatric patient hospitalisations by geographical area
 
@@ -270,9 +270,9 @@ x <- x + 1
 
 ### Unscheduled Mental Health Specialty Bed Days
 
-Figure `r x` presents the unscheduled mental health bed days rate per 100,000 population in the `r LOCALITY` locality from `r min_year_bd_mh_areas` to `r max_year_bd_mh_areas`.
+Figure `r x` presents the unscheduled mental health bed days rate per 100,000 population in the `r HSCP` HSCP from `r min_year_bd_mh_areas` to `r max_year_bd_mh_areas`.
 
-As presented in Figure `r x`, the unscheduled mental health bed days rate per 100,000 population in the `r LOCALITY` locality for `r max_year_bd_mh_areas` is `r latest_bed_days_mh_loc1`, `r get_article(loc_rate_change_beds_mh)` `r loc_rate_change_beds_mh`% `r loc_word_change_beds_mh` since `r min_year_bd_mh_areas` and the `r HSCP` HSCP rate is `r hscp_bed_days_mh1`, `r get_article(hscp_rate_change_beds_mh)` `r hscp_rate_change_beds_mh`% `r hscp_word_change_beds_mh` since `r min_year_bd_mh_areas`. The `r HB` health board rate for `r max_year_bd_mh_areas` is `r hb_mh_beddays1`, `r get_article(hb_rate_change_mh)` `r hb_rate_change_mh`% `r word_change_hb_mh` since `r  min_year_bd_mh_areas` and the Scotland rate is `r scot_bed_days_mh1`, `r get_article(scot_rate_change_beds_mh)` `r scot_rate_change_beds_mh`% `r  scot_word_change_beds_mh` since `r min_year_bd_mh_areas`.
+As presented in Figure `r x`, the unscheduled mental health bed days rate per 100,000 population in the `r HSCP` HSCP is `r hscp_bed_days_mh1`, `r get_article(hscp_rate_change_beds_mh)` `r hscp_rate_change_beds_mh`% `r hscp_word_change_beds_mh` since `r min_year_bd_mh_areas`. The `r HB` health board rate for `r max_year_bd_mh_areas` is `r hb_mh_beddays1`, `r get_article(hb_rate_change_mh)` `r hb_rate_change_mh`% `r word_change_hb_mh` since `r  min_year_bd_mh_areas` and the Scotland rate is `r scot_bed_days_mh1`, `r get_article(scot_rate_change_beds_mh)` `r scot_rate_change_beds_mh`% `r  scot_word_change_beds_mh` since `r min_year_bd_mh_areas`.
 
 #### Figure `r x`: Unscheduled mental health specialty bed days by geographical area
 
@@ -284,9 +284,9 @@ BDMH_loc_ts
 x <- x + 1
 ```
 
-Figure `r x` presents the unscheduled mental health bed days rate per 100,000 in the `r LOCALITY` locality from `r min_year_bd_mh_age` to `r max_year_bd_mh_age` by age group.
+Figure `r x` presents the unscheduled mental health bed days rate per 100,000 in the `r HSCP` HSCP from `r min_year_bd_mh_age` to `r max_year_bd_mh_age` by age group.
 
-As presented in Figure `r x`, the highest unscheduled mental health bed days rate for the `r LOCALITY` locality in `r max_year_bd_mh_age` is `r latest_bd_mh_max_age1` per 100,000 population for the `r age_group_max_mh` age group with a percentage `r max_word_change_beds_mh` of `r max_rate_change_beds_mh`% since `r min_year_bd_mh_age`. The lowest unscheduled mental health bed days rate for the `r LOCALITY` locality in `r max_year_bd_mh_age` is `r latest_bd_mh_min_age1` per 100,000 population for the `r age_group_min_mh` age group with a percentage `r min_word_change_beds_mh` of `r min_rate_change_beds_mh`% since `r min_year_bd_mh_age1`.
+As presented in Figure `r x`, the highest unscheduled mental health bed days rate for the `r HSCP` HSCP in `r max_year_bd_mh_age` is `r latest_bd_mh_max_age1` per 100,000 population for the `r age_group_max_mh` age group with a percentage `r max_word_change_beds_mh` of `r max_rate_change_beds_mh`% since `r min_year_bd_mh_age`. The lowest unscheduled mental health bed days rate for the `r HSCP` HSCP in `r max_year_bd_mh_age` is `r latest_bd_mh_min_age1` per 100,000 population for the `r age_group_min_mh` age group with a percentage `r min_word_change_beds_mh` of `r min_rate_change_beds_mh`% since `r min_year_bd_mh_age1`.
 
 #### Figure `r x`: Unscheduled mental health specialty bed days by age group
 
@@ -297,4 +297,3 @@ BDMH_age_ts
 
 x <- x + 1
 ```
-

@@ -51,7 +51,7 @@ For the most recent time period available, `r HSCP` HSCP had:
 
 <!-- Total Population Text -->
 
-In `r pop_max_year`, the total population of `r HSCP` HSCP was `r total_population`. The graph below shows the population distribution of the HSCP. Overall, **`r gender_breakdown[gender_breakdown$sex == "M",]$perc`** of the population are male, and **`r gender_breakdown[gender_breakdown$sex == "F",]$perc`** are female.
+In `r pop_max_year`, the total population of `r HSCP` HSCP was `r total_population`. The graph below shows the population distribution of the HSCP. Overall, **`r gender_breakdown[gender_breakdown$sex == "M",]$perc`** of the population are male, and **`r gender_breakdown[gender_breakdown$sex == "F",]$perc`** are female. *Please see the footnotes for more information on NRS population estimates^1^.*
 
 #### Figure `r x`: Population by age and sex.
 
@@ -65,7 +65,7 @@ x <- x + 1
 
 <!-- Population over time -->
 
-Figure `r x` shows the historical population of `r HSCP`, along with the NRS population projections. `r pop_graph_text` `r pop_proj_text`. *Please see the footnotes for more information on how the population projections were calculated^1^.*
+Figure `r x` shows the historical population of `r HSCP`, along with the NRS population projections. `r pop_graph_text` `r pop_proj_text`. *Please see the footnotes for more information on how the population projections were calculated^2^.*
 
 ##### Page break
 
@@ -103,7 +103,7 @@ Of the `r pop_max_year` population in `r HSCP`, **`r perc_bottom_quintile`%** li
 
 #### Figure `r x`: Map of Data Zones within `r HSCP` coloured by SIMD quintiles.
 
-```{r echo = FALSE, fig.width = 8, warning = FALSE, fig.cap = 'A map of the HSCP which is broken down by data zones with the colouring showing the SIMD quintile for each.'}
+```{r echo = FALSE, fig.width = 8, warning = FALSE, fig.cap = 'A map of the locality which is broken down by data zones with the colouring showing the SIMD quintile for each.'}
 simd_map
 
 x <- x + 1
