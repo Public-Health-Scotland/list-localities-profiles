@@ -39,9 +39,6 @@ Here are some important files and scripts to be aware of:
 - **`Master RMarkdown Document & Render Code/make_sdc_output.R`**: This script creates the Statistical Disclosure Control (SDC) Excel workbooks.
 
 - **`Master RMarkdown Document & Render Code/excel_output.R`**: This script generates the background data Excel workbooks.
-  
-## How to use
-
 
 ## Contributors ✨
 
