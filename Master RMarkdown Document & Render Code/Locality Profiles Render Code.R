@@ -1,6 +1,5 @@
 ##### LOCALITY PROFILES MASTER DOC RENDER CODE #####
 
-library(knitr)
 library(rmarkdown)
 library(fs)
 
@@ -16,7 +15,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 source("Master RMarkdown Document & Render Code/overwrite_with_custom_functions.R")
 
 # Set file path
-lp_path <- lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 output_dir <- path(lp_path, "Master RMarkdown Document & Render Code", "Output")
 
 # Below creates locality list of all the localities in a chosen HSCP
@@ -29,7 +28,7 @@ lookup <- read_in_localities()
 hscp_list <- "Moray"
 
 # NOTE - This checks that it exactly matches the lookup
-stopifnot(all(hscp_list %in% unique(lookup[["hscp2019name"]])))
+stopifnot(hscp_list %in% unique(lookup[["hscp2019name"]]))
 
 # We don't want to create a profile doc for 'other areas'
 locality_list <- locality_list[locality_list != "Other areas"]
