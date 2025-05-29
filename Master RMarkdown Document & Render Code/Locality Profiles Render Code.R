@@ -1,10 +1,5 @@
 ##### LOCALITY PROFILES MASTER DOC RENDER CODE #####
 
-library(readxl)
-library(janitor)
-library(tidyverse)
-library(knitr)
-library(markdown)
 library(rmarkdown)
 library(fs)
 
@@ -13,95 +8,93 @@ rm(list = ls())
 # system unmask function so files have read-write permissions
 Sys.umask("006")
 
-# Set file path
-lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
-
 # Source in functions code
 source("Master RMarkdown Document & Render Code/Global Script.R")
-
 # Source custom localities function to overwrite the standard
 source("Master RMarkdown Document & Render Code/overwrite_with_custom_functions.R")
 
-## Specify HSCP here
-## NOTE - make sure that the formatting of the partnership's name matches the lookup
-HSCP <- "South Ayrshire"
+# Set file path
+lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+output_dir <- path(lp_path, "Master RMarkdown Document & Render Code", "Output")
 
 # Below creates locality list of all the localities in a chosen HSCP
 lookup <- read_in_localities()
 
-HSCP_list <- unique(lookup$hscp2019name)
+# Specify HSCP(s) ----
+# use `unique(lookup$hscp2019name)` for all
+# or create a vector for multiple e.g. `c("Angus", "West Lothian")`
+# For a larger test, use the below to produce profiles for HSCPs likely to cause issues.
+# source("Master RMarkdown Document & Render Code/find_hscp_outliers.R")
+# hscp_list <- outlier_hscps
+hscp_list <- "South Ayrshire"
 
-# Create list of localities in chosen HSCP
-locality_list <- lookup |>
-  filter(hscp2019name == HSCP) |>
-  pull(hscp_locality)
+# NOTE - This checks that it exactly matches the lookup
+stopifnot(hscp_list %in% unique(lookup[["hscp2019name"]]))
 
-# We don't want to create a profile doc for 'other areas'
-#locality_list <- locality_list[locality_list != "Other areas"]
+# Loop over HSCP ----
+# 'looping' over one HSCP is fine.
+for (HSCP in hscp_list) {
+  # Create list of localities in chosen HSCP
+  locality_list <- lookup |>
+    filter(hscp2019name == HSCP) |>
+    pull(hscp_locality)
 
+  # Loop to create the profiles for all the localities in the list
 
-## Loop to create the profiles for all the localities in the list
+  # There are several stages to the profiles:
+  # 1. Looping through each locality in the HSCP doing the following:
+  # 1a. Run each section script for that locality
+  # 1b. Run the Rmd for the main body of the profiles
+  # 1c. Run the Rmd for the summary tables
 
-## There are several stages to the profiles:
-# 1. Producing the HSCP services map (this takes a while to run so it is produced separately)
-# 2. Looping through each locality in the HSCP doing the following:
-# 2a. Run each section script for that locality
-# 2b. Run the Rmd for the main body of the profiles
-# 2c. Run the Rmd for the summary tables
+  loop_env <- c(ls(), "loop_env")
 
-# 1. HSCP Services Map
+  # 1. Loop through each locality to create the main body of the profiles and the summary table
+  for (LOCALITY in locality_list) {
+    # 1a) Source in all the scripts for a given LOCALITY
 
-map <- paste0(lp_path, "Master RMarkdown Document & Render Code/Output/maps/", HSCP, ".png")
+    # Demographics ----
+    source("Demographics/1. Demographics - Population.R")
+    source("Demographics/2. Demographics - SIMD.R")
 
-stopifnot(file.exists(map)) # Error if the file path doesn't exist.
+    # Housing ----
+    source("Households/Households Code.R")
 
-loop_env <- c(ls(), "loop_env")
+    # Services ----
+    source("Services/2. Services data manipulation & table.R")
+    source("Services/3. Service HSCP map.R")
 
-# 2. Loop through each locality to create the main body of the profiles and the summary table
-for (LOCALITY in locality_list) {
-  ## 2a) Source in all the scripts for a given LOCALITY
+    # General Health ----
+    source("General Health/3. General Health Outputs.R")
 
-  # demographics
-  source("Demographics/1. Demographics - Population.R")
-  source("./Demographics/2. Demographics - SIMD.R")
+    # Lifestyle & Risk Factors ----
+    source("Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
 
-  # housing
-  source("./Households/Households Code.R")
+    # Unscheduled Care ----
+    source("Unscheduled Care/2. Unscheduled Care outputs.R")
 
-  # services
-  source("./Services/2. Services data manipulation & table.R")
+    # Appendices ----
+    source("Master RMarkdown Document & Render Code/Tables for Appendix.R")
 
-  # general health
-  source("./General Health/3. General Health Outputs.R")
+    # Render main profile content ----
+    render(
+      input = "Master RMarkdown Document & Render Code/Locality_Profiles_Master_Markdown.Rmd",
+      output_file = glue("{LOCALITY} - Locality Profile.docx"),
+      output_dir = output_dir
+    )
 
-  # lifestyle & risk factors
-  source("./Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
+    # Render the summary table(s) ----
+    render(
+      input = "Summary Table/Summary-Table-Markdown.Rmd",
+      output_file = glue("{LOCALITY} - Summary Table.docx"),
+      output_dir = path(output_dir, "Summary Tables")
+    )
 
-  # unscheduled care
-  source("./Unscheduled Care/2. Unscheduled Care outputs.R")
-
-  # appendices
-  source("./Master RMarkdown Document & Render Code/Tables for Appendix.R")
-
-  # Remove tidylog package which messes up outputs
-  # detach(package:tidylog, unload = TRUE)
-
-  ## 2b) Create the main body of the profiles
-
-  rmarkdown::render("./Master RMarkdown Document & Render Code/Locality_Profiles_Master_Markdown.Rmd",
-    output_file = paste0(LOCALITY, " - Locality Profile.docx"),
-    output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/")
-  )
-
-  ## 2c) Create the summary tables
-  rmarkdown::render("Summary Table/Summary-Table-Markdown.Rmd",
-    output_file = paste0(LOCALITY, " - Summary Table.docx"),
-    output_dir = paste0(lp_path, "Master RMarkdown Document & Render Code/Output/Summary Tables/")
-  )
-
-  # Clean up the environment by restoring it to the 'pre-loop' state.
-  rm(list = setdiff(ls(), loop_env))
-  # Force garbage collection to free up memory
-  gc()
+    # End of loop housekeeping ----
+    # Clean up the environment by restoring it to the 'pre-loop' state.
+    rm(list = setdiff(ls(), loop_env))
+    # Force garbage collection to free up memory
+    gc()
+  }
 }
 

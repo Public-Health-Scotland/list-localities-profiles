@@ -25,26 +25,22 @@
 ##################### Section 1 - Packages, working directory etc ########################
 
 # load in required packages
-library(tidyverse)
 library(readxl)
-library(janitor)
-library(png)
-library(gridExtra)
 library(reshape2)
 
 # Update Data Year (this is the maximum year available for both housing data sets from NRS)
-max_year_housing <- 2022
+max_year_housing <- 2023
 # Update Publication Year (the year marked on the Data folder)
-ext_year <- 2023
+ext_year <- 2024
 
 # Set Directory.
-filepath <- paste0("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Households/")
+# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 # Read in Global Script for RMarkdown (For testing only)
-# source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/Global Script.R")
+# source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set locality (for testing only)
-## LOCALITY = "Whalsay and Skerries"
+# LOCALITY <- "Whalsay and Skerries"
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
 
 
@@ -52,25 +48,25 @@ filepath <- paste0("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/
 
 ## 2a) Data imports & cleaning ----
 
-house_raw_dat <- data.frame()
-
-# get historic housing data, each year is on a seperate sheet so do a for loop
-for (i in 2014:max_year_housing) {
-  temp <- read_excel(paste0(filepath, "Data ", ext_year, "/household_estimates.xlsx"),
-    sheet = paste(i), skip = 3
-  ) %>%
-    mutate(year = i) %>%
-    clean_names() %>%
-    select(year, 1:12)
-
-  house_raw_dat <- rbind(house_raw_dat, temp)
-}
-
-rm(temp)
+# get historic housing data, each year is on a separate sheet so map over it
+house_raw_dat <- map(
+  2014L:max_year_housing,
+  \(year) {
+    read_excel(
+      path(lp_path, "Households", glue("Data {ext_year}"), "household_estimates.xlsx"),
+      col_types = c(rep("text", 4L), rep("numeric", 8L), rep("skip", 7L)),
+      sheet = as.character(year),
+      skip = 3L,
+      .name_repair = make_clean_names # janitor::make_clean_names()
+    ) |>
+      mutate(year = year, .before = everything())
+  }
+) |>
+  list_rbind()
 
 # Global Script Function to read in Localities Lookup
 lookup <- read_in_localities(dz_level = TRUE) %>%
-  dplyr::select(datazone2011, hscp_locality) %>%
+  select(datazone2011, hscp_locality) %>%
   filter(hscp_locality == LOCALITY)
 
 
@@ -79,8 +75,8 @@ house_dat <- house_raw_dat %>% filter(data_zone_code %in% lookup$datazone2011)
 
 # aggregate data
 house_dat1 <- house_dat %>%
-  dplyr::group_by(year) %>%
-  dplyr::summarise(
+  group_by(year) %>%
+  summarise(
     total_dwellings = sum(total_number_of_dwellings),
     occupied_dwellings = sum(occupied_dwellings),
     vacant_dwellings = sum(vacant_dwellings),
@@ -88,8 +84,8 @@ house_dat1 <- house_dat %>%
     tax_exempt = sum(occupied_dwellings_exempt_from_paying_council_tax),
     tax_discount = sum(dwellings_with_a_single_adult_council_tax_discount)
   ) %>%
-  dplyr::ungroup() %>%
-  dplyr::mutate(dplyr::across(3:7, list(perc = ~ 100 * .x / total_dwellings)))
+  ungroup() %>%
+  mutate(across(3:7, list(perc = ~ 100 * .x / total_dwellings)))
 
 
 ## 2b) Text objects ----
@@ -144,7 +140,7 @@ house_table <- house_dat1 %>%
 
 # https://www.nrscotland.gov.uk/statistics-and-data/statistics/statistics-by-theme/households/household-estimates/small-area-statistics-on-households-and-dwellings
 
-house_raw_dat2 <- read_excel(paste0(filepath, "Data ", ext_year, "/council_tax.xlsx"),
+house_raw_dat2 <- read_excel(paste0(lp_path, "Households/", "Data ", ext_year, "/council_tax.xlsx"),
   sheet = as.character(max_year_housing), skip = 4
 ) %>%
   clean_names()
@@ -159,17 +155,17 @@ house_dat2 <- house_raw_dat2 %>%
 ## 3b) Plots & tables ----
 
 ctb <- house_dat2 %>%
-  select(council_tax_band_a:council_tax_band_h) %>%
-  melt()
+  select(matches("council_tax_band_[a-h]")) %>%
+  pivot_longer(cols = everything(), names_to = "variable")
 
-variable <- ctb$variable
+variable <- ctb[["variable"]]
 
 pal_ctb <- phsstyles::phs_colours(c(
   "phs-magenta", "phs-magenta-80", "phs-magenta-50", "phs-magenta-10",
   "phs-purple-30", "phs-purple-50", "phs-purple-80", "phs-purple"
 ))
 
-ctb_plot <- ctb %>% 
+ctb_plot <- ctb %>%
   ggplot(aes(
     x = value,
     y = 1,
@@ -237,11 +233,7 @@ other_locs <- lookup2 %>%
   arrange(hscp_locality)
 
 # Find number of locs per partnership
-n_loc <- lookup2 %>%
-  group_by(hscp2019name) %>%
-  summarise(locality_n = n()) %>%
-  filter(hscp2019name == HSCP) %>%
-  pull(locality_n)
+n_loc <- count_localities(lookup2, HSCP)
 
 rm(lookup2)
 
@@ -251,7 +243,7 @@ rm(lookup2)
 # Global Script Function to read in Localities Lookup
 other_locs_dz <- read_in_localities(dz_level = TRUE) %>%
   arrange() %>%
-  dplyr::select(datazone2011, hscp_locality) %>%
+  select(datazone2011, hscp_locality) %>%
   inner_join(other_locs, by = c("hscp_locality" = "hscp_locality"))
 
 house_dat_otherlocs <- house_raw_dat %>%
@@ -262,7 +254,7 @@ house_dat_otherlocs <- house_raw_dat %>%
     total_dwellings = sum(total_number_of_dwellings),
     tax_discount = sum(dwellings_with_a_single_adult_council_tax_discount)
   ) %>%
-  dplyr::ungroup() %>%
+  ungroup() %>%
   mutate(tax_discount_perc = round_half_up(tax_discount / total_dwellings * 100, 1))
 
 other_locs_n_houses <- house_dat_otherlocs %>%
@@ -369,11 +361,21 @@ scot_perc_housesFH <- format_number_for_text(sum(house_raw_dat2$council_tax_band
   na.rm = TRUE
 ) / sum(house_raw_dat2$total_number_of_dwellings, na.rm = TRUE) * 100)
 
-
-
-#
-# detach(package:tidyverse, unload=TRUE)
-# detach(package:maps, unload=TRUE)
-# detach(package:reshape2, unload=TRUE)
-# detach(package:gridExtra, unload=TRUE)
-# detach(package:janitor, unload=TRUE)
+# Housekeeping ----
+# These objects are left over after the script is run
+# but don't appear to be used in any 'downstream' process:
+# Main markdown, Summary Table, Excel data tables, SDC output.
+# TODO: Investigate if these can be removed earlier or not created at all.
+rm(
+  ctb,
+  ext_year,
+  house_raw_dat,
+  house_raw_dat2,
+  i,
+  n_occupied,
+  n_vacant,
+  pal_ctb,
+  perc_vacant,
+  variable
+)
+gc()

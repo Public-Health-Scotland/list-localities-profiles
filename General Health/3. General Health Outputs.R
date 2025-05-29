@@ -10,44 +10,37 @@
 ############# 1) PACKAGES, DIRECTORY, LOOKUPS, DATA IMPORT + CLEANING #############
 
 ## load packages
-# library(readxl)
-library(tidyverse)
-# library(reshape2)
-# library(knitr)
-library(janitor)
 library(cowplot)
 library(gridExtra)
-library(grid)
 library(png)
 
-# library(tidylog)
-library(phsstyles)
-
-
 # Determine locality (for testing only)
-# LOCALITY <- "Inverness"
+# LOCALITY <- "Eastwood"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
 # LOCALITY <- "Mid-Argyll, Kintyre and Islay"
 # LOCALITY <- "City of Dunfermline"
 # LOCALITY <- "Barra"
 
 # Set year of data extracts for folder
-ext_year <- 2023
+ext_year <- 2024
 
-# Set file path
-lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
-import_folder_southayrshire <- path(lp_path, "General Health", paste("South Ayrshire Data", ext_year))
 # Source in functions code
 # source("Master RMarkdown Document & Render Code/Global Script.R")
+
+# Set file path
+# lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
+import_folder_southayrshire <- path(lp_path, "General Health", paste("South Ayrshire Data", ext_year))
+gen_health_data_dir <- path(lp_path, "General Health", glue("DATA {ext_year}"))
+
 
 ### Geographical lookups and objects ----
 
 # Locality lookup
 lookup <- read_in_localities()
 
-# Determine HSCP and HB based on Loc
-HSCP <- as.character(filter(lookup, hscp_locality == LOCALITY)$hscp2019name)
-HB <- as.character(filter(lookup, hscp_locality == LOCALITY)$hb2019name)
+# Determine HSCP and HB based on Locality
+HSCP <- filter(lookup, hscp_locality == LOCALITY)[["hscp2019name"]]
+HB <- filter(lookup, hscp_locality == LOCALITY)[["hb2019name"]]
 
 # Determine other localities based on LOCALITY object
 other_locs <- lookup %>%
@@ -56,62 +49,48 @@ other_locs <- lookup %>%
   arrange(hscp_locality)
 
 # Find number of locs per partnership
-n_loc <- lookup %>%
-  group_by(hscp2019name) %>%
-  summarise(locality_n = n()) %>%
-  filter(hscp2019name == HSCP) %>%
-  pull(locality_n)
-
-
-## Functions and themes ----
-
-# set an empty theme for icons/images
-theme_icon <- function() {
-  theme_void() +
-    theme(
-      panel.background = element_rect(fill = "transparent", colour = NA),
-      plot.background = element_rect(fill = "transparent", colour = NA),
-      legend.background = element_rect(fill = "transparent", colour = NA),
-      legend.box.background = element_rect(fill = "transparent", colour = NA)
-    )
-}
-
+n_loc <- count_localities(lookup, HSCP)
 
 ### Import + clean datasets ----
 
 # Life expectancy
 
 # Males
-life_exp_male <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_life_exp_male.RDS")) %>%
+life_exp_male <- read_parquet(path(gen_health_data_dir, "scotpho_data_extract_life_exp_male.parquet")) %>%
   clean_scotpho_dat()
 # Females
-life_exp_fem <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_life_exp_fem.RDS")) %>%
+life_exp_fem <- read_parquet(path(gen_health_data_dir, "scotpho_data_extract_life_exp_fem.parquet")) %>%
   clean_scotpho_dat()
 
 life_exp <- bind_rows(life_exp_male, life_exp_fem) %>%
-  mutate(sex = if_else(indicator == "Life expectancy, males", "Male", "Female")) %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 12)))
+  mutate(sex = case_match(
+    indicator,
+    "Life expectancy, males" ~ "Male",
+    "Life expectancy, females" ~ "Female"
+  )) %>%
+  mutate(period_short = str_replace(period, fixed(" to "), "-") |>
+    str_sub(end = 9))
 
 rm(life_exp_fem, life_exp_male)
 
 check_missing_data_scotpho(life_exp)
 
 ## Deaths aged 15-44
-deaths_15_44 <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_deaths_15_44.RDS")) %>%
+deaths_15_44 <- read_parquet(path(gen_health_data_dir, "scotpho_data_extract_deaths_15_44.parquet")) %>%
   clean_scotpho_dat() %>%
   mutate(period_short = gsub("to", "-", substr(period, 1, 12)))
 
 check_missing_data_scotpho(deaths_15_44)
 
 ## Cancer registrations
-cancer_reg <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_cancer_reg.RDS")) %>%
+cancer_reg <- read_parquet(path(gen_health_data_dir, "scotpho_data_extract_cancer_reg.parquet")) %>%
   clean_scotpho_dat() %>%
   mutate(period_short = gsub("to", "-", substr(period, 1, 12)))
 
 check_missing_data_scotpho(cancer_reg)
 
 ## Early deaths cancer
-early_deaths_cancer <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_early_deaths_cancer.RDS")) %>%
+early_deaths_cancer <- read_parquet(path(gen_health_data_dir, "scotpho_data_extract_early_deaths_cancer.parquet")) %>%
   clean_scotpho_dat() %>%
   mutate(period_short = gsub("to", "-", substr(period, 1, 12)))
 
@@ -119,28 +98,28 @@ check_missing_data_scotpho(early_deaths_cancer)
 
 
 ## Asthma hospitalisations
-asthma_hosp <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_asthma_hosp.RDS")) %>%
+asthma_hosp <- read_parquet(path(gen_health_data_dir, "scotpho_data_extract_asthma_hosp.parquet")) %>%
   clean_scotpho_dat() %>%
   mutate(period_short = gsub("to", "-", substr(period, 1, 18)))
 
 check_missing_data_scotpho(asthma_hosp)
 
 ## CHD hospitalisations
-chd_hosp <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_chd_hosp.RDS")) %>%
+chd_hosp <- read_parquet(path(gen_health_data_dir, "scotpho_data_extract_chd_hosp.parquet")) %>%
   clean_scotpho_dat() %>%
   mutate(period_short = gsub("to", "-", substr(period, 1, 18)))
 
 check_missing_data_scotpho(chd_hosp)
 
 ## COPD hospitalisations
-copd_hosp <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_copd_hosp.RDS")) %>%
+copd_hosp <- read_parquet(path(gen_health_data_dir, "scotpho_data_extract_copd_hosp.parquet")) %>%
   clean_scotpho_dat() %>%
   mutate(period_short = gsub("to", "-", substr(period, 1, 18)))
 
 check_missing_data_scotpho(copd_hosp)
 
 ## Anxiety/depression/psychosis prescriptions
-adp_presc <- readRDS(paste0(lp_path, "General Health/DATA ", ext_year, "/scotpho_data_extract_adp_presc.RDS")) %>%
+adp_presc <- read_parquet(path(gen_health_data_dir, "scotpho_data_extract_adp_presc.parquet")) %>%
   clean_scotpho_dat() %>%
   mutate(period_short = substr(period, 1, 7))
 
@@ -148,14 +127,24 @@ check_missing_data_scotpho(adp_presc)
 
 
 # Long-term conditions
-ltc <- arrow::read_parquet(path(import_folder_southayrshire, "/LTC_from_SLF_South_Ayrshire_custom.parquet"))
-
-ltc <- dplyr::rename(ltc,
-  "Arthritis" = "arth", "Asthma" = "asthma", "Atrial fibrillation" = "atrialfib", "Cancer" = "cancer",
-  "Cardiovascular disease" = "cvd", "Liver disease" = "liver", "COPD*" = "copd", "Dementia" = "dementia",
-  "Diabetes" = "diabetes", "Epilepsy" = "epilepsy", "Coronary heart disease" = "chd", "Heart failure" = "hefailure",
-  "Multiple sclerosis" = "ms", "Parkinsons" = "parkinsons", "Renal failure" = "refailure"
-) %>%
+ltc <- read_parquet(path(import_folder_southayrshire, "LTC_from_SLF_South_Ayrshire_custom.parquet")) %>%
+  rename(
+    "Arthritis" = "arth",
+    "Asthma" = "asthma",
+    "Atrial fibrillation" = "atrialfib",
+    "Cancer" = "cancer",
+    "Cardiovascular disease" = "cvd",
+    "Liver disease" = "liver",
+    "COPD*" = "copd",
+    "Dementia" = "dementia",
+    "Diabetes" = "diabetes",
+    "Epilepsy" = "epilepsy",
+    "Coronary heart disease" = "chd",
+    "Heart failure" = "hefailure",
+    "Multiple sclerosis" = "ms",
+    "Parkinsons" = "parkinsons",
+    "Renal failure" = "refailure"
+  ) %>%
   drop_na(hscp_locality) %>%
   mutate(hscp_locality = gsub("&", "and", hscp_locality)) %>%
   mutate(year = paste0("20", substr(year, 1, 2), "/", substr(year, 3, 4)))
@@ -167,28 +156,57 @@ ltc <- dplyr::rename(ltc,
 
 # Time objects
 
-latest_year_life_exp_loc <- max(filter(life_exp, area_type == "Locality")$year)
-latest_year_life_exp_otherareas <- max(life_exp$year)
+latest_year_life_exp_loc <- life_exp |>
+  filter(area_type == "Locality") |>
+  pull(year) |>
+  max()
+latest_year_life_exp_otherareas <- max(life_exp[["year"]])
 
-latest_period_life_exp_loc <- unique(filter(life_exp, area_type == "Locality" & year == latest_year_life_exp_loc)$period_short)
-latest_period_life_exp_otherareas <- unique(filter(life_exp, area_type == "Scotland" & year == latest_year_life_exp_otherareas)$period_short)
+latest_period_life_exp_loc <- life_exp |>
+  filter(
+    area_type == "Locality",
+    year == latest_year_life_exp_loc
+  ) |>
+  pull(period_short) |>
+  unique()
+latest_period_life_exp_otherareas <- life_exp |>
+  filter(
+    area_type == "Scotland",
+    year == latest_year_life_exp_otherareas
+  ) |>
+  pull(period_short) |>
+  unique()
 
 
 # Create time trend
 life_exp_trend <- life_exp %>%
-  filter(area_name == LOCALITY & area_type == "Locality" & year >= max(year) - 10) %>%
-  mutate(period_short = str_wrap(period_short, width = 10)) %>%
-  mutate(measure = round_half_up(measure, 1)) %>%
-  ggplot(aes(x = period_short, y = measure, group = sex, linetype = sex, shape = sex)) +
-  geom_line(aes(colour = sex), size = 1) +
-  geom_point(aes(colour = sex), size = 2) +
+  filter(
+    area_name == LOCALITY,
+    area_type == "Locality",
+    year >= max(year) - 10
+  ) %>%
+  mutate(
+    period_short = period_short,
+    measure = round_half_up(measure, 1)
+  ) %>%
+  ggplot(aes(
+    x = period_short,
+    y = measure,
+    group = sex,
+    linetype = sex,
+    shape = sex,
+    colour = sex
+  )) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 2) +
   scale_colour_manual(values = palette) +
   theme_profiles() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   expand_limits(y = 0) +
   labs(
-    title = paste0("Average Life Expectancy in ", str_wrap(`LOCALITY`, 40)),
+    title = str_wrap(glue("Average Life Expectancy in {LOCALITY} locality"), width = 65),
     x = "Year Groups (5-year aggregates)",
-    y = "Average Life Expectancy (in years)",
+    y = str_wrap("Average Life Expectancy (in years)", width = 35),
     caption = "Source: ScotPHO"
   ) +
   theme(plot.margin = unit(c(0, 0, 0, 1), "cm")) +
@@ -196,8 +214,6 @@ life_exp_trend <- life_exp %>%
     linetype = "none", shape = "none",
     colour = guide_legend(override.aes = list(shape = c(21, 24), fill = palette[1:2]))
   )
-
-
 
 
 # Make a table to compare with other areas
@@ -208,55 +224,38 @@ life_exp_table <- life_exp %>%
     year == latest_year_life_exp_otherareas &
       ((area_name == HSCP & area_type == "HSCP") |
         area_name == HB | area_name == "Scotland")) %>%
-  select("Sex" = sex, area_name, area_type, measure) %>%
-  mutate(measure = round_half_up(measure, 1)) %>%
   mutate(
-    area_type = factor(area_type, levels = c("Locality", "HSCP", "Health board", "Scotland")),
-    area_name = fct_reorder(as.factor(area_name), as.numeric(area_type))
+    measure = round_half_up(measure, 1),
+    area_type = ordered(area_type, levels = c("Locality", "HSCP", "Health board", "Scotland"))
   ) %>%
-  arrange(area_name) %>%
-  select(-area_type) %>%
-  pivot_wider(names_from = area_name, values_from = measure)
-
-
-# Table breaking down intermediate zones
-
-life_exp_table <- life_exp %>%
-  filter((year == latest_year_life_exp_loc &
-    (area_name == LOCALITY & area_type == "Locality")) |
-    year == latest_year_life_exp_otherareas &
-      ((area_name == HSCP & area_type == "HSCP") |
-        area_name == HB | area_name == "Scotland")) %>%
-  select("Sex" = sex, area_name, area_type, measure) %>%
-  mutate(measure = round_half_up(measure, 1)) %>%
-  mutate(
-    area_type = factor(area_type, levels = c("Locality", "HSCP", "Health board", "Scotland")),
-    area_name = fct_reorder(as.factor(area_name), as.numeric(area_type))
-  ) %>%
-  arrange(area_name) %>%
-  select(-area_type) %>%
+  arrange(area_type) %>%
+  select("Sex" = sex, area_name, measure) %>%
   pivot_wider(names_from = area_name, values_from = measure)
 
 
 ## Numbers for text
-avg_life_exp_latest_male <- if (LOCALITY %in% check_missing_data_scotpho(life_exp)$area_name) {
-  NA
-} else {
-  round_half_up(filter(
-    life_exp, sex == "Male" & year == latest_year_life_exp_loc &
-      area_name == LOCALITY & area_type == "Locality"
-  )$measure, 1)
-}
 
-avg_life_exp_latest_fem <- if (LOCALITY %in% check_missing_data_scotpho(life_exp)$area_name) {
-  NA
+if (LOCALITY %in% check_missing_data_scotpho(life_exp)$area_name) {
+  avg_life_exp_latest_male <- NA_real_
+  avg_life_exp_latest_fem <- NA_real_
 } else {
-  round_half_up(filter(
-    life_exp, sex == "Female" & year == latest_year_life_exp_loc &
-      area_name == LOCALITY & area_type == "Locality"
-  )$measure, 1)
-}
+  avg_life_exp_latest <- life_exp |>
+    filter(
+      year == latest_year_life_exp_loc,
+      area_name == LOCALITY,
+      area_type == "Locality"
+    )
 
+  avg_life_exp_latest_male <- avg_life_exp_latest |>
+    filter(sex == "Male") |>
+    pull(measure) |>
+    round_half_up(digits = 1)
+  avg_life_exp_latest_fem <- avg_life_exp_latest |>
+    filter(sex == "Female") |>
+    pull(measure) |>
+    round_half_up(digits = 1)
+  rm(avg_life_exp_latest)
+}
 
 
 ##### 2b Deaths aged 15-44 #####
@@ -267,35 +266,34 @@ latest_period_deaths_15_44 <- unique(filter(deaths_15_44, year == max(deaths_15_
 ## Time trend
 deaths_15_44_time_trend <- deaths_15_44 %>%
   scotpho_time_trend(
-    data = .,
-    chart_title = "Deaths Aged 15-44 Time Trend",
+    chart_title = "Deaths Aged 15 to 44 Time Trend",
     xaxis_title = "Year Groups (3-year aggregates)",
-    yaxis_title = "Deaths, aged 15-44\n(Standardised rates per 100,000)",
+    yaxis_title = "Deaths, aged 15 to 44\n(Standardised rates per 100,000)",
     string_wrap = 10
   )
 
-deaths_15_44_time_trend
 
 ## Bar chart
 deaths_15_44_bar <- deaths_15_44 %>%
   scotpho_bar_chart(
     data = .,
-    chart_title = paste0("Deaths Aged 15-44 by area, ", max(.$period_short)),
-    xaxis_title = "Deaths, aged 15-44 (Standardised rates per 100,000)"
+    chart_title = paste0("Deaths, Aged 15 to 44 by area, ", max(.$period_short)),
+    xaxis_title = "Deaths (Standardised rates per 100,000)"
   )
 
-deaths_15_44_bar
 
 ## Numbers for text
 deaths_15_44_latest <- filter(
   deaths_15_44,
-  year == max(deaths_15_44$year) &
-    (area_name == LOCALITY & area_type == "Locality")
+  year == max(deaths_15_44$year),
+  area_name == LOCALITY,
+  area_type == "Locality"
 )$measure
 
 scot_deaths_15_44 <- filter(
   deaths_15_44,
-  year == max(deaths_15_44$year) & area_name == "Scotland"
+  year == max(deaths_15_44$year),
+  area_name == "Scotland"
 )$measure
 
 deaths_15_44_diff_scot <- if_else(deaths_15_44_latest > scot_deaths_15_44, "higher", "lower")
@@ -312,27 +310,26 @@ prev_period_cancer_reg <- unique(filter(cancer_reg, year == max(cancer_reg$year)
 ## Time trend
 cancer_reg_time_trend <- cancer_reg %>%
   scotpho_time_trend(
-    data = .,
     chart_title = "Cancer Registrations Time Trend",
     xaxis_title = "Year Groups (3-year aggregates)",
     yaxis_title = "Cancer registrations \n(Standardised rates per 100,000)",
     string_wrap = 10
   )
 
-cancer_reg_time_trend
-
 
 ## Numbers for text
 cancer_reg_rate_latest <- filter(
   cancer_reg,
-  year == max(cancer_reg$year) &
-    (area_name == LOCALITY & area_type == "Locality")
+  year == max(cancer_reg$year),
+  area_name == LOCALITY,
+  area_type == "Locality"
 )$measure
 
 cancer_reg_total_latest <- filter(
   cancer_reg,
-  year == max(cancer_reg$year) &
-    (area_name == LOCALITY & area_type == "Locality")
+  year == max(cancer_reg$year),
+  area_name == LOCALITY,
+  area_type == "Locality"
 )$numerator
 
 
@@ -345,26 +342,28 @@ latest_period_early_deaths_cancer <- unique(filter(
 
 early_deaths_cancer_rate_latest <- filter(
   early_deaths_cancer,
-  year == max(early_deaths_cancer$year) &
-    (area_name == LOCALITY & area_type == "Locality")
+  year == max(early_deaths_cancer$year),
+  area_name == LOCALITY,
+  area_type == "Locality"
 )$measure
 
 ## Time trend for cancer deaths
 early_deaths_cancer_time_trend <- early_deaths_cancer %>%
   scotpho_time_trend(
-    data = .,
     chart_title = "Early Deaths from Cancer Time Trend",
     xaxis_title = "Year Groups (3-year aggregates)",
     yaxis_title = "Early deaths from cancer\n(Standardised rates per 100,000)",
     string_wrap = 10
   )
 
-early_deaths_cancer_time_trend
-
 
 ## Figures for text
-early_deaths_cancer_rate_earliest <- filter(early_deaths_cancer, year == (max(early_deaths_cancer$year) - 10) &
-  (area_name == LOCALITY & area_type == "Locality"))$measure
+early_deaths_cancer_rate_earliest <- filter(
+  early_deaths_cancer,
+  year == (max(early_deaths_cancer$year) - 10),
+  area_name == LOCALITY,
+  area_type == "Locality"
+)$measure
 
 cancer_deaths_perc_change <- abs((early_deaths_cancer_rate_latest - early_deaths_cancer_rate_earliest) * 100 / early_deaths_cancer_rate_earliest)
 
@@ -396,18 +395,31 @@ disease_hosp <- bind_rows(
   mutate(measure = round_half_up(measure, 1))
 
 highest_hosp_disease <- disease_hosp %>%
-  filter(area_name == LOCALITY & area_type == "Locality") %>%
+  filter(
+    area_name == LOCALITY,
+    area_type == "Locality"
+  ) %>%
   filter(measure == max(measure))
 
-disease_hosp_table <- disease_hosp %>%
-  select(indicator, period_short, area_name, measure) %>%
-  pivot_wider(names_from = area_name, values_from = measure) %>%
+disease_hosp_table <- disease_hosp |>
+  mutate(
+    area_order = case_when(
+      area_name == LOCALITY ~ 1L,
+      area_name == HSCP ~ 2L,
+      str_starts(area_name, "NHS") ~ 4L,
+      area_name == "Scotland" ~ 5L,
+      .default = 2L
+    )
+  ) |>
+  arrange(area_order) |>
+  select(indicator, period_short, area_name, measure) |>
+  pivot_wider(names_from = area_name, values_from = measure) |>
   rename(
     "Disease" = indicator,
     "Latest time period" = period_short
   )
 
-table8_year_title <- max(disease_hosp_table$`Latest time period`)
+table8_year_title <- max(disease_hosp_table[["Latest time period"]])
 
 ##### 2e Prescriptions for Anxiety, Depression and Psychosis #####
 
@@ -418,7 +430,6 @@ prev_period_adp_presc <- unique(filter(adp_presc, year == max(adp_presc$year) - 
 ## Time trend
 adp_presc_time_trend <- adp_presc %>%
   scotpho_time_trend(
-    data = .,
     chart_title = "Anxiety, Depression and Psychosis Prescriptions Time Trend",
     xaxis_title = "Financial Year",
     yaxis_title = "Population prescribed\n medication (%)",
@@ -426,7 +437,6 @@ adp_presc_time_trend <- adp_presc %>%
     rotate_xaxis = TRUE
   )
 
-adp_presc_time_trend
 
 ## Bar chart
 adp_presc_bar <- adp_presc %>%
@@ -439,26 +449,30 @@ adp_presc_bar <- adp_presc %>%
     xaxis_title = "Population prescribed medication (%)"
   )
 
-adp_presc_bar
-
 
 ## Numbers for text
 
 adp_presc_latest <- filter(
   adp_presc,
-  year == max(adp_presc$year) &
-    (area_name == LOCALITY & area_type == "Locality")
+  year == max(adp_presc$year),
+  area_name == LOCALITY,
+  area_type == "Locality"
 )$measure
 
-adp_presc_earliest <- filter(adp_presc, year == (max(adp_presc$year) - 10) &
-  (area_name == LOCALITY & area_type == "Locality"))$measure
+adp_presc_earliest <- filter(
+  adp_presc,
+  year == (max(adp_presc$year) - 10),
+  area_name == LOCALITY,
+  area_type == "Locality"
+)$measure
 
 adp_presc_perc_change <- abs((adp_presc_latest - adp_presc_earliest) * 100 / adp_presc_earliest)
 adp_presc_changeword <- if_else(adp_presc_latest > adp_presc_earliest, "increase", "decrease")
 
 scot_adp_presc <- filter(
   adp_presc,
-  year == max(adp_presc$year) & area_name == "Scotland"
+  year == max(adp_presc$year),
+  area_name == "Scotland"
 )$measure
 
 adp_presc_diff_scot <- if_else(adp_presc_latest > scot_adp_presc, "larger", "smaller")
@@ -468,17 +482,16 @@ adp_presc_diff_scot <- if_else(adp_presc_latest > scot_adp_presc, "larger", "sma
 ############################ 3) SLF DATA (LTCs) ####################################
 
 # Extract SLF adjusted populations
-slf_pops <- ltc %>%
-  group_by(age_group, hscp_locality, hscp2019name) %>%
-  summarise(slf_adj_pop = first(slf_adj_pop)) %>%
-  ungroup()
+slf_pops <- ltc |>
+  distinct(age_group, hscp_locality, hscp2019name, slf_adj_pop)
 
-slf_pop_loc <- slf_pops %>% filter(hscp_locality == LOCALITY)
+slf_pop_loc <- slf_pops %>%
+  filter(hscp_locality == LOCALITY)
 
 # Determine year
-latest_year_ltc <- distinct(ltc, year) %>% as.character()
+latest_year_ltc <- ltc[["year"]][1]
 
-## Create scotland totals
+## Create Scotland totals
 ltc_scot <- ltc %>%
   select(-year, -hscp2019name, -hscp_locality, -slf_adj_pop) %>%
   group_by(total_ltc, age_group) %>%
@@ -490,17 +503,17 @@ ltc_scot <- ltc %>%
 
 # Load images
 # under 65
-ppl_bold_u65 <- readPNG(paste0(lp_path, "General Health/infographics/people bold under 65.png"))
-ppl_faint_u65 <- readPNG(paste0(lp_path, "General Health/infographics/people faint under 65.png"))
+ppl_bold_u65 <- readPNG(path(lp_path, "General Health", "infographics", "people bold under 65.png"))
+ppl_faint_u65 <- readPNG(path(lp_path, "General Health", "infographics", "people faint under 65.png"))
 # 65-74
-ppl_bold_6574 <- readPNG(paste0(lp_path, "General Health/infographics/people bold 65-74.png"))
-ppl_faint_6574 <- readPNG(paste0(lp_path, "General Health/infographics/people faint 65-74.png"))
+ppl_bold_6574 <- readPNG(path(lp_path, "General Health", "infographics", "people bold 65-74.png"))
+ppl_faint_6574 <- readPNG(path(lp_path, "General Health", "infographics", "people faint 65-74.png"))
 # 75-84
-ppl_bold_7584 <- readPNG(paste0(lp_path, "General Health/infographics/people bold 75-84.png"))
-ppl_faint_7584 <- readPNG(paste0(lp_path, "General Health/infographics/people faint 75-84.png"))
+ppl_bold_7584 <- readPNG(path(lp_path, "General Health", "infographics", "people bold 75-84.png"))
+ppl_faint_7584 <- readPNG(path(lp_path, "General Health", "infographics", "people faint 75-84.png"))
 # over 85
-ppl_bold_o85 <- readPNG(paste0(lp_path, "General Health/infographics/people bold over 85.png"))
-ppl_faint_o85 <- readPNG(paste0(lp_path, "General Health/infographics/people faint over 85.png"))
+ppl_bold_o85 <- readPNG(path(lp_path, "General Health", "infographics", "people bold over 85.png"))
+ppl_faint_o85 <- readPNG(path(lp_path, "General Health", "infographics", "people faint over 85.png"))
 
 # LTC infographic waffle chart
 create_infographic <- function(image1, image2, perc_ltc, col, age_label1, age_label2) {
@@ -536,11 +549,10 @@ create_infographic <- function(image1, image2, perc_ltc, col, age_label1, age_la
 ltc_infographic <- ltc %>%
   filter(hscp_locality == LOCALITY) %>%
   filter(total_ltc > 0) %>%
-  select(hscp_locality, age_group, total_ltc, people) %>%
   group_by(hscp_locality, age_group) %>%
   summarise(people = sum(people)) %>%
   ungroup() %>%
-  left_join(slf_pop_loc) %>%
+  left_join(slf_pop_loc, by = join_by(hscp_locality, age_group)) %>%
   mutate(perc_with_ltc = round_half_up(people / slf_adj_pop, 2))
 
 # objects for each percentage for text + cropping images
@@ -598,7 +610,7 @@ waffle.o85 <- create_infographic(
 
 
 ## Combine images
-waffles <- cowplot::plot_grid(waffle.u65, waffle.6574, waffle.7584, waffle.o85, nrow = 2)
+ltc_waffles <- plot_grid(waffle.u65, waffle.6574, waffle.7584, waffle.o85, nrow = 2)
 
 
 ## Numbers for text
@@ -614,7 +626,7 @@ rm(
 )
 
 
-###### 3b Multimorbidity LTC Table ######
+###### 3b Multi-morbidity LTC Table ######
 
 ## Create df with under 65 vs over 65 - will be used for rest of LTC work
 ltc2 <- ltc %>%
@@ -654,8 +666,8 @@ ltc_multimorbidity_table <- ltc_multimorbidity %>%
   pivot_wider(names_from = age_group, values_from = percent) %>%
   rename(
     " " = total_ltc,
-    "Proportion under 65 (%)" = "Under 65",
-    "Proportion over 65 (%)" = "65+"
+    "Percentage under 65" = "Under 65",
+    "Percentage over 65" = "65+"
   )
 
 
@@ -679,6 +691,7 @@ ltc_types <- ltc2 %>%
   filter(hscp_locality == LOCALITY) %>%
   group_by(hscp_locality, age_group) %>%
   summarise(across(everything(), sum)) %>%
+  ungroup() |>
   pivot_longer(
     cols = c("Arthritis":"Renal failure"),
     names_to = "key",
@@ -693,47 +706,36 @@ ltc_types_temp <- ltc_types %>%
 ltc_types <- ltc_types %>%
   filter(age_group == "65+") %>%
   mutate(percent = (value / sum(filter(slf_pop_loc, age_group != "Under 65")$slf_adj_pop) * 100)) %>%
-  rbind(ltc_types_temp)
+  bind_rows(ltc_types_temp)
 
 rm(ltc_types_temp)
 
 
 #### lollipop with 3 separate plots put together
 
-## To consider when determining y limits:
-# look at max values on each side
-# code below shows max for under and over 65 (change this in filter accordingly)
-# ltc.test <- ltc2 %>%
-#   select(-hscp2019, -total_ltc) %>%
-#   filter(age_group == "Under 65") %>%
-#   group_by(hscp_locality, age_group) %>%
-#   summarise_all(sum) %>%
-#   ungroup() %>%
-#   gather(key ="key", value  ="value", c(`Arthritis`:`Renal failure`)) %>%
-#   mutate(percent = (value/people)*100) %>%
-#   group_by(hscp_locality) %>%
-#   summarise(percent.max = max(percent)) %>%
-#   ungroup()
-
 ## create conditionals for expand limits
+max_ltc_types_pct <- max(ltc_types$percent)
+
 lims.un65 <- case_when(
-  max(ltc_types$percent) < 20 ~ -10,
-  between(max(ltc_types$percent), 20, 24) ~ -12,
-  max(ltc_types$percent) > 24 ~ -15
+  max_ltc_types_pct < 20 ~ -10,
+  between(max_ltc_types_pct, 20, 24) ~ -12,
+  max_ltc_types_pct > 24 ~ -15
 )
 lims.ov65 <- case_when(
-  max(ltc_types$percent) < 20 ~ 20,
-  between(max(ltc_types$percent), 20, 24) ~ 24,
-  max(ltc_types$percent) > 24 ~ 30
+  max_ltc_types_pct < 20 ~ 20,
+  between(max_ltc_types_pct, 20, 24) ~ 24,
+  max_ltc_types_pct > 24 ~ 30
 )
+
+rm(max_ltc_types_pct)
 
 ltc_plot_left <- ltc_types %>%
   filter(age_group == "Under 65") %>%
   ggplot(aes(x = percent, y = key, label = round_half_up(percent, 1))) +
   geom_point(colour = palette[1], size = 3) +
-  geom_segment(aes(x = 0, y = key, xend = percent, yend = key), size = 0.4) +
+  geom_segment(aes(x = 0, y = key, xend = percent, yend = key), linewidth = 0.4) +
   labs(x = "People under 65 with\nthe condition (%)", y = "", title = "UNDER 65") +
-  scale_x_continuous(breaks = seq(-100, 0, 2), labels = paste0(seq(100, 0, -2))) +
+  scale_x_continuous(breaks = seq(-100, 0, 2), labels = abs) +
   expand_limits(x = lims.un65) +
   theme_profiles() +
   theme(
@@ -756,32 +758,48 @@ ltc_plot_right <- ltc_types %>%
   filter(age_group == "65+") %>%
   ggplot(aes(x = percent, y = key, label = round_half_up(percent, 1))) +
   geom_point(colour = palette[2], size = 3) +
-  geom_segment(aes(x = 0, y = key, xend = percent, yend = key), size = 0.4) +
+  geom_segment(aes(x = 0, y = key, xend = percent, yend = key), linewidth = 0.4) +
   labs(x = "People over 65 with\nthe condition (%)", y = "", title = "OVER 65") +
   scale_x_continuous(breaks = seq(0, 100, 2)) +
   expand_limits(x = lims.ov65) +
   theme_profiles() +
   theme(
+    title = element_text(colour = palette[2]),
     plot.margin = unit(c(0.5, 0, 0, 0), "cm"),
-    axis.title.x = element_blank(),
-    axis.text.x = element_blank(),
-    axis.ticks.x = element_blank(),
-    title = element_text(colour = palette[2])
+    axis.title.y = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
   ) +
   scale_y_discrete(limits = rev(levels(as.factor(ltc_types$key))))
 
 title <- ggdraw() +
-  draw_label(paste0(
-    "Prevalence of Physical Long-Term Conditions 2022/23 in\n",
-    `LOCALITY`, " Locality"
-  ), size = 11, fontface = "bold")
+  draw_label(
+    str_wrap(
+      glue("Prevalence of Physical Long-Term Conditions {latest_year_ltc} in the {LOCALITY} Locality"),
+      width = 65
+    ),
+    size = 11,
+    fontface = "bold"
+  )
 
 caption <- ggdraw() +
   draw_label("Source: Source Linkage Files", size = 10, hjust = -0.5)
 
 # Combine plots into 1
-ltc_types_plot <- plot_grid(ltc_plot_left, ltc_axis, ltc_plot_right, ncol = 3, align = "h", rel_widths = c(0.5, 0.6, 1))
-ltc_types_plot <- plot_grid(title, ltc_types_plot, caption, nrow = 3, rel_heights = c(0.1, 1, 0.1))
+ltc_types_plot <- plot_grid(
+  title,
+  plot_grid(
+    ltc_plot_left,
+    ltc_axis,
+    ltc_plot_right,
+    ncol = 3,
+    align = "h",
+    rel_widths = c(0.5, 0.6, 1)
+  ),
+  caption,
+  nrow = 3,
+  rel_heights = c(3, 20, 1)
+)
 
 
 rm(
@@ -800,19 +818,23 @@ ltc_totals <- ltc2 %>%
   summarise(across(everything(), sum)) %>%
   ungroup()
 
-ltc_totals <- left_join(ltc_totals, select(lookup, hscp_locality, hscp2019name)) # join df with lookup2
+ltc_totals <- left_join(
+  ltc_totals,
+  select(lookup, hscp_locality, hscp2019name),
+  by = join_by(hscp_locality),
+  relationship = "one-to-one"
+)
 
 # Extract population totals to make %
-ltc_pops_total_loc <- as.numeric(sum(slf_pop_loc$slf_adj_pop))
+ltc_pops_total_loc <- sum(slf_pop_loc$slf_adj_pop)
 ltc_pops_total_scot <- sum(slf_pops$slf_adj_pop)
 ltc_pops_total_hscp <- sum(filter(slf_pops, hscp2019name == HSCP)$slf_adj_pop)
 
 # Colour lookup for table
 ltc_cols <- ltc_scot %>%
-  select(3:17) %>%
+  select(!c(total_ltc, age_group, people)) %>%
   summarise(across(everything(), sum)) %>%
-  pivot_longer(cols = everything(), names_to = "key", values_to = "value") %>%
-  rename(topltc = key) %>%
+  pivot_longer(cols = everything(), names_to = "topltc", values_to = "value") %>%
   arrange(desc(value)) %>%
   mutate(colours = c(palette, c(
     "navy", "lightsalmon4", "deeppink4",
@@ -823,65 +845,50 @@ ltc_cols <- ltc_scot %>%
 top5ltc_loc <- ltc_totals %>%
   filter(hscp_locality == LOCALITY) %>%
   select(-hscp_locality, -hscp2019name, -people, -slf_adj_pop) %>%
-  pivot_longer(cols = everything(), names_to = "key", values_to = "value") %>%
-  arrange(desc(value)) %>%
-  slice_max(n = 5, order_by = value) %>%
-  mutate(topltc = key, percent = round_half_up((value / ltc_pops_total_loc) * 100, 2)) %>%
-  select(-key, -value) %>%
-  left_join(ltc_cols) %>%
-  unite(col = "Prevalence", c(topltc, percent), sep = "\n") %>%
-  mutate(Prevalence = paste0(Prevalence, "%"))
+  pivot_longer(cols = everything(), names_to = "topltc", values_to = "value") %>%
+  slice_max(n = 5, order_by = value, with_ties = FALSE) %>%
+  mutate(percent = round_half_up((value / ltc_pops_total_loc) * 100, 2)) %>%
+  select(-value) %>%
+  left_join(ltc_cols, by = join_by(topltc)) %>%
+  unite("Prevalence", topltc, percent, sep = "\n") %>%
+  mutate(Prevalence = paste(Prevalence, "%"))
 
 # Top 5 HSCP
 top5ltc_hscp <- ltc_totals %>%
-  select(-hscp_locality) %>%
-  group_by(hscp2019name) %>%
-  summarise(across(everything(), sum)) %>%
-  ungroup() %>%
   filter(hscp2019name == HSCP) %>%
-  select(-hscp2019name, -people, -slf_adj_pop) %>%
-  pivot_longer(cols = everything(), names_to = "key", values_to = "value") %>%
-  arrange(desc(value)) %>%
-  slice_max(n = 5, order_by = value) %>%
-  mutate(topltc = key, percent = round_half_up((value / ltc_pops_total_hscp) * 100, 2)) %>%
-  select(-key, -value) %>%
-  left_join(ltc_cols) %>%
-  unite(col = "Prevalence", c(topltc, percent), sep = "\n") %>%
-  mutate(Prevalence = paste0(Prevalence, "%"))
+  select(-hscp_locality, -hscp2019name, -people, -slf_adj_pop) %>%
+  summarise(across(everything(), sum)) %>%
+  pivot_longer(cols = everything(), names_to = "topltc", values_to = "value") %>%
+  slice_max(n = 5, order_by = value, with_ties = FALSE) %>%
+  mutate(percent = round_half_up((value / ltc_pops_total_hscp) * 100, 2)) %>%
+  select(-value) %>%
+  left_join(ltc_cols, by = join_by(topltc)) %>%
+  unite("Prevalence", topltc, percent, sep = "\n") %>%
+  mutate(Prevalence = paste(Prevalence, "%"))
 
 # Top 5 Scotland
-top5ltc_scot <- ltc_scot %>%
-  mutate(area = "Scotland") %>%
-  filter(total_ltc != 0) %>%
-  select(-age_group, -people) %>%
-  group_by(area) %>%
+top5ltc_scot <- ltc_totals %>%
+  select(-hscp_locality, -hscp2019name, -people, -slf_adj_pop) %>%
   summarise(across(everything(), sum)) %>%
-  ungroup() %>%
-  select(-area, -total_ltc) %>%
-  pivot_longer(cols = everything(), names_to = "key", values_to = "value") %>%
-  arrange(desc(value)) %>%
-  slice_max(n = 5, order_by = value) %>%
-  mutate(topltc = key, percent = round_half_up((value / ltc_pops_total_scot) * 100, 2)) %>%
-  select(-key, -value) %>%
-  left_join(ltc_cols) %>%
-  unite(col = "Prevalence", c(topltc, percent), sep = "\n") %>%
-  mutate(Prevalence = paste0(Prevalence, "%"))
+  pivot_longer(cols = everything(), names_to = "topltc", values_to = "value") %>%
+  slice_max(n = 5, order_by = value, with_ties = FALSE) %>%
+  mutate(percent = round_half_up((value / ltc_pops_total_scot) * 100, 2)) %>%
+  select(-value) %>%
+  left_join(ltc_cols, by = join_by(topltc)) %>%
+  unite("Prevalence", topltc, percent, sep = "\n") %>%
+  mutate(Prevalence = paste(Prevalence, "%"))
 
 
 ## Create column headers
 
-loc.ltc.table <- paste0(`LOCALITY`, "\nLocality")
-loc.ltc.table.wrapped <- strwrap(loc.ltc.table, width = if_else(n_loc < 5, 30, 25), simplify = FALSE)
-loc.ltc.table <- sapply(loc.ltc.table.wrapped, paste, collapse = "\n")
+loc.ltc.table <- str_wrap(glue("{LOCALITY} Locality"), width = if_else(n_loc < 5, 30, 25))
 
-hscp.ltc.table <- paste0(`HSCP`, "\nHSCP")
-hscp.ltc.table.wrapped <- strwrap(hscp.ltc.table, width = 25, simplify = FALSE)
-hscp.ltc.table <- sapply(hscp.ltc.table.wrapped, paste, collapse = "\n")
+hscp.ltc.table <- str_wrap(glue("{HSCP} HSCP"), width = 25)
 
-## If any areas have a tie for fifth place, add top5ltc_area[c(1:5), 1] to select only the first 5 rows
 
 ltc_loc_col <- tableGrob(top5ltc_loc[, 1],
-  cols = loc.ltc.table, rows = 1:5,
+  cols = loc.ltc.table,
+  rows = 1:5,
   theme = ttheme_default(
     core = list(bg_params = list(fill = top5ltc_loc$colours), fg_params = list(col = "white", fontface = 2, fontsize = 11)),
     colhead = list(bg_params = list(fill = "white"), fg_params = list(fontface = 3, fontsize = 11))
@@ -889,6 +896,7 @@ ltc_loc_col <- tableGrob(top5ltc_loc[, 1],
 )
 ltc_hscp_col <- tableGrob(top5ltc_hscp[, 1],
   cols = hscp.ltc.table,
+  rows = NULL,
   theme = ttheme_default(
     core = list(bg_params = list(fill = top5ltc_hscp$colours), fg_params = list(col = "white", fontface = 2, fontsize = 11)),
     colhead = list(bg_params = list(fill = "white"), fg_params = list(fontface = 3, fontsize = 11))
@@ -896,6 +904,7 @@ ltc_hscp_col <- tableGrob(top5ltc_hscp[, 1],
 )
 ltc_scot_col <- tableGrob(top5ltc_scot[, 1],
   cols = "Scotland",
+  rows = NULL,
   theme = ttheme_default(
     core = list(bg_params = list(fill = top5ltc_scot$colours), fg_params = list(col = "white", fontface = 2, fontsize = 11)),
     colhead = list(bg_params = list(fill = "white"), fg_params = list(fontface = 3, fontsize = 11))
@@ -903,28 +912,29 @@ ltc_scot_col <- tableGrob(top5ltc_scot[, 1],
 )
 
 ## Combine columns
-TOPltcs <- gtable_combine(ltc_loc_col, ltc_hscp_col, ltc_scot_col)
+top5ltc_all_table <- as_gtable(gtable_combine(ltc_loc_col, ltc_hscp_col, ltc_scot_col))
 
 title <- ggdraw() +
-  draw_label("Top 5 Physical Long-Term Conditions 2022/23", size = 11, fontface = "bold")
+  draw_label(str_wrap(
+    glue("Top 5 most prevalent Physical Long-Term Conditions {latest_year_ltc}"),
+    width = 65
+  ), size = 11, fontface = "bold")
 
-top5_ltc_table <- plot_grid(title, as_gtable(TOPltcs), nrow = 2, rel_heights = c(0.1, 1.2))
+top5_ltc_table <- plot_grid(title, top5ltc_all_table, nrow = 2, rel_heights = c(0.1, 1.2))
 
 
 rm(
   ltc_cols, ltc_loc_col, ltc_hscp_col, ltc_scot_col,
-  ltc_pops_total_loc, ltc_pops_total_hscp,
-  loc.ltc.table, loc.ltc.table.wrapped, hscp.ltc.table, hscp.ltc.table.wrapped,
-  top5ltc_loc, top5ltc_hscp, top5ltc_scot, TOPltcs, title
+  ltc_pops_total_loc,
+  loc.ltc.table, hscp.ltc.table,
+  top5ltc_hscp, top5ltc_scot, top5ltc_all_table, title
 )
 
-# ltc_pops_total_scot,
 ## Objects for text
 
 ltc_perc_scot <- round_half_up((sum(filter(ltc_scot, total_ltc > 0)$people) / ltc_pops_total_scot) * 100, 1)
 
 ltc_diff_scot <- if_else(ltc_percent_total_latest > ltc_perc_scot, "higher", "lower")
-
 
 
 ############################### 4) CODE FOR SUMMARY TABLE ###############################
@@ -936,10 +946,12 @@ ltc_diff_scot <- if_else(ltc_percent_total_latest > ltc_perc_scot, "higher", "lo
 
 other_locs_summary_table <- function(data, latest_year) {
   data %>%
-    filter(year == latest_year) %>%
-    filter(area_type == "Locality") %>%
+    filter(
+      year == latest_year,
+      area_type == "Locality"
+    ) %>%
     rename("hscp_locality" = "area_name") %>%
-    right_join(other_locs) %>%
+    right_join(other_locs, by = join_by(hscp_locality)) %>%
     arrange(hscp_locality) %>%
     select(hscp_locality, measure) %>%
     mutate(measure = round_half_up(measure, 1)) %>%
@@ -947,10 +959,13 @@ other_locs_summary_table <- function(data, latest_year) {
 }
 
 hscp_scot_summary_table <- function(data, latest_year, area) {
-  type <- ifelse(area == HSCP, "HSCP", "Scotland")
+  type <- if_else(area == HSCP, "HSCP", "Scotland")
   temp <- data %>%
-    filter(year == latest_year) %>%
-    filter(area_name == area & area_type == type)
+    filter(
+      year == latest_year,
+      area_name == area,
+      area_type == type
+    )
 
   round_half_up(temp$measure, 1)
 }
@@ -993,7 +1008,8 @@ otherloc_ltc_pops <- slf_pops %>%
   summarise(slf_adj_pop = sum(slf_adj_pop)) %>%
   ungroup()
 
-other_locs_ltc <- inner_join(ltc, other_locs) %>%
+other_locs_ltc <- ltc |>
+  inner_join(other_locs, by = join_by(hscp2019name, hscp_locality)) %>%
   select(hscp_locality, total_ltc, people) %>%
   mutate(total_ltc = if_else(total_ltc == 0, 0, 1)) %>%
   filter(total_ltc == 1) %>%
@@ -1010,8 +1026,8 @@ other_locs_ltc <- inner_join(ltc, other_locs) %>%
 # 2. HSCP
 
 if (HSCP == "Clackmannanshire and Stirling") {
-  hscp_life_exp_male <- NA
-  hscp_life_exp_fem <- NA
+  hscp_life_exp_male <- NA_real_
+  hscp_life_exp_fem <- NA_real_
 } else {
   hscp_life_exp_male <- hscp_scot_summary_table(
     data = filter(life_exp, sex == "Male"),
@@ -1031,7 +1047,8 @@ hscp_deaths_15_44 <- hscp_scot_summary_table(deaths_15_44, latest_year = max(dea
 hscp_cancer <- hscp_scot_summary_table(cancer_reg, latest_year = max(cancer_reg$year), area = HSCP)
 hscp_adp <- hscp_scot_summary_table(adp_presc, latest_year = max(adp_presc$year), area = HSCP)
 
-hscp_ltc <- round_half_up((sum(other_locs_ltc) + ltc_percent_total_latest) / n_loc, 1)
+ltc_hscp <- sum(filter(ltc, hscp2019name == HSCP, total_ltc > 0)$people)
+hscp_ltc <- round_half_up(ltc_hscp / ltc_pops_total_hscp * 100, 1)
 
 # 3. Scotland
 
@@ -1052,8 +1069,34 @@ scot_cancer <- hscp_scot_summary_table(cancer_reg, latest_year = max(cancer_reg$
 scot_cancer_deaths <- hscp_scot_summary_table(early_deaths_cancer, latest_year = max(early_deaths_cancer$year), area = "Scotland")
 scot_adp_presc <- hscp_scot_summary_table(adp_presc, latest_year = max(adp_presc$year), area = "Scotland")
 
-scot_ltc <- round_half_up((sum(filter(ltc_scot, total_ltc > 0)$people) / ltc_pops_total_scot) * 100, 1)
-
+# Housekeeping ----
+# These objects are left over after the script is run
+# but don't appear to be used in any 'downstream' process:
+# Main markdown, Summary Table, Excel data tables, SDC output.
+# TODO: Investigate if these can be removed earlier or not created at all.
+rm(
+  create_infographic,
+  disease_hosp,
+  early_deaths_cancer_rate_earliest,
+  gen_health_data_dir,
+  hscp_scot_summary_table,
+  latest_year_life_exp_loc,
+  ltc_infographic,
+  ltc_pops_total_hscp,
+  ltc_pops_total_scot,
+  ltc_hscp,
+  ltc_scot,
+  ltc_totals,
+  ltc2,
+  other_locs,
+  other_locs_summary_table,
+  otherloc_ltc_pops,
+  prev_period_cancer_reg,
+  slf_pop_loc,
+  slf_pops,
+  table8_year_title
+)
+gc()
 
 ## Stat disclosure control for LTC
 
@@ -1087,4 +1130,4 @@ scot_ltc <- round_half_up((sum(filter(ltc_scot, total_ltc > 0)$people) / ltc_pop
 # writexl::write_xlsx(x = list("Total Pop with LTC Age" = sdc1,
 #                              "LTC Multimorbidity Age" = sdc2,
 #                              "LTC Types Age" = sdc3),
-#                     path = paste0(lp_path, "Publishing/LTC Data.xlsx"))
+#                     path = path(lp_path, "Publishing", "LTC Data.xlsx"))

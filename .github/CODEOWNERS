@@ -1,0 +1,26 @@
+# This is a comment.
+# Each line is a file pattern followed by one or more owners.
+
+# These owners will be the default owners for everything in
+# the repo. Unless a later match takes precedence,
+# @Public-Health-Scotland/list-locality-profiles will be requested for
+# review when someone opens a pull request.
+*  @Public-Health-Scotland/list-locality-profiles
+
+# Demographics
+/Demographics/ @cfraser2020
+
+# Housing
+/Households/ @JosieSteele
+
+# General Health
+/General\ Health/ @moohan
+
+# Lifestyle & Risk Factors
+/Lifestyle\ \&\ Risk\ Factors @JosieSteele
+
+# Services
+/Services/ @RyanDuffy01
+
+# Hospital & Community Care
+/Unscheduled\ Care/ @CliveWG

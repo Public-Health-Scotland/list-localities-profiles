@@ -15,6 +15,9 @@ data/
 # Excel files #
 *.[xX][lL][sS]*
 
+# Word files (Test markdown outputs) #
+*Markdown.[dD][oO][cC]*
+
 # SPSS formats #
 *.[sS][aA][vV]
 *.[zZ][sS][aA][vV]
@@ -30,3 +33,6 @@ data/
 
 # MacOS folder attributes files #
 .DS_Store
+
+# Outputs
+*.[hH][tT][mM][lL]

@@ -15,29 +15,17 @@
 ####################### SECTION 1: Packages, file paths, etc #########################
 
 ## Libraries
-library(tidyverse)
-library(janitor)
-library(readxl)
-library(reshape2)
 library(scales)
-# library(rgdal)
-library(broom)
-# library(OpenStreetMap)
-# library(ggrepel)
-library(phsstyles)
+library(reshape2)
 
 # Source in global functions/themes script
-# source("./Master RMarkdown Document & Render Code/Global Script.R")
-
-## File path
-filepath <- "./RMarkdown/Locality Profiles/Demographics/"
+# source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Final document will loop through a list of localities
 # Create placeholder for for loop
 # LOCALITY <- "Inverness"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
-
 
 
 ########################## SECTION 2: Data Imports ###############################
@@ -132,7 +120,7 @@ pop_breakdown <- pops %>%
       gsub("Pop", "", variable)
     )
   )) %>%
-  dplyr::rename(Gender = sex, Age = variable, Population = value) %>%
+  rename(Gender = sex, Age = variable, Population = value) %>%
   mutate(Gender = case_when(
     Gender == "M" ~ "Male",
     Gender == "F" ~ "Female"
@@ -158,7 +146,7 @@ pop_pyramid <- ggplot(
     limits = max(pop_breakdown$Population) * c(-1, 1)
   ) +
   scale_fill_manual(values = palette) +
-  theme_profiles() + # guides(fill = FALSE)
+  theme_profiles() +
   labs(
     x = "Population",
     y = "Age Group",
@@ -183,10 +171,10 @@ hist_pop_breakdown <- pops %>%
       gsub("Pop", "", variable)
     )
   )) %>%
-  dplyr::rename(Gender = sex, Age = variable, Population = value) %>%
-  dplyr::group_by(Gender, Age) %>%
+  rename(Gender = sex, Age = variable, Population = value) %>%
+  group_by(Gender, Age) %>%
   arrange(year) %>%
-  dplyr::summarise(change = (last(Population) - first(Population)) / first(Population)) %>%
+  summarise(change = (last(Population) - first(Population)) / first(Population)) %>%
   ungroup() %>%
   mutate(Gender = ifelse(Gender == "F", "Female", "Male"))
 
@@ -223,7 +211,7 @@ hist_pop_change <- ggplot(
 locality_pop_trend <- pops %>%
   filter(hscp_locality == LOCALITY) %>%
   group_by(year) %>%
-  dplyr::summarise(pop = sum(total_pop)) %>%
+  summarise(pop = sum(total_pop)) %>%
   ungroup()
 
 ## Population projections by locality
@@ -234,7 +222,7 @@ loc_pops <- pops %>%
   filter(year == pop_max_year) %>%
   filter(!(hscp_locality %in% c("Partnership Total", "Scotland Total"))) %>%
   reshape2::melt(id.vars = c("year", "sex", "hscp2019name", "hscp_locality")) %>%
-  dplyr::rename(age_group = variable) %>%
+  rename(age_group = variable) %>%
   as_tibble() %>%
   select(-year)
 
@@ -253,7 +241,7 @@ hscp_pop_proj_weight <- hscp_pop_proj %>%
   filter(year %in% pop_max_year:2028) %>%
   # aggregate to age groups
   group_by(year, hscp2019, hscp2019name, sex, age_group) %>%
-  dplyr::summarise(pop = sum(pop)) %>%
+  summarise(pop = sum(pop)) %>%
   ungroup() %>%
   # change sex variable coding
   mutate(sex = ifelse(sex == 1, "M", "F")) %>%
@@ -267,12 +255,10 @@ hscp_pop_proj_weight <- hscp_pop_proj %>%
 ## Apply weights to localities
 locality_pop_proj <- hscp_pop_proj_weight %>%
   # merge with lookup file
-  left_join(lookup) %>%
+  left_join(lookup, by = join_by(hscp2019, hscp2019name)) %>%
   select(-hscp2019, -pop, -hb2019name, -hb2019) %>%
   # merge with locality populations data
   full_join(loc_pops, by = c("sex", "age_group", "hscp2019name", "hscp_locality")) %>%
-  as_tibble() %>%
-  ungroup() %>%
   # calculate population projections based on weights
   arrange(hscp2019name, hscp_locality, age_group, sex, year) %>%
   mutate(pop = round_half_up(pop_change * value, 0)) %>%
@@ -282,7 +268,7 @@ locality_pop_proj <- hscp_pop_proj_weight %>%
 pop_proj_dat <- locality_pop_proj %>%
   filter(hscp_locality == LOCALITY) %>%
   group_by(year) %>%
-  dplyr::summarise(pop = sum(pop)) %>%
+  summarise(pop = sum(pop)) %>%
   ungroup()
 
 
@@ -295,7 +281,7 @@ pop_plot_dat <- rbind(
   mutate(plot_lab = if_else(year %% 2 == 0, format(pop, big.mark = ","), ""))
 
 pop_ts_plot <- ggplot(pop_plot_dat, aes(x = year, y = pop)) +
-  geom_line(aes(color = data), size = 1) +
+  geom_line(aes(color = data), linewidth = 1) +
   geom_point(color = "#0f243e") +
   geom_text(aes(label = plot_lab),
     vjust = 2, color = "#4a4a4a", size = 3
@@ -413,11 +399,7 @@ other_locs <- lookup %>%
   arrange(hscp_locality)
 
 # Find number of locs per partnership
-n_loc <- lookup %>%
-  group_by(hscp2019name) %>%
-  summarise(locality_n = n()) %>%
-  filter(hscp2019name == HSCP) %>%
-  pull(locality_n)
+n_loc <- count_localities(lookup, HSCP)
 
 ## Locality objects
 total_population <- format_number_for_text(gender_breakdown$total[1])
@@ -489,10 +471,15 @@ scot_over65 <- pop_scot %>%
 
 rm(pop_hscp, pop_scot)
 
-
-
-# detach(package:tidyverse, unload=TRUE)
-# detach(package:ggrepel, unload=TRUE)
-# detach(package:reshape2, unload=TRUE)
-# detach(package:rgdal, unload=TRUE)
-# detach(package:janitor, unload=TRUE)
+# Housekeeping ----
+# These objects are left over after the script is run
+# but don't appear to be used in any 'downstream' process:
+# Main markdown, Summary Table, Excel data tables, SDC output.
+# TODO: Investigate if these can be removed earlier or not created at all.
+rm(
+  hist_pop_breakdown,
+  hscp_pop_proj,
+  pop_plot_dat,
+  pop_raw_data
+)
+gc()
