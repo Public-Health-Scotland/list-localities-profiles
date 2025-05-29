@@ -2,25 +2,29 @@
 
 # Contains various settings and functions to be used in other locality profile scripts
 
-# How to read in:
-# source("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/Global Script.R)
+# How to use this script:
+# source("Master RMarkdown Document & Render Code/Global Script.R)
 
-## Packages for functions (** note - should this contain all packages necessary for locality profiles?
+## Packages for functions ----
+# (** note - should this contain all packages necessary for locality profiles?
 # and automatically installing missing packages?)
-library(tidyverse)
+library(dplyr)
+library(readr)
+library(tidyr)
+library(ggplot2)
+library(stringr)
+library(forcats)
+library(purrr)
 library(janitor)
-library(data.table)
 library(glue)
-library(magrittr)
-library(lubridate)
+library(fs)
+library(arrow)
+library(phsstyles)
 
+# Prefer dplyr functions if there's a conflict
+conflicted::conflict_prefer_all("dplyr", quiet = TRUE)
 
-#### Colours & Formatting ####
-
-# Installing phsstyles:
-# remotes::install_github("Public-Health-Scotland/phsstyles",
-#                         upgrade = "never"
-# )
+#### Colours & Formatting #### ----
 
 ## PHS colour palette from phsstyles
 palette <- phsstyles::phs_colours(c(
@@ -43,7 +47,26 @@ format_number_for_text <- function(x) {
   format(x, big.mark = ",")
 }
 
-## Theme for charts
+# This will return the correct article depending on the (max 2-digit) number supplied
+# e.g.
+# 81.2 -> an
+# 18 -> an
+# 7.2 -> an
+# To be used for "a xx increase" which could be "an xx increase"
+get_article <- function(number) {
+  if (identical(number, numeric(0))) {
+    # If the number wasn't calculated we still need to deal with it.
+    return("-")
+  }
+
+  if (substr(number, 1, 1) == "8" || substr(number, 1, 2) == "18") {
+    return("an")
+  } else {
+    return("a")
+  }
+}
+
+## Theme for charts ----
 # This theme is similar to theme_phs() from phsstyles but adapted to locality profiles
 # Differences include smaller text (to ensure names of areas always fit regardless of length)
 # Code taken from phsstyles Github page
@@ -70,13 +93,13 @@ theme_profiles <- function() {
     # The legend may often need some more manual tweaking when it comes to its
     # exact position based on the plot coordinates.
     legend.position = "bottom",
-    legend.text.align = 0,
     legend.background = ggplot2::element_blank(),
     legend.title = ggplot2::element_blank(),
     legend.key = ggplot2::element_blank(),
     legend.text = ggplot2::element_text(
       family = fontStyle,
-      size = fontSize
+      size = fontSize,
+      hjust = 0 # Replaces legend.text.align = 0
     ),
 
     # Axis format
@@ -110,7 +133,7 @@ theme_profiles <- function() {
   )
 }
 
-#### Lookup ####
+#### Lookup #### ----
 
 ## Import the latest locality lookup from cl-out ----
 # Argument dz_level: Allows you to choose whether lookup contains all datazones in localities
@@ -136,6 +159,9 @@ read_in_localities <- function(dz_level = FALSE) {
   return(data)
 }
 
+count_localities <- function(locality_lookup, hscp_name) {
+  return(sum(locality_lookup[["hscp2019name"]] == hscp_name))
+}
 
 ## Function to read in latest SPD file ----
 
@@ -186,31 +212,17 @@ read_in_dz_pops <- function() {
       ca2018, ca2011,
       hscp2019, hscp2019name, hscp2018, hscp2016, hb2019, hb2019name, hb2018, hb2014
     )) %>%
-    left_join(read_in_localities(dz_level = TRUE))
+    left_join(
+      read_in_localities(dz_level = TRUE),
+      by = join_by(datazone2011)
+    )
 }
 
-read_in_dz_pops22 <- function() {
-  fs::dir_ls(
-    glue(
-      "/conf/linkage/output/lookups/Unicode/",
-      "Populations/Estimates/"
-    ),
-    regexp = glue("DataZone2011_pop_est_2011_.+?\\.rds$")
-  ) %>%
-    # Read in the most up to date lookup version
-    max() %>%
-    read_rds() %>%
-    clean_names() %>%
-    select(-c(
-      intzone2011, intzone2011name,
-      ca2019, ca2019name,
-      ca2018, ca2011,
-      hscp2019, hscp2019name, hscp2018, hscp2016, hb2019, hb2019name, hb2018, hb2014
-    )) %>%
-    left_join(read_in_localities(dz_level = TRUE)) |>
-    filter(year == "2021") |>
+read_in_dz_pops_proxy_year <- function() {
+  read_in_dz_pops() |>
+    filter(year == "2022") |>
     select(-year) |>
-    mutate(year = 2022)
+    mutate(year = 2023)
 }
 
 ## Function to read in latest population projections ----
@@ -239,7 +251,7 @@ read_in_pop_proj <- function() {
     distinct()
 
 
-  left_join(proj, hscp_lkp)
+  left_join(proj, hscp_lkp, by = join_by(hscp2019))
 }
 
 #### Functions for ScotPHO data ####
@@ -275,7 +287,7 @@ clean_scotpho_dat <- function(data) {
 # (ScotPHO data uses year aggregates which don't always fit on axis unless wrapped)
 # rotate_xaxis: default F, if labels still don't fit even with wrapping (prev argument), labels can be rotated
 
-scotpho_time_trend <- function(data, chart_title, xaxis_title, yaxis_title, string_wrap, rotate_xaxis = FALSE) {
+scotpho_time_trend <- function(data, chart_title, xaxis_title, yaxis_title, string_wrap, rotate_xaxis = FALSE, trend_years = 10) {
   # rotate axis criteria if T/F
   if (rotate_xaxis) {
     rotation <- element_text(angle = 45, hjust = 1)
@@ -289,7 +301,7 @@ scotpho_time_trend <- function(data, chart_title, xaxis_title, yaxis_title, stri
       (area_name == HSCP & area_type == "HSCP") |
       area_name == HB |
       area_name == "Scotland") %>%
-    filter(year >= max(year) - 10) %>%
+    filter(year >= max(year) - trend_years) %>%
     mutate(
       area_type = factor(area_type, levels = c("Locality", "HSCP", "Health board", "Scotland")),
       area_name = fct_reorder(as.factor(str_wrap(area_name, 23)), as.numeric(area_type))
@@ -299,7 +311,7 @@ scotpho_time_trend <- function(data, chart_title, xaxis_title, yaxis_title, stri
       x = str_wrap(period_short, width = string_wrap), y = measure,
       group = area_name, fill = area_name, linetype = area_type
     )) +
-    geom_line(aes(colour = area_name), size = 1) +
+    geom_line(aes(colour = area_name), linewidth = 1) +
     geom_point(aes(colour = area_name), size = 2) +
     geom_ribbon(
       aes(
@@ -350,7 +362,7 @@ scotpho_time_trend_HSCP <- function(data, chart_title, xaxis_title, yaxis_title,
       x = str_wrap(period_short, width = string_wrap), y = measure,
       group = area_name, fill = area_name, linetype = area_type
     )) +
-    geom_line(aes(colour = area_name), size = 1) +
+    geom_line(aes(colour = area_name), linewidth = 1) +
     geom_point(aes(colour = area_name), size = 2) +
     geom_ribbon(
       aes(
@@ -377,7 +389,7 @@ scotpho_time_trend_HSCP <- function(data, chart_title, xaxis_title, yaxis_title,
     )
 }
 
-## Bar chart function for ScotPHO data
+## Bar chart function for ScotPHO data ----
 
 # Creates a horizontal bar chart comparing the last time period of data across
 # all localities in a partnership, the HSCP, HB, and Scotland
@@ -395,22 +407,28 @@ scotpho_bar_chart <- function(data, chart_title, xaxis_title) {
     filter(year == max(year)) %>%
     filter(
       (area_name %in% c(LOCALITY, other_locs$hscp_locality) & area_type == "Locality") |
-      (area_name == HSCP & area_type == "HSCP") |
-      area_name == HB |
-      area_name == "Scotland") %>%
+        (area_name == HSCP & area_type == "HSCP") |
+        area_name == HB |
+        area_name == "Scotland"
+    ) %>%
     mutate(
       text_highlight = area_name == LOCALITY,
       area_type = factor(area_type, levels = c("Locality", "HSCP", "Health board", "Scotland")),
       area_name = fct_reorder(as.factor(str_wrap(area_name, 28)), measure)
     ) %>%
     arrange(area_name)
-  
+
   ggplot(data_for_plot) +
     aes(y = area_name, fill = area_type, weight = measure) +
     geom_bar(colour = "white") +
     scale_fill_manual(values = palette) +
     theme_profiles() +
-    theme(axis.text.y = element_text(colour = if_else(data_for_plot$text_highlight, "red", "black"))) +
+    theme(
+      axis.text.y = element_text(
+        colour = if_else(data_for_plot$text_highlight, "red", "black"),
+        face = if_else(data_for_plot$text_highlight, "bold", "plain")
+      )
+    ) +
     labs(
       title = chart_title,
       x = xaxis_title,
@@ -470,7 +488,7 @@ check_missing_data_scotpho <- function(data) {
 }
 
 
-########### Unscheduled care functions - can be used across other topics ############
+### Unscheduled care functions - can be used across other topics ### ----
 
 # Reformat age groups to specific strings shown i.e. add spaces
 age_group_1 <- function(age_group) {
@@ -510,6 +528,7 @@ ptsp <- function(partnership) {
     "Clackmannanshire" ~ "Clackmannanshire and Stirling",
     "Stirling" ~ "Clackmannanshire and Stirling",
     "Na h-Eileanan Siar" ~ "Western Isles",
+    "Comhairle nan Eilean Siar" ~ "Western Isles",
     .default = partnership
   )
 }
@@ -533,4 +552,35 @@ hbres <- function(hbres_currentdate) {
     "S08000028" ~ "NHS Western Isles",
     .default = "Other"
   )
+}
+
+# Define a function to save multiple dataframes to an Excel workbook
+save_dataframes_to_excel <- function(dataframes, sheet_names, file_path) {
+  # Create a new workbook using openxlsx2
+  wb <- openxlsx2::wb_workbook()
+
+  # Loop over each dataframe and corresponding sheet name
+  for (i in seq_along(dataframes)) {
+    # Define the used columns
+    cols <- seq_len(ncol(dataframes[[i]]))
+
+    # Define the header range
+    header_range <- openxlsx2::wb_dims(rows = 1, cols = cols)
+
+    wb <- wb |>
+      # Add a worksheet
+      openxlsx2::wb_add_worksheet(sheet = sheet_names[[i]]) |>
+      # Write data
+      openxlsx2::wb_add_data(x = dataframes[[i]]) |>
+      # Style the header bold
+      openxlsx2::wb_add_font(dims = header_range, bold = TRUE) |>
+      # Set column widths to auto
+      openxlsx2::wb_set_col_widths(cols = cols, widths = "auto")
+  }
+
+  # Create the directories if they don't exist
+  fs::dir_create(fs::path_dir(file_path), mode = "u=rwx,g=rwx,o=rx")
+
+  # Save the workbook to a file
+  openxlsx2::wb_save(wb, file = file_path, overwrite = TRUE)
 }

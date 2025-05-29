@@ -9,28 +9,20 @@
 ####################### SECTION 1: Packages, file paths, lookups, etc #########################
 
 ## Manually set year that the profiles are being run (extract year)
-ext_year <- 2023
+ext_year <- 2024
 
 ## Manually set the name of the latest MSG folder
-latest_msg_folder <- "2023-12 December"
+latest_msg_folder <- "2024-12 December"
 
 # Set locality profiles file path
 # lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 ## Packages
-library(tidyverse)
-library(janitor)
-# library(tidylog)
-library(magrittr)
 library(lubridate)
-library(scales)
-library(broom)
-library(reshape2)
 library(odbc)
-library(arrow)
 
 ## Functions
-source("./Master RMarkdown Document & Render Code/Global Script.R")
+source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Read/write permissions
 # Sys.umask("006")

@@ -2,8 +2,8 @@
 title: ''
 output:
   word_document:
-    reference_docx: //conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality
-      Profiles/Master RMarkdown Document & Render Code/Locality_Profiles_Report_Template.docx
+    reference_docx: "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality
+      Profiles/Master RMarkdown Document & Render Code/Locality_Profiles_Report_Template.docx"
   html_document:
     df_print: paged
 ---
@@ -14,12 +14,13 @@ knitr::opts_chunk$set(echo = TRUE)
 options(kableExtra.auto_format = FALSE)
 
 # Line below for testing only
-Loc <- "Marr"
+Loc <- "Teviot and Liddesdale"
 
 locality <- Loc
 LOCALITY <- Loc
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
+# stop(getwd())
 
 source("Master RMarkdown Document & Render Code/Global Script.R")
 source("Services/2. Services data manipulation & table.R")
@@ -30,31 +31,26 @@ y <- 1 # object for table numbers
 ```
 
 
-##Services
+## Services
 
-####Figure `r x`: Map of GP practices by locality in `r HSCP` HSCP^2^.
+#### Figure `r x`: Map of services by locality in `r HSCP` HSCP^2^.
 
 \newline
 
-```{r echo = FALSE, fig.width=6}
+```{r echo = FALSE, fig.width=6, fig.cap= "A map of the health and social care partnership including a breakdown on localities with the locations of all the GP practices, care homes, emergency depertments and minor injury units."}
 service_map
 
 x <- x + 1
 ```
 
-
 \newline
 
-####Table `r y`: Number of each type of service in `r LOCALITY` Locality^2^.
+#### Table `r y`: Number of each type of service in `r LOCALITY` Locality^2^.
+
 \newline
 
 ```{r echo = FALSE}
-knitr::kable(services_tibble, col.names = c("**Service Type**", "**Service**", "**Number**"))
+knitr::kable(services_tibble, col.names = c("**Service Type**", "**Service**", "**Number**"), format = "markdown")
 
 y <- y + 1
 ```
-
-\newline
-
-In `r latest_year_access_dep`, `r format_number_for_text(access_dep_latest)`% of the population of `r LOCALITY` lived in the 15% most 'access deprived' areas.
-
