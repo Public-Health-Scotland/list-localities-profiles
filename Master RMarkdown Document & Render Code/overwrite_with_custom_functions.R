@@ -56,24 +56,30 @@ read_in_iz <- function(dz_all = FALSE) {
 # Aggregate and calculate confidence interval
 summarise_iz_to_locality <- function(data, iz_lookup = read_in_iz(dz_all = FALSE)) {
   iz_data <- data |>
-    inner_join(iz_lookup, by = c("area_code" = "intzone2011"))
+    dplyr::inner_join(iz_lookup, by = c("area_code" = "intzone2011"))
 
   if (anyNA(iz_data$numerator)) {
     locality_data <- iz_data |>
-      group_by(indicator, year, period, area_name = hscp_locality, definition, data_source) |>
-      summarise(
+      dplyr::group_by(indicator, year, period, area_name = hscp_locality, definition, data_source) |>
+      dplyr::summarise(
         measure = mean(measure),
         area_type = "HSC locality",
         .groups = "drop"
       )
   } else {
     locality_data <- iz_data |>
-      mutate(denominator = numerator * 100000 / measure) %>%
-      group_by(indicator, year, period, area_name = hscp_locality, definition, data_source) |>
-      summarise(
+      dplyr::mutate(denominator = dplyr::case_when(
+        (numerator == 0 | measure == 0) ~ 0,
+        .default = numerator * 100000 / measure
+      )) %>%
+      dplyr::group_by(indicator, year, period, area_name = hscp_locality, definition, data_source) |>
+      dplyr::summarise(
         numerator = sum(numerator),
         denominator = sum(denominator),
-        measure = (numerator * 100000) / denominator, # Adjust for per 100,000
+        measure = dplyr::case_when(
+          (numerator == 0 | denominator == 0) ~ 0,
+          .default = (numerator * 100000) / denominator
+        ), # Adjust for per 100,000
         se = sqrt(sum(numerator * (measure - lower_confidence_interval)^2 / (denominator - 1)) +
           sum(numerator * (upper_confidence_interval - measure)^2 / (denominator - 1))),
         lower_confidence_interval = measure - 1.96 * se,
@@ -81,12 +87,12 @@ summarise_iz_to_locality <- function(data, iz_lookup = read_in_iz(dz_all = FALSE
         area_type = "HSC locality",
         .groups = "drop"
       ) |>
-      select(!denominator, !se)
+      dplyr::select(!denominator, !se)
   }
 
   new_data <- data |>
-    filter(area_type %in% c("HSC locality", "Scotland", "HSC partnership", "Health board")) |>
-    bind_rows(locality_data)
+    dplyr::filter(area_type %in% c("HSC locality", "Scotland", "HSC partnership", "Health board")) |>
+    dplyr::bind_rows(locality_data)
 
   return(new_data)
 }

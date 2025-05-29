@@ -27,7 +27,7 @@ smr01e_extract <- as_tibble(dbGetQuery(channel, statement = "SELECT LINK_NO, ADM
                                       SIGNIFICANT_FACILITY, ADMISSION_TYPE, DR_POSTCODE,
                                       AGE_IN_YEARS, HBTREAT_CURRENTDATE, ADMISSION,
                                       DISCHARGE, URI, INTZONE_2011  FROM ANALYSIS.SMR01_1E_PI
-                                      WHERE DISCHARGE_DATE >= TO_DATE('2017-04-01','YYYY-MM-DD')")) %>%
+                                      WHERE DISCHARGE_DATE >= TO_DATE('2017-04-01','YYYY-MM-DD') AND HBRES_CURRENTDATE = 'S08000020'")) %>%
   # AND COUNCIL_AREA_2019 = 'S12000035'
 
 
