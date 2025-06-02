@@ -12,7 +12,9 @@ library(stringr)
 year <- "2025-April"
 
 # Set top level file path
-lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
+lp_path <- path(
+  "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles"
+)
 
 # Set paths for the existing / new locations of the profiles
 output_dir <- path(lp_path, "Master RMarkdown Document & Render Code", "Output")
@@ -26,7 +28,8 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 locality_lookup <- read_in_localities() |>
   # Fix for one locality which seems to be renamed (probably due to the '/')
   mutate(
-    hscp_locality = case_match(hscp_locality,
+    hscp_locality = case_match(
+      hscp_locality,
       "Dumbarton/Alexandria" ~ "Alexandria",
       .default = hscp_locality
     )

@@ -7,10 +7,17 @@ library(stringr)
 year <- "2025-April"
 
 # Set top level file path
-lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
+lp_path <- path(
+  "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles"
+)
 
 # Set paths for the existing / new locations of the profiles
-output_dir <- path(lp_path, "Master RMarkdown Document & Render Code", "Output", "background data")
+output_dir <- path(
+  lp_path,
+  "Master RMarkdown Document & Render Code",
+  "Output",
+  "background data"
+)
 # The directory will be created automatically.
 final_dir <- path(lp_path, "Final Profiles", str_glue("{year} Final Profiles"))
 

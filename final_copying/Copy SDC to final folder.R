@@ -10,10 +10,17 @@ year <- "2025-April"
 source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set top level file path
-lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
+lp_path <- path(
+  "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles"
+)
 
 # Set paths for the existing / new locations
-output_dir <- path(lp_path, "Master RMarkdown Document & Render Code", "Output", "background data")
+output_dir <- path(
+  lp_path,
+  "Master RMarkdown Document & Render Code",
+  "Output",
+  "background data"
+)
 # The directory will be created automatically.
 final_dir <- path(lp_path, "Final Profiles", str_glue("{year} Final Profiles"))
 
@@ -23,7 +30,10 @@ hscp_list <- read_in_localities() |>
 
 # Create a dataframe with some details about the files
 file_lookup <- tibble(
-  path = dir_ls(path = output_dir, glob = "* - Locality Profile SDC highlight.xlsx$"),
+  path = dir_ls(
+    path = output_dir,
+    glob = "* - Locality Profile SDC highlight.xlsx$"
+  ),
   file_name = path_file(path),
   hscp = str_extract(
     string = file_name,

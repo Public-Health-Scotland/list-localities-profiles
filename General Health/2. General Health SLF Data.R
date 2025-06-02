@@ -18,7 +18,9 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 library(slfhelper)
 
 # Set file path
-lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
+lp_path <- path(
+  "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles"
+)
 
 gen_health_data_dir <- path(lp_path, "General Health", glue("DATA {ext_year}"))
 
@@ -41,12 +43,14 @@ slf <- read_slf_individual(
   # remove -1 age
   filter(age >= 0) |>
   # compute age band
-  mutate(age_group = case_when(
-    age < 65 ~ "Under 65",
-    between(age, 65, 74) ~ "65-74",
-    between(age, 75, 84) ~ "75-84",
-    age >= 85 ~ "85+"
-  )) |>
+  mutate(
+    age_group = case_when(
+      age < 65 ~ "Under 65",
+      between(age, 65, 74) ~ "65-74",
+      between(age, 75, 84) ~ "75-84",
+      age >= 85 ~ "85+"
+    )
+  ) |>
   collect() |>
   # Compute total LTCs
   mutate(total_ltc = rowSums(pick(arth:refailure)))

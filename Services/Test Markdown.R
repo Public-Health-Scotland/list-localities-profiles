@@ -13,7 +13,8 @@ randomly_selected_localities <- read_in_localities() %>%
   unique()
 
 for (Loc in randomly_selected_localities) {
-  rmarkdown::render("Services/Services-Testing-Markdown.Rmd",
+  rmarkdown::render(
+    "Services/Services-Testing-Markdown.Rmd",
     output_file = paste0("Services-Testing-Markdown-", Loc, ".docx"),
     output_dir = "Services",
     knit_root_dir = rstudioapi::getActiveProject(),

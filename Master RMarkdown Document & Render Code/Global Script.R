@@ -28,8 +28,14 @@ conflicted::conflict_prefer_all("dplyr", quiet = TRUE)
 
 ## PHS colour palette from phsstyles
 palette <- phsstyles::phs_colours(c(
-  "phs-purple", "phs-magenta", "phs-blue", "phs-green",
-  "phs-graphite", "phs-teal", "phs-liberty", "phs-rust"
+  "phs-purple",
+  "phs-magenta",
+  "phs-blue",
+  "phs-green",
+  "phs-graphite",
+  "phs-teal",
+  "phs-liberty",
+  "phs-rust"
 ))
 
 
@@ -38,8 +44,12 @@ palette <- phsstyles::phs_colours(c(
 # Then adds a comma for numbers over 1000 (becomes "1,000")
 
 format_number_for_text <- function(x) {
-  x <- ifelse(abs(x) < 1, round_half_up(x, 2), # if x < 1 then show 2dp
-    ifelse(abs(x) < 100, round_half_up(x, 1), # if 1 =< x < 100 then 1dp
+  x <- ifelse(
+    abs(x) < 1,
+    round_half_up(x, 2), # if x < 1 then show 2dp
+    ifelse(
+      abs(x) < 100,
+      round_half_up(x, 1), # if 1 =< x < 100 then 1dp
       round_half_up(x)
     )
   ) # if 10 =< x then no decimal places
@@ -78,7 +88,6 @@ theme_profiles <- function() {
   fontSize <- 11
 
   ggplot2::theme(
-
     # Text format:
     # This sets the font, size, type and colour of text for the chart's title
     plot.title = ggplot2::element_text(
@@ -148,7 +157,14 @@ read_in_localities <- function(dz_level = FALSE) {
     # Read in the most up to date lookup version
     max() |>
     readr::read_rds() |>
-    dplyr::select(datazone2011, hscp_locality, hscp2019name, hscp2019, hb2019name, hb2019) |>
+    dplyr::select(
+      datazone2011,
+      hscp_locality,
+      hscp2019name,
+      hscp2019,
+      hb2019name,
+      hb2019
+    ) |>
     dplyr::mutate(hscp_locality = sub("&", "and", hscp_locality, fixed = TRUE))
 
   if (!dz_level) {
@@ -175,7 +191,9 @@ read_in_postcodes <- function() {
   ) |>
     # Read in the most up to date lookup version
     max() |>
-    arrow::read_parquet(col_select = -c(hscp2019, hscp2019name, hb2019, hb2019name))
+    arrow::read_parquet(
+      col_select = -c(hscp2019, hscp2019name, hb2019, hb2019name)
+    )
 
   data <- dplyr::left_join(
     data,
@@ -206,12 +224,24 @@ read_in_dz_pops <- function() {
     max() %>%
     read_rds() %>%
     clean_names() %>%
-    select(-c(
-      intzone2011, intzone2011name,
-      ca2019, ca2019name,
-      ca2018, ca2011,
-      hscp2019, hscp2019name, hscp2018, hscp2016, hb2019, hb2019name, hb2018, hb2014
-    )) %>%
+    select(
+      -c(
+        intzone2011,
+        intzone2011name,
+        ca2019,
+        ca2019name,
+        ca2018,
+        ca2011,
+        hscp2019,
+        hscp2019name,
+        hscp2018,
+        hscp2016,
+        hb2019,
+        hb2019name,
+        hb2018,
+        hb2014
+      )
+    ) %>%
     left_join(
       read_in_localities(dz_level = TRUE),
       by = join_by(datazone2011)
@@ -250,7 +280,6 @@ read_in_pop_proj <- function() {
     select(hscp2019, hscp2019name) %>%
     distinct()
 
-
   left_join(proj, hscp_lkp, by = join_by(hscp2019))
 }
 
@@ -265,7 +294,13 @@ clean_scotpho_dat <- function(data) {
   data %>%
     filter(area_type != "Council area" & area_type != "Intermediate zone") %>%
     mutate(area_name = gsub("&", "and", area_name)) %>%
-    mutate(area_name = if_else(area_name == "Renfrewshire West", "West Renfrewshire", area_name)) %>%
+    mutate(
+      area_name = if_else(
+        area_name == "Renfrewshire West",
+        "West Renfrewshire",
+        area_name
+      )
+    ) %>%
     mutate(
       area_type = if_else(area_type == "HSC partnership", "HSCP", area_type),
       area_type = if_else(area_type == "HSC locality", "Locality", area_type)
@@ -287,7 +322,15 @@ clean_scotpho_dat <- function(data) {
 # (ScotPHO data uses year aggregates which don't always fit on axis unless wrapped)
 # rotate_xaxis: default F, if labels still don't fit even with wrapping (prev argument), labels can be rotated
 
-scotpho_time_trend <- function(data, chart_title, xaxis_title, yaxis_title, string_wrap, rotate_xaxis = FALSE, trend_years = 10) {
+scotpho_time_trend <- function(
+  data,
+  chart_title,
+  xaxis_title,
+  yaxis_title,
+  string_wrap,
+  rotate_xaxis = FALSE,
+  trend_years = 10
+) {
   # rotate axis criteria if T/F
   if (rotate_xaxis) {
     rotation <- element_text(angle = 45, hjust = 1)
@@ -297,19 +340,30 @@ scotpho_time_trend <- function(data, chart_title, xaxis_title, yaxis_title, stri
 
   # filter and reorder data
   data %>%
-    filter((area_name == LOCALITY & area_type == "Locality") |
-      (area_name == HSCP & area_type == "HSCP") |
-      area_name == HB |
-      area_name == "Scotland") %>%
+    filter(
+      (area_name == LOCALITY & area_type == "Locality") |
+        (area_name == HSCP & area_type == "HSCP") |
+        area_name == HB |
+        area_name == "Scotland"
+    ) %>%
     filter(year >= max(year) - trend_years) %>%
     mutate(
-      area_type = factor(area_type, levels = c("Locality", "HSCP", "Health board", "Scotland")),
-      area_name = fct_reorder(as.factor(str_wrap(area_name, 23)), as.numeric(area_type))
+      area_type = factor(
+        area_type,
+        levels = c("Locality", "HSCP", "Health board", "Scotland")
+      ),
+      area_name = fct_reorder(
+        as.factor(str_wrap(area_name, 23)),
+        as.numeric(area_type)
+      )
     ) %>%
     # plot
     ggplot(aes(
-      x = str_wrap(period_short, width = string_wrap), y = measure,
-      group = area_name, fill = area_name, linetype = area_type
+      x = str_wrap(period_short, width = string_wrap),
+      y = measure,
+      group = area_name,
+      fill = area_name,
+      linetype = area_type
     )) +
     geom_line(aes(colour = area_name), linewidth = 1) +
     geom_point(aes(colour = area_name), size = 2) +
@@ -333,13 +387,22 @@ scotpho_time_trend <- function(data, chart_title, xaxis_title, yaxis_title, stri
     ) +
     theme(axis.text.x = rotation) +
     guides(
-      linetype = "none", shape = "none", fill = "none",
+      linetype = "none",
+      shape = "none",
+      fill = "none",
       colour = guide_legend(nrow = 1, byrow = TRUE)
     )
 }
 
 
-scotpho_time_trend_HSCP <- function(data, chart_title, xaxis_title, yaxis_title, string_wrap, rotate_xaxis = FALSE) {
+scotpho_time_trend_HSCP <- function(
+  data,
+  chart_title,
+  xaxis_title,
+  yaxis_title,
+  string_wrap,
+  rotate_xaxis = FALSE
+) {
   # rotate axis criteria if T/F
   if (rotate_xaxis) {
     rotation <- element_text(angle = 45, hjust = 1)
@@ -349,18 +412,29 @@ scotpho_time_trend_HSCP <- function(data, chart_title, xaxis_title, yaxis_title,
 
   # filter and reorder data
   data %>%
-    filter((area_name == HSCP & area_type == "HSCP") |
-      area_name == HB |
-      area_name == "Scotland") %>%
+    filter(
+      (area_name == HSCP & area_type == "HSCP") |
+        area_name == HB |
+        area_name == "Scotland"
+    ) %>%
     filter(year >= max(year) - 10) %>%
     mutate(
-      area_type = factor(area_type, levels = c("HSCP", "Health board", "Scotland")),
-      area_name = fct_reorder(as.factor(str_wrap(area_name, 23)), as.numeric(area_type))
+      area_type = factor(
+        area_type,
+        levels = c("HSCP", "Health board", "Scotland")
+      ),
+      area_name = fct_reorder(
+        as.factor(str_wrap(area_name, 23)),
+        as.numeric(area_type)
+      )
     ) %>%
     # plot
     ggplot(aes(
-      x = str_wrap(period_short, width = string_wrap), y = measure,
-      group = area_name, fill = area_name, linetype = area_type
+      x = str_wrap(period_short, width = string_wrap),
+      y = measure,
+      group = area_name,
+      fill = area_name,
+      linetype = area_type
     )) +
     geom_line(aes(colour = area_name), linewidth = 1) +
     geom_point(aes(colour = area_name), size = 2) +
@@ -384,7 +458,9 @@ scotpho_time_trend_HSCP <- function(data, chart_title, xaxis_title, yaxis_title,
     ) +
     theme(axis.text.x = rotation) +
     guides(
-      linetype = "none", shape = "none", fill = "none",
+      linetype = "none",
+      shape = "none",
+      fill = "none",
       colour = guide_legend(nrow = 1, byrow = TRUE)
     )
 }
@@ -401,19 +477,23 @@ scotpho_time_trend_HSCP <- function(data, chart_title, xaxis_title, yaxis_title,
 # data: data to use for chart
 # chart_title, xaxis_title : titles for chart and x axis
 
-
 scotpho_bar_chart <- function(data, chart_title, xaxis_title) {
   data_for_plot <- data %>%
     filter(year == max(year)) %>%
     filter(
-      (area_name %in% c(LOCALITY, other_locs$hscp_locality) & area_type == "Locality") |
+      (area_name %in%
+        c(LOCALITY, other_locs$hscp_locality) &
+        area_type == "Locality") |
         (area_name == HSCP & area_type == "HSCP") |
         area_name == HB |
         area_name == "Scotland"
     ) %>%
     mutate(
       text_highlight = area_name == LOCALITY,
-      area_type = factor(area_type, levels = c("Locality", "HSCP", "Health board", "Scotland")),
+      area_type = factor(
+        area_type,
+        levels = c("Locality", "HSCP", "Health board", "Scotland")
+      ),
       area_name = fct_reorder(as.factor(str_wrap(area_name, 28)), measure)
     ) %>%
     arrange(area_name)
@@ -447,13 +527,18 @@ scotpho_bar_chart <- function(data, chart_title, xaxis_title) {
 scotpho_bar_chart_HSCP <- function(data, chart_title, xaxis_title) {
   data_for_plot <- data %>%
     filter(year == max(year)) %>%
-    filter((area_name %in% c(other_locs$hscp_locality) & area_type == "Locality") |
-      (area_name == HSCP & area_type == "HSCP") |
-      area_name == HB |
-      area_name == "Scotland") %>%
+    filter(
+      (area_name %in% c(other_locs$hscp_locality) & area_type == "Locality") |
+        (area_name == HSCP & area_type == "HSCP") |
+        area_name == HB |
+        area_name == "Scotland"
+    ) %>%
     mutate(
       text_highlight = area_name == HSCP,
-      area_type = factor(area_type, levels = c("Locality", "HSCP", "Health board", "Scotland")),
+      area_type = factor(
+        area_type,
+        levels = c("Locality", "HSCP", "Health board", "Scotland")
+      ),
       area_name = fct_reorder(as.factor(str_wrap(area_name, 28)), measure)
     ) %>%
     arrange(area_name)
@@ -463,11 +548,16 @@ scotpho_bar_chart_HSCP <- function(data, chart_title, xaxis_title) {
     geom_bar(colour = "white") +
     scale_fill_manual(values = palette) +
     theme_profiles() +
-    theme(axis.text.y = element_text(colour = if_else(data_for_plot$text_highlight, "red", "black"))) +
+    theme(
+      axis.text.y = element_text(
+        colour = if_else(data_for_plot$text_highlight, "red", "black")
+      )
+    ) +
     labs(
       title = chart_title,
       x = xaxis_title,
-      y = " ", fill = " ",
+      y = " ",
+      fill = " ",
       caption = "Source: ScotPHO"
     ) +
     geom_errorbar(
