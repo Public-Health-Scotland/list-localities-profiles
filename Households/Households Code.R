@@ -21,7 +21,6 @@
 ### Section 3 - Council Tax Band Data
 ### Section 4 - Objects for Summary Table
 
-
 ##################### Section 1 - Packages, working directory etc ########################
 
 # load in required packages
@@ -43,7 +42,6 @@ ext_year <- 2024
 # LOCALITY <- "Whalsay and Skerries"
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
 
-
 ##################### Section 2 - Households Data #############################
 
 ## 2a) Data imports & cleaning ----
@@ -53,7 +51,12 @@ house_raw_dat <- map(
   2014L:max_year_housing,
   \(year) {
     read_excel(
-      path(lp_path, "Households", glue("Data {ext_year}"), "household_estimates.xlsx"),
+      path(
+        lp_path,
+        "Households",
+        glue("Data {ext_year}"),
+        "household_estimates.xlsx"
+      ),
       col_types = c(rep("text", 4L), rep("numeric", 8L), rep("skip", 7L)),
       sheet = as.character(year),
       skip = 3L,
@@ -91,19 +94,41 @@ house_dat1 <- house_dat %>%
 ## 2b) Text objects ----
 
 # numbers
-n_houses <- format_number_for_text(filter(house_dat1, year == max(year))$total_dwellings)
-n_occupied <- format_number_for_text(filter(house_dat1, year == max(year))$occupied_dwellings)
-n_vacant <- format_number_for_text(filter(house_dat1, year == max(year))$vacant_dwellings)
-n_single_discount <- format_number_for_text(filter(house_dat1, year == max(year))$tax_discount)
-n_exempt <- format_number_for_text(filter(house_dat1, year == max(year))$tax_exempt)
-n_second_homes <- format_number_for_text(filter(house_dat1, year == max(year))$second_homes)
+n_houses <- format_number_for_text(
+  filter(house_dat1, year == max(year))$total_dwellings
+)
+n_occupied <- format_number_for_text(
+  filter(house_dat1, year == max(year))$occupied_dwellings
+)
+n_vacant <- format_number_for_text(
+  filter(house_dat1, year == max(year))$vacant_dwellings
+)
+n_single_discount <- format_number_for_text(
+  filter(house_dat1, year == max(year))$tax_discount
+)
+n_exempt <- format_number_for_text(
+  filter(house_dat1, year == max(year))$tax_exempt
+)
+n_second_homes <- format_number_for_text(
+  filter(house_dat1, year == max(year))$second_homes
+)
 
 # percentages
-perc_occupied <- format_number_for_text(filter(house_dat1, year == max(year))$occupied_dwellings_perc)
-perc_vacant <- format_number_for_text(filter(house_dat1, year == max(year))$vacant_dwellings_perc)
-perc_single_discount <- format_number_for_text(filter(house_dat1, year == max(year))$tax_discount_perc)
-perc_exempt <- format_number_for_text(filter(house_dat1, year == max(year))$tax_exempt_perc)
-perc_second_homes <- format_number_for_text(filter(house_dat1, year == max(year))$second_homes_perc)
+perc_occupied <- format_number_for_text(
+  filter(house_dat1, year == max(year))$occupied_dwellings_perc
+)
+perc_vacant <- format_number_for_text(
+  filter(house_dat1, year == max(year))$vacant_dwellings_perc
+)
+perc_single_discount <- format_number_for_text(
+  filter(house_dat1, year == max(year))$tax_discount_perc
+)
+perc_exempt <- format_number_for_text(
+  filter(house_dat1, year == max(year))$tax_exempt_perc
+)
+perc_second_homes <- format_number_for_text(
+  filter(house_dat1, year == max(year))$second_homes_perc
+)
 
 
 ## 2c) Plots and Tables ----
@@ -113,13 +138,25 @@ houses_ts <- ggplot(house_dat1, aes(x = year, y = total_dwellings, group = 1)) +
   geom_line(linewidth = 1, colour = "#3F3685") +
   theme_profiles() +
   geom_point(color = "#3F3685") +
-  geom_text(aes(label = format(total_dwellings, big.mark = ",")),
-    vjust = 2, color = "#4a4a4a", size = 3.5
+  geom_text(
+    aes(label = format(total_dwellings, big.mark = ",")),
+    vjust = 2,
+    color = "#4a4a4a",
+    size = 3.5
   ) +
-  scale_y_continuous(labels = scales::comma, limits = c(0, 1.1 * max(house_dat1$total_dwellings))) +
+  scale_y_continuous(
+    labels = scales::comma,
+    limits = c(0, 1.1 * max(house_dat1$total_dwellings))
+  ) +
   labs(
-    x = "Year", y = "Number of Dwellings",
-    title = paste0("Number of Dwellings by Year in ", str_wrap(`LOCALITY`, 40), " ", max_year_housing),
+    x = "Year",
+    y = "Number of Dwellings",
+    title = paste0(
+      "Number of Dwellings by Year in ",
+      str_wrap(`LOCALITY`, 40),
+      " ",
+      max_year_housing
+    ),
     caption = "Source: Council Tax billing system (via NRS)"
   ) +
   theme(plot.title = element_text(size = 12))
@@ -128,8 +165,13 @@ houses_ts <- ggplot(house_dat1, aes(x = year, y = total_dwellings, group = 1)) +
 # Table
 house_table <- house_dat1 %>%
   select(
-    year, total_dwellings, occupied_dwellings, vacant_dwellings,
-    tax_discount, tax_exempt, second_homes
+    year,
+    total_dwellings,
+    occupied_dwellings,
+    vacant_dwellings,
+    tax_discount,
+    tax_exempt,
+    second_homes
   ) %>%
   mutate(across(2:7, ~ format(.x, big.mark = ",")))
 
@@ -140,8 +182,10 @@ house_table <- house_dat1 %>%
 
 # https://www.nrscotland.gov.uk/statistics-and-data/statistics/statistics-by-theme/households/household-estimates/small-area-statistics-on-households-and-dwellings
 
-house_raw_dat2 <- read_excel(paste0(lp_path, "Households/", "Data ", ext_year, "/council_tax.xlsx"),
-  sheet = as.character(max_year_housing), skip = 4
+house_raw_dat2 <- read_excel(
+  paste0(lp_path, "Households/", "Data ", ext_year, "/council_tax.xlsx"),
+  sheet = as.character(max_year_housing),
+  skip = 4
 ) %>%
   clean_names()
 
@@ -161,8 +205,14 @@ ctb <- house_dat2 %>%
 variable <- ctb[["variable"]]
 
 pal_ctb <- phsstyles::phs_colours(c(
-  "phs-magenta", "phs-magenta-80", "phs-magenta-50", "phs-magenta-10",
-  "phs-purple-30", "phs-purple-50", "phs-purple-80", "phs-purple"
+  "phs-magenta",
+  "phs-magenta-80",
+  "phs-magenta-50",
+  "phs-magenta-10",
+  "phs-purple-30",
+  "phs-purple-50",
+  "phs-purple-80",
+  "phs-purple"
 ))
 
 ctb_plot <- ctb %>%
@@ -173,7 +223,11 @@ ctb_plot <- ctb %>%
   )) +
   geom_col(position = "fill", colour = "black", size = 0.5, orientation = "y") +
   theme_classic() +
-  labs(x = "Proportion of Households", y = "", caption = "Source: Scottish Assessors’ Association (via NRS)") +
+  labs(
+    x = "Proportion of Households",
+    y = "",
+    caption = "Source: Scottish Assessors’ Association (via NRS)"
+  ) +
   scale_fill_manual(
     name = "Council Tax Band",
     labels = paste("Band", LETTERS[8:1]),
@@ -191,29 +245,45 @@ ctb_plot <- ctb %>%
   )
 
 ctb_table <- ctb %>%
-  mutate(percent = paste0(format_number_for_text(100 * value / sum(value)), "%")) %>%
+  mutate(
+    percent = paste0(format_number_for_text(100 * value / sum(value)), "%")
+  ) %>%
   select(-value) %>%
   pivot_wider(names_from = variable, values_from = percent) %>%
   mutate(`Tax Band` = "Percent of households") %>%
-  select(`Tax Band`,
-    A = council_tax_band_a, B = council_tax_band_b,
-    C = council_tax_band_c, D = council_tax_band_d, E = council_tax_band_e,
-    `F` = council_tax_band_f, G = council_tax_band_g, H = council_tax_band_h
+  select(
+    `Tax Band`,
+    A = council_tax_band_a,
+    B = council_tax_band_b,
+    C = council_tax_band_c,
+    D = council_tax_band_d,
+    E = council_tax_band_e,
+    `F` = council_tax_band_f,
+    G = council_tax_band_g,
+    H = council_tax_band_h
   )
 
 
 ## Objects for locality
-perc_houses_AC <- format_number_for_text(sum(
-  house_dat2$council_tax_band_a,
-  house_dat2$council_tax_band_b,
-  house_dat2$council_tax_band_c
-) / house_dat2$total_number_of_dwellings * 100)
+perc_houses_AC <- format_number_for_text(
+  sum(
+    house_dat2$council_tax_band_a,
+    house_dat2$council_tax_band_b,
+    house_dat2$council_tax_band_c
+  ) /
+    house_dat2$total_number_of_dwellings *
+    100
+)
 
-perc_houses_FH <- format_number_for_text(sum(
-  house_dat2$council_tax_band_f,
-  house_dat2$council_tax_band_g,
-  house_dat2$council_tax_band_h
-) / house_dat2$total_number_of_dwellings * 100)
+perc_houses_FH <- format_number_for_text(
+  sum(
+    house_dat2$council_tax_band_f,
+    house_dat2$council_tax_band_g,
+    house_dat2$council_tax_band_h
+  ) /
+    house_dat2$total_number_of_dwellings *
+    100
+)
 
 
 ########################## Section 4 - Objects for Summary Table ########################
@@ -255,10 +325,14 @@ house_dat_otherlocs <- house_raw_dat %>%
     tax_discount = sum(dwellings_with_a_single_adult_council_tax_discount)
   ) %>%
   ungroup() %>%
-  mutate(tax_discount_perc = round_half_up(tax_discount / total_dwellings * 100, 1))
+  mutate(
+    tax_discount_perc = round_half_up(tax_discount / total_dwellings * 100, 1)
+  )
 
 other_locs_n_houses <- house_dat_otherlocs %>%
-  mutate(tot_dwellings_chr = formatC(total_dwellings, format = "d", big.mark = ",")) %>%
+  mutate(
+    tot_dwellings_chr = formatC(total_dwellings, format = "d", big.mark = ",")
+  ) %>%
   arrange(hscp_locality) %>%
   select(hscp_locality, tot_dwellings_chr) %>%
   pivot_wider(names_from = hscp_locality, values_from = tot_dwellings_chr)
@@ -282,8 +356,14 @@ house_dat2_otherlocs <- house_raw_dat2 %>%
     band_h = sum(council_tax_band_h)
   ) %>%
   mutate(
-    perc_houses_AC = round_half_up((band_a + band_b + band_c) / total_number_of_dwellings * 100, 1),
-    perc_houses_FH = round_half_up((band_f + band_g + band_h) / total_number_of_dwellings * 100, 1)
+    perc_houses_AC = round_half_up(
+      (band_a + band_b + band_c) / total_number_of_dwellings * 100,
+      1
+    ),
+    perc_houses_FH = round_half_up(
+      (band_f + band_g + band_h) / total_number_of_dwellings * 100,
+      1
+    )
   )
 
 other_locs_perc_housesAC <- house_dat2_otherlocs %>%
@@ -336,8 +416,14 @@ house_dat2_hscp <- house_raw_dat2 %>%
   ) %>%
   ungroup() %>%
   mutate(
-    perc_houses_AC = round_half_up((band_a + band_b + band_c) / total_dwellings * 100, 1),
-    perc_houses_FH = round_half_up((band_f + band_g + band_h) / total_dwellings * 100, 1)
+    perc_houses_AC = round_half_up(
+      (band_a + band_b + band_c) / total_dwellings * 100,
+      1
+    ),
+    perc_houses_FH = round_half_up(
+      (band_f + band_g + band_h) / total_dwellings * 100,
+      1
+    )
   )
 
 hscp_perc_housesAC <- house_dat2_hscp$perc_houses_AC
@@ -347,19 +433,45 @@ rm(hscp_dz, house_dat_hscp, house_dat2_hscp)
 
 
 # 3. Scotland
-scot_n_houses <- format_number_for_text(sum(filter(house_raw_dat, year == max(year))$total_number_of_dwellings, na.rm = TRUE))
-scot_perc_discount <- format_number_for_text(sum(filter(house_raw_dat, year == max(year))$dwellings_with_a_single_adult_council_tax_discount, na.rm = TRUE) / sum(filter(house_raw_dat, year == max(year))$total_number_of_dwellings, na.rm = TRUE) * 100)
+scot_n_houses <- format_number_for_text(sum(
+  filter(house_raw_dat, year == max(year))$total_number_of_dwellings,
+  na.rm = TRUE
+))
+scot_perc_discount <- format_number_for_text(
+  sum(
+    filter(
+      house_raw_dat,
+      year == max(year)
+    )$dwellings_with_a_single_adult_council_tax_discount,
+    na.rm = TRUE
+  ) /
+    sum(
+      filter(house_raw_dat, year == max(year))$total_number_of_dwellings,
+      na.rm = TRUE
+    ) *
+    100
+)
 
-scot_perc_housesAC <- format_number_for_text(sum(house_raw_dat2$council_tax_band_a,
-  house_raw_dat2$council_tax_band_b,
-  house_raw_dat2$council_tax_band_c,
-  na.rm = TRUE
-) / sum(house_raw_dat2$total_number_of_dwellings, na.rm = TRUE) * 100)
-scot_perc_housesFH <- format_number_for_text(sum(house_raw_dat2$council_tax_band_f,
-  house_raw_dat2$council_tax_band_g,
-  house_raw_dat2$council_tax_band_h,
-  na.rm = TRUE
-) / sum(house_raw_dat2$total_number_of_dwellings, na.rm = TRUE) * 100)
+scot_perc_housesAC <- format_number_for_text(
+  sum(
+    house_raw_dat2$council_tax_band_a,
+    house_raw_dat2$council_tax_band_b,
+    house_raw_dat2$council_tax_band_c,
+    na.rm = TRUE
+  ) /
+    sum(house_raw_dat2$total_number_of_dwellings, na.rm = TRUE) *
+    100
+)
+scot_perc_housesFH <- format_number_for_text(
+  sum(
+    house_raw_dat2$council_tax_band_f,
+    house_raw_dat2$council_tax_band_g,
+    house_raw_dat2$council_tax_band_h,
+    na.rm = TRUE
+  ) /
+    sum(house_raw_dat2$total_number_of_dwellings, na.rm = TRUE) *
+    100
+)
 
 # Housekeeping ----
 # These objects are left over after the script is run

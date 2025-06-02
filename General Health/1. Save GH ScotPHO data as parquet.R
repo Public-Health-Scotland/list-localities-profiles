@@ -16,13 +16,18 @@ library(tidyr)
 ext_year <- 2024
 
 # Set file path
-lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
+lp_path <- path(
+  "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles"
+)
 gen_health_data_dir <- path(lp_path, "General Health", glue("DATA {ext_year}"))
 
 # Error if the directory doesn't exist
 stopifnot(dir_exists(gen_health_data_dir))
 
-data_extract_file <- dir_ls(gen_health_data_dir, glob = "*ScotPHO_datatab_extract_*")
+data_extract_file <- dir_ls(
+  gen_health_data_dir,
+  glob = "*ScotPHO_datatab_extract_*"
+)
 
 # Error if there's not a single file
 stopifnot(file_exists(data_extract_file))
@@ -45,13 +50,15 @@ read_parquet(data_extract_file) |>
         indicator,
         "Asthma patient hospitalisations" ~ "asthma_hosp",
         "Cancer registrations" ~ "cancer_reg",
-        "Chronic obstructive pulmonary disease (COPD) patient hospitalisations" ~ "copd_hosp",
+        "Chronic obstructive pulmonary disease (COPD) patient hospitalisations" ~
+          "copd_hosp",
         "Coronary heart disease (CHD) patient hospitalisations" ~ "chd_hosp",
         "Deaths, aged 15-44 years" ~ "deaths_15_44",
         "Early deaths from cancer, aged <75 years" ~ "early_deaths_cancer",
         "Life expectancy, females" ~ "life_exp_fem",
         "Life expectancy, males" ~ "life_exp_male",
-        "Population prescribed drugs for anxiety/depression/psychosis" ~ "adp_presc",
+        "Population prescribed drugs for anxiety/depression/psychosis" ~
+          "adp_presc",
         .default = NA_character_
       ),
       ".parquet"
@@ -59,11 +66,12 @@ read_parquet(data_extract_file) |>
   ) |>
   # Write each indicator's data to individual files
   pwalk(
-    \(indicator, data, file_name) write_parquet(
-      data,
-      path(gen_health_data_dir, file_name),
-      compression = "zstd"
-    ),
+    \(indicator, data, file_name)
+      write_parquet(
+        data,
+        path(gen_health_data_dir, file_name),
+        compression = "zstd"
+      ),
     .progress = TRUE
   )
 
