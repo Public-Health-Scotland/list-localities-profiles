@@ -74,19 +74,13 @@ for (HSCP in hscp_list) {
     source("Master RMarkdown Document & Render Code/Tables for Appendix.R")
 
     # Render main profile content ----
-   render(
+    # Render main profile content ----
+    render(
       input = "Master RMarkdown Document & Render Code/Locality_Profiles_Master_Markdown.Rmd",
-      output_format = phstemplates::phs_report_docx(
-        reference_docx = "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/phstemplate.docx",
-        cover_page = "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/Locality Profiles Cover Page.docx",
-        cover_title = "My Report Title",
-        cover_subtitle = "My Report Subtitle",
-        cover_date = "01 01 2024",
-        toc_depth = 3
-      ),
       output_file = glue("{LOCALITY} - Locality Profile.docx"),
       output_dir = output_dir
     )
+    
     # Render the summary table(s) ----
     render(
       input = "Summary Table/Summary-Table-Markdown.Rmd",
