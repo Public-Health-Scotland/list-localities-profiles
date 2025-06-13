@@ -808,7 +808,7 @@ figure_num <- figure_num + 1
 
 ##### Page break
 
-## Hospital Care (Mental Health Speciality)
+## Hospital Care (Mental Health Specialty)
 
 \newline
 
