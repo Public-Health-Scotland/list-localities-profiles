@@ -17,7 +17,12 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set file path for output
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
-output_dir <- path(lp_path, "Master RMarkdown Document & Render Code", "Output", "background data")
+output_dir <- path(
+  lp_path,
+  "Master RMarkdown Document & Render Code",
+  "Output",
+  "background data"
+)
 
 # Read in locality lookup table
 lookup <- read_in_localities()
@@ -33,7 +38,9 @@ stopifnot(all(hscp_list %in% unique(lookup[["hscp2019name"]])))
 
 # Loop over HSCP ----
 for (HSCP in hscp_list) {
-  message(glue("Starting processing for HSCP: {HSCP} ({which(hscp_list == HSCP)}/{length(hscp_list)})"))
+  message(glue(
+    "Starting processing for HSCP: {HSCP} ({which(hscp_list == HSCP)}/{length(hscp_list)})"
+  ))
   # Create list of localities within the current HSCP
   locality_list <- lookup |>
     filter(hscp2019name == HSCP) |>
@@ -52,7 +59,9 @@ for (HSCP in hscp_list) {
   loop_env <- c(ls(), "loop_env")
 
   for (LOCALITY in locality_list) {
-    message(glue("  Processing locality: {LOCALITY} ({which(locality_list == LOCALITY)}/{length(locality_list)})) HSCP: {HSCP}"))
+    message(glue(
+      "  Processing locality: {LOCALITY} ({which(locality_list == LOCALITY)}/{length(locality_list)})) HSCP: {HSCP}"
+    ))
     # **Unscheduled Care Data Processing** ----
     # Extract and filter unscheduled care data for the current locality
     source("Unscheduled Care/2. Unscheduled Care outputs.R")
@@ -100,8 +109,14 @@ for (HSCP in hscp_list) {
 
     smr01_age_loc <- imap(
       list(
-        "Emergency_Admissions_Age" = filter(emergency_adm_age, hscp_locality == LOCALITY),
-        "Unscheduled_Bed_Days_Age" = filter(bed_days_age, hscp_locality == LOCALITY),
+        "Emergency_Admissions_Age" = filter(
+          emergency_adm_age,
+          hscp_locality == LOCALITY
+        ),
+        "Unscheduled_Bed_Days_Age" = filter(
+          bed_days_age,
+          hscp_locality == LOCALITY
+        ),
         "Readmissions_Age" = readmissions_age,
         "AE_Attendances_Age" = filter(ae_att_age, hscp_locality == LOCALITY),
         "Bed_Days_MH_Age" = filter(bed_days_mh_age, hscp_locality == LOCALITY)
@@ -129,7 +144,6 @@ for (HSCP in hscp_list) {
     # Clear out Unscheduled Care data objects to free up memory
     rm(list = setdiff(ls(), c(loop_env, "LOCALITY")))
     gc() # Run garbage collection to further free up memory
-
 
     # **General Health Data Processing** ----
     # Extract and filter general health data for the current locality
