@@ -45,8 +45,10 @@ find_latest_file <- function(directory, regexp) {
   if (!is.na(latest_file_path)) {
     return(latest_file_path)
   } else {
-    cli::cli_abort("There was no file in {.path {directory}} that matched the
-                   regular expression {.arg {regexp}}")
+    cli::cli_abort(
+      "There was no file in {.path {directory}} that matched the
+                   regular expression {.arg {regexp}}"
+    )
   }
 }
 
@@ -54,18 +56,21 @@ find_latest_file <- function(directory, regexp) {
 
 # Locality lookup (searches for most recent)
 locality_lookup_path <-
-  find_latest_file("/conf/linkage/output/lookups/Unicode/Geography/HSCP Locality/",
+  find_latest_file(
+    "/conf/linkage/output/lookups/Unicode/Geography/HSCP Locality/",
     regexp = "HSCP Localities_DZ11_Lookup_\\d+?\\.rds"
   )
 # Postcode lookup (searches for most recent)
 postcode_lookup_path <-
-  find_latest_file("/conf/linkage/output/lookups/Unicode/Geography/Scottish Postcode Directory/",
+  find_latest_file(
+    "/conf/linkage/output/lookups/Unicode/Geography/Scottish Postcode Directory/",
     regexp = "Scottish_Postcode_Directory_.+?\\.parquet"
   )
 
 # Lookups for template/breakdown data ----
 
-postcode_lookup <- read_parquet(postcode_lookup_path,
+postcode_lookup <- read_parquet(
+  postcode_lookup_path,
   col_select = c(ca2019, hb2019, datazone2011, pc7)
 ) %>%
   rename(dr_postcode = "pc7")
@@ -90,11 +95,35 @@ council_lookup <- read_csv(
 # This function is hard-coded with the standard age groups we use in the MSG template.
 main_age_groups <- function(dataset, age_variable) {
   agerecoded <-
-    dplyr::mutate(dataset,
+    dplyr::mutate(
+      dataset,
       age_groups = dplyr::case_when(
         {{ age_variable }} == "<18" ~ "<18",
-        {{ age_variable }} %in% c("65-69", "70-74", "75-79", "80-84", "85-89", "90-94", "95-99", "100+") ~ "65+",
-        {{ age_variable }} %in% c("18-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "60-64") ~ "18-64",
+        {{ age_variable }} %in%
+          c(
+            "65-69",
+            "70-74",
+            "75-79",
+            "80-84",
+            "85-89",
+            "90-94",
+            "95-99",
+            "100+"
+          ) ~
+          "65+",
+        {{ age_variable }} %in%
+          c(
+            "18-24",
+            "25-29",
+            "30-34",
+            "35-39",
+            "40-44",
+            "45-49",
+            "50-54",
+            "55-59",
+            "60-64"
+          ) ~
+          "18-64",
         {{ age_variable }} %in% c(999, NA) ~ "Unknown"
       )
     )
@@ -105,11 +134,25 @@ main_age_groups <- function(dataset, age_variable) {
 ind_4_ages <- function(dataset, age_groups) {
   ind_4_others <- ind_4_master %>%
     dplyr::mutate(
-      age_groups =
-        dplyr::case_when(
-          age_groups %in% c("18-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "60-64", "65-69", "70-74") ~ "18 - 74",
-          age_groups %in% c("75-79", "80-84", "85-89", "90-94", "95-99", "100+") ~ "75+"
-        )
+      age_groups = dplyr::case_when(
+        age_groups %in%
+          c(
+            "18-24",
+            "25-29",
+            "30-34",
+            "35-39",
+            "40-44",
+            "45-49",
+            "50-54",
+            "55-59",
+            "60-64",
+            "65-69",
+            "70-74"
+          ) ~
+          "18 - 74",
+        age_groups %in% c("75-79", "80-84", "85-89", "90-94", "95-99", "100+") ~
+          "75+"
+      )
     )
 }
 
@@ -117,7 +160,8 @@ ind_4_ages <- function(dataset, age_groups) {
 # This function is hard-coded with the standard age groups we use in the Source platform.
 # Do not use if you need different age groups.
 five_year_groups <- function(dataset, age_variable) {
-  agerecoded <- dplyr::mutate(dataset,
+  agerecoded <- dplyr::mutate(
+    dataset,
     age_groups = dplyr::case_when(
       {{ age_variable }} < 18 ~ "<18",
       dplyr::between({{ age_variable }}, 18, 24) ~ "18-24",
@@ -148,7 +192,13 @@ five_year_groups <- function(dataset, age_variable) {
 standard_lca_names <- function(df, council) {
   newdf <- df %>% mutate(council1 = str_replace({{ council }}, " and ", " & "))
   newdf <- newdf %>%
-    mutate(council = if_else({{ council }} == "Na h-Eileanan Siar", "Western Isles", council1)) %>%
+    mutate(
+      council = if_else(
+        {{ council }} == "Na h-Eileanan Siar",
+        "Western Isles",
+        council1
+      )
+    ) %>%
     select(-council1)
   return(newdf)
 }
@@ -159,16 +209,23 @@ population_fin_year <- function(dataset, yearvariable) {
   dataset <- dataset %>%
     dplyr::mutate(year2 = as.integer({{ yearvariable }}) + 1) %>%
     mutate(year2 = as.character(year2)) %>%
-    mutate(year = str_c({{ yearvariable }}, "/", str_sub(year2, start = 3, end = 4))) %>%
+    mutate(
+      year = str_c({{ yearvariable }}, "/", str_sub(year2, start = 3, end = 4))
+    ) %>%
     select(-year2)
 }
 
 get_population <- function() {
-  raw_pops <- read_rds("/conf/linkage/output/lookups/Unicode/Populations/Estimates/DataZone2011_pop_est_2011_2021.rds") %>%
+  raw_pops <- read_rds(
+    "/conf/linkage/output/lookups/Unicode/Populations/Estimates/DataZone2011_pop_est_2011_2021.rds"
+  ) %>%
     filter(year > 2015) %>%
     left_join(locality_lookup) %>%
     group_by(year, hscp_locality) %>%
-    summarise(across(age0:age90plus, sum, na.rm = TRUE), allages = sum(total_pop)) %>%
+    summarise(
+      across(age0:age90plus, sum, na.rm = TRUE),
+      allages = sum(total_pop)
+    ) %>%
     ungroup()
   raw_pops_2022 <- raw_pops %>%
     filter(year == 2021) %>%
@@ -183,16 +240,22 @@ get_population <- function() {
     mutate(over75 = sum(c_across(age75:age90plus))) %>%
     select(-(age0:age90plus))
   pops <- pops %>%
-    pivot_longer(cols = allages:over75, names_to = "age_groups", values_to = "population") %>%
-    mutate(age_groups = case_when(
-      age_groups == "under18" ~ "<18",
-      age_groups == "eighteen_to_64" ~ "18-64",
-      age_groups == "over65" ~ "65+",
-      age_groups == "over18" ~ "18+",
-      age_groups == "eighteen_to_74" ~ "18-74",
-      age_groups == "over75" ~ "75+",
-      age_groups == "allages" ~ "All Ages"
-    ))
+    pivot_longer(
+      cols = allages:over75,
+      names_to = "age_groups",
+      values_to = "population"
+    ) %>%
+    mutate(
+      age_groups = case_when(
+        age_groups == "under18" ~ "<18",
+        age_groups == "eighteen_to_64" ~ "18-64",
+        age_groups == "over65" ~ "65+",
+        age_groups == "over18" ~ "18+",
+        age_groups == "eighteen_to_74" ~ "18-74",
+        age_groups == "over75" ~ "75+",
+        age_groups == "allages" ~ "All Ages"
+      )
+    )
   scot_pops <- pops %>%
     mutate(hscp_locality = "All") %>%
     group_by(year, hscp_locality, age_groups) %>%
@@ -205,10 +268,12 @@ get_population <- function() {
 # Monthly beddays function ----
 
 # use beddays function to count days based on month
-monthly_beddays <- function(data,
-                            earliest_date = NA,
-                            latest_date = NA,
-                            pivot_longer = TRUE) {
+monthly_beddays <- function(
+  data,
+  earliest_date = NA,
+  latest_date = NA,
+  pivot_longer = TRUE
+) {
   # Create a vector of years from the first to last
   years <- c(lubridate::year(earliest_date):lubridate::year(latest_date))
 
@@ -222,7 +287,8 @@ monthly_beddays <- function(data,
     purrr::map2(
       # The first parameter produces a list of the years
       # The second produces a list of months
-      sort(rep(years, 12)), rep(0:11, length(years)),
+      sort(rep(years, 12)),
+      rep(0:11, length(years)),
       function(year, month) {
         # Initialise a date as start_date + x months * (12 * y years)
         earliest_date %m+% months(month + (12 * (year - min(years))))
@@ -236,7 +302,9 @@ monthly_beddays <- function(data,
     # Give them names these will be of the form MMM_YYYY
     setNames(str_c(
       rep(month_names, length(years)),
-      "_", sort(rep(years, 12)), "_beddays"
+      "_",
+      sort(rep(years, 12)),
+      "_beddays"
     ))
 
   # Remove any months which are after the latest_date
@@ -244,7 +312,6 @@ monthly_beddays <- function(data,
     month_intervals,
     ~ latest_date > lubridate::int_start(.)
   )]
-
 
   # Use the list of intervals to create new varaibles for each month
   # and work out the beddays
@@ -275,17 +342,20 @@ monthly_beddays <- function(data,
 
   names(month_intervals) <- stringr::str_replace(
     names(month_intervals),
-    "_beddays", "_admissions"
+    "_beddays",
+    "_admissions"
   )
 
   data <- data %>%
     # map_dfc will return a single dataframe with all the others bound by column
     bind_cols(map_dfc(month_intervals, function(month_interval) {
-      if_else(data %>%
-        pull(discharge_date) %>%
-        floor_date(unit = "month") == int_start(month_interval),
-      1L,
-      NA_integer_
+      if_else(
+        data %>%
+          pull(discharge_date) %>%
+          floor_date(unit = "month") ==
+          int_start(month_interval),
+        1L,
+        NA_integer_
       )
     }))
   # Default behaviour
@@ -302,9 +372,7 @@ monthly_beddays <- function(data,
         names_pattern = "^([A-Z][a-z]{2})_(\\d{4})_([a-z]+)$",
         names_ptypes = list(
           month = factor(
-            levels = as.vector(lubridate::month(1:12,
-              label = TRUE
-            )),
+            levels = as.vector(lubridate::month(1:12, label = TRUE)),
             ordered = TRUE
           ),
           year = factor(

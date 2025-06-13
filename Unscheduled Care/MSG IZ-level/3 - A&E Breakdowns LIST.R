@@ -1,7 +1,6 @@
 # MSG Indicators - Indicator 3: A&E Attendances
 # Uses queries from A&E datamart to produce LIST breakdown file
 
-
 #### 2. LIST breakdown file ----
 
 # Note that you will have to have a copy of the A&E data from all previous years for this to work
@@ -90,4 +89,8 @@ final_output <- temp_ae %>%
   mutate(age_group = if_else(is.na(age_group), "", age_group))
 
 # save out R breakdown file
-write_parquet(final_output, path(data_folder, "3-A&E-Breakdowns.parquet"), compression = "zstd")
+write_parquet(
+  final_output,
+  path(data_folder, "3-A&E-Breakdowns.parquet"),
+  compression = "zstd"
+)

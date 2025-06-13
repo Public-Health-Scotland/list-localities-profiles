@@ -157,7 +157,10 @@ check_missing_data_scotpho(adp_presc)
 
 
 # Long-term conditions
-ltc <- read_parquet(path(gen_health_data_dir, "LTC_from_SLF_Moray_custom.parquet")) |>
+ltc <- read_parquet(path(
+  gen_health_data_dir,
+  "LTC_from_SLF_Moray_custom.parquet"
+)) |>
   rename(
     "Arthritis" = "arth",
     "Asthma" = "asthma",

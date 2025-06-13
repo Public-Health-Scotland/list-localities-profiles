@@ -12,7 +12,9 @@ Sys.umask("006")
 source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Source custom localities function to overwrite the standard
-source("Master RMarkdown Document & Render Code/overwrite_with_custom_functions.R")
+source(
+  "Master RMarkdown Document & Render Code/overwrite_with_custom_functions.R"
+)
 
 # Set file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
