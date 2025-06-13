@@ -1020,7 +1020,7 @@ title <- ggdraw() +
   draw_label(
     str_wrap(
       glue(
-        "Prevalence of Physical Long-Term Conditions {latest_year_ltc} in the {LOCALITY} Locality"
+        "Prevalence estimates for {latest_year_ltc} of Physical Long-Term Conditions in the {LOCALITY} Locality"
       ),
       width = 65
     ),
@@ -1029,7 +1029,11 @@ title <- ggdraw() +
   )
 
 caption <- ggdraw() +
-  draw_label("Source: Source Linkage Files", size = 10, hjust = -0.5)
+  draw_label(
+    "Source: SPARRA via the Source Linkage Files",
+    size = 10,
+    hjust = -0.5
+  )
 
 # Combine plots into 1
 ltc_types_plot <- plot_grid(
@@ -1061,7 +1065,7 @@ rm(
 
 ##### 3d Top LTCs Table #####
 
-# Most common ltc all round
+# Most common LTC all round
 ltc_totals <- ltc2 %>%
   filter(total_ltc != 0) %>%
   select(-hscp2019name, -total_ltc, -age_group) %>%
@@ -1223,7 +1227,7 @@ title <- ggdraw() +
   draw_label(
     str_wrap(
       glue(
-        "Top 5 most prevalent Physical Long-Term Conditions {latest_year_ltc}"
+        "Top 5 most common Physical Long-Term Conditions in {LOCALITY} Locality by prevelance estimates for {latest_year_ltc}, compared to {HSCP} HSCP and Scotland estimates."
       ),
       width = 65
     ),
