@@ -39,7 +39,13 @@ pop_max_year <- max(pop_raw_data$year)
 
 pop_data <- pop_raw_data %>%
   filter(year == max(year)) %>%
-  group_by(year, datazone2011, hscp_locality, hscp2019name, simd2020v2_sc_quintile) %>%
+  group_by(
+    year,
+    datazone2011,
+    hscp_locality,
+    hscp2019name,
+    simd2020v2_sc_quintile
+  ) %>%
   summarise(total_pop = sum(total_pop)) %>%
   ungroup()
 
@@ -49,10 +55,18 @@ pop_data <- pop_raw_data %>%
 lookups_dir <- path("/conf/linkage/output/lookups/Unicode")
 
 # 2020
-simd_2020_all <- read_rds(path(lookups_dir, "Deprivation", "DataZone2011_simd2020v2.rds")) %>%
+simd_2020_all <- read_rds(path(
+  lookups_dir,
+  "Deprivation",
+  "DataZone2011_simd2020v2.rds"
+)) %>%
   select(datazone2011, simd = "simd2020v2_sc_quintile")
 
-simd_2020_dom <- read_rds(path(lookups_dir, "Deprivation", "DataZone2011_domain_level_simd.rds")) %>%
+simd_2020_dom <- read_rds(path(
+  lookups_dir,
+  "Deprivation",
+  "DataZone2011_domain_level_simd.rds"
+)) %>%
   clean_names() %>%
   select(
     datazone2011,
@@ -69,10 +83,18 @@ simd2020 <- merge(simd_2020_all, simd_2020_dom, by = "datazone2011") %>%
   left_join(pop_data, by = join_by(datazone2011))
 
 # 2016
-simd_2016_all <- read_rds(path(lookups_dir, "Deprivation", "DataZone2011_simd2016.rds")) %>%
+simd_2016_all <- read_rds(path(
+  lookups_dir,
+  "Deprivation",
+  "DataZone2011_simd2016.rds"
+)) %>%
   select(datazone2011 = "DataZone2011", simd = "simd2016_sc_quintile")
 
-simd_2016_dom <- read_rds(path(lookups_dir, "Deprivation", "DataZone2011_domain_level_simd.rds")) %>%
+simd_2016_dom <- read_rds(path(
+  lookups_dir,
+  "Deprivation",
+  "DataZone2011_domain_level_simd.rds"
+)) %>%
   clean_names() %>%
   select(
     datazone2011,
@@ -112,11 +134,16 @@ perc_bottom_quintile <- simd_perc_breakdown[1, ]$perc
 perc_top_quintile <- simd_perc_breakdown[5, ]$perc
 
 
-
 ## 5b) SIMD map ----
 
 # load in shapefile for mapping
-zones <- read_sf(path(lookups_dir, "Geography", "Shapefiles", "Data Zones 2011", "SG_DataZone_Bdry_2011.shp")) %>%
+zones <- read_sf(path(
+  lookups_dir,
+  "Geography",
+  "Shapefiles",
+  "Data Zones 2011",
+  "SG_DataZone_Bdry_2011.shp"
+)) %>%
   st_transform(4326) %>%
   rename(datazone2011 = DataZone)
 
@@ -147,8 +174,10 @@ max_lat <- zones_coord$max_lat
 
 # get place names
 places <- read_csv(path(
-  lookups_dir, "Geography",
-  "Shapefiles", "Scottish Places",
+  lookups_dir,
+  "Geography",
+  "Shapefiles",
+  "Scottish Places",
   "Places to Data Zone Lookup.csv"
 )) %>%
   rename(datazone2011 = DataZone) %>%
@@ -184,7 +213,8 @@ simd_cats <- paste("SIMD", 1:5)
 simd_map <- ggplot() +
   geom_sf(
     data = zones,
-    aes(fill = ordered(simd, levels = 1:5)), colour = "black"
+    aes(fill = ordered(simd, levels = 1:5)),
+    colour = "black"
   ) +
   scale_fill_manual(values = simd_col, labels = simd_cats, drop = FALSE) +
   geom_label_repel(
@@ -205,34 +235,52 @@ rm(zones, places, simd_map_data)
 
 ## deprivation domains
 plot_labels <- c(
-  "Access", "Crime", "Education", "Employment",
-  "Health", "Housing", "Income", "General"
+  "Access",
+  "Crime",
+  "Education",
+  "Employment",
+  "Health",
+  "Housing",
+  "Income",
+  "General"
 )
 
 # SIMD topic breakdown
 
 simd_domains <- simd2020 %>%
   filter(hscp2019name == HSCP) %>%
-  select(income, employment, education, access, crime, health, housing, total_pop) %>%
+  select(
+    income,
+    employment,
+    education,
+    access,
+    crime,
+    health,
+    housing,
+    total_pop
+  ) %>%
   reshape2::melt(id.vars = "total_pop") %>%
   group_by(variable, value) %>%
   summarise(total_pop = sum(total_pop)) %>%
   ggplot(aes(
-    fill = factor(value, levels = 1:5), y = total_pop,
+    fill = factor(value, levels = 1:5),
+    y = total_pop,
     x = factor(variable, levels = tolower(plot_labels))
   )) +
   geom_col(position = "fill") +
   scale_x_discrete(labels = plot_labels) +
   scale_y_continuous(labels = scales::percent) +
   labs(
-    x = "", y = "Proportion of Population",
+    x = "",
+    y = "Proportion of Population",
     title = paste0("Breakdown of the SIMD Domains in ", str_wrap(HSCP, 50)),
     caption = "Source: Scottish Government, Public Health Scotland, National Records Scotland"
   ) +
   scale_fill_manual(
     name = "Quintile",
     labels = simd_cats,
-    values = simd_col, drop = FALSE
+    values = simd_col,
+    drop = FALSE
   ) +
   theme_profiles()
 
@@ -242,14 +290,34 @@ simd_domains <- simd2020 %>%
 # Deprivation Data 2020
 simd2020_dom <- simd2020 %>%
   filter(hscp2019name == HSCP) %>%
-  select(datazone2011, simd, income, employment, education, access, crime, health, housing)
+  select(
+    datazone2011,
+    simd,
+    income,
+    employment,
+    education,
+    access,
+    crime,
+    health,
+    housing
+  )
 
 names(simd2020_dom)[2:9] <- paste0(names(simd2020_dom)[2:9], "_20")
 
 # Deprivation Data 2016
 simd2016_dom <- simd2016 %>%
   filter(hscp2019name == HSCP) %>%
-  select(datazone2011, simd, income, employment, education, access, crime, health, housing)
+  select(
+    datazone2011,
+    simd,
+    income,
+    employment,
+    education,
+    access,
+    crime,
+    health,
+    housing
+  )
 
 names(simd2016_dom)[2:9] <- paste0(names(simd2016_dom)[2:9], "_16")
 
@@ -324,8 +392,17 @@ simd_16_20_dom <- full_join(
     v_just = ifelse(diff < 0, 1.5, -1)
   )
 
-simd_diff_plot <- ggplot(simd_16_20_dom, aes(x = quintile, y = diff, fill = factor(quintile))) +
-  facet_wrap(~ factor(domain, levels = c("SIMD", unique(sort(simd_16_20_dom$domain))[1:7])), ncol = 4) +
+simd_diff_plot <- ggplot(
+  simd_16_20_dom,
+  aes(x = quintile, y = diff, fill = factor(quintile))
+) +
+  facet_wrap(
+    ~ factor(
+      domain,
+      levels = c("SIMD", unique(sort(simd_16_20_dom$domain))[1:7])
+    ),
+    ncol = 4
+  ) +
   geom_line(aes(y = 0, group = 1)) +
   geom_col(
     position = position_dodge(),
@@ -337,21 +414,27 @@ simd_diff_plot <- ggplot(simd_16_20_dom, aes(x = quintile, y = diff, fill = fact
       vjust = v_just
     ),
     color = "black",
-    position = position_dodge(0), size = 2.8
+    position = position_dodge(0),
+    size = 2.8
   ) +
   scale_y_continuous(
     labels = scales::percent,
-    limits = c(-1.4 * max(abs(simd_16_20_dom$diff)), 1.4 * max(abs(simd_16_20_dom$diff)))
+    limits = c(
+      -1.4 * max(abs(simd_16_20_dom$diff)),
+      1.4 * max(abs(simd_16_20_dom$diff))
+    )
   ) +
   scale_fill_manual(
     name = "Population-Weighted Quintile",
     labels = simd_cats,
-    values = (simd_col), drop = FALSE
+    values = (simd_col),
+    drop = FALSE
   ) +
   theme_minimal() +
   theme(legend.position = "bottom") +
   labs(
-    x = "", y = "Difference from 2016",
+    x = "",
+    y = "Difference from 2016",
     title = paste0(
       "Difference in Population Living in Deprivation Quintiles by SIMD Domain\n",
       "in 2016 and ", pop_max_year, " in ", str_wrap(HSCP, 50)

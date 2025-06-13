@@ -17,7 +17,12 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set file path for output
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
-output_dir <- path(lp_path, "Master RMarkdown Document & Render Code", "Output", "background data")
+output_dir <- path(
+  lp_path,
+  "Master RMarkdown Document & Render Code",
+  "Output",
+  "background data"
+)
 
 # Read in locality lookup table
 lookup <- read_in_localities()

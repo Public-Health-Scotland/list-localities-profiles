@@ -1,0 +1,117 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "commitType": "docs",
+  "commitConvention": "atom",
+  "contributors": [
+    {
+      "login": "Moohan",
+      "name": "James McMahon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5982260?v=4",
+      "profile": "https://publichealthscotland.scot/",
+      "contributions": [
+        "code",
+        "review",
+        "projectManagement"
+      ]
+    },
+    {
+      "login": "RyanDuffy01",
+      "name": "RyanDuffy01",
+      "avatar_url": "https://avatars.githubusercontent.com/u/82060940?v=4",
+      "profile": "https://github.com/RyanDuffy01",
+      "contributions": [
+        "code",
+        "review"
+      ]
+    },
+    {
+      "login": "CliveWG",
+      "name": "Clive Greatorex",
+      "avatar_url": "https://avatars.githubusercontent.com/u/109799428?v=4",
+      "profile": "https://github.com/CliveWG",
+      "contributions": [
+        "code",
+        "review"
+      ]
+    },
+    {
+      "login": "JosieSteele",
+      "name": "Josie Steele",
+      "avatar_url": "https://avatars.githubusercontent.com/u/166606214?v=4",
+      "profile": "https://github.com/JosieSteele",
+      "contributions": [
+        "code",
+        "review"
+      ]
+    },
+    {
+      "login": "khansh01",
+      "name": "Khansa Hussain",
+      "avatar_url": "https://avatars.githubusercontent.com/u/114073136?v=4",
+      "profile": "https://github.com/khansh01",
+      "contributions": [
+        "code",
+        "review"
+      ]
+    },
+    {
+      "login": "kenneo03git",
+      "name": "Kennedy Owusu-Afriyie",
+      "avatar_url": "https://avatars.githubusercontent.com/u/153850030?v=4",
+      "profile": "https://github.com/kenneo03git",
+      "contributions": [
+        "review"
+      ]
+    },
+    {
+      "login": "There717",
+      "name": "Theresa Campbell",
+      "avatar_url": "https://avatars.githubusercontent.com/u/79308287?v=4",
+      "profile": "https://github.com/There717",
+      "contributions": [
+        "code",
+        "review"
+      ]
+    },
+    {
+      "login": "cfraser2020",
+      "name": "Craig Fraser ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/72806160?v=4",
+      "profile": "https://github.com/cfraser2020",
+      "contributions": [
+        "code",
+        "review",
+        "projectManagement"
+      ]
+    },
+    {
+      "login": "robbiemac01",
+      "name": "robbiemac01",
+      "avatar_url": "https://avatars.githubusercontent.com/u/109292606?v=4",
+      "profile": "https://github.com/robbiemac01",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "Andrew-Saul",
+      "name": "Andrew-Saul",
+      "avatar_url": "https://avatars.githubusercontent.com/u/94113765?v=4",
+      "profile": "https://github.com/Andrew-Saul",
+      "contributions": [
+        "bug"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "contributorsSortAlphabetically": true,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "list-localities-profiles",
+  "projectOwner": "Public-Health-Scotland"
+}

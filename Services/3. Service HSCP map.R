@@ -31,7 +31,9 @@ library(patchwork)
 
 # 2. Read in locality shape files ----
 
-shp <- read_sf("/conf/linkage/output/lookups/Unicode/Geography/Shapefiles/HSCP Locality (Datazone2011 Base)/HSCP_Locality.shp")
+shp <- read_sf(
+  "/conf/linkage/output/lookups/Unicode/Geography/Shapefiles/HSCP Locality (Datazone2011 Base)/HSCP_Locality.shp"
+)
 shp <- st_transform(shp, 4326) |>
   select(hscp_local, HSCP_name, Shape_Leng, Shape_Area, geometry)
 
@@ -53,13 +55,47 @@ shp_hscp <- shp |>
 if (n_loc < 5) {
   col_palette <- c("#3F3685", "#9B4393", "#0078D4", "#83BB26")
 } else if (n_loc %in% c(5, 6)) {
-  col_palette <- c("#3F3685", "#9B4393", "#0078D4", "#83BB26", "#948DA3", "#1E7F84")
+  col_palette <- c(
+    "#3F3685",
+    "#9B4393",
+    "#0078D4",
+    "#83BB26",
+    "#948DA3",
+    "#1E7F84"
+  )
 } else if (n_loc == 7) {
-  col_palette <- c("#3F3685", "#9B4393", "#0078D4", "#83BB26", "#948DA3", "#1E7F84", "#6B5C85")
+  col_palette <- c(
+    "#3F3685",
+    "#9B4393",
+    "#0078D4",
+    "#83BB26",
+    "#948DA3",
+    "#1E7F84",
+    "#6B5C85"
+  )
 } else if (n_loc == 8) {
-  col_palette <- c("#3F3685", "#9B4393", "#0078D4", "#83BB26", "#948DA3", "#1E7F84", "#6B5C85", "#C73918")
+  col_palette <- c(
+    "#3F3685",
+    "#9B4393",
+    "#0078D4",
+    "#83BB26",
+    "#948DA3",
+    "#1E7F84",
+    "#6B5C85",
+    "#C73918"
+  )
 } else if (n_loc == 9) {
-  col_palette <- c("#3F3685", "#9B4393", "#0078D4", "#83BB26", "#948DA3", "#1E7F84", "#6B5C85", "#C73918", "orchid3")
+  col_palette <- c(
+    "#3F3685",
+    "#9B4393",
+    "#0078D4",
+    "#83BB26",
+    "#948DA3",
+    "#1E7F84",
+    "#6B5C85",
+    "#C73918",
+    "orchid3"
+  )
 }
 
 # 3.2 Locality shapes ----
@@ -82,7 +118,9 @@ min_lat <- zones_coord$min_lat - 0.01
 max_lat <- zones_coord$max_lat + 0.01
 
 # get data zones in HSCP
-hscp_loc <- read_csv("/conf/linkage/output/lookups/Unicode/Geography/HSCP Locality/HSCP Localities_DZ11_Lookup_20240513.csv") |>
+hscp_loc <- read_csv(
+  "/conf/linkage/output/lookups/Unicode/Geography/HSCP Locality/HSCP Localities_DZ11_Lookup_20240513.csv"
+) |>
   select(datazone2011, hscp2019name) |>
   filter(hscp2019name == HSCP)
 
@@ -94,8 +132,12 @@ places <- read_csv(paste0(
   rename(datazone2011 = DataZone) |>
   filter(datazone2011 %in% hscp_loc$datazone2011) |>
   # extra filter to remove place names with coordinates outwith locality
-  filter(Longitude >= min_long & Longitude <= max_long &
-    Latitude >= min_lat & Latitude <= max_lat) |>
+  filter(
+    Longitude >= min_long &
+      Longitude <= max_long &
+      Latitude >= min_lat &
+      Latitude <= max_lat
+  ) |>
   group_by(name) |>
   summarise(
     Longitude = first(Longitude),
@@ -113,8 +155,10 @@ api_key <- locality_map_id$id
 register_stadiamaps(key = api_key)
 service_map_background <- get_stadiamap(
   bbox = c(
-    min_long, min_lat,
-    max_long, max_lat
+    min_long,
+    min_lat,
+    max_long,
+    max_lat
   ),
   maptype = "stamen_terrain_background"
 )
@@ -145,7 +189,10 @@ if (nrow(markers_gp) > 0) {
         x = longitude,
         y = latitude,
         colour = "GP Practice"
-      ), size = 2, shape = 21, stroke = 0.5,
+      ),
+      size = 2,
+      shape = 21,
+      stroke = 0.5,
       fill = "red"
     )
 }
@@ -157,7 +204,10 @@ if (nrow(markers_care_home) > 0) {
         x = longitude,
         y = latitude,
         colour = "Care Home"
-      ), size = 2, shape = 22, stroke = 0.5,
+      ),
+      size = 2,
+      shape = 22,
+      stroke = 0.5,
       fill = "yellow"
     )
 }
@@ -169,7 +219,10 @@ if (nrow(markers_emergency_dep) > 0) {
         x = longitude,
         y = latitude,
         colour = "Emergency Department"
-      ), size = 2, shape = 23, stroke = 0.5,
+      ),
+      size = 2,
+      shape = 23,
+      stroke = 0.5,
       fill = "blue"
     )
 }
@@ -181,7 +234,10 @@ if (nrow(markers_miu) > 0) {
         x = longitude,
         y = latitude,
         colour = "Minor Injuries Unit"
-      ), size = 2, shape = 24, stroke = 0.5,
+      ),
+      size = 2,
+      shape = 24,
+      stroke = 0.5,
       fill = "green"
     )
 }
@@ -194,18 +250,21 @@ if (nrow(markers_miu) > 0) {
 
 service_map <- service_map +
   labs(colour = "Service Type") +
-  scale_color_manual(values = c(
-    "GP Practice" = "black",
-    "Care Home" = "black",
-    "Emergency Department" = "black",
-    "Minor Injuries Unit" = "black"
-  )) +
+  scale_color_manual(
+    values = c(
+      "GP Practice" = "black",
+      "Care Home" = "black",
+      "Emergency Department" = "black",
+      "Minor Injuries Unit" = "black"
+    )
+  ) +
   theme(legend.title = element_blank()) +
   scale_fill_manual(values = col_palette) +
   geom_text_repel(
     data = places,
     aes(x = Longitude, y = Latitude, label = name),
-    color = "black", size = 3.5,
+    color = "black",
+    size = 3.5,
     max.overlaps = 18,
     max.time = 2,
     max.iter = 100000
@@ -252,30 +311,48 @@ leg1 <- cowplot::get_legend(service_map_1)
 
 all_markers <- dplyr::select(markers_miu, name, latitude, longitude) %>%
   mutate(type = "Minor Injury Unit") %>%
-  bind_rows(dplyr::select(markers_care_home, name, latitude, longitude) %>% mutate(type = "Care Home")) %>%
-  bind_rows(dplyr::select(markers_emergency_dep, name, latitude, longitude) %>% mutate(type = "Emergency Department")) %>%
-  bind_rows(dplyr::select(markers_gp, name = gp_practice_name, latitude, longitude) %>% mutate(type = "GP Practice"))
+  bind_rows(
+    dplyr::select(markers_care_home, name, latitude, longitude) %>%
+      mutate(type = "Care Home")
+  ) %>%
+  bind_rows(
+    dplyr::select(markers_emergency_dep, name, latitude, longitude) %>%
+      mutate(type = "Emergency Department")
+  ) %>%
+  bind_rows(
+    dplyr::select(markers_gp, name = gp_practice_name, latitude, longitude) %>%
+      mutate(type = "GP Practice")
+  )
 
 service_map_2 <- ggmap(service_map_background) +
-  geom_point(data = all_markers, aes(x = longitude, y = latitude, colour = type, fill = type, shape = type)) +
-  scale_color_manual(values = c(
-    "GP Practice" = "black",
-    "Care Home" = "black",
-    "Emergency Department" = "black",
-    "Minor Injury Unit" = "black"
-  )) +
-  scale_fill_manual(values = c(
-    "GP Practice" = "red",
-    "Care Home" = "yellow",
-    "Emergency Department" = "blue",
-    "Minor Injury Unit" = "green"
-  )) +
-  scale_shape_manual(values = c(
-    "GP Practice" = 21,
-    "Care Home" = 22,
-    "Emergency Department" = 23,
-    "Minor Injury Unit" = 24
-  )) +
+  geom_point(
+    data = all_markers,
+    aes(x = longitude, y = latitude, colour = type, fill = type, shape = type)
+  ) +
+  scale_color_manual(
+    values = c(
+      "GP Practice" = "black",
+      "Care Home" = "black",
+      "Emergency Department" = "black",
+      "Minor Injury Unit" = "black"
+    )
+  ) +
+  scale_fill_manual(
+    values = c(
+      "GP Practice" = "red",
+      "Care Home" = "yellow",
+      "Emergency Department" = "blue",
+      "Minor Injury Unit" = "green"
+    )
+  ) +
+  scale_shape_manual(
+    values = c(
+      "GP Practice" = 21,
+      "Care Home" = 22,
+      "Emergency Department" = 23,
+      "Minor Injury Unit" = 24
+    )
+  ) +
   theme(legend.title = element_blank()) +
   theme(
     axis.text.x = element_blank(),
@@ -294,7 +371,8 @@ leg2 <- cowplot::get_legend(service_map_2)
 
 blank_leg <- patchwork::plot_spacer() + theme_void()
 
-leg12 <- cowplot::plot_grid(blank_leg,
+leg12 <- cowplot::plot_grid(
+  blank_leg,
   leg1,
   blank_leg,
   leg2,
@@ -304,7 +382,8 @@ leg12 <- cowplot::plot_grid(blank_leg,
 
 # Combine plot of locations and localities with corrected legends
 
-service_map <- cowplot::plot_grid(service_map,
+service_map <- cowplot::plot_grid(
+  service_map,
   leg12,
   nrow = 1,
   align = "h",

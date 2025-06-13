@@ -58,8 +58,14 @@ populations$"Pop0_17" <- rowSums(subset(populations, select = age0:age17))
 populations$"Pop18_44" <- rowSums(subset(populations, select = age18:age44))
 populations$"Pop45_64" <- rowSums(subset(populations, select = age45:age64))
 populations$"Pop65_74" <- rowSums(subset(populations, select = age65:age74))
-populations$"Pop75Plus" <- rowSums(subset(populations, select = age75:age90plus))
-populations$"Pop65Plus" <- rowSums(subset(populations, select = age65:age90plus))
+populations$"Pop75Plus" <- rowSums(subset(
+  populations,
+  select = age75:age90plus
+))
+populations$"Pop65Plus" <- rowSums(subset(
+  populations,
+  select = age65:age90plus
+))
 
 pops <- populations %>%
   select(
@@ -122,16 +128,22 @@ pop_areas <- pops %>%
       ungroup() %>%
       mutate(location = "Scotland")
   ) %>%
-  pivot_longer("Pop0_17":"total_pop", names_to = "age_group", values_to = "pop") %>%
-  mutate(age_group = case_when(
-    age_group == "Pop0_17" ~ "0 - 17",
-    age_group == "Pop18_44" ~ "18 - 44",
-    age_group == "Pop45_64" ~ "45 - 64",
-    age_group == "Pop65_74" ~ "65 - 74",
-    age_group == "Pop75Plus" ~ "75+",
-    age_group == "Pop65Plus" ~ "65+",
-    age_group == "total_pop" ~ "Total"
-  ))
+  pivot_longer(
+    "Pop0_17":"total_pop",
+    names_to = "age_group",
+    values_to = "pop"
+  ) %>%
+  mutate(
+    age_group = case_when(
+      age_group == "Pop0_17" ~ "0 - 17",
+      age_group == "Pop18_44" ~ "18 - 44",
+      age_group == "Pop45_64" ~ "45 - 64",
+      age_group == "Pop65_74" ~ "65 - 74",
+      age_group == "Pop75Plus" ~ "75+",
+      age_group == "Pop65Plus" ~ "65+",
+      age_group == "total_pop" ~ "Total"
+    )
+  )
 
 
 hscp_pop <- pops %>%
@@ -236,14 +248,27 @@ aggregate_usc_area_data <- function(data) {
 }
 
 # Functions for creating time trends
-age_group_trend_usc <- function(data_for_plot, plot_title, yaxis_title, source) {
+age_group_trend_usc <- function(
+  data_for_plot,
+  plot_title,
+  yaxis_title,
+  source
+) {
   data_for_plot %>%
-    ggplot(aes(x = financial_year, y = data, group = age_group, color = age_group)) +
+    ggplot(aes(
+      x = financial_year,
+      y = data,
+      group = age_group,
+      color = age_group
+    )) +
     geom_line(linewidth = 1) +
     geom_point() +
     scale_colour_manual(values = c(palette)) +
     scale_x_discrete(breaks = data_for_plot$financial_year) +
-    scale_y_continuous(labels = comma, limits = c(0, 1.1 * max(data_for_plot$data))) +
+    scale_y_continuous(
+      labels = comma,
+      limits = c(0, 1.1 * max(data_for_plot$data))
+    ) +
     theme_profiles() +
     labs(
       title = plot_title,
@@ -257,9 +282,20 @@ age_group_trend_usc <- function(data_for_plot, plot_title, yaxis_title, source) 
 
 area_trend_usc <- function(data_for_plot, plot_title, yaxis_title, source) {
   data_for_plot %>%
-    mutate(location = fct_reorder(as.factor(str_wrap(location, 23)), as.numeric(area_type))) %>%
+    mutate(
+      location = fct_reorder(
+        as.factor(str_wrap(location, 23)),
+        as.numeric(area_type)
+      )
+    ) %>%
     ggplot() +
-    aes(x = financial_year, y = data, group = location, fill = location, linetype = area_type) +
+    aes(
+      x = financial_year,
+      y = data,
+      group = location,
+      fill = location,
+      linetype = area_type
+    ) +
     geom_line(aes(colour = location), linewidth = 1) +
     geom_point(aes(colour = location), size = 2) +
     scale_fill_manual(values = palette) +
@@ -267,7 +303,10 @@ area_trend_usc <- function(data_for_plot, plot_title, yaxis_title, source) {
     theme_profiles() +
     expand_limits(y = 0) +
     scale_x_discrete(breaks = data_for_plot$financial_year) +
-    scale_y_continuous(labels = comma, limits = c(0, 1.1 * max(data_for_plot$data))) +
+    scale_y_continuous(
+      labels = comma,
+      limits = c(0, 1.1 * max(data_for_plot$data))
+    ) +
     labs(
       title = plot_title,
       y = yaxis_title,
@@ -279,7 +318,9 @@ area_trend_usc <- function(data_for_plot, plot_title, yaxis_title, source) {
       legend.title = element_blank()
     ) +
     guides(
-      linetype = "none", shape = "none", fill = "none",
+      linetype = "none",
+      shape = "none",
+      fill = "none",
       colour = guide_legend(nrow = 1, byrow = TRUE)
     )
 }
@@ -306,7 +347,10 @@ word_change_calc <- function(latest, first) {
 # 1. Emergency Admissions ----
 # _________________________________________________________________________
 
-emergency_adm <- read_parquet(paste0(import_folder, "emergency_admissions_msg.parquet")) %>%
+emergency_adm <- read_parquet(paste0(
+  import_folder,
+  "emergency_admissions_msg.parquet"
+)) %>%
   filter(financial_year <= max_fy)
 
 # Plotting by age
@@ -547,7 +591,8 @@ first_fy_rate_ubd <- filter(
 
 # HSCP
 first_fy_hscp_ubd <- filter(
-  bed_days_areas, (financial_year == min(bed_days_areas$financial_year)) & (area_type == "HSCP")
+  bed_days_areas,
+  (financial_year == min(bed_days_areas$financial_year)) & (area_type == "HSCP")
 )$data
 
 hscp_bed_days <- bed_days_areas %>%
@@ -562,7 +607,9 @@ hscp_change_ubd <- word_change_calc(hscp_bed_days2, first_fy_hscp_ubd)
 
 # Scotland
 first_fy_scot_ubd <- filter(
-  bed_days_areas, (financial_year == min(bed_days_areas$financial_year)) & (area_type == "Scotland")
+  bed_days_areas,
+  (financial_year == min(bed_days_areas$financial_year)) &
+    (area_type == "Scotland")
 )$data
 
 scot_bed_days <- bed_days_areas %>%
@@ -630,7 +677,10 @@ first_ubd_max_age <- bed_days_age %>%
   ) %>%
   pull(data)
 
-max_rate_change_ubd <- percent_change_calc(latest_ubd_max_age2, first_ubd_max_age)
+max_rate_change_ubd <- percent_change_calc(
+  latest_ubd_max_age2,
+  first_ubd_max_age
+)
 max_word_change_ubd <- word_change_calc(latest_ubd_max_age2, first_ubd_max_age)
 
 latest_ubd_min_age <- bed_days_age %>%
@@ -656,13 +706,19 @@ first_ubd_min_age1 <- first_ubd_min_age %>% pull(data)
 min_year_ubd_age1 <- first_ubd_min_age %>% pull(year)
 
 
-min_rate_change_ubd <- percent_change_calc(latest_ubd_min_age2, first_ubd_min_age1)
+min_rate_change_ubd <- percent_change_calc(
+  latest_ubd_min_age2,
+  first_ubd_min_age1
+)
 min_word_change_ubd <- word_change_calc(latest_ubd_min_age2, first_ubd_min_age1)
 
 # 2b. Unscheduled bed days - Mental Health ----
 # _________________________________________________________________________
 
-bed_days_mh <- read_parquet(paste0(import_folder, "bed_days_mh_msg.parquet")) %>%
+bed_days_mh <- read_parquet(paste0(
+  import_folder,
+  "bed_days_mh_msg.parquet"
+)) %>%
   filter(financial_year <= max_fy)
 
 # Plotting by age
@@ -725,8 +781,14 @@ first_bd_mh_max_age <- bed_days_mh_age %>%
   ) %>%
   pull(data)
 
-max_rate_change_beds_mh <- percent_change_calc(latest_bd_mh_max_age2, first_bd_mh_max_age)
-max_word_change_beds_mh <- word_change_calc(latest_bd_mh_max_age2, first_bd_mh_max_age)
+max_rate_change_beds_mh <- percent_change_calc(
+  latest_bd_mh_max_age2,
+  first_bd_mh_max_age
+)
+max_word_change_beds_mh <- word_change_calc(
+  latest_bd_mh_max_age2,
+  first_bd_mh_max_age
+)
 
 latest_bd_mh_min_age <- bed_days_mh_age %>%
   filter(
@@ -751,8 +813,14 @@ first_bd_mh_min_age1 <- first_bd_mh_min_age %>% pull(data)
 min_year_bd_mh_age1 <- first_bd_mh_min_age %>% pull(year)
 
 
-min_rate_change_beds_mh <- percent_change_calc(latest_bd_mh_min_age2, first_bd_mh_min_age1)
-min_word_change_beds_mh <- word_change_calc(latest_bd_mh_min_age2, first_bd_mh_min_age1)
+min_rate_change_beds_mh <- percent_change_calc(
+  latest_bd_mh_min_age2,
+  first_bd_mh_min_age1
+)
+min_word_change_beds_mh <- word_change_calc(
+  latest_bd_mh_min_age2,
+  first_bd_mh_min_age1
+)
 
 # Objects for text and summary table- area
 max_year_bd_mh_areas <- max(bed_days_mh_areas$financial_year)
@@ -779,8 +847,14 @@ first_hscp_bed_days_mh <- bed_days_mh_areas %>%
   ) %>%
   pull(data)
 
-hscp_rate_change_beds_mh <- percent_change_calc(hscp_bed_days_mh2, first_hscp_bed_days_mh)
-hscp_word_change_beds_mh <- word_change_calc(hscp_bed_days_mh2, first_hscp_bed_days_mh)
+hscp_rate_change_beds_mh <- percent_change_calc(
+  hscp_bed_days_mh2,
+  first_hscp_bed_days_mh
+)
+hscp_word_change_beds_mh <- word_change_calc(
+  hscp_bed_days_mh2,
+  first_hscp_bed_days_mh
+)
 
 scot_bed_days_mh <- bed_days_mh_areas %>%
   filter(
@@ -799,8 +873,14 @@ first_scot_bed_days_mh <- bed_days_mh_areas %>%
   ) %>%
   pull(data)
 
-scot_rate_change_beds_mh <- percent_change_calc(scot_bed_days_mh2, first_scot_bed_days_mh)
-scot_word_change_beds_mh <- word_change_calc(scot_bed_days_mh2, first_scot_bed_days_mh)
+scot_rate_change_beds_mh <- percent_change_calc(
+  scot_bed_days_mh2,
+  first_scot_bed_days_mh
+)
+scot_word_change_beds_mh <- word_change_calc(
+  scot_bed_days_mh2,
+  first_scot_bed_days_mh
+)
 
 # NHS health board
 hb_mh_beddays <- bed_days_mh_areas %>%
@@ -819,7 +899,10 @@ first_fy_hb_mh <- filter(
   location == HB
 )$data
 
-hb_rate_change_mh <- round(abs(hb_mh_beddays2 - first_fy_hb_mh) / first_fy_hb_mh * 100, digits = 1)
+hb_rate_change_mh <- round(
+  abs(hb_mh_beddays2 - first_fy_hb_mh) / first_fy_hb_mh * 100,
+  digits = 1
+)
 word_change_hb_mh <- word_change_calc(hb_mh_beddays2, first_fy_hb_mh)
 
 other_loc_bed_days_mh <- bed_days_mh %>%
@@ -837,7 +920,10 @@ other_loc_bed_days_mh <- bed_days_mh %>%
 # 3. A&E Attendances ----
 # _________________________________________________________________________
 
-ae_attendances <- read_parquet(paste0(import_folder, "ae_attendances_msg.parquet")) %>%
+ae_attendances <- read_parquet(paste0(
+  import_folder,
+  "ae_attendances_msg.parquet"
+)) %>%
   filter(financial_year <= max_fy)
 
 # Plotting by age
@@ -907,8 +993,14 @@ first_ae_att_max_age <- ae_att_age %>%
 
 first_ae_att_max_age_data <- first_ae_att_max_age %>% pull(data)
 
-percent_rate_change_ae_age <- percent_change_calc(latest_ae_att_loc2_age, first_ae_att_max_age_data)
-word_change_rate_ae_age <- word_change_calc(latest_ae_att_loc2_age, first_ae_att_max_age_data)
+percent_rate_change_ae_age <- percent_change_calc(
+  latest_ae_att_loc2_age,
+  first_ae_att_max_age_data
+)
+word_change_rate_ae_age <- word_change_calc(
+  latest_ae_att_loc2_age,
+  first_ae_att_max_age_data
+)
 
 latest_ae_att_min_age <- ae_att_age %>%
   filter(
@@ -932,8 +1024,14 @@ first_ae_att_min_age <- ae_att_age %>%
 
 first_ae_att_min_data <- first_ae_att_min_age %>% pull(data)
 
-percent_rate_change_ae_age2 <- percent_change_calc(latest_ae_att_loc2_age_min, first_ae_att_min_data)
-word_change_rate_ae_age2 <- word_change_calc(latest_ae_att_loc2_age_min, first_ae_att_min_data)
+percent_rate_change_ae_age2 <- percent_change_calc(
+  latest_ae_att_loc2_age_min,
+  first_ae_att_min_data
+)
+word_change_rate_ae_age2 <- word_change_calc(
+  latest_ae_att_loc2_age_min,
+  first_ae_att_min_data
+)
 
 
 # Objects for text and summary table- area
@@ -961,8 +1059,14 @@ first_fy_hscp_ae <- filter(
   area_type == "HSCP"
 )$data
 
-percent_rate_change_ae_areas_hscp <- percent_change_calc(hscp_ae_att2, first_fy_hscp_ae)
-word_change_rate_ae_areas_hscp <- word_change_calc(hscp_ae_att2, first_fy_hscp_ae)
+percent_rate_change_ae_areas_hscp <- percent_change_calc(
+  hscp_ae_att2,
+  first_fy_hscp_ae
+)
+word_change_rate_ae_areas_hscp <- word_change_calc(
+  hscp_ae_att2,
+  first_fy_hscp_ae
+)
 
 scot_ae_att <- ae_att_areas %>%
   filter(
@@ -979,8 +1083,14 @@ first_fy_scot_ae <- filter(
   location == "Scotland"
 )$data
 
-percent_rate_change_ae_areas_scot <- percent_change_calc(scot_ae_att2, first_fy_scot_ae)
-word_change_rate_ae_areas_scot <- word_change_calc(scot_ae_att2, first_fy_scot_ae)
+percent_rate_change_ae_areas_scot <- percent_change_calc(
+  scot_ae_att2,
+  first_fy_scot_ae
+)
+word_change_rate_ae_areas_scot <- word_change_calc(
+  scot_ae_att2,
+  first_fy_scot_ae
+)
 
 # NHS health board
 hb_ae_att <- ae_att_areas %>%
@@ -1016,7 +1126,10 @@ other_loc_ae_att <- ae_attendances %>%
 # 4. Delayed Discharges ----
 # _________________________________________________________________________
 
-delayed_disch <- read_parquet(paste0(import_folder, "delayed_discharges_msg.parquet")) %>%
+delayed_disch <- read_parquet(paste0(
+  import_folder,
+  "delayed_discharges_msg.parquet"
+)) %>%
   filter(financial_year <= max_fy) %>%
   filter(age_group %in% c("65 - 74", "75+")) %>%
   group_by(financial_year, hscp2019name, hscp_locality) %>%
@@ -1120,13 +1233,15 @@ other_loc_dd <- delayed_disch %>%
   group_by(financial_year, hscp_locality) %>%
   summarise(dd_bed_days = sum(dd_bed_days)) %>%
   ungroup() %>%
-  right_join(pops_other_locs_65plus, by = join_by(financial_year, hscp_locality)) %>%
+  right_join(
+    pops_other_locs_65plus,
+    by = join_by(financial_year, hscp_locality)
+  ) %>%
   mutate(dd_bed_days = replace_na(dd_bed_days, 0)) %>%
   mutate(data = round_half_up(dd_bed_days / pop * 100000)) %>%
   mutate(data = format(data, big.mark = ",")) %>%
   select(hscp_locality, data) %>%
   pivot_wider(names_from = hscp_locality, values_from = data)
-
 
 
 # 5. Fall Admissions ----
@@ -1180,7 +1295,10 @@ first_falls_hscp <- falls_areas %>%
   ) %>%
   pull(data)
 
-percent_rate_change_falls_hscp <- percent_change_calc(hscp_falls2, first_falls_hscp)
+percent_rate_change_falls_hscp <- percent_change_calc(
+  hscp_falls2,
+  first_falls_hscp
+)
 word_change_rate_falls_hscp <- word_change_calc(hscp_falls2, first_falls_hscp)
 
 scot_falls <- falls_areas %>%
@@ -1200,7 +1318,10 @@ first_falls_scot <- falls_areas %>%
   ) %>%
   pull(data)
 
-percent_rate_change_falls_scot <- percent_change_calc(scot_falls2, first_falls_scot)
+percent_rate_change_falls_scot <- percent_change_calc(
+  scot_falls2,
+  first_falls_scot
+)
 word_change_rate_falls_scot <- word_change_calc(scot_falls2, first_falls_scot)
 
 # NHS health board
@@ -1220,13 +1341,19 @@ first_fy_hb_falls <- filter(
   location == HB
 )$data
 
-hb_rate_change_falls <- round(abs(hb_falls2 - first_fy_hb_falls) / first_fy_hb_falls * 100, digits = 1)
+hb_rate_change_falls <- round(
+  abs(hb_falls2 - first_fy_hb_falls) / first_fy_hb_falls * 100,
+  digits = 1
+)
 word_change_hb_falls <- word_change_calc(hb_falls2, first_fy_hb_falls)
 
 # 6. Readmissions (28 days) ----
 # _________________________________________________________________________
 
-readmissions <- read_parquet(paste0(import_folder, "readmissions_smr.parquet")) %>%
+readmissions <- read_parquet(paste0(
+  import_folder,
+  "readmissions_smr.parquet"
+)) %>%
   filter(financial_year <= max_fy)
 
 # Plotting by age
@@ -1279,7 +1406,9 @@ rm(read1, read2)
 
 read_loc_ts <- area_trend_usc(
   data_for_plot = readmissions_areas,
-  plot_title = paste("Readmission rate (28 days) per 1,000 discharges over time by residence"),
+  plot_title = paste(
+    "Readmission rate (28 days) per 1,000 discharges over time by residence"
+  ),
   yaxis_title = "Readmission rate (28 days)\n per 1,000 discharges",
   source = "Source: PHS SMR01"
 )
@@ -1307,8 +1436,14 @@ first_re_max_age <- readmissions_age %>%
   pull(data)
 
 
-percent_rate_change_re_age <- percent_change_calc(latest_re_max_age_data, first_re_max_age)
-word_change_rate_re_age <- word_change_calc(latest_re_max_age_data, first_re_max_age)
+percent_rate_change_re_age <- percent_change_calc(
+  latest_re_max_age_data,
+  first_re_max_age
+)
+word_change_rate_re_age <- word_change_calc(
+  latest_re_max_age_data,
+  first_re_max_age
+)
 
 latest_re_min_age <- readmissions_age %>%
   filter(
@@ -1326,8 +1461,14 @@ first_re_min_age <- readmissions_age %>%
   ) %>%
   pull(data)
 
-percent_rate_change_re_age_min <- percent_change_calc(latest_re_min_age_data, first_re_min_age)
-word_change_rate_re_age_min <- word_change_calc(latest_re_min_age_data, first_re_min_age)
+percent_rate_change_re_age_min <- percent_change_calc(
+  latest_re_min_age_data,
+  first_re_min_age
+)
+word_change_rate_re_age_min <- word_change_calc(
+  latest_re_min_age_data,
+  first_re_min_age
+)
 
 # Objects for text and summary table-area
 min_year_re_area <- min(readmissions_areas$financial_year)
@@ -1351,7 +1492,10 @@ hscp_read <- readmissions_areas %>%
   ) %>%
   pull(data)
 
-percent_rate_change_re_area_hscp <- percent_change_calc(hscp_read, first_hscp_read)
+percent_rate_change_re_area_hscp <- percent_change_calc(
+  hscp_read,
+  first_hscp_read
+)
 word_change_rate_re_area_hscp <- word_change_calc(hscp_read, first_hscp_read)
 
 first_scot_read <- readmissions_areas %>%
@@ -1369,7 +1513,10 @@ scot_read <- readmissions_areas %>%
   ) %>%
   pull(data)
 
-percent_rate_change_re_area_scot <- percent_change_calc(scot_read, first_scot_read)
+percent_rate_change_re_area_scot <- percent_change_calc(
+  scot_read,
+  first_scot_read
+)
 word_change_rate_re_area_scot <- word_change_calc(scot_read, first_scot_read)
 
 # NHS health board
@@ -1480,8 +1627,6 @@ word_change_hb_read <- word_change_calc(hb_read2, first_fy_hb_read)
 #   select(hscp_locality, data) %>%
 #   pivot_wider(names_from = hscp_locality, values_from = data)
 
-
-
 # 8. Potentially Preventable Admissions ----
 # _______________________________________________________________________________________________________
 
@@ -1538,7 +1683,9 @@ ppa_areas <- ppa %>%
 
 ppa_loc_ts <- area_trend_usc(
   data_for_plot = ppa_areas,
-  plot_title = paste("Potentially Preventable Emergency Admissions per 100,000 by residence"),
+  plot_title = paste(
+    "Potentially Preventable Emergency Admissions per 100,000 by residence"
+  ),
   yaxis_title = "PPA rate\nper 100,000 population",
   source = "Source: PHS SMR01"
 )
@@ -1561,7 +1708,10 @@ latest_ppa_loc <- ppa_areas %>%
 latest_ppa_loc1 <- latest_ppa_loc$formatted_data[2]
 
 ppa_diff <- percent_change_calc(latest_ppa_loc$data[2], latest_ppa_loc$data[1])
-ppa_word_change <- word_change_calc(latest_ppa_loc$data[2], latest_ppa_loc$data[1])
+ppa_word_change <- word_change_calc(
+  latest_ppa_loc$data[2],
+  latest_ppa_loc$data[1]
+)
 
 hscp_ppa <- ppa_areas %>%
   filter(
@@ -1609,14 +1759,19 @@ other_loc_ppa <- ppa %>%
 # 9. Psychiatric hospital admissions (ScotPHO) ----
 # ___________________________________________________________________________
 
-psych_hosp <- read_csv(paste0(import_folder, "scotpho_data_extract_psychiatric_admissions.csv")) %>%
+psych_hosp <- read_csv(paste0(
+  import_folder,
+  "scotpho_data_extract_psychiatric_admissions.csv"
+)) %>%
   clean_scotpho_dat() %>%
   mutate(period_short = gsub("to", "-", substr(period, 1, 18)))
 
 check_missing_data_scotpho(psych_hosp)
 
 ## Create variables for latest year
-latest_period_psych_hosp <- unique(filter(psych_hosp, year == max(psych_hosp$year))$period_short)
+latest_period_psych_hosp <- unique(
+  filter(psych_hosp, year == max(psych_hosp$year))$period_short
+)
 
 ## Time trend
 psych_hosp_time_trend <- psych_hosp %>%
@@ -1628,7 +1783,6 @@ psych_hosp_time_trend <- psych_hosp %>%
     string_wrap = 10,
     rotate_xaxis = TRUE
   )
-
 
 
 ## Objects for text and summary table
@@ -1651,7 +1805,10 @@ other_locs_psych_hosp <- psych_hosp %>%
   pivot_wider(names_from = hscp_locality, values_from = measure)
 
 hscp_psych_hosp <- round_half_up(
-  filter(psych_hosp, year == max(year) & (area_name == HSCP & area_type == "HSCP"))$measure,
+  filter(
+    psych_hosp,
+    year == max(year) & (area_name == HSCP & area_type == "HSCP")
+  )$measure,
   1
 )
 
@@ -1675,8 +1832,14 @@ loc_psych_hosp <- psych_hosp %>%
   ) %>%
   mutate(measure2 = format(measure, big.mark = ","))
 
-diff_loc_psych <- percent_change_calc(loc_psych_hosp$measure[2], loc_psych_hosp$measure[1])
-word_change_loc_psych <- word_change_calc(loc_psych_hosp$measure[2], loc_psych_hosp$measure[1])
+diff_loc_psych <- percent_change_calc(
+  loc_psych_hosp$measure[2],
+  loc_psych_hosp$measure[1]
+)
+word_change_loc_psych <- word_change_calc(
+  loc_psych_hosp$measure[2],
+  loc_psych_hosp$measure[1]
+)
 
 # HSCP
 hscp_psych_hosp <- psych_hosp %>%
@@ -1688,8 +1851,14 @@ hscp_psych_hosp <- psych_hosp %>%
   ) %>%
   mutate(measure2 = format(measure, big.mark = ","))
 
-diff_hscp_psych <- percent_change_calc(hscp_psych_hosp$measure[2], hscp_psych_hosp$measure[1])
-word_change_hscp_psych <- word_change_calc(hscp_psych_hosp$measure[2], hscp_psych_hosp$measure[1])
+diff_hscp_psych <- percent_change_calc(
+  hscp_psych_hosp$measure[2],
+  hscp_psych_hosp$measure[1]
+)
+word_change_hscp_psych <- word_change_calc(
+  hscp_psych_hosp$measure[2],
+  hscp_psych_hosp$measure[1]
+)
 
 # NHS health board
 hb_psych_hosp <- psych_hosp %>%
@@ -1701,8 +1870,14 @@ hb_psych_hosp <- psych_hosp %>%
   ) %>%
   mutate(measure2 = format(measure, big.mark = ","))
 
-diff_hb_psych <- percent_change_calc(hb_psych_hosp$measure[2], hb_psych_hosp$measure[1])
-word_change_hb_psych <- word_change_calc(hb_psych_hosp$measure[2], hb_psych_hosp$measure[1])
+diff_hb_psych <- percent_change_calc(
+  hb_psych_hosp$measure[2],
+  hb_psych_hosp$measure[1]
+)
+word_change_hb_psych <- word_change_calc(
+  hb_psych_hosp$measure[2],
+  hb_psych_hosp$measure[1]
+)
 
 # Scotland
 scot_psych_hosp <- psych_hosp %>%
@@ -1714,8 +1889,14 @@ scot_psych_hosp <- psych_hosp %>%
   ) %>%
   mutate(measure2 = format(measure, big.mark = ","))
 
-diff_scot_psych <- percent_change_calc(scot_psych_hosp$measure[2], scot_psych_hosp$measure[1])
-word_change_scot_psych <- word_change_calc(scot_psych_hosp$measure[2], scot_psych_hosp$measure[1])
+diff_scot_psych <- percent_change_calc(
+  scot_psych_hosp$measure[2],
+  scot_psych_hosp$measure[1]
+)
+word_change_scot_psych <- word_change_calc(
+  scot_psych_hosp$measure[2],
+  scot_psych_hosp$measure[1]
+)
 
 # Housekeeping ----
 # These objects are left over after the script is run
