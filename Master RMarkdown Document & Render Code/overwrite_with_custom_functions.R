@@ -16,7 +16,10 @@ read_in_localities <- function(dz_level = FALSE) {
 
 read_in_iz <- function(dz_all = FALSE) {
   iz_lookup <- arrow::read_parquet(
-    fs::path(lp_path, "custom_lookups/custom_south_ayrshire_localities_iz.parquet")
+    fs::path(
+      lp_path,
+      "custom_lookups/custom_south_ayrshire_localities_iz.parquet"
+    )
   )
 
   if (dz_all) {
@@ -44,7 +47,11 @@ read_in_iz <- function(dz_all = FALSE) {
         by = dplyr::join_by(datazone2011)
       ) |>
       dplyr::mutate(
-        hscp_locality = dplyr::if_else(is.na(hscp_locality.y), hscp_locality.x, hscp_locality.y),
+        hscp_locality = dplyr::if_else(
+          is.na(hscp_locality.y),
+          hscp_locality.x,
+          hscp_locality.y
+        ),
         .keep = "unused"
       )
   }
@@ -54,13 +61,23 @@ read_in_iz <- function(dz_all = FALSE) {
 
 
 # Aggregate and calculate confidence interval
-summarise_iz_to_locality <- function(data, iz_lookup = read_in_iz(dz_all = FALSE)) {
+summarise_iz_to_locality <- function(
+  data,
+  iz_lookup = read_in_iz(dz_all = FALSE)
+) {
   iz_data <- data |>
     inner_join(iz_lookup, by = c("area_code" = "intzone2011"))
 
   if (anyNA(iz_data$numerator)) {
     locality_data <- iz_data |>
-      group_by(indicator, year, period, area_name = hscp_locality, definition, data_source) |>
+      group_by(
+        indicator,
+        year,
+        period,
+        area_name = hscp_locality,
+        definition,
+        data_source
+      ) |>
       summarise(
         measure = mean(measure),
         area_type = "HSC locality",
@@ -68,11 +85,20 @@ summarise_iz_to_locality <- function(data, iz_lookup = read_in_iz(dz_all = FALSE
       )
   } else {
     locality_data <- iz_data |>
-      mutate(denominator = case_when(
-        (numerator == 0 | measure == 0) ~ 0,
-        TRUE ~ numerator * 100000 / measure
-      )) %>%
-      group_by(indicator, year, period, area_name = hscp_locality, definition, data_source) |>
+      mutate(
+        denominator = case_when(
+          (numerator == 0 | measure == 0) ~ 0,
+          TRUE ~ numerator * 100000 / measure
+        )
+      ) %>%
+      group_by(
+        indicator,
+        year,
+        period,
+        area_name = hscp_locality,
+        definition,
+        data_source
+      ) |>
       summarise(
         numerator = sum(numerator),
         denominator = sum(denominator),
@@ -80,8 +106,18 @@ summarise_iz_to_locality <- function(data, iz_lookup = read_in_iz(dz_all = FALSE
           (numerator == 0 | denominator == 0) ~ 0,
           TRUE ~ (numerator * 100000) / denominator
         ), # Adjust for per 100,000
-        se = sqrt(sum(numerator * (measure - lower_confidence_interval)^2 / (denominator - 1)) +
-          sum(numerator * (upper_confidence_interval - measure)^2 / (denominator - 1))),
+        se = sqrt(
+          sum(
+            numerator *
+              (measure - lower_confidence_interval)^2 /
+              (denominator - 1)
+          ) +
+            sum(
+              numerator *
+                (upper_confidence_interval - measure)^2 /
+                (denominator - 1)
+            )
+        ),
         lower_confidence_interval = measure - 1.96 * se,
         upper_confidence_interval = measure + 1.96 * se,
         area_type = "HSC locality",
@@ -91,7 +127,10 @@ summarise_iz_to_locality <- function(data, iz_lookup = read_in_iz(dz_all = FALSE
   }
 
   new_data <- data |>
-    filter(area_type %in% c("HSC locality", "Scotland", "HSC partnership", "Health board")) |>
+    filter(
+      area_type %in%
+        c("HSC locality", "Scotland", "HSC partnership", "Health board")
+    ) |>
     bind_rows(locality_data)
 
   return(new_data)
@@ -102,7 +141,13 @@ clean_scotpho_dat <- function(data) {
     summarise_iz_to_locality() |>
     filter(area_type != "Council area" & area_type != "Intermediate zone") %>%
     mutate(area_name = gsub("&", "and", area_name)) %>%
-    mutate(area_name = if_else(area_name == "Renfrewshire West", "West Renfrewshire", area_name)) %>%
+    mutate(
+      area_name = if_else(
+        area_name == "Renfrewshire West",
+        "West Renfrewshire",
+        area_name
+      )
+    ) %>%
     mutate(
       area_type = if_else(area_type == "HSC partnership", "HSCP", area_type),
       area_type = if_else(area_type == "HSC locality", "Locality", area_type)

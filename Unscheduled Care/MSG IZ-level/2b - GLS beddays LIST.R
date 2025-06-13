@@ -14,7 +14,8 @@ last_date <- reporting_month_date
 
 # Connect to SMRA tables using odbc connection
 channel <- suppressWarnings(
-  dbConnect(odbc(),
+  dbConnect(
+    odbc(),
     dsn = "SMRA",
     uid = Sys.getenv("USER"),
     pwd = .rs.askForPassword("What is your LDAP password?")
@@ -22,14 +23,16 @@ channel <- suppressWarnings(
 )
 
 # Extract SMR01E (GLS) data
-smr01e_extract <- as_tibble(dbGetQuery(channel, statement = "SELECT LINK_NO, ADMISSION_DATE,
+smr01e_extract <- as_tibble(dbGetQuery(
+  channel,
+  statement = "SELECT LINK_NO, ADMISSION_DATE,
                                       DISCHARGE_DATE, SPECIALTY, LOCATION,
                                       SIGNIFICANT_FACILITY, ADMISSION_TYPE, DR_POSTCODE,
                                       AGE_IN_YEARS, HBTREAT_CURRENTDATE, ADMISSION,
                                       DISCHARGE, URI, INTZONE_2011  FROM ANALYSIS.SMR01_1E_PI
-                                      WHERE DISCHARGE_DATE >= TO_DATE('2017-04-01','YYYY-MM-DD') AND HBRES_CURRENTDATE = 'S08000015'")) %>%
+                                      WHERE DISCHARGE_DATE >= TO_DATE('2017-04-01','YYYY-MM-DD') AND HBRES_CURRENTDATE = 'S08000015'"
+)) %>%
   # AND COUNCIL_AREA_2019 = 'S12000035'
-
 
   # 'Clean' variable names
   clean_names() %>%
@@ -46,15 +49,24 @@ admissions <- smr01e_extract %>%
   # select episodes in reporting period
   filter(discharge_date >= start_date) %>%
   # select emergency admissions (include transfers as many will start as emergency in SMR01)
-  filter(admission_type >= 20 & admission_type <= 22 |
-    admission_type >= 30 & admission_type <= 39 |
-    admission_type == 18) %>%
+  filter(
+    admission_type >= 20 &
+      admission_type <= 22 |
+      admission_type >= 30 & admission_type <= 39 |
+      admission_type == 18
+  ) %>%
   # select those resident in a CA
   drop_na(ca2019) %>%
   # remove identical duplicates
   distinct(link_no, admission_date, discharge_date, .keep_all = TRUE) %>%
   # create area treated variable
-  mutate(area_treated = ifelse(hbtreat_currentdate == hb2019, "Within HBres", "Outwith HBres")) %>%
+  mutate(
+    area_treated = ifelse(
+      hbtreat_currentdate == hb2019,
+      "Within HBres",
+      "Outwith HBres"
+    )
+  ) %>%
   # match on datazone & CA names
   left_join(locality_lookup, by = "datazone2011") %>%
   left_join(council_lookup, by = "ca2019")
@@ -72,32 +84,83 @@ beddays <- admissions %>%
   ) %>%
   # select required variables
   select(
-    link_no, admission_date, discharge_date, month, year, council_area2019name,
-    age_in_years, beddays, area_treated, location, specialty, significant_facility, datazone2011
+    link_no,
+    admission_date,
+    discharge_date,
+    month,
+    year,
+    council_area2019name,
+    age_in_years,
+    beddays,
+    area_treated,
+    location,
+    specialty,
+    significant_facility,
+    datazone2011
   ) %>%
   left_join(lookup, by = "datazone2011") |>
   # rename columns
-  rename(council = "council_area2019name", age = "age_in_years", intzone2011 = "intzone_2011")
+  rename(
+    council = "council_area2019name",
+    age = "age_in_years",
+    intzone2011 = "intzone_2011"
+  )
 
 
 #### 5. LIST breakdown file ----
 
 # create 5 year age groups
 age_labels <- c(
-  "<18", "18-24", "25-29", "30-34", "35-39", "40-44", "45-49",
-  "50-54", "55-59", "60-64", "65-69", "70-74", "75-79", "80-84",
-  "85-89", "90-94", "95-99", "100+"
+  "<18",
+  "18-24",
+  "25-29",
+  "30-34",
+  "35-39",
+  "40-44",
+  "45-49",
+  "50-54",
+  "55-59",
+  "60-64",
+  "65-69",
+  "70-74",
+  "75-79",
+  "80-84",
+  "85-89",
+  "90-94",
+  "95-99",
+  "100+"
 )
 
 # add age group, select data in reporting period and format month
 list_output <- beddays %>%
-  mutate(age, age_group = cut(age,
-    breaks = c(
-      -1, 17, 24, 29, 34, 39, 44, 49, 54,
-      59, 64, 69, 74, 79, 84, 89, 94, 99, 150
-    ),
-    labels = age_labels
-  )) %>%
+  mutate(
+    age,
+    age_group = cut(
+      age,
+      breaks = c(
+        -1,
+        17,
+        24,
+        29,
+        34,
+        39,
+        44,
+        49,
+        54,
+        59,
+        64,
+        69,
+        74,
+        79,
+        84,
+        89,
+        94,
+        99,
+        150
+      ),
+      labels = age_labels
+    )
+  ) %>%
   # create month year variable and format as date
   mutate(month = dmy(glue("01-{month}-{year}"))) %>%
   # keep only months from April
@@ -105,8 +168,14 @@ list_output <- beddays %>%
   # rename(locality=hscp_locality) %>%
   dtplyr::lazy_dt() %>%
   group_by(
-    council, intzone2011, area_treated, location, specialty,
-    significant_facility, age_group, month
+    council,
+    intzone2011,
+    area_treated,
+    location,
+    specialty,
+    significant_facility,
+    age_group,
+    month
   ) %>%
   summarise(unplanned_beddays = sum(beddays)) %>%
   filter(unplanned_beddays > 0) %>%
@@ -115,4 +184,8 @@ list_output <- beddays %>%
   mutate(age_group = as.character(age_group))
 
 # Save LIST output
-arrow::write_parquet(list_output, path(data_folder, "2b-GLS-Beddays-breakdown.parquet"), compression = "zstd")
+arrow::write_parquet(
+  list_output,
+  path(data_folder, "2b-GLS-Beddays-breakdown.parquet"),
+  compression = "zstd"
+)
