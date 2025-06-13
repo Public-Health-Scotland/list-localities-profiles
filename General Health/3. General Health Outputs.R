@@ -1029,7 +1029,11 @@ title <- ggdraw() +
   )
 
 caption <- ggdraw() +
-  draw_label("Source: SPARRA via the Source Linkage Files", size = 10, hjust = -0.5)
+  draw_label(
+    "Source: SPARRA via the Source Linkage Files",
+    size = 10,
+    hjust = -0.5
+  )
 
 # Combine plots into 1
 ltc_types_plot <- plot_grid(
