@@ -237,7 +237,7 @@ x <- x + 1
 
 ##### Page break
 
-## Hospital Care (Mental Health Speciality)
+## Hospital Care (Mental Health Specialty)
 
 \newline
 
