@@ -18,7 +18,11 @@ ext_year <- 2024
 # testing locality
 # LOCALITY <- "Forres"
 
-indicator_workbook_path <- path(lp_path, "Project Info & Indicators", glue("Indicator Tracker {ext_year}.xlsx"))
+indicator_workbook_path <- path(
+  lp_path,
+  "Project Info & Indicators",
+  glue("Indicator Tracker {ext_year}.xlsx")
+)
 
 ## Indicator Definitions ----
 

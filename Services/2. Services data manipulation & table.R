@@ -27,7 +27,6 @@ ext_year <- 2024
 # Source in functions code
 # source("Master RMarkdown Document & Render Code/Global Script.R")
 
-
 ### Geographical lookups and objects ----
 
 # Locality lookup
@@ -50,14 +49,26 @@ n_loc <- count_localities(lookup2, HSCP)
 postcode_lkp <- read_in_postcodes() %>%
   mutate(postcode = gsub(" ", "", pc7)) %>%
   select(
-    postcode, grid_reference_easting, grid_reference_northing, latitude, longitude, datazone2011,
-    hscp_locality, hscp2019name, hscp2019, hb2019name, hb2019
+    postcode,
+    grid_reference_easting,
+    grid_reference_northing,
+    latitude,
+    longitude,
+    datazone2011,
+    hscp_locality,
+    hscp2019name,
+    hscp2019,
+    hb2019name,
+    hb2019
   )
 
 
 ## Read in all data in services folder
 
-services_file_names <- list.files(paste0(lp_path, "Services/DATA ", ext_year), pattern = "RDS")
+services_file_names <- list.files(
+  paste0(lp_path, "Services/DATA ", ext_year),
+  pattern = "RDS"
+)
 
 for (file in services_file_names) {
   name <- substr(x = file, 1, 4)
@@ -99,8 +110,15 @@ hosp_postcodes <- hosp_postcodes %>%
 # create hospital lookup table
 hosp_lookup <- hosp_types %>%
   filter(status == "Open") %>%
-  select(name = treatment_location_name, location = treatment_location_code, type = current_department_type) %>%
-  left_join(select(hosp_postcodes, location, postcode), by = join_by(location)) %>%
+  select(
+    name = treatment_location_name,
+    location = treatment_location_code,
+    type = current_department_type
+  ) %>%
+  left_join(
+    select(hosp_postcodes, location, postcode),
+    by = join_by(location)
+  ) %>%
   mutate(postcode = gsub(" ", "", postcode)) %>%
   left_join(postcode_lkp, by = "postcode")
 
@@ -134,7 +152,12 @@ if (HSCP == "Clackmannanshire & Stirling") {
 ## Care Homes ----
 
 markers_care_home <- care_homes %>%
-  select(type = care_service, subtype, name = service_name, service_postcode) %>%
+  select(
+    type = care_service,
+    subtype,
+    name = service_name,
+    service_postcode
+  ) %>%
   filter(type == "Care Home Service") %>%
   filter(subtype == "Older People") %>%
   mutate(postcode = gsub(" ", "", service_postcode)) %>%
@@ -146,7 +169,12 @@ markers_care_home <- care_homes %>%
 
 # Subset care which is not Elderly care for table
 other_care_type <- care_homes %>%
-  select(type = care_service, subtype, name = service_name, service_postcode) %>%
+  select(
+    type = care_service,
+    subtype,
+    name = service_name,
+    service_postcode
+  ) %>%
   filter(type == "Care Home Service") %>%
   filter(subtype != "Older People") %>%
   mutate(postcode = gsub(" ", "", service_postcode)) %>%
@@ -156,7 +184,13 @@ other_care_type <- care_homes %>%
 # Create table
 services_tibble <- tibble(
   Type = c("**Primary Care**", "**A&E**", "", "**Care Home**", ""),
-  Service = c("GP Practice", "Emergency Department", "Minor Injuries Unit", "Elderly Care", "Other"),
+  Service = c(
+    "GP Practice",
+    "Emergency Department",
+    "Minor Injuries Unit",
+    "Elderly Care",
+    "Other"
+  ),
   Number = c(
     nrow(filter(markers_gp, hscp_locality == LOCALITY)),
     nrow(filter(markers_emergency_dep, hscp_locality == LOCALITY)),
