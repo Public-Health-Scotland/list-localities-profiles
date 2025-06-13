@@ -1174,7 +1174,12 @@ top5_ltc_table <- bind_cols(
 ) |>
   flextable(cwidth = 2) %>%
   add_header_lines(
-    values = str_wrap(glue("Top 5 most prevalent Physical Long-Term Conditions {latest_year_ltc}"), width = 65)
+    values = str_wrap(
+      glue(
+        "Top 5 most prevalent Physical Long-Term Conditions {latest_year_ltc}"
+      ),
+      width = 65
+    )
   ) %>%
   bg(j = 1, bg = top5ltc_loc$colours) %>%
   bg(j = 2, bg = top5ltc_hscp$colours) %>%
@@ -1188,9 +1193,13 @@ top5_ltc_table <- bind_cols(
   border(border = fp_border(color = "white", width = 5), part = "body")
 
 rm(
-  ltc_cols, ltc_pops_total_loc,
-  loc.ltc.table, hscp.ltc.table,
-  top5ltc_loc, top5ltc_hscp, top5ltc_scot
+  ltc_cols,
+  ltc_pops_total_loc,
+  loc.ltc.table,
+  hscp.ltc.table,
+  top5ltc_loc,
+  top5ltc_hscp,
+  top5ltc_scot
 )
 
 ## Objects for text
