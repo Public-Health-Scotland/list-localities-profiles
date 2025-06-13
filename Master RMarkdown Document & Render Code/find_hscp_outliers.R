@@ -7,7 +7,10 @@ lookup_with_metrics <- lookup |>
   group_by(hscp2019name) |>
   mutate(
     n_localities = n_distinct(hscp_locality),
-    total_length = str_width(paste0(paste(hscp_locality, collapse = ""), hscp2019name))
+    total_length = str_width(paste0(
+      paste(hscp_locality, collapse = ""),
+      hscp2019name
+    ))
   ) |>
   ungroup()
 
