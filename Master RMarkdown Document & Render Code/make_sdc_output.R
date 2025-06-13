@@ -52,7 +52,9 @@ ltc_all <- vector("list", length(hscp_list)) |>
 
 for (HSCP in hscp_list) {
   loop_env <- c(ls(), "loop_env")
-  message(glue("  Processing hscp: {HSCP} ({which(hscp_list == HSCP)}/{length(hscp_list)})) HSCP: {HSCP}"))
+  message(glue(
+    "  Processing hscp: {HSCP} ({which(hscp_list == HSCP)}/{length(hscp_list)})) HSCP: {HSCP}"
+  ))
   # **Unscheduled Care Data Processing** ----
   # Extract and filter unscheduled care data for the current hscp
   source("Unscheduled Care/2. Unscheduled Care outputs.R")
@@ -100,7 +102,10 @@ for (HSCP in hscp_list) {
 
   smr01_age_loc <- imap(
     list(
-      "Emergency_Admissions_Age" = filter(emergency_adm_age, hscp2019name == HSCP),
+      "Emergency_Admissions_Age" = filter(
+        emergency_adm_age,
+        hscp2019name == HSCP
+      ),
       "Unscheduled_Bed_Days_Age" = filter(bed_days_age, hscp2019name == HSCP),
       "Readmissions_Age" = readmissions_age,
       "AE_Attendances_Age" = filter(ae_att_age, hscp2019name == HSCP),
@@ -129,7 +134,6 @@ for (HSCP in hscp_list) {
   # Clear out Unscheduled Care data objects to free up memory
   rm(list = setdiff(ls(), loop_env))
   gc() # Run garbage collection to further free up memory
-
 
   # **General Health Data Processing** ----
   # Extract and filter general health data for the current locality

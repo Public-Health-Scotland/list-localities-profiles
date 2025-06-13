@@ -133,7 +133,10 @@ drug_hosp_time_trend
 ## Bar chart
 drug_hosp_bar <- drug_hosp %>%
   scotpho_bar_chart_HSCP(
-    chart_title = paste0("Drug-related Hospital Admissions by Area, ", latest_period_drug_hosp),
+    chart_title = paste0(
+      "Drug-related Hospital Admissions by Area, ",
+      latest_period_drug_hosp
+    ),
     xaxis_title = "Drug-related admissions (Standardised rates per 100,000)"
   )
 
@@ -145,14 +148,16 @@ drug_hosp_latest <- filter(
   year == max_year_drug_hosp,
   area_name == HSCP,
   area_type == "HSCP"
-) |> pull(measure)
+) |>
+  pull(measure)
 
 drug_hosp_earliest <- filter(
   drug_hosp,
   year == min_year_drug_hosp,
   area_name == HSCP,
   area_type == "HSCP"
-) |> pull(measure)
+) |>
+  pull(measure)
 
 drug_hosp_change <- abs(
   (drug_hosp_latest - drug_hosp_earliest) / drug_hosp_earliest * 100

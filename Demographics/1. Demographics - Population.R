@@ -225,8 +225,12 @@ hist_pop_change <- ggplot(
     x = "Age Group",
     y = "Percent Change",
     title = paste(
-      "Percent Change in Population from", pop_max_year - 5,
-      "to", pop_max_year, "by Age and Sex in\n", HSCP
+      "Percent Change in Population from",
+      pop_max_year - 5,
+      "to",
+      pop_max_year,
+      "by Age and Sex in\n",
+      HSCP
     ),
     caption = "Source: National Records Scotland"
   )
@@ -431,7 +435,9 @@ pop_proj_change <- 100 *
 pop_proj_change <- round_half_up(pop_proj_change, 1) %>% as.character()
 
 pop_proj_text <- paste(
-  "The population in", HSCP, "is estimated to",
+  "The population in",
+  HSCP,
+  "is estimated to",
   ifelse(
     pop_proj_dat[1, 2] < pop_proj_dat[6, 2],
     paste0("increase by ", pop_proj_change, "%"),

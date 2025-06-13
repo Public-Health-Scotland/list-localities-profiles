@@ -437,7 +437,10 @@ simd_diff_plot <- ggplot(
     y = "Difference from 2016",
     title = paste0(
       "Difference in Population Living in Deprivation Quintiles by SIMD Domain\n",
-      "in 2016 and ", pop_max_year, " in ", str_wrap(HSCP, 50)
+      "in 2016 and ",
+      pop_max_year,
+      " in ",
+      str_wrap(HSCP, 50)
     ),
     caption = "Source: Scottish Government, National Records Scotland"
   ) +

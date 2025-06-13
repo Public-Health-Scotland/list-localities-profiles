@@ -227,7 +227,10 @@ life_exp_trend <- life_exp %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   expand_limits(y = 0) +
   labs(
-    title = str_wrap(glue("Average Life Expectancy in {HSCP} HSCP"), width = 65),
+    title = str_wrap(
+      glue("Average Life Expectancy in {HSCP} HSCP"),
+      width = 65
+    ),
     x = "Year Groups (3-year aggregates)",
     y = str_wrap("Average Life Expectancy (in years)", width = 35),
     caption = "Source: ScotPHO"
@@ -251,7 +254,10 @@ life_exp_table <- life_exp %>%
   ) %>%
   mutate(
     measure = round_half_up(measure, 1),
-    area_type = ordered(area_type, levels = c("HSCP", "Health board", "Scotland"))
+    area_type = ordered(
+      area_type,
+      levels = c("HSCP", "Health board", "Scotland")
+    )
   ) %>%
   arrange(area_type) %>%
   select("Sex" = sex, area_name, measure) %>%
@@ -430,7 +436,10 @@ disease_hosp <- bind_rows(
       area_name == "Scotland"
   ) %>%
   mutate(
-    area_type = factor(area_type, levels = c("HSCP", "Health board", "Scotland")),
+    area_type = factor(
+      area_type,
+      levels = c("HSCP", "Health board", "Scotland")
+    ),
     area_name = fct_reorder(as.factor(area_name), as.numeric(area_type))
   ) %>%
   mutate(
@@ -551,7 +560,8 @@ slf_pop_loc <- slf_pops %>%
   filter(hscp2019name == HSCP) |>
   # group by to get to HSCP level
   group_by(
-    age_group, hscp2019name
+    age_group,
+    hscp2019name
   ) |>
   summarise(slf_adj_pop = sum(slf_adj_pop)) |>
   ungroup()
@@ -809,7 +819,6 @@ ltc_percent_total_latest <- (sum(ltc_infographic$people) /
   100
 
 
-
 # Remove unnecessary objects
 rm(
   ppl_bold_u65,
@@ -1018,7 +1027,9 @@ ltc_plot_right <- ltc_types %>%
 title <- ggdraw() +
   draw_label(
     str_wrap(
-      glue("Prevalence of Physical Long-Term Conditions {latest_year_ltc} in the {HSCP} HSCP"),
+      glue(
+        "Prevalence of Physical Long-Term Conditions {latest_year_ltc} in the {HSCP} HSCP"
+      ),
       width = 65
     ),
     size = 11,
@@ -1135,11 +1146,11 @@ top5ltc_scot <- ltc_totals %>%
 
 ## Create column headers
 
-
 hscp.ltc.table <- str_wrap(glue("{HSCP} HSCP"), width = 25)
 
 
-ltc_hscp_col <- tableGrob(top5ltc_hscp[, 1],
+ltc_hscp_col <- tableGrob(
+  top5ltc_hscp[, 1],
   cols = hscp.ltc.table,
   rows = NULL,
   theme = ttheme_default(
@@ -1198,8 +1209,11 @@ rm(
   ltc_hscp_col,
   ltc_scot_col,
   ltc_pops_total_loc,
-  loc.ltc.table, hscp.ltc.table,
-  top5ltc_scot, top5ltc_all_table, title
+  loc.ltc.table,
+  hscp.ltc.table,
+  top5ltc_scot,
+  top5ltc_all_table,
+  title
 )
 
 ## Objects for text

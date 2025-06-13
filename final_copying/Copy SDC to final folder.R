@@ -30,7 +30,10 @@ hscp_list <- read_in_localities() |>
 
 # Create a dataframe with some details about the files
 file_lookup <- tibble(
-  path = dir_ls(path = output_dir, glob = "* - HSCP Profile SDC highlight.xlsx$"),
+  path = dir_ls(
+    path = output_dir,
+    glob = "* - HSCP Profile SDC highlight.xlsx$"
+  ),
   file_name = path_file(path),
   hscp = str_extract(
     string = file_name,

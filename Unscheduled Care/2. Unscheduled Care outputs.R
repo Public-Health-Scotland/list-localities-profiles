@@ -69,9 +69,16 @@ populations$"Pop65Plus" <- rowSums(subset(
 
 pops <- populations %>%
   select(
-    year, hb2019name, hscp2019name,
-    Pop0_17, Pop18_44, Pop45_64, Pop65_74,
-    Pop75Plus, Pop65Plus, total_pop
+    year,
+    hb2019name,
+    hscp2019name,
+    Pop0_17,
+    Pop18_44,
+    Pop45_64,
+    Pop65_74,
+    Pop75Plus,
+    Pop65Plus,
+    total_pop
   ) %>%
   mutate(financial_year = paste0(year, "/", substr(year + 1, 3, 4))) %>%
   group_by(financial_year, year, hb2019name, hscp2019name) %>%
@@ -80,24 +87,38 @@ pops <- populations %>%
 
 loc_pops <- populations %>%
   select(
-    year, hb2019name, hscp2019name, hscp_locality,
-    Pop0_17, Pop18_44, Pop45_64, Pop65_74,
-    Pop75Plus, Pop65Plus, total_pop
+    year,
+    hb2019name,
+    hscp2019name,
+    hscp_locality,
+    Pop0_17,
+    Pop18_44,
+    Pop45_64,
+    Pop65_74,
+    Pop75Plus,
+    Pop65Plus,
+    total_pop
   ) %>%
   mutate(financial_year = paste0(year, "/", substr(year + 1, 3, 4))) %>%
   group_by(financial_year, year, hb2019name, hscp2019name, hscp_locality) %>%
   summarise(across(everything(), sum)) %>%
   ungroup() %>%
-  pivot_longer("Pop0_17":"total_pop", names_to = "age_group", values_to = "pop") %>%
-  mutate(age_group = case_when(
-    age_group == "Pop0_17" ~ "0 - 17",
-    age_group == "Pop18_44" ~ "18 - 44",
-    age_group == "Pop45_64" ~ "45 - 64",
-    age_group == "Pop65_74" ~ "65 - 74",
-    age_group == "Pop75Plus" ~ "75+",
-    age_group == "Pop65Plus" ~ "65+",
-    age_group == "total_pop" ~ "Total"
-  ))
+  pivot_longer(
+    "Pop0_17":"total_pop",
+    names_to = "age_group",
+    values_to = "pop"
+  ) %>%
+  mutate(
+    age_group = case_when(
+      age_group == "Pop0_17" ~ "0 - 17",
+      age_group == "Pop18_44" ~ "18 - 44",
+      age_group == "Pop45_64" ~ "45 - 64",
+      age_group == "Pop65_74" ~ "65 - 74",
+      age_group == "Pop75Plus" ~ "75+",
+      age_group == "Pop65Plus" ~ "65+",
+      age_group == "total_pop" ~ "Total"
+    )
+  )
 
 # Aggregate and add partnership + HB + Scotland totals
 
@@ -147,16 +168,22 @@ pop_areas <- pops %>%
 
 
 hscp_pop <- pops %>%
-  pivot_longer("Pop0_17":"total_pop", names_to = "age_group", values_to = "pop") %>%
-  mutate(age_group = case_when(
-    age_group == "Pop0_17" ~ "0 - 17",
-    age_group == "Pop18_44" ~ "18 - 44",
-    age_group == "Pop45_64" ~ "45 - 64",
-    age_group == "Pop65_74" ~ "65 - 74",
-    age_group == "Pop75Plus" ~ "75+",
-    age_group == "Pop65Plus" ~ "65+",
-    age_group == "total_pop" ~ "Total"
-  ))
+  pivot_longer(
+    "Pop0_17":"total_pop",
+    names_to = "age_group",
+    values_to = "pop"
+  ) %>%
+  mutate(
+    age_group = case_when(
+      age_group == "Pop0_17" ~ "0 - 17",
+      age_group == "Pop18_44" ~ "18 - 44",
+      age_group == "Pop45_64" ~ "45 - 64",
+      age_group == "Pop65_74" ~ "65 - 74",
+      age_group == "Pop75Plus" ~ "75+",
+      age_group == "Pop65Plus" ~ "65+",
+      age_group == "total_pop" ~ "Total"
+    )
+  )
 
 # populations for age group charts
 hscp_pop_age1 <- hscp_pop %>%
@@ -370,7 +397,10 @@ emergency_adm_age <- emergency_adm %>%
 
 EAs_age_ts <- age_group_trend_usc(
   data_for_plot = emergency_adm_age,
-  plot_title = paste("Emergency admissions per 100,000 over time by age group\n for", HSCP),
+  plot_title = paste(
+    "Emergency admissions per 100,000 over time by age group\n for",
+    HSCP
+  ),
   yaxis_title = "Emergency admission rate\n per 100,000 population",
   source = "Source: PHS SMR01"
 )
@@ -404,8 +434,6 @@ first_fy_rate <- filter(
   location == HSCP,
   area_type == "HSCP"
 )$data
-
-
 
 
 # HSCP
@@ -556,7 +584,10 @@ bed_days_age <- bed_days %>%
 
 BDs_age_ts <- age_group_trend_usc(
   data_for_plot = bed_days_age,
-  plot_title = paste("Unscheduled bed days per 100,000 over time by age group\n for", HSCP),
+  plot_title = paste(
+    "Unscheduled bed days per 100,000 over time by age group\n for",
+    HSCP
+  ),
   yaxis_title = "Unscheduled bed day rate\n per 100,000 population",
   source = "Source: PHS SMR01"
 )
@@ -735,7 +766,10 @@ bed_days_mh_age <- bed_days_mh %>%
 
 BDMH_age_ts <- age_group_trend_usc(
   data_for_plot = bed_days_mh_age,
-  plot_title = paste("Unscheduled bed days (MH) per 100,000 over time by age group\n for", HSCP),
+  plot_title = paste(
+    "Unscheduled bed days (MH) per 100,000 over time by age group\n for",
+    HSCP
+  ),
   yaxis_title = "Unscheduled bed day (MH) rate\n per 100,000 population",
   source = "Source: PHS SMR04"
 )
@@ -825,9 +859,6 @@ min_word_change_beds_mh <- word_change_calc(
 # Objects for text and summary table- area
 max_year_bd_mh_areas <- max(bed_days_mh_areas$financial_year)
 min_year_bd_mh_areas <- min(bed_days_mh_areas$financial_year)
-
-
-
 
 
 hscp_bed_days_mh <- bed_days_mh_areas %>%
@@ -942,7 +973,10 @@ ae_att_age <- ae_attendances %>%
 
 AandE_age_ts <- age_group_trend_usc(
   data_for_plot = ae_att_age,
-  plot_title = paste("A&E attendances per 100,000 over time by age group\n for", HSCP),
+  plot_title = paste(
+    "A&E attendances per 100,000 over time by age group\n for",
+    HSCP
+  ),
   yaxis_title = "A&E attendance rate\n per 100,000 population",
   source = "Source: PHS A&E Datamart"
 )
@@ -1038,9 +1072,6 @@ word_change_rate_ae_age2 <- word_change_calc(
 
 min_year_ae_area <- min(ae_att_areas$financial_year)
 max_year_ae_area <- max(ae_att_areas$financial_year)
-
-
-
 
 
 hscp_ae_att <- ae_att_areas %>%
@@ -1164,10 +1195,6 @@ min_year_dd <- min(delayed_disch_areas$financial_year)
 max_year_dd <- max(delayed_disch_areas$financial_year)
 
 
-
-
-
-
 hscp_dd <- delayed_disch_areas %>%
   filter(
     location == HSCP,
@@ -1275,9 +1302,6 @@ min_year_falls <- min(falls_areas$financial_year)
 max_year_falls <- max(falls_areas$financial_year)
 
 
-
-
-
 hscp_falls <- falls_areas %>%
   filter(
     location == HSCP,
@@ -1371,7 +1395,10 @@ readmissions_age <- readmissions %>%
 
 read_age_ts <- age_group_trend_usc(
   data_for_plot = readmissions_age,
-  plot_title = paste("Readmission rate (28 days) per 1,000 discharges by age group\n for", HSCP),
+  plot_title = paste(
+    "Readmission rate (28 days) per 1,000 discharges by age group\n for",
+    HSCP
+  ),
   yaxis_title = "Readmission rate (28 days)\n per 1,000 discharges",
   source = "Source: PHS SMR01"
 )
@@ -1473,9 +1500,6 @@ word_change_rate_re_age_min <- word_change_calc(
 # Objects for text and summary table-area
 min_year_re_area <- min(readmissions_areas$financial_year)
 max_year_re_area <- max(readmissions_areas$financial_year)
-
-
-
 
 
 first_hscp_read <- readmissions_areas %>%
@@ -1704,7 +1728,6 @@ latest_ppa_loc <- ppa_areas %>%
   mutate(formatted_data = format(data, big.mark = ","))
 
 
-
 latest_ppa_loc1 <- latest_ppa_loc$formatted_data[2]
 
 ppa_diff <- percent_change_calc(latest_ppa_loc$data[2], latest_ppa_loc$data[1])
@@ -1788,11 +1811,14 @@ psych_hosp_time_trend <- psych_hosp %>%
 ## Objects for text and summary table
 
 # Locality latest value
-psych_hosp_latest <- round_half_up(filter(
-  psych_hosp,
-  year == max(psych_hosp$year) &
-    (area_name == HSCP & area_type == "HSCP")
-)$measure, 1)
+psych_hosp_latest <- round_half_up(
+  filter(
+    psych_hosp,
+    year == max(psych_hosp$year) &
+      (area_name == HSCP & area_type == "HSCP")
+  )$measure,
+  1
+)
 
 other_locs_psych_hosp <- psych_hosp %>%
   filter(year == max(year)) %>%
