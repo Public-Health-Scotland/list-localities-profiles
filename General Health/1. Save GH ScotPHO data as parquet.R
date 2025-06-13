@@ -66,12 +66,13 @@ read_parquet(data_extract_file) |>
   ) |>
   # Write each indicator's data to individual files
   pwalk(
-    \(indicator, data, file_name)
+    \(indicator, data, file_name) {
       write_parquet(
         data,
         path(gen_health_data_dir, file_name),
         compression = "zstd"
-      ),
+      )
+    },
     .progress = TRUE
   )
 
