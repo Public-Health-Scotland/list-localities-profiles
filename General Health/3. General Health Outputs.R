@@ -908,7 +908,7 @@ ltc_types <- ltc2 %>%
   summarise(across(everything(), sum)) %>%
   ungroup() |>
   pivot_longer(
-    cols = c("Arthritis":"Renal failure"),
+    cols = "Arthritis":"Renal failure",
     names_to = "key",
     values_to = "value"
   )
