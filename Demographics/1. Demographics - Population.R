@@ -392,21 +392,29 @@ pop_change <- case_when(
 )
 
 pop_graph_text <- case_when(
-  pval < 0.05 & coef < 0 & pop_latest > pop_last ~ "The population has been falling in general, however it has risen since last year.",
-  pval < 0.05 & coef > 0 & pop_latest < pop_last ~ "The population has been rising in general, however it has fallen since last year.",
+  pval < 0.05 & coef < 0 & pop_latest > pop_last ~
+    "The population has been falling in general, however it has risen since last year.",
+  pval < 0.05 & coef > 0 & pop_latest < pop_last ~
+    "The population has been rising in general, however it has fallen since last year.",
   pval < 0.05 & coef < 0 ~ "The population has been falling.",
   pval < 0.05 & coef > 0 ~ "The population has been rising.",
-  .default = glue("There is no significant linear trend in population. However, it has {pop_change} {change_point}.")
+  .default = glue(
+    "There is no significant linear trend in population. However, it has {pop_change} {change_point}."
+  )
 )
 
 ## Pop projection
 pop_proj_min_year <- min(pop_proj_dat[["year"]])
-pop_proj_min_year_value <- filter(pop_proj_dat, year == pop_proj_min_year) |> pull(pop)
+pop_proj_min_year_value <- filter(pop_proj_dat, year == pop_proj_min_year) |>
+  pull(pop)
 pop_proj_max_year <- max(pop_proj_dat[["year"]])
-pop_proj_max_year_value <- filter(pop_proj_dat, year == pop_proj_max_year) |> pull(pop)
+pop_proj_max_year_value <- filter(pop_proj_dat, year == pop_proj_max_year) |>
+  pull(pop)
 
 pop_proj_change_pct <- round_half_up(
-  100 * (pop_proj_max_year_value - pop_proj_min_year_value) / pop_proj_min_year_value,
+  100 *
+    (pop_proj_max_year_value - pop_proj_min_year_value) /
+    pop_proj_min_year_value,
   digits = 1L
 )
 
@@ -421,9 +429,22 @@ pop_proj_text <- glue(
 )
 
 rm(
-  reg, pval, coef, pop_latest, pop_last, change_point, pop_change, pop_proj_change_pct,
-  pop_proj_min_year, pop_proj_max_year, pop_proj_min_year_value, pop_proj_max_year_value,
-  locality_pop_trend, loc_pops, hscp_pop_proj_weight, locality_pop_proj
+  reg,
+  pval,
+  coef,
+  pop_latest,
+  pop_last,
+  change_point,
+  pop_change,
+  pop_proj_change_pct,
+  pop_proj_min_year,
+  pop_proj_max_year,
+  pop_proj_min_year_value,
+  pop_proj_max_year_value,
+  locality_pop_trend,
+  loc_pops,
+  hscp_pop_proj_weight,
+  locality_pop_proj
 )
 
 
