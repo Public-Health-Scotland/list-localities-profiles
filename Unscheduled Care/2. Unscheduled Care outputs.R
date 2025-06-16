@@ -1946,7 +1946,7 @@ psych_hosp <- read_csv(paste0(
   "scotpho_data_extract_psychiatric_admissions.csv"
 )) %>%
   clean_scotpho_dat() %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 18)))
+  mutate(period_short = gsub("to", "-", substr(period, 1, 18), fixed = TRUE))
 
 check_missing_data_scotpho(psych_hosp)
 
