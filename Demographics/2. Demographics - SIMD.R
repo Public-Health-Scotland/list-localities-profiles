@@ -35,8 +35,14 @@ library(sf)
 
 # SECTION 2: Data Imports ----
 
+## Relevant lookups for creating the table objects
+lookup <- read_in_localities()
+
 ## Locality/DZ lookup
 lookup_dz <- read_in_localities(dz_level = TRUE)
+
+# This will set the HSCP for the chosen locality. Testing only.
+# HSCP <- get_hscp_from_locality(LOCALITY, lookup)
 
 ## Population data
 pop_raw_data <- read_in_dz_pops()
@@ -464,12 +470,6 @@ simd_diff_overall <- simd_16_20_dom %>%
 
 
 ##################### SECTION 4: Objects for summary table #######################
-
-## Relevant lookups for creating the table objects
-lookup <- read_in_localities()
-
-## Relevant lookups for creating the table objects
-HSCP <- as.character(filter(lookup, hscp_locality == LOCALITY)$hscp2019name)
 
 # Determine other localities based on LOCALITY object
 other_locs <- lookup %>%
