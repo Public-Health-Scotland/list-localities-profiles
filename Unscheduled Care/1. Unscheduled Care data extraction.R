@@ -324,7 +324,7 @@ smr_readmissions <- read_dataframe %>%
   mutate(discharges = 1) %>%
   left_join(deaths, by = "link_no") %>%
   mutate(
-    discharge_dead = if_else(substr(discharge_type, 1, 1) == "4", 1, 0)
+    discharge_dead = if_else(startsWith(discharge_type, "4"), 1, 0)
   ) %>%
   mutate(
     discharge_to_death = time_length(
