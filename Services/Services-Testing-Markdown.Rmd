@@ -27,7 +27,7 @@ source("Services/2. Services data manipulation & table.R")
 source("Services/3. Service HSCP map.R")
 
 figure_num <- 1 # object for figure numbers
-y <- 1 # object for table numbers
+table_num <- 1 # object for table numbers
 ```
 
 
@@ -45,12 +45,12 @@ figure_num <- figure_num + 1
 
 \newline
 
-#### Table `r y`: Number of each type of service in `r LOCALITY` Locality^2^.
+#### Table `r table_num`: Number of each type of service in `r LOCALITY` Locality^2^.
 
 \newline
 
 ```{r echo = FALSE}
 knitr::kable(services_tibble, col.names = c("**Service Type**", "**Service**", "**Number**"), format = "markdown")
 
-y <- y + 1
+table_num <- table_num + 1
 ```

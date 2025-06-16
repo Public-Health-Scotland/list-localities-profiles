@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 options(kableExtra.auto_format = FALSE)
 
 figure_num <- 1 # object for figure numbers
-y <- 1 # object for table numbers
+table_num <- 1 # object for table numbers
 ```
 
 ```{r testing_setup, include = FALSE}

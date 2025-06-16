@@ -28,7 +28,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 source("Unscheduled Care/2. Unscheduled Care outputs.R")
 
 figure_num <- 1 # object for figure numbers
-y <- 1 # object for table numbers
+table_num <- 1 # object for table numbers
 ```
 
 ## Hospital and Community Care

@@ -24,7 +24,7 @@ options(kableExtra.auto_format = FALSE)
 source("Households/Households Code.R")
 
 figure_num <- 1 # object for figure numbers
-y <- 1 # object for table numbers
+table_num <- 1 # object for table numbers
 ```
 
 ## Housing
@@ -59,7 +59,7 @@ There were `r n_second_homes` dwellings classed as a second home in `r max_year_
 
 ##### Page break
 
-#### Table `r y`: Breakdown of dwelling types by year for `r LOCALITY` locality.
+#### Table `r table_num`: Breakdown of dwelling types by year for `r LOCALITY` locality.
 
 \newline
 
@@ -72,12 +72,12 @@ knitr::kable(house_table,
   align = c("l", "r", "r", "r", "r", "r", "r"), format = "markdown"
 )
 
-y <- y + 1
+table_num <- table_num + 1
 ```
 
 Source: Scottish Assessors' Association (via NRS) \newline
 
-The proportion of households within each council tax band are displayed in the chart below, figures are shown in Table `r y`.
+The proportion of households within each council tax band are displayed in the chart below, figures are shown in Table `r table_num`.
 
 #### Figure `r figure_num`: Breakdown of households by council tax band for `r LOCALITY` in `r max_year_housing`.
 
@@ -89,7 +89,7 @@ ctb_plot
 figure_num <- figure_num + 1
 ```
 
-#### Table `r y`: Percentage of households by council tax band for `r LOCALITY` in `r max_year_housing`.
+#### Table `r table_num`: Percentage of households by council tax band for `r LOCALITY` in `r max_year_housing`.
 
 \newline
 
@@ -102,7 +102,7 @@ knitr::kable(ctb_table,
   align = c("l", rep("r", 8)), format = "markdown"
 )
 
-y <- y + 1
+table_num <- table_num + 1
 ```
 
 Source: Scottish Assessors' Association (via NRS)

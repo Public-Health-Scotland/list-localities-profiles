@@ -27,7 +27,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
 
 figure_num <- 1 # object for figure numbers
-y <- 1 # object for table numbers
+table_num <- 1 # object for table numbers
 ```
 
 ```{r produce_data, include = FALSE}
@@ -78,16 +78,16 @@ figure_num <- figure_num + 1
 
 ##### Page break
 
-Table `r y` provides the average life expectancy for men and women in different areas for the latest time period available.
+Table `r table_num` provides the average life expectancy for men and women in different areas for the latest time period available.
 
-#### Table `r y`: Average life expectancy in years for the latest time periods (`r latest_period_life_exp_loc` aggregated years for the locality; `r latest_period_life_exp_otherareas` aggregated years for other areas).
+#### Table `r table_num`: Average life expectancy in years for the latest time periods (`r latest_period_life_exp_loc` aggregated years for the locality; `r latest_period_life_exp_otherareas` aggregated years for other areas).
 
 \newline
 
 ```{r life_exp_table, echo = FALSE}
 knitr::kable(life_exp_table)
 
-y <- y + 1
+table_num <- table_num + 1
 ```
 
 Source: ScotPHO
@@ -136,21 +136,21 @@ ltc_waffles
 
 \newline
 
-The co-occurrence of two or more conditions, known as multi-morbidity, is broken down in Table `r y`, distinguishing between age groups. Overall, **`r format_number_for_text(ltc_multimorbidity_un65_perc)`**% of those under 65 have more than one LTC, compared to **`r format_number_for_text(ltc_multimorbidity_ov65_perc)`**% of those over 65.
+The co-occurrence of two or more conditions, known as multi-morbidity, is broken down in Table `r table_num`, distinguishing between age groups. Overall, **`r format_number_for_text(ltc_multimorbidity_un65_perc)`**% of those under 65 have more than one LTC, compared to **`r format_number_for_text(ltc_multimorbidity_ov65_perc)`**% of those over 65.
 
-#### Table `r y`: Multi-morbidity of physical long-term conditions by age group in `r latest_year_ltc`. \newline
+#### Table `r table_num`: Multi-morbidity of physical long-term conditions by age group in `r latest_year_ltc`. \newline
 
 ```{r ltc_multimorbidity_table, echo = FALSE}
 knitr::kable(ltc_multimorbidity_table)
 
-y <- y + 1
+table_num <- table_num + 1
 ```
 
 ##### Page break
 
 **Most common physical Long-Term Conditions (LTCs)**
 
-Below is a breakdown of the physical LTCs, for the financial year `r latest_year_ltc`. Figure `r figure_num` shows the prevalence of different LTCs in each age group in `r LOCALITY` locality, and Table `r y` illustrates the five most prevalent physical LTCs across all ages at the locality, partnership, and Scotland levels.
+Below is a breakdown of the physical LTCs, for the financial year `r latest_year_ltc`. Figure `r figure_num` shows the prevalence of different LTCs in each age group in `r LOCALITY` locality, and Table `r table_num` illustrates the five most prevalent physical LTCs across all ages at the locality, partnership, and Scotland levels.
 
 #### Figure `r figure_num`: The percentage of people with each physical LTC by age group. \newline
 
@@ -162,14 +162,14 @@ figure_num <- figure_num + 1
 
 \*COPD: Chronic Obstructive Pulmonary Disease
 
-#### Table `r y`: Prevalence of the five most common physical LTCs as a percentage of the population across geographical areas (1 is the most prevalent).
+#### Table `r table_num`: Prevalence of the five most common physical LTCs as a percentage of the population across geographical areas (1 is the most prevalent).
 
 \newline
 
 ```{r top5_ltc_table, echo = FALSE, fig.width = 7.5, fig.height = 3.5}
 top5_ltc_table
 
-y <- y + 1
+table_num <- table_num + 1
 ```
 
 Source: Source Linkage Files
@@ -200,12 +200,12 @@ figure_num <- figure_num + 1
 
 Patient hospitalisations can indicate how certain diseases have varying impacts on people's lives. In the latest time period available in `r LOCALITY`, the condition with the highest rate of hospitalisations was `r highest_hosp_disease$indicator`.
 
-#### Table `r y`: Patient hospitalisations by condition and geographical area, age-sex standardised rates per 100,000.
+#### Table `r table_num`: Patient hospitalisations by condition and geographical area, age-sex standardised rates per 100,000.
 
 ```{r disease_hosp_table, echo = FALSE}
 knitr::kable(disease_hosp_table)
 
-y <- y + 1
+table_num <- table_num + 1
 ```
 
 \newline
