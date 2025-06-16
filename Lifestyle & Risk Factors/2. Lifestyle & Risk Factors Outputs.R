@@ -34,9 +34,10 @@ ext_year <- 2024
 # Locality lookup
 lookup <- read_in_localities()
 
-# Determine HSCP and HB based on Loc
-HSCP <- as.character(filter(lookup, hscp_locality == LOCALITY)$hscp2019name)
-HB <- as.character(filter(lookup, hscp_locality == LOCALITY)$hb2019name)
+# This will set the HSCP for the chosen locality. Testing only.
+# HSCP <- get_hscp_from_locality(LOCALITY, lookup)
+# This sets the HB
+HB <- get_hb_from_locality(LOCALITY, lookup)
 
 # Determine other localities based on LOCALITY object
 other_locs <- lookup %>%
