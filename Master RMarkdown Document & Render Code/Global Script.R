@@ -69,7 +69,7 @@ get_article <- function(number) {
     return("-")
   }
 
-  if (substr(number, 1, 1) == "8" || substr(number, 1, 2) == "18") {
+  if (startsWith(number, "8") || startsWith(number, "18")) {
     return("an")
   } else {
     return("a")
