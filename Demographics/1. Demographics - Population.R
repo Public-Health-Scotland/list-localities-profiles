@@ -14,18 +14,10 @@
 
 ####################### SECTION 1: Packages, file paths, etc #########################
 
-## Libraries
+# Libraries
 library(scales)
 library(reshape2)
 
-# Source in global functions/themes script
-# source("Master RMarkdown Document & Render Code/Global Script.R")
-
-## Final document will loop through a list of localities
-# Create placeholder for for loop
-# LOCALITY <- "Inverness"
-# LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
-# LOCALITY <- "Ayr North and Former Coalfield Communities"
 
 ########################## SECTION 2: Data Imports ###############################
 
@@ -42,6 +34,17 @@ hscp_pop_proj <- read_in_pop_proj()
 pop_max_year <- max(pop_raw_data$year)
 pop_min_year <- pop_max_year - 5
 
+# Testing setup ----
+# Source in global functions/themes script
+# source("Master RMarkdown Document & Render Code/Global Script.R")
+
+# Select one locality e.g. by commenting out one line
+# LOCALITY <- "Inverness"
+# LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
+# LOCALITY <- "Ayr North and Former Coalfield Communities"
+
+# This will set the HSCP for the chosen locality. Testing only.
+# HSCP <- get_hscp_from_locality(LOCALITY, lookup)
 
 ######################## SECTION 3: Gender and Age #############################
 
@@ -470,9 +473,6 @@ rm(
 
 ##################### SECTION 5: Objects for summary table #######################
 
-## Relevant lookups for creating the table objects
-HSCP <- as.character(filter(lookup, hscp_locality == LOCALITY)$hscp2019name)
-
 # Determine other localities based on LOCALITY object
 other_locs <- lookup %>%
   select(hscp_locality, hscp2019name) %>%
@@ -495,7 +495,6 @@ over65 <- round_half_up(
     100,
   1
 )
-
 
 ## Other localities in HSCP objects
 
