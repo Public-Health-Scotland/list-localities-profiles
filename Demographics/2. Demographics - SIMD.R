@@ -131,9 +131,9 @@ simd_perc_breakdown <- pop_data %>%
   summarise(pop = sum(total_pop)) %>%
   mutate(
     total_pop = sum(pop),
-    perc = round_half_up(100 * pop / total_pop, 1)
+    perc = round_half_up(100 * pop / total_pop, 1),
+    perc = replace_na(perc, 0)
   ) %>%
-  mutate(perc = replace_na(perc, 0)) %>%
   arrange(simd2020v2_sc_quintile)
 
 perc_bottom_quintile <- simd_perc_breakdown[1, ]$perc
@@ -391,9 +391,9 @@ simd_16_20_dom <- full_join(
 ) %>%
   mutate(perc_16 = replace_na(perc_16, 0)) %>%
   full_join(simd2020_dom, by = join_by(domain, quintile)) %>%
-  mutate(perc_20 = replace_na(perc_20, 0)) %>%
-  mutate(diff = perc_20 - perc_16) %>%
   mutate(
+    perc_20 = replace_na(perc_20, 0),
+    diff = perc_20 - perc_16,
     domain = ifelse(domain == "simd", "SIMD", str_to_title(domain)),
     v_just = ifelse(diff < 0, 1.5, -1)
   )

@@ -73,9 +73,7 @@ life_exp <- bind_rows(life_exp_male, life_exp_fem) %>%
       indicator,
       "Life expectancy, males" ~ "Male",
       "Life expectancy, females" ~ "Female"
-    )
-  ) %>%
-  mutate(
+    ),
     period_short = str_replace(period, fixed(" to "), "-") |>
       str_sub(end = 9)
   )
@@ -175,8 +173,10 @@ ltc <- read_parquet(path(gen_health_data_dir, "LTC_from_SLF.parquet")) %>%
     "Parkinsons" = "parkinsons",
     "Renal failure" = "refailure"
   ) %>%
-  mutate(hscp_locality = gsub("&", "and", hscp_locality)) %>%
-  mutate(year = paste0("20", substr(year, 1, 2), "/", substr(year, 3, 4)))
+  mutate(
+    hscp_locality = gsub("&", "and", hscp_locality),
+    year = paste0("20", substr(year, 1, 2), "/", substr(year, 3, 4))
+  )
 
 
 ############################### 2) SCOTPHO DATA ####################################
@@ -451,16 +451,14 @@ disease_hosp <- bind_rows(
       area_type,
       levels = c("Locality", "HSCP", "Health board", "Scotland")
     ),
-    area_name = fct_reorder(as.factor(area_name), as.numeric(area_type))
-  ) %>%
-  mutate(
+    area_name = fct_reorder(as.factor(area_name), as.numeric(area_type)),
     indicator = case_when(
       str_detect(indicator, "Asthma") ~ "Asthma",
       str_detect(indicator, "CHD") ~ "Coronary Heart Disease",
       str_detect(indicator, "COPD") ~ "COPD"
-    )
-  ) %>%
-  mutate(measure = round_half_up(measure, 1))
+    ),
+    measure = round_half_up(measure, 1)
+  )
 
 highest_hosp_disease <- disease_hosp %>%
   filter(
@@ -853,9 +851,7 @@ ltc_multimorbidity <- ltc2 %>%
       total_ltc == 2 ~ "2 LTCs",
       total_ltc == 3 ~ "3 LTCs",
       total_ltc >= 4 ~ "4 or more LTCs"
-    )
-  ) %>%
-  mutate(
+    ),
     total_ltc = factor(
       total_ltc,
       levels = c("1 LTC", "2 LTCs", "3 LTCs", "4 or more LTCs")
