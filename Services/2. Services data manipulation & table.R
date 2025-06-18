@@ -155,7 +155,7 @@ other_care_type <- care_homes %>%
 
 # Create table
 services_tibble <- tibble(
-  Type = c("**Primary Care**", "**A&E**", "", "**Care Home**", ""),
+  Type = c("Primary Care", "A&E", "", "Care Home", ""),
   Service = c("GP Practice", "Emergency Department", "Minor Injuries Unit", "Elderly Care", "Other"),
   Number = c(
     nrow(filter(markers_gp, hscp_locality == LOCALITY)),
