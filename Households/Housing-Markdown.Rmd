@@ -85,7 +85,6 @@ flextable(house_table, theme_fun = NULL) %>%
     "Council Tax Exempt Dwellings", "Second Homes"
   )) %>%
   bold(i = nrow(house_table)) %>%
-  align(j = 2, align = "center", part = "body") %>%
   height(height = 0.236, part = "body") %>%
   hrule(rule = "atleast", part = "body") %>%
   width(width = 6.5/ncol(house_table))
@@ -116,8 +115,6 @@ flextable(ctb_table, theme_fun = NULL) %>%
      "Tax Band", "A", "B", "C",
     "D", "E", "F", "G", "H"
   )) %>%
-  bold(i = nrow(ctb_table)) %>%
-  align(j = 2, align = "center", part = "body") %>%
   height(height = 0.236, part = "body") %>%
   hrule(rule = "atleast", part = "body") %>%
   width(j = 1, width = 1.12) %>%           
