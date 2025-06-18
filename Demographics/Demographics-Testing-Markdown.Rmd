@@ -1,11 +1,13 @@
 ---
-title: ''
-output:
-  word_document:
-    reference_docx: "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality
-      Profiles/Master RMarkdown Document & Render Code/Locality_Profiles_Report_Template.docx"
-  html_document:
-    df_print: paged
+output: 
+  phstemplates::phs_report_docx:
+    reference_docx: "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/phs-mngtinfo-report.docx"
+    fig_caption: no
+    cover_page: "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/phs-mngtinfo-cover.docx"
+    cover_title: "My Title"
+    cover_subtitle: "My subtitle"
+    cover_date: "DD MM YYYY"
+    toc_depth: 3
 ---
 
 ```{r setup, include = FALSE}
@@ -30,6 +32,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+
 ```
 
 ```{r prepare_data_populations, include = FALSE}
@@ -40,28 +43,25 @@ source("Demographics/1. Demographics - Population.R")
 source("Demographics/2. Demographics - SIMD.R")
 ```
 
-## Demographics
+# Demographics
 
-\newline
 
 **Summary**
 
 For the most recent time period available, `r LOCALITY` Locality had:
 
--   A total population of **`r total_population`** people, where **`r gender_breakdown[gender_breakdown$sex == "M",]$perc`** were male, and **`r over65`%** were aged over 65.
--   **`r perc_top_quintile`%** of people lived in the least deprived SIMD quintile, and **`r perc_bottom_quintile`%** lived in the most deprived quintile.
+** A total population of **`r total_population`** people, where **`r gender_breakdown[gender_breakdown$sex == "M",]$perc`** were male, and **`r over65`%** were aged over 65.
+** **`r perc_top_quintile`%** of people lived in the least deprived SIMD quintile, and **`r perc_bottom_quintile`%** lived in the most deprived quintile.
 
 \newline
 
-### Population
+## Population
 
 <!-- Total Population Text -->
 
 In `r pop_max_year`, the total population of `r LOCALITY` locality was `r total_population`. The graph below shows the population distribution of the locality. Overall, **`r gender_breakdown[gender_breakdown$sex == "M",]$perc`** of the population are male, and **`r gender_breakdown[gender_breakdown$sex == "F",]$perc`** are female.
 
-#### Figure `r x`: Population by age and sex.
-
-\newline
+<Div custom-style = "Table or chart caption">Figure `r x`: Population by age and sex.</Div>
 
 ```{r echo = FALSE, fig.width = 7, fig.height = 4, warning = FALSE, fig.cap = "A bar chart showing the population distribution of the locality grouped by age and sex"}
 pop_pyramid
@@ -73,11 +73,8 @@ x <- x + 1
 
 Figure `r x` shows the historical population of `r LOCALITY`, along with the NRS population projections. `r pop_graph_text` `r pop_proj_text`. *Please see the footnotes for more information on how the population projections were calculated^1^.*
 
-##### Page break
+<Div custom-style = "Table or chart caption">Figure `r x`: Population time trend and projection.</Div>
 
-#### Figure `r x`: Population time trend and projection.
-
-\newline
 
 ```{r echo = FALSE, fig.width = 7.5, fig.height = 4, warning = FALSE, fig.cap= "A line graph showing the trend in population over time"}
 pop_ts_plot
@@ -85,13 +82,11 @@ pop_ts_plot
 x <- x + 1
 ```
 
-\newline
 
 Figure `r x` shows how the population structure has changed between `r pop_min_year` and `r pop_max_year`.
 
-#### Figure `r x`: Change in population structure over the last five years.
+<Div custom-style = "Table or chart caption">Figure `r x`: Change in population structure over the last five years.</Div>
 
-\newline
 
 ```{r echo = FALSE, fig.width = 9, fig.height = 4, warning = FALSE, fig.cap= "A bar chart showing the percentage change in population structure, split by age and sex, over the last five years"}
 hist_pop_change
@@ -99,15 +94,14 @@ hist_pop_change
 x <- x + 1
 ```
 
-##### Page break
 
-### Deprivation
+## Deprivation
 
 The following section explores the deprivation structure of `r LOCALITY` through the Scottish Index of Multiple Deprivation (SIMD). The SIMD ranks all datazones in Scotland by a number of factors; Access, Crime, Education, Employment, Health, Housing and Income. Based on these ranks, each datazone is then given an overall deprivation rank, which is used to split datazones into Deprivation Quintiles (Quintile 1 being the most deprived, and Quintile 5 the least). The most recent SIMD ranking was carried out in 2020. This section mainly focuses on the SIMD 2020 classifications, however, the 2016 classifications are used to assess how deprivation has changed in `r LOCALITY` when compared to the rest of Scotland.
 
 Of the `r pop_max_year` population in `r LOCALITY`, **`r perc_bottom_quintile`%** live in the most deprived Quintile (SIMD 1), and **`r perc_top_quintile`%** live in the least deprived Quintile (SIMD 5).
 
-#### Figure `r x`: Map of Data Zones within `r LOCALITY` coloured by SIMD quintiles.
+<Div custom-style = "Table or chart caption">Figure `r x`: Map of Data Zones within `r LOCALITY` coloured by SIMD quintiles.</Div>
 
 ```{r echo = FALSE, fig.width = 8, warning = FALSE, fig.cap = 'A map of the locality which is broken down by data zones with the colouring showing the SIMD quintile for each.'}
 simd_map
@@ -115,33 +109,32 @@ simd_map
 x <- x + 1
 ```
 
-##### Page break
-
 Table `r y` details the percentage of the locality's 2016 population living in the 2016 SIMD Quintiles, the percentage of the `r pop_max_year` population living in the 2020 SIMD Quintiles, and their difference for comparison. Figure `r x` then breaks down SIMD by domain in `r LOCALITY`.
 
-#### Table `r y`: Percentage of the `r LOCALITY` population living in the 2016 and 2020 SIMD Datazone Quintiles in 2016 and `r pop_max_year` respectively.
+<Div custom-style = "Table or chart caption">Table `r y`: Percentage of the `r LOCALITY` population living in the 2016 and 2020 SIMD Datazone Quintiles in 2016 and `r pop_max_year` respectively.</Div>
 
-\newline
 
 ```{r echo = FALSE}
-knitr::kable(simd_diff_overall,
-  col.names = c(
-    "**Quintile**", "**Percent of 2016 Population (SIMD 2016 Ranking)**",
-    glue("**Percent of {pop_max_year} Population (SIMD 2020 Ranking)**"),
-    "**Difference**"
-  ),
-  align = c("l", "r", "r", "r"),
-  format = "markdown"
-)
+
+flextable(simd_diff_overall, theme_fun = NULL) %>%
+  my_ft_format() %>%
+  set_header_labels(values = c(
+    "Quintile", "Percent of 2016 Population (SIMD 2016 Ranking)",
+    glue("Percent of {pop_max_year} Population (SIMD 2020 Ranking)"),
+    "Difference"
+  )) %>%
+  height(height = 0.236, part = "body") %>%
+  hrule(rule = "atleast", part = "body") %>%
+  width(j = 1, width = 1) %>%
+  width(j = 4, width = 1) %>%   
+  width(j = 2:3, width = 2.2) 
 
 y <- y + 1
 ```
 
 Source: Scottish Government, Public Health Scotland, National Records Scotland. \newline
 
-#### Figure `r x`: Proportion of the population that reside in each 2020 SIMD quintile by domain in `r pop_max_year`.
-
-\newline
+<Div custom-style = "Table or chart caption">Figure `r x`: Proportion of the population that reside in each 2020 SIMD quintile by domain in `r pop_max_year`.</Div>
 
 ```{r echo = FALSE, fig.width = 8, fig.height = 5, warning = FALSE, fig.cap = 'A bar graph showing the proportion of the population in each SIMD decile for each SIMD domain.'}
 simd_domains
@@ -149,13 +142,12 @@ simd_domains
 x <- x + 1
 ```
 
-##### Page Break
 
 Figure `r x` presents a comparison between the 2016 SIMD ranking applied to 2016 population estimates, and the more recent 2020 SIMD ranking applied to `r pop_max_year` population estimates. The percentages of the population living within each SIMD quintile by domain were calculated using the 2016 and 2020 SIMD datazone classifications respectively. The differences in these percentages are plotted in Figure `r x`. Negative values on the y-axis indicate a decrease in the percent of the population living within a quintile, while positive values indicate an increase in the percent of the population living within a quintile. **Please note that quintiles have been weighted by the Scottish population so, any local changes in SIMD quintile do not necessarily indicate a difference in deprivation, but rather a difference in deprivation in comparison to the rest of Scotland.**
 
 \newline
 
-#### Figure `r x`: Percentage of population in 2016 and `r pop_max_year` living in the 2016 and the 2020 SIMD quintiles by domain.
+<Div custom-style = "Table or chart caption">Figure `r x`: Percentage of population in 2016 and `r pop_max_year` living in the 2016 and the 2020 SIMD quintiles by domain.</Div>
 
 \newline
 
