@@ -88,7 +88,7 @@ make_summary_table <- function(data) {
       across(all_of(c(loc_col, other_loc_cols, hscp_col, scot_col)), str_squish),
       # Make any missing values a dash
       across(all_of(c(loc_col, other_loc_cols, hscp_col, scot_col)), \(x) na_if(x, "NA")),
-      across(all_of(c(loc_col, other_loc_cols, hscp_col, scot_col)), \(x) replace_na(x, "-")),
+      across(all_of(c(loc_col, other_loc_cols, hscp_col, scot_col)), \(x) replace_na(x, "-"))
     ) |>
     flextable() |>
     # Header
