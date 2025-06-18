@@ -1,11 +1,13 @@
 ---
-title: ''
-output:
-  word_document:
-    reference_docx: "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality
-      Profiles/Master RMarkdown Document & Render Code/Locality_Profiles_Report_Template.docx"
-  html_document:
-    df_print: paged
+output: 
+  phstemplates::phs_report_docx:
+    reference_docx: "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/phs-mngtinfo-report.docx"
+    fig_caption: no
+    cover_page: "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/phs-mngtinfo-cover.docx"
+    cover_title: "My Title"
+    cover_subtitle: "My subtitle"
+    cover_date: "DD MM YYYY"
+    toc_depth: 3
 ---
 
 
@@ -14,38 +16,54 @@ knitr::opts_chunk$set(echo = TRUE)
 options(kableExtra.auto_format = FALSE)
 
 # Line below for testing only
-# LOCALITY <- "Falkirk West"
+LOCALITY <- "Falkirk West"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
 # LOCALITY <- "Helensburgh and Lomond"
 # LOCALITY <- "City of Dunfermline"
 # LOCALITY <- "Skye, Lochalsh and West Ross"
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
-
+library(ggplot2)
+library(scales)
+library(flextable)
+library(officer)
+library(magrittr)
 source("Households/Households Code.R")
 
 x <- 1 # object for figure numbers
 y <- 1 # object for table numbers
 ```
 
-## Housing
 
-\newline
+```{r flextable-table-data, include = FALSE}
+# Set up some formatting for flextable to be applied to most tables
+my_ft_format <- function(ft) {
+  ft %>%
+    bold(part = "header") %>%
+    bg(bg = "#43358B", part = "header") %>%
+    color(color = "white", part = "header") %>%
+    align(align = "left", part = "header") %>%
+    valign(valign = "center", part = "header") %>%
+    valign(valign = "top", part = "body") %>%
+    colformat_num(big.mark = "") %>%
+    fontsize(size = 10, part = "all") %>%
+    border(border = fp_border_default(color = "#000000", width = 0.5),
+           part = "all")
+}
+```
+
+# Housing
 
 **Summary**
 
 For the most recent time period available, `r LOCALITY` Locality had:
 
--   **`r n_houses`** dwellings, of which: **`r perc_occupied`%** were occupied and **`r perc_second_homes`%** were second homes.
--   **`r perc_single_discount`%** of dwellers received a single-occupant council tax discount, and **`r perc_exempt`%** were exempt from council tax entirely.
--   **`r perc_houses_AC`%** of houses were within council tax bands A to C, and **`r perc_houses_FH`%** were in bands F to H.
-
-\newline
+* **`r n_houses`** dwellings, of which: **`r perc_occupied`%** were occupied and **`r perc_second_homes`%** were second homes.
+* **`r perc_single_discount`%** of dwellers received a single-occupant council tax discount, and **`r perc_exempt`%** were exempt from council tax entirely.
+* **`r perc_houses_AC`%** of houses were within council tax bands A to C, and **`r perc_houses_FH`%** were in bands F to H.
 
 The graph below shows the number of dwellings in `r LOCALITY` from `r min(house_dat$year)` to `r max_year_housing`.
 
-#### Figure `r x`: Number of dwellings time trend.
-
-\newline
+<Div custom-style = "Table or chart caption">Figure `r x`: Number of dwellings time trend.</Div>
 
 ```{r echo = FALSE, fig.width = 8.5, fig.height = 4, warning = FALSE}
 houses_ts
@@ -57,20 +75,21 @@ Of the total number of dwellings in `r max_year_housing`, `r perc_single_discoun
 
 There were `r n_second_homes` dwellings classed as a second home in `r max_year_housing`, these dwellings made up `r perc_second_homes`% of the households in `r LOCALITY`.
 
-##### Page break
-
-#### Table `r y`: Breakdown of dwelling types by year for `r LOCALITY` locality.
-
-\newline
-
+<Div custom-style = "Table or chart caption">Table `r y`: Breakdown of dwelling types by year for `r LOCALITY` locality.</Div>
 ```{r echo = FALSE}
-knitr::kable(house_table,
-  col.names = c(
-    "**Year**", "**Total Dwellings**", "**Occupied Dwellings**",
-    "**Vacant Dwellings**", "**Single Occupant Tax Discount**", "**Council Tax Exempt Dwellings**", "**Second Homes**"
-  ),
-  align = c("l", "r", "r", "r", "r", "r", "r"), format = "markdown"
-)
+flextable(house_table, theme_fun = NULL) %>%
+  my_ft_format() %>%
+  set_header_labels(values = c(
+    "Year", "Total Dwellings", "Occupied Dwellings",
+    "Vacant Dwellings", "Single Occupant Tax Discount", 
+    "Council Tax Exempt Dwellings", "Second Homes"
+  )) %>%
+  bold(i = nrow(house_table)) %>%
+  align(j = 2, align = "center", part = "body") %>%
+  height(height = 0.236, part = "body") %>%
+  hrule(rule = "atleast", part = "body") %>%
+  width(width = 6.5/ncol(house_table))
+
 
 y <- y + 1
 ```
@@ -79,9 +98,7 @@ Source: Scottish Assessors' Association (via NRS) \newline
 
 The proportion of households within each council tax band are displayed in the chart below, figures are shown in Table `r y`.
 
-#### Figure `r x`: Breakdown of households by council tax band for `r LOCALITY` in `r max_year_housing`.
-
-\newline
+<Div custom-style = "Table or chart caption">Figure `r x`: Breakdown of households by council tax band for `r LOCALITY` in `r max_year_housing`.</Div>
 
 ```{r echo = FALSE, fig.width = 7, fig.height = 2, warning = FALSE, fig.cap = 'A bar graph showing the proportion of Households in each council tax band for the locality for the most recent year'}
 ctb_plot
@@ -89,20 +106,22 @@ ctb_plot
 x <- x + 1
 ```
 
-#### Table `r y`: Percentage of households by council tax band for `r LOCALITY` in `r max_year_housing`.
-
-\newline
+<Div custom-style = "Table or chart caption">Table `r y`: Percentage of households by council tax band for `r LOCALITY` in `r max_year_housing`.</Div>
 
 ```{r echo = FALSE}
-knitr::kable(ctb_table,
-  col.names = c(
-    "**Tax Band**", "**A**", "**B**", "**C**",
-    "**D**", "**E**", "**F**", "**G**", "**H**"
-  ),
-  align = c("l", rep("r", 8)), format = "markdown"
-)
 
-y <- y + 1
+flextable(ctb_table, theme_fun = NULL) %>%
+  my_ft_format() %>%
+  set_header_labels(values = c(
+     "Tax Band", "A", "B", "C",
+    "D", "E", "F", "G", "H"
+  )) %>%
+  bold(i = nrow(ctb_table)) %>%
+  align(j = 2, align = "center", part = "body") %>%
+  height(height = 0.236, part = "body") %>%
+  hrule(rule = "atleast", part = "body") %>%
+  width(j = 1, width = 1.12) %>%           
+  width(j = 2:9, width = 0.77)
+
 ```
-
 Source: Scottish Assessors' Association (via NRS)
