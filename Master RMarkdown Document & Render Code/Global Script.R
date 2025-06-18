@@ -20,6 +20,10 @@ library(glue)
 library(fs)
 library(arrow)
 library(phsstyles)
+library(scales)
+library(flextable)
+library(officer)
+library(magrittr)
 
 # Prefer dplyr functions if there's a conflict
 conflicted::conflict_prefer_all("dplyr", quiet = TRUE)
@@ -583,4 +587,21 @@ save_dataframes_to_excel <- function(dataframes, sheet_names, file_path) {
 
   # Save the workbook to a file
   openxlsx2::wb_save(wb, file = file_path, overwrite = TRUE)
+}
+
+
+# flextable function
+
+my_ft_format <- function(ft) {
+  ft %>%
+    bold(part = "header") %>%
+    bg(bg = "#43358B", part = "header") %>%
+    color(color = "white", part = "header") %>%
+    align(align = "center", part = "header") %>%
+    valign(valign = "center", part = "header") %>%
+    valign(valign = "top", part = "body") %>%
+    colformat_num(big.mark = "") %>%
+    fontsize(size = 10, part = "all") %>%
+    border(border = fp_border_default(color = "#000000", width = 0.5),
+           part = "all")
 }
