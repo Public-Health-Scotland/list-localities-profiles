@@ -150,7 +150,7 @@ theme_profiles <- function() {
 # if changed to dz_level = TRUE, this shows all the datazones in each locality (6976 rows)
 
 read_in_localities <- function(dz_level = FALSE) {
-  data <- fs::dir_ls(
+  localities_lookup <- fs::dir_ls(
     path = "/conf/linkage/output/lookups/Unicode/Geography/HSCP Locality",
     regexp = "HSCP Localities_DZ11_Lookup_.+?\\.rds$"
   ) |>
@@ -168,8 +168,8 @@ read_in_localities <- function(dz_level = FALSE) {
     dplyr::mutate(hscp_locality = sub("&", "and", hscp_locality, fixed = TRUE))
 
   if (!dz_level) {
-    data <- dplyr::distinct(
-      data,
+    localities_lookup <- dplyr::distinct(
+      localities_lookup,
       hscp_locality,
       hscp2019name,
       hscp2019,
@@ -178,7 +178,7 @@ read_in_localities <- function(dz_level = FALSE) {
     )
   }
 
-  return(data)
+  return(localities_lookup)
 }
 
 count_localities <- function(locality_lookup, hscp_name) {
@@ -191,7 +191,7 @@ count_localities <- function(locality_lookup, hscp_name) {
 # The function pulls the latest "Scottish_Postcode_Directory_year_version.rds"
 
 read_in_postcodes <- function() {
-  data <- fs::dir_ls(
+  sdp_data <- fs::dir_ls(
     path = "/conf/linkage/output/lookups/Unicode/Geography/Scottish Postcode Directory",
     regexp = "\\.parquet$"
   ) |>
@@ -201,14 +201,14 @@ read_in_postcodes <- function() {
       col_select = -c(hscp2019, hscp2019name, hb2019, hb2019name)
     )
 
-  data <- dplyr::left_join(
-    data,
+  spd_with_localities <- dplyr::left_join(
+    sdp_data,
     read_in_localities(dz_level = TRUE),
     by = dplyr::join_by(datazone2011),
     relationship = "many-to-one"
   )
 
-  return(data)
+  return(spd_with_localities)
 }
 
 
@@ -268,7 +268,7 @@ read_in_dz_pops_proxy_year <- function() {
 # Then joins this with hscp lookup to match hscp names
 
 read_in_pop_proj <- function() {
-  proj <- fs::dir_ls(
+  pop_proj <- fs::dir_ls(
     glue(
       "/conf/linkage/output/lookups/Unicode/",
       "Populations/Projections/"
@@ -286,7 +286,7 @@ read_in_pop_proj <- function() {
     select(hscp2019, hscp2019name) %>%
     distinct()
 
-  left_join(proj, hscp_lkp, by = join_by(hscp2019))
+  left_join(pop_proj, hscp_lkp, by = join_by(hscp2019))
 }
 
 #### Functions for ScotPHO data ####
@@ -656,10 +656,10 @@ save_dataframes_to_excel <- function(dataframes, sheet_names, file_path) {
   # Loop over each dataframe and corresponding sheet name
   for (i in seq_along(dataframes)) {
     # Define the used columns
-    cols <- seq_len(ncol(dataframes[[i]]))
+    cols_to_read <- seq_len(ncol(dataframes[[i]]))
 
     # Define the header range
-    header_range <- openxlsx2::wb_dims(rows = 1, cols = cols)
+    header_range <- openxlsx2::wb_dims(rows = 1, cols = cols_to_read)
 
     wb <- wb |>
       # Add a worksheet
@@ -669,7 +669,7 @@ save_dataframes_to_excel <- function(dataframes, sheet_names, file_path) {
       # Style the header bold
       openxlsx2::wb_add_font(dims = header_range, bold = TRUE) |>
       # Set column widths to auto
-      openxlsx2::wb_set_col_widths(cols = cols, widths = "auto")
+      openxlsx2::wb_set_col_widths(cols = cols_to_read, widths = "auto")
   }
 
   # Create the directories if they don't exist
