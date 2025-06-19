@@ -1226,12 +1226,12 @@ other_locs_summary_table <- function(data, latest_year) {
 }
 
 hscp_scot_summary_table <- function(data, latest_year, area) {
-  type <- if_else(area == HSCP, "HSCP", "Scotland")
+  area_type <- if_else(area == HSCP, "HSCP", "Scotland")
   temp <- filter(
     data,
     year == latest_year,
     area_name == area,
-    area_type == type
+    area_type == area_type
   )
 
   round_half_up(temp[["measure"]], digits = 1)
