@@ -1293,8 +1293,8 @@ hscp_scot_summary_table <- function(data, latest_year, area) {
     filter(
       year == latest_year,
       area_name == area,
-    area_type == area_type
-  )
+      area_type == area_type
+    )
 
   round_half_up(temp$measure, 1)
 }
