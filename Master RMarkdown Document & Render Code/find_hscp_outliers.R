@@ -27,7 +27,7 @@ outlier_hscps <- bind_rows(
   slice_max(lookup_with_metrics, hscp_length, with_ties = FALSE),
   slice_min(lookup_with_metrics, locality_length, with_ties = FALSE),
   slice_min(lookup_with_metrics, n_localities, with_ties = FALSE),
-  slice_min(lookup_with_metrics, total_length, with_ties = FALSE),
+  slice_min(lookup_with_metrics, total_length, with_ties = FALSE)
 ) |>
   pull(hscp2019name) |>
   unique()
