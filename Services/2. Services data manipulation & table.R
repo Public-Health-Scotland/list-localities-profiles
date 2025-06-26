@@ -192,10 +192,10 @@ services_tibble <- tibble(
     "Other"
   ),
   Number = c(
-    nrow(filter(markers_gp, hscp_locality == LOCALITY)),
-    nrow(filter(markers_emergency_dep, hscp_locality == LOCALITY)),
-    nrow(filter(markers_miu, hscp_locality == LOCALITY)),
-    nrow(filter(markers_care_home, hscp_locality == LOCALITY)),
+    sum(markers_gp[["hscp_locality"]] == LOCALITY),
+    sum(markers_emergency_dep[["hscp_locality"]] == LOCALITY),
+    sum(markers_miu[["hscp_locality"]] == LOCALITY),
+    sum(markers_care_home[["hscp_locality"]] == LOCALITY),
     nrow(other_care_type)
   )
 )
