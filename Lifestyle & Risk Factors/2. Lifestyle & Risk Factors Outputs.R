@@ -124,15 +124,15 @@ earliest_period_drug_hosp_trend <- drug_hosp[["period_short"]][match(
 
 
 ## Time trend
-drug_hosp_time_trend <- drug_hosp %>%
-  scotpho_time_trend(
-    chart_title = "Drug-related Hospital Admissions Time Trend",
-    xaxis_title = "Financial Year Groups (3-year aggregates)",
-    yaxis_title = "Drug-related admissions\n(Standardised rates per 100,000)",
-    string_wrap = 10,
-    trend_years = trend_years,
-    rotate_xaxis = TRUE
-  )
+drug_hosp_time_trend <- scotpho_time_trend(
+  data = drug_hosp,
+  chart_title = "Drug-related Hospital Admissions Time Trend",
+  xaxis_title = "Financial Year Groups (3-year aggregates)",
+  yaxis_title = "Drug-related admissions\n(Standardised rates per 100,000)",
+  string_wrap = 10,
+  trend_years = trend_years,
+  rotate_xaxis = TRUE
+)
 
 drug_hosp_time_trend
 
@@ -200,15 +200,14 @@ earliest_period_alcohol_hosp <- unique(
 
 
 ## Time trend
-alcohol_hosp_time_trend <- alcohol_hosp %>%
-  scotpho_time_trend(
-    data = .,
-    chart_title = "Alcohol-related Hospital Admissions Time Trend",
-    xaxis_title = "Financial Year",
-    yaxis_title = "Alcohol-related admissions\n(Standardised rates per 100,000)",
-    string_wrap = 10,
-    rotate_xaxis = TRUE
-  )
+alcohol_hosp_time_trend <- scotpho_time_trend(
+  data = alcohol_hosp,
+  chart_title = "Alcohol-related Hospital Admissions Time Trend",
+  xaxis_title = "Financial Year",
+  yaxis_title = "Alcohol-related admissions\n(Standardised rates per 100,000)",
+  string_wrap = 10,
+  rotate_xaxis = TRUE
+)
 
 alcohol_hosp_time_trend
 
@@ -273,14 +272,13 @@ earliest_period_alcohol_deaths <- unique(
 
 
 ## Time trend
-alcohol_deaths_time_trend <- alcohol_deaths %>%
-  scotpho_time_trend(
-    data = .,
-    chart_title = "Alcohol-specific Deaths Time Trend",
-    xaxis_title = "Year Groups (5-year aggregates)",
-    yaxis_title = "Alcohol-specific deaths\n(Standardised rates per 100,000)",
-    string_wrap = 10
-  )
+alcohol_deaths_time_trend <- scotpho_time_trend(
+  data = alcohol_deaths,
+  chart_title = "Alcohol-specific Deaths Time Trend",
+  xaxis_title = "Year Groups (5-year aggregates)",
+  yaxis_title = "Alcohol-specific deaths\n(Standardised rates per 100,000)",
+  string_wrap = 10
+)
 
 alcohol_deaths_time_trend
 
@@ -347,14 +345,13 @@ earliest_period_bowel_screening <- unique(
 
 
 ## Time trend
-bowel_screening_time_trend <- bowel_screening %>%
-  scotpho_time_trend(
-    data = .,
-    chart_title = "Bowel Screening Uptake Time Trend",
-    xaxis_title = "Year Groups (3-year aggregates)",
-    yaxis_title = "Bowel screening uptake (%)",
-    string_wrap = 10
-  )
+bowel_screening_time_trend <- scotpho_time_trend(
+  data = bowel_screening,
+  chart_title = "Bowel Screening Uptake Time Trend",
+  xaxis_title = "Year Groups (3-year aggregates)",
+  yaxis_title = "Bowel screening uptake (%)",
+  string_wrap = 10
+)
 
 bowel_screening_time_trend
 
