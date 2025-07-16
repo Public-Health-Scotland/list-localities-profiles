@@ -22,33 +22,11 @@ LOCALITY <- "Falkirk West"
 # LOCALITY <- "City of Dunfermline"
 # LOCALITY <- "Skye, Lochalsh and West Ross"
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
-library(ggplot2)
-library(scales)
-library(flextable)
-library(officer)
-library(magrittr)
+
 source("Households/Households Code.R")
 
 x <- 1 # object for figure numbers
 y <- 1 # object for table numbers
-```
-
-
-```{r flextable-table-data, include = FALSE}
-# Set up some formatting for flextable to be applied to most tables
-my_ft_format <- function(ft) {
-  ft %>%
-    bold(part = "header") %>%
-    bg(bg = "#43358B", part = "header") %>%
-    color(color = "white", part = "header") %>%
-    align(align = "left", part = "header") %>%
-    valign(valign = "center", part = "header") %>%
-    valign(valign = "top", part = "body") %>%
-    colformat_num(big.mark = "") %>%
-    fontsize(size = 10, part = "all") %>%
-    border(border = fp_border_default(color = "#000000", width = 0.5),
-           part = "all")
-}
 ```
 
 # Housing
@@ -84,9 +62,7 @@ flextable(house_table, theme_fun = NULL) %>%
     "Vacant Dwellings", "Single Occupant Tax Discount", 
     "Council Tax Exempt Dwellings", "Second Homes"
   )) %>%
-  bold(i = nrow(house_table)) %>%
-  height(height = 0.236, part = "body") %>%
-  hrule(rule = "atleast", part = "body") %>%
+  #bold(i = nrow(house_table)) %>%
   width(width = 6.5/ncol(house_table))
 
 
@@ -114,9 +90,7 @@ flextable(ctb_table, theme_fun = NULL) %>%
   set_header_labels(values = c(
      "Tax Band", "A", "B", "C",
     "D", "E", "F", "G", "H"
-  )) %>%
-  height(height = 0.236, part = "body") %>%
-  hrule(rule = "atleast", part = "body") %>%
+  )) %>% 
   width(j = 1, width = 1.12) %>%           
   width(j = 2:9, width = 0.77)
 

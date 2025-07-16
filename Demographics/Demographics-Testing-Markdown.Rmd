@@ -122,9 +122,7 @@ flextable(simd_diff_overall, theme_fun = NULL) %>%
     "Quintile", "Percent of 2016 Population (SIMD 2016 Ranking)",
     glue("Percent of {pop_max_year} Population (SIMD 2020 Ranking)"),
     "Difference"
-  )) %>%
-  height(height = 0.236, part = "body") %>%
-  hrule(rule = "atleast", part = "body") %>%
+  )) %>% 
   width(j = 1, width = 1) %>%
   width(j = 4, width = 1) %>%   
   width(j = 2:3, width = 2.2) 
