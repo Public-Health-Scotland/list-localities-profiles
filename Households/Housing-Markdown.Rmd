@@ -62,7 +62,7 @@ flextable(house_table, theme_fun = NULL) %>%
     "Vacant Dwellings", "Single Occupant Tax Discount", 
     "Council Tax Exempt Dwellings", "Second Homes"
   )) %>%
-  #bold(i = nrow(house_table)) %>%
+  bold(i = nrow(house_table)) %>%
   width(width = 6.5/ncol(house_table))
 
 
