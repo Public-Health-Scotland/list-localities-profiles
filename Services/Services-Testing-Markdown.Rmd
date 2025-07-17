@@ -33,10 +33,10 @@ y <- 1 # object for table numbers
 ```
 
 
-## Services
+# Services
 
-#### Figure `r x`: Map of services by locality in `r HSCP` HSCP^2^.
 
+<Div custom-style = "Table or chart caption">Figure `r x`: Map of services by locality in `r HSCP` HSCP^2^.</Div>
 \newline
 
 ```{r echo = FALSE, fig.width=6, fig.cap= "A map of the health and social care partnership including a breakdown on localities with the locations of all the GP practices, care homes, emergency depertments and minor injury units."}
@@ -47,8 +47,7 @@ x <- x + 1
 
 \newline
 
-#### Table `r y`: Number of each type of service in `r LOCALITY` Locality^2^.
-
+<Div custom-style = "Table or chart caption">Table `r y`: Number of each type of service in `r LOCALITY` Locality^2^.</Div>
 \newline
 
 ```{r echo = FALSE}
@@ -59,8 +58,6 @@ flextable(services_tibble, theme_fun = NULL) %>%
 "Service Type", "Service", "Number"
   )) %>%
   bold(j = 1) %>%
-  height(height = 0.236, part = "body") %>%
-  hrule(rule = "atleast", part = "body") %>%
   width(width=4/ncol(services_tibble))
 
 y <- y + 1
