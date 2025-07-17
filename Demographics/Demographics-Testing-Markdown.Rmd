@@ -50,8 +50,8 @@ source("Demographics/2. Demographics - SIMD.R")
 
 For the most recent time period available, `r LOCALITY` Locality had:
 
-** A total population of **`r total_population`** people, where **`r gender_breakdown[gender_breakdown$sex == "M",]$perc`** were male, and **`r over65`%** were aged over 65.
-** **`r perc_top_quintile`%** of people lived in the least deprived SIMD quintile, and **`r perc_bottom_quintile`%** lived in the most deprived quintile.
+* A total population of **`r total_population`** people, where **`r gender_breakdown[gender_breakdown$sex == "M",]$perc`** were male, and **`r over65`%** were aged over 65.
+* **`r perc_top_quintile`%** of people lived in the least deprived SIMD quintile, and **`r perc_bottom_quintile`%** lived in the most deprived quintile.
 
 \newline
 
