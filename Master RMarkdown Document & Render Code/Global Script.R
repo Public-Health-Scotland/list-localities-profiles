@@ -597,6 +597,8 @@ my_ft_format <- function(ft) {
     bold(part = "header") %>%
     bg(bg = "#43358B", part = "header") %>%
     color(color = "white", part = "header") %>%
+    height(height = 0.236, part = "body") %>%
+    hrule(rule = "atleast", part = "body") %>% 
     align(align = "center", part = "header") %>%
     valign(valign = "center", part = "header") %>%
     valign(valign = "top", part = "body") %>%
