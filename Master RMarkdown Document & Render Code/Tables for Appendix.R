@@ -43,7 +43,7 @@ dates_extract <- read_excel(
   col_types = c("text", "text", "date")
 ) |>
   replace_na(list("Date of data extraction" = Sys.Date())) |>
-  mutate(Section = glue("**{Section}**"))
+  mutate(Section = glue("{Section}"))
 
 ## PPA conditions included ----
 
