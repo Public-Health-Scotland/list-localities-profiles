@@ -1,8 +1,8 @@
 source("Master RMarkdown Document & Render Code/Global Script.R")
 
 return_rows <- function(x) {
-  n <- sample(x, 1)
-  return(x == n)
+  random_pick <- sample(x, 1)
+  return(x == random_pick)
 }
 
 randomly_selected_localities <- read_in_localities() %>%
