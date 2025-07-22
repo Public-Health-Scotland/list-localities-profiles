@@ -367,7 +367,7 @@ pop_last <- locality_pop_trend[
 # if there is no linear trend, this calculates the year of the last change point
 change_point <- locality_pop_trend %>%
   mutate(
-    change = ifelse(lag(pop) > pop, 1, 0),
+    change = lag(pop) > pop,
     change_point = ifelse(lag(change) == change, NA, year - 1)
   ) %>%
   filter(!is.na(change_point)) %>%
