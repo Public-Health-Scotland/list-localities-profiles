@@ -5,7 +5,7 @@ library(rmarkdown)
 rm(list = ls())
 
 # system unmask function so files have read-write permissions
-Sys.umask("006")
+Sys.umask("0002")
 
 # Source in functions code
 source("Master RMarkdown Document & Render Code/Global Script.R")
@@ -23,7 +23,7 @@ lookup <- read_in_localities()
 # For a larger test, use the below to produce profiles for HSCPs likely to cause issues.
 # source("Master RMarkdown Document & Render Code/find_hscp_outliers.R")
 # hscp_list <- outlier_hscps
-hscp_list <- "Angus"
+hscp_list <- "Renfrewshire"
 
 # NOTE - This checks that it exactly matches the lookup
 stopifnot(hscp_list %in% unique(lookup[["hscp2019name"]]))
