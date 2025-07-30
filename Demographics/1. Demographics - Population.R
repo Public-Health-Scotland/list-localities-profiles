@@ -63,22 +63,22 @@ pop_raw_data$"Pop65Plus" <- rowSums(subset(
   select = age65:age90plus
 ))
 
-pops <- pop_raw_data %>%
-  select(
-    year,
-    sex,
-    hscp2019name,
-    hscp_locality,
-    Pop0_4,
-    Pop5_17,
-    Pop18_44,
-    Pop45_64,
-    Pop65_74,
-    Pop75_84,
-    Pop85Plus,
-    Pop65Plus,
-    total_pop
-  )
+pops <- select(
+  pop_raw_data,
+  year,
+  sex,
+  hscp2019name,
+  hscp_locality,
+  Pop0_4,
+  Pop5_17,
+  Pop18_44,
+  Pop45_64,
+  Pop65_74,
+  Pop75_84,
+  Pop85Plus,
+  Pop65Plus,
+  total_pop
+)
 
 
 # Aggregate and add partnership + Scotland totals

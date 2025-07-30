@@ -104,8 +104,7 @@ markers_gp <- left_join(prac, postcode_lkp, by = "postcode") %>%
 ## Emergency Departments and MIUs ----
 
 # rename for hospital_code to location
-hosp_postcodes <- hosp_postcodes %>%
-  rename(location = hospital_code)
+hosp_postcodes <- rename(hosp_postcodes, location = hospital_code)
 
 # create hospital lookup table
 hosp_lookup <- hosp_types %>%
@@ -132,8 +131,7 @@ markers_emergency_dep <- hosp_lookup %>%
   filter(type == "Emergency Department") %>%
   filter(hscp2019name == HSCP)
 
-Clacks_Royal <- hosp_lookup %>%
-  filter(name == "Forth Valley Royal Hospital")
+Clacks_Royal <- filter(hosp_lookup, name == "Forth Valley Royal Hospital")
 
 # Ninewells hospital is incorrectly mapped even though postcode ok - so corrected coords here
 
