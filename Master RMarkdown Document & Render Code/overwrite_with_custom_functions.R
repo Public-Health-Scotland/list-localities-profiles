@@ -74,9 +74,9 @@ summarise_iz_to_locality <- function(
         indicator,
         year,
         period,
-        area_name = hscp_locality,
-        definition,
-        data_source
+        area_name = hscp_locality#,
+        #definition,
+        #data_source
       ) |>
       dplyr::summarise(
         measure = mean(measure),
@@ -95,9 +95,9 @@ summarise_iz_to_locality <- function(
         indicator,
         year,
         period,
-        area_name = hscp_locality,
-        definition,
-        data_source
+        area_name = hscp_locality#,
+        #definition,
+        #data_source
       ) |>
       dplyr::summarise(
         numerator = sum(numerator),
