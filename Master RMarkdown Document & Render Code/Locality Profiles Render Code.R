@@ -5,7 +5,7 @@ library(rmarkdown)
 rm(list = ls())
 
 # system unmask function so files have read-write permissions
-Sys.umask("0002")
+Sys.umask("000")
 
 # Source in functions code
 source("Master RMarkdown Document & Render Code/Global Script.R")
