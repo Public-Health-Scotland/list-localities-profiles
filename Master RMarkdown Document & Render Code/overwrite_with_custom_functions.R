@@ -74,7 +74,7 @@ summarise_iz_to_locality <- function(
         indicator,
         year,
         period,
-        area_name = hscp_locality#,
+        area_name = hscp_locality #,
         #definition,
         #data_source
       ) |>
@@ -95,7 +95,7 @@ summarise_iz_to_locality <- function(
         indicator,
         year,
         period,
-        area_name = hscp_locality#,
+        area_name = hscp_locality #,
         #definition,
         #data_source
       ) |>
