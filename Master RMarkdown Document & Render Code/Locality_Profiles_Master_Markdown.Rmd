@@ -168,7 +168,7 @@ x <- x + 1
 \newline
 
 ```{r echo = FALSE, fig.width=6, fig.cap= "A map of the health and social care partnership including a breakdown on localities with the locations of all the GP practices, care homes, emergency depertments and minor injury units."}
-service_map
+#service_map
 
 x <- x + 1
 ```
@@ -825,7 +825,7 @@ This section looks at mental health-related unscheduled care indicators. For the
 
 Figure `r x` presents the psychiatric patient hospitalisation 3-year aggregate rate per 100,000 population in the `r LOCALITY` locality from `r loc_psych_hosp$period_short[1]` to `r loc_psych_hosp$period_short[2]`.
 
-As presented in Figure `r x`, the 3-year aggregate psychiatric patient hospitalisation rate per 100,000 population in the `r LOCALITY` locality for `r loc_psych_hosp$period_short[2]` is `r psych_hosp_latest`, `r get_article(diff_loc_psych)` `r diff_loc_psych`% `r word_change_loc_psych` since `r loc_psych_hosp$period_short[1]` and the `r HSCP` HSCP rate is `r hscp_psych_hosp$measure[2]`, `r get_article(diff_hscp_psych)` `r diff_hscp_psych`% `r word_change_hscp_psych` since `r loc_psych_hosp$period_short[1]`. The `r HB` health board the 3-year aggregate rate for `r loc_psych_hosp$period_short[2]` is `r hb_psych_hosp$measure[2]`, `r get_article(diff_hb_psych)` `r diff_hb_psych`% `r word_change_hb_psych` since `r loc_psych_hosp$period_short[1]` and the Scotland the 3-year aggregate rate is `r scot_psych_hosp$measure[2]`, `r get_article(diff_scot_psych)` `r diff_scot_psych`% `r word_change_scot_psych` since `r loc_psych_hosp$period_short[1]`.
+As presented in Figure `r x`, the 3-year aggregate psychiatric patient hospitalisation rate per 100,000 population in the `r LOCALITY` locality for `r loc_psych_hosp$period_short[2]` is `r psych_hosp_latest`, `r diff_loc_psych`% `r word_change_loc_psych` since `r loc_psych_hosp$period_short[1]` and the `r HSCP` HSCP rate is `r hscp_psych_hosp$measure[2]`, `r get_article(diff_hscp_psych)` `r diff_hscp_psych`% `r word_change_hscp_psych` since `r loc_psych_hosp$period_short[1]`. The `r HB` health board the 3-year aggregate rate for `r loc_psych_hosp$period_short[2]` is `r hb_psych_hosp$measure[2]`, `r get_article(diff_hb_psych)` `r diff_hb_psych`% `r word_change_hb_psych` since `r loc_psych_hosp$period_short[1]` and the Scotland the 3-year aggregate rate is `r scot_psych_hosp$measure[2]`, `r get_article(diff_scot_psych)` `r diff_scot_psych`% `r word_change_scot_psych` since `r loc_psych_hosp$period_short[1]`.
 
 #### Figure `r x`: Psychiatric patient hospitalisations by geographical area
 
