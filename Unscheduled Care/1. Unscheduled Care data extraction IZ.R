@@ -8,7 +8,7 @@
 ####################### SECTION 1: Packages, file paths, lookups, etc #########################
 
 ## Manually set year that the profiles are being run (extract year)
-ext_year <- 2023
+ext_year <- 2024
 
 # Set file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
