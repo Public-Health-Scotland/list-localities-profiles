@@ -5,10 +5,10 @@
 # Earliest date for data presentation
 earliest_date <- lubridate::make_date(year = 2017, month = 4, day = 01)
 # End of the reporting month in date format
-reporting_month_date <- lubridate::make_date(year = 2023, month = 3, day = 31)
+reporting_month_date <- lubridate::make_date(year = 2024, month = 3, day = 31)
 # Data output folder
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
-data_folder <- file.path(lp_path, "Unscheduled Care/Moray Data 2023")
+data_folder <- file.path(lp_path, "Unscheduled Care/Moray Data 2024")
 dir.create(data_folder, showWarnings = FALSE, recursive = TRUE)
 
 
@@ -84,7 +84,7 @@ dz_lookup <- readRDS(locality_lookup_path) %>%
   dplyr::select(ca2019name, ca2011)
 
 council_lookup <- read_csv(
-  "/conf/linkage/output/lookups/Unicode/Geography/Scottish Postcode Directory/Codes and Names/Archive/Council Area 2019 Lookup.csv",
+  "/conf/linkage/output/lookups/Unicode/Geography/Scottish Postcode Directory/Codes and Names/Council Area 2019 Lookup.csv",
   show_col_types = FALSE
 ) %>%
   clean_names() %>%
