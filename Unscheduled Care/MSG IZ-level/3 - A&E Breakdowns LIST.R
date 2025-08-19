@@ -21,7 +21,7 @@ col_names <- c(
   "number_meeting_target"
 )
 
-years <- c("1718", "1819", "1920", "2021", "2122", "2223")
+years <- c("1718", "1819", "1920", "2021", "2122", "2223", "2324")
 
 # For the below to work all the data for the years (above) must be in the same
 # `data_folder`. It also must be named: `MSG-MonthlyUpdate-Breakdowns-{year}.zip`
