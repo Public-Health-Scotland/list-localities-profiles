@@ -31,22 +31,19 @@ library(patchwork)
 
 # 2. Read in locality shape files ----
 
-shp <- read_sf(
-  "/conf/linkage/output/lookups/Unicode/Geography/Shapefiles/HSCP Locality (Datazone2011 Base)/HSCP_Locality.shp"
-)
-shp <- st_transform(shp, 4326) |>
-  select(hscp_local, HSCP_name, Shape_Leng, Shape_Area, geometry)
-
-shp <- shp |>
-  mutate(hscp_locality = gsub("&", "and", hscp_local)) |>
-  merge(lookup2, by = "hscp_locality")
-
-shp_hscp <- shp |>
-  filter(hscp2019name == HSCP) |>
-  mutate(
-    hscp_locality = stringr::str_wrap(hscp_locality, 24),
-    hscp_local = stringr::str_wrap(hscp_local, 24)
-  )
+shp_hscp <- read_sf(
+  "/conf/linkage/output/lookups/Unicode/Geography/Shapefiles/Intermediate Zone 2011/SG_IntermediateZone_Bdry_2011.shp"
+) |>
+  st_transform(crs = 4326) |>
+  inner_join(
+  read_in_iz(),
+  by = join_by(InterZone == intzone2011)
+) |>
+  group_by(hscp_locality) |>
+  summarise(
+    geometry = st_union(geometry)
+  ) |>
+  mutate(hscp_locality = stringr::str_wrap(hscp_locality, 24))
 
 # 3. Map Code ----
 # 3.1 Palettes ----
@@ -172,7 +169,7 @@ service_map <- ggmap(service_map_background) +
   geom_sf(
     data = shp_hscp,
     mapping = aes(
-      fill = hscp_local
+      fill = hscp_locality
     ),
     colour = "black",
     alpha = 0.5,
@@ -286,7 +283,7 @@ service_map_1 <- ggmap(service_map_background) +
   geom_sf(
     data = shp_hscp,
     mapping = aes(
-      fill = hscp_local
+      fill = hscp_locality
     ),
     colour = "black",
     alpha = 0.5,
@@ -414,7 +411,6 @@ rm(
   service_map_1,
   service_map_2,
   service_map_background,
-  shp,
   shp_hscp,
   zones_coord
 )
