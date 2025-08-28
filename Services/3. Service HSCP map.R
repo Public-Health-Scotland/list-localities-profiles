@@ -36,9 +36,9 @@ shp_hscp <- read_sf(
 ) |>
   st_transform(crs = 4326) |>
   inner_join(
-  read_in_iz(),
-  by = join_by(InterZone == intzone2011)
-) |>
+    read_in_iz(),
+    by = join_by(InterZone == intzone2011)
+  ) |>
   group_by(hscp_locality) |>
   summarise(
     geometry = st_union(geometry)
