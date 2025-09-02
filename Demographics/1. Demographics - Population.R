@@ -421,7 +421,7 @@ pop_proj_change_pct <- round_half_up(
 pop_proj_text <- glue(
   "The population in {LOCALITY} is estimated to ",
   case_when(
-    pop_proj_change_pct > 0 ~ glue("increase by {abs(pop_proj_change_pct)}%"),
+    pop_proj_change_pct > 0 ~ glue("increase by {pop_proj_change_pct}%"),
     pop_proj_change_pct < 0 ~ glue("decrease by {abs(pop_proj_change_pct)}%"),
     .default = "remain the same"
   ),
