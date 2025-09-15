@@ -1,5 +1,9 @@
 ---
 title: ''
+header-includes:
+- \usepackage{pdflscape}
+- \newcommand{\blandscape}{\begin{landscape}}
+- \newcommand{\elandscape}{\end{landscape}}
 output: 
   word_document:
     reference_docx: "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Summary Table/ST_ref_doc.docx"
@@ -15,6 +19,9 @@ library(officedown)
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
+
+\pagenumbering{gobble}
+\blandscape
 
 ```{r testing_setup, include=FALSE}
 # Lines below for testing only (pick one locality):
@@ -328,3 +335,7 @@ usc_mh_table <- make_summary_table(usc_mh_values)
 
 usc_mh_table
 ```
+
+\elandscape
+\pagenumbering{arabic}
+
