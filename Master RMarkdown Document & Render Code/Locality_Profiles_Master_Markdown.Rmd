@@ -244,6 +244,7 @@ flextable(ctb_table, theme_fun = NULL) %>%
   width(j = 1, width = 1.12) %>%           
   width(j = 2:9, width = 0.77)
 
+y <- y + 1
 ```
 Source: Scottish Assessors' Association (via NRS)
 
