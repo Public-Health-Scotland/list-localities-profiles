@@ -1,0 +1,9 @@
+rmd_files: rmd_files: ["index.Rmd", "02-literature.Rmd", "01-intro.Rmd"]
+delete_merged_file: true
+language:
+      label: 
+        fig: "Figure " 
+        tab: "Table " 
+      ui:
+        edit: "Edit"
+        chapter_name: "Chapter "

@@ -73,6 +73,18 @@ for (HSCP in hscp_list) {
     # Appendices ----
     source("Master RMarkdown Document & Render Code/Tables for Appendix.R")
 
+    
+    bookdown::render_book(
+      input = "lp_bookdown",
+      output_dir = output_dir,
+      output_file = glue("{LOCALITY} - Locality Profile.docx"),
+      output_format = "bookdown::word_document2"
+    )
+    
+    
+    
+    
+    
     # Render main profile content ----
     # Render main profile content ----
     render(
