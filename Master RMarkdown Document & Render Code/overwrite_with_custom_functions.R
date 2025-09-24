@@ -59,8 +59,31 @@ read_in_iz <- function(dz_all = FALSE) {
   return(iz_lookup)
 }
 
+# A helper function to calculate Wilson's Score confidence intervals
+# and return them at a specified rate (e.g., per 100,000).
+wilson_ci_wrapper <- function(numerator, denominator, rate_per = 100000, conf.level = 0.95) {
+  # Avoid division by zero and handle cases with no data
+  if (denominator == 0) {
+    return(list(lower_confidence_interval = NA_real_, upper_confidence_interval = NA_real_))
+  }
 
-# Aggregate and calculate confidence interval
+  z <- qnorm(1 - (1 - conf.level) / 2)
+  p_hat <- numerator / denominator
+
+  # Wilson's Score formula for the confidence interval of a proportion
+  lower_prop <- (p_hat + z^2 / (2 * denominator) - z * sqrt((p_hat * (1 - p_hat) + z^2 / (4 * denominator)) / denominator)) / (1 + z^2 / denominator)
+  upper_prop <- (p_hat + z^2 / (2 * denominator) + z * sqrt((p_hat * (1 - p_hat) + z^2 / (4 * denominator)) / denominator)) / (1 + z^2 / denominator)
+
+  # Convert the proportions to the desired rate
+  lower_rate <- max(0, lower_prop) * rate_per
+  upper_rate <- upper_prop * rate_per
+
+  return(list(
+    lower_confidence_interval = lower_rate,
+    upper_confidence_interval = upper_rate
+  ))
+}
+
 summarise_iz_to_locality <- function(
   data,
   iz_lookup = read_in_iz(dz_all = FALSE)
@@ -74,9 +97,7 @@ summarise_iz_to_locality <- function(
         indicator,
         year,
         period,
-        area_name = hscp_locality #,
-        #definition,
-        #data_source
+        area_name = hscp_locality
       ) |>
       dplyr::summarise(
         measure = mean(measure),
@@ -90,14 +111,12 @@ summarise_iz_to_locality <- function(
           (numerator == 0 | measure == 0) ~ 0,
           .default = numerator * 100000 / measure
         )
-      ) %>%
+      ) |>
       dplyr::group_by(
         indicator,
         year,
         period,
-        area_name = hscp_locality #,
-        #definition,
-        #data_source
+        area_name = hscp_locality
       ) |>
       dplyr::summarise(
         numerator = sum(numerator),
@@ -105,25 +124,14 @@ summarise_iz_to_locality <- function(
         measure = dplyr::case_when(
           (numerator == 0 | denominator == 0) ~ 0,
           .default = (numerator * 100000) / denominator
-        ), # Adjust for per 100,000
-        se = sqrt(
-          sum(
-            numerator *
-              (measure - lower_confidence_interval)^2 /
-              (denominator - 1)
-          ) +
-            sum(
-              numerator *
-                (upper_confidence_interval - measure)^2 /
-                (denominator - 1)
-            )
         ),
-        lower_confidence_interval = measure - 1.96 * se,
-        upper_confidence_interval = measure + 1.96 * se,
+        # Use the helper function to calculate the CIs
+        ci = list(wilson_ci_wrapper(numerator, denominator)),
         area_type = "HSC locality",
         .groups = "drop"
       ) |>
-      dplyr::select(!denominator, !se)
+      tidyr::unnest_wider(ci) |>
+      dplyr::select(!denominator)
   }
 
   new_data <- data |>
