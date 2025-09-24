@@ -61,18 +61,32 @@ read_in_iz <- function(dz_all = FALSE) {
 
 # A helper function to calculate Wilson's Score confidence intervals
 # and return them at a specified rate (e.g., per 100,000).
-wilson_ci_wrapper <- function(numerator, denominator, rate_per = 100000, conf.level = 0.95) {
+wilson_ci_wrapper <- function(
+  numerator,
+  denominator,
+  rate_per = 100000,
+  conf.level = 0.95
+) {
   # Avoid division by zero and handle cases with no data
   if (denominator == 0) {
-    return(list(lower_confidence_interval = NA_real_, upper_confidence_interval = NA_real_))
+    return(list(
+      lower_confidence_interval = NA_real_,
+      upper_confidence_interval = NA_real_
+    ))
   }
 
   z <- qnorm(1 - (1 - conf.level) / 2)
   p_hat <- numerator / denominator
 
   # Wilson's Score formula for the confidence interval of a proportion
-  lower_prop <- (p_hat + z^2 / (2 * denominator) - z * sqrt((p_hat * (1 - p_hat) + z^2 / (4 * denominator)) / denominator)) / (1 + z^2 / denominator)
-  upper_prop <- (p_hat + z^2 / (2 * denominator) + z * sqrt((p_hat * (1 - p_hat) + z^2 / (4 * denominator)) / denominator)) / (1 + z^2 / denominator)
+  lower_prop <- (p_hat +
+    z^2 / (2 * denominator) -
+    z * sqrt((p_hat * (1 - p_hat) + z^2 / (4 * denominator)) / denominator)) /
+    (1 + z^2 / denominator)
+  upper_prop <- (p_hat +
+    z^2 / (2 * denominator) +
+    z * sqrt((p_hat * (1 - p_hat) + z^2 / (4 * denominator)) / denominator)) /
+    (1 + z^2 / denominator)
 
   # Convert the proportions to the desired rate
   lower_rate <- max(0, lower_prop) * rate_per
