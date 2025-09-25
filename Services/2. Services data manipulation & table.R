@@ -35,8 +35,8 @@ lookup <- read_in_localities(dz_level = TRUE)
 # Lookup without datazones
 lookup2 <- read_in_localities()
 
-## Determine HSCP
-HSCP <- as.character(filter(lookup2, hscp_locality == LOCALITY)$hscp2019name)
+# This will set the HSCP for the chosen locality. Testing only.
+# HSCP <- get_hscp_from_locality(LOCALITY, lookup)
 
 # Get number of localities in HSCP
 n_loc <- count_localities(lookup2, HSCP)
