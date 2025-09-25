@@ -83,7 +83,7 @@ ltc_data <- slf |>
 # Save data as parquet ----
 write_parquet(
   ltc_data,
-  path(gen_health_data_dir, "LTC_from_SLF.parquet")
+  path(gen_health_data_dir, "LTC_from_SLF_Moray_custom.parquet")
 )
 
 # Clean up the environment
