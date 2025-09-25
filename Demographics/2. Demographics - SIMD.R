@@ -474,7 +474,7 @@ HSCP <- as.character(filter(lookup, hscp_locality == LOCALITY)$hscp2019name)
 # Determine other localities based on LOCALITY object
 other_locs <- lookup %>%
   select(hscp_locality, hscp2019name) %>%
-  filter(hscp2019name == HSCP & hscp_locality != LOCALITY) %>%
+  filter(hscp2019name == HSCP, hscp_locality != LOCALITY) %>%
   arrange(hscp_locality)
 
 # Find number of locs per partnership
