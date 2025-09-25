@@ -1,3 +1,6 @@
+
+\newpage
+
 # Summary Table
 
 ```{r load_packages, include=FALSE}
