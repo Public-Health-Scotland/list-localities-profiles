@@ -179,7 +179,7 @@ indicators <- c(
   "Male average life expectancy in years",
   "Female average life expectancy in years",
   "Deaths aged 15-44 per 100,000",
-  "Population with long-term condition",
+  "Population estimated to have at least one LTC",
   "Cancer registrations per 100,000",
   "Anxiety, depression & psychosis prescriptions"
 )
