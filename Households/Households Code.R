@@ -72,7 +72,7 @@ lookup <- read_in_localities(dz_level = TRUE) %>%
   filter(hscp2019name == HSCP)
 
 # filter housing data for locality of interest
-house_dat <- house_raw_dat %>% filter(data_zone_code %in% lookup$datazone2011)
+house_dat <- filter(house_raw_dat, data_zone_code %in% lookup[["datazone2011"]])
 
 # aggregate data
 house_dat1 <- house_dat %>%

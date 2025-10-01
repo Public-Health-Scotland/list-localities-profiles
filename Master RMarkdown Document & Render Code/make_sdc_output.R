@@ -128,8 +128,8 @@ for (HSCP in hscp_list) {
   )
 
   # Append locality-specific SMR01 data to the HSCP-level lists
-  smr01_based_all[[HSCP]] <- smr01_based_loc |> list_rbind()
-  smr01_age_all[[HSCP]] <- smr01_age_loc |> list_rbind()
+  smr01_based_all[[HSCP]] <- list_rbind(smr01_based_loc)
+  smr01_age_all[[HSCP]] <- list_rbind(smr01_age_loc)
 
   # Clear out Unscheduled Care data objects to free up memory
   rm(list = setdiff(ls(), loop_env))

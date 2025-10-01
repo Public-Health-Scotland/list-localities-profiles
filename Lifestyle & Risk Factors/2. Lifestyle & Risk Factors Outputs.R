@@ -119,8 +119,8 @@ earliest_period_drug_hosp_trend <- drug_hosp[["period_short"]][match(
 
 
 ## Time trend
-drug_hosp_time_trend <- drug_hosp %>%
-  scotpho_time_trend_HSCP(
+drug_hosp_time_trend <- scotpho_time_trend_HSCP(
+    data = drug_hosp,
     chart_title = "Drug-related Hospital Admissions Time Trend",
     xaxis_title = "Financial Year Groups (3-year aggregates)",
     yaxis_title = "Drug-related admissions\n(Standardised rates per 100,000)",
@@ -194,9 +194,8 @@ earliest_period_alcohol_hosp <- unique(
 
 
 ## Time trend
-alcohol_hosp_time_trend <- alcohol_hosp %>%
-  scotpho_time_trend_HSCP(
-    data = .,
+alcohol_hosp_time_trend <-  scotpho_time_trend_HSCP(
+    data = alcohol_hosp,
     chart_title = "Alcohol-related Hospital Admissions Time Trend",
     xaxis_title = "Financial Year",
     yaxis_title = "Alcohol-related admissions\n(Standardised rates per 100,000)",
@@ -267,9 +266,8 @@ earliest_period_alcohol_deaths <- unique(
 
 
 ## Time trend
-alcohol_deaths_time_trend <- alcohol_deaths %>%
-  scotpho_time_trend_HSCP(
-    data = .,
+alcohol_deaths_time_trend <-  scotpho_time_trend_HSCP(
+    data = alcohol_deaths,
     chart_title = "Alcohol-specific Deaths Time Trend",
     xaxis_title = "Year Groups (5-year aggregates)",
     yaxis_title = "Alcohol-specific deaths\n(Standardised rates per 100,000)",
@@ -279,12 +277,11 @@ alcohol_deaths_time_trend <- alcohol_deaths %>%
 alcohol_deaths_time_trend
 
 ## Bar chart
-alcohol_deaths_bar <- alcohol_deaths %>%
-  scotpho_bar_chart_HSCP(
-    data = .,
+alcohol_deaths_bar <- scotpho_bar_chart_HSCP(
+    data = alcohol_deaths,
     chart_title = paste0(
       "Alcohol-specific Deaths by Area, ",
-      max(.$period_short)
+      max(alcohol_deaths[["period_short"]])
     ),
     xaxis_title = "Alcohol-specific deaths (Standardised rates per 100,000)"
   )
@@ -341,9 +338,8 @@ earliest_period_bowel_screening <- unique(
 
 
 ## Time trend
-bowel_screening_time_trend <- bowel_screening %>%
-  scotpho_time_trend_HSCP(
-    data = .,
+bowel_screening_time_trend <- scotpho_time_trend_HSCP(
+    data = bowel_screening,
     chart_title = "Bowel Screening Uptake Time Trend",
     xaxis_title = "Year Groups (3-year aggregates)",
     yaxis_title = "Bowel screening uptake (%)",
@@ -353,12 +349,11 @@ bowel_screening_time_trend <- bowel_screening %>%
 bowel_screening_time_trend
 
 ## Bar chart
-bowel_screening_bar <- bowel_screening %>%
-  scotpho_bar_chart_HSCP(
-    data = .,
+bowel_screening_bar <- scotpho_bar_chart_HSCP(
+    data = bowel_screening,
     chart_title = paste0(
       "Bowel Screening Uptake by Area, ",
-      max(.$period_short)
+      max(bowel_screening[["period_short"]])
     ),
     xaxis_title = "Bowel screening uptake (%)"
   )

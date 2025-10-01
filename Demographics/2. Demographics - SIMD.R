@@ -370,7 +370,7 @@ simd2020_dom <- simd2020_dom %>%
   ungroup() %>%
   select(domain, perc_20, quintile = value)
 
-domains <- simd2020_dom$domain %>% unique()
+domains <- unique(simd2020_dom[["domain"]])
 base_data <- tibble(
   domain = rep(domains, each = 5),
   quintile = rep(1:5, 8)
