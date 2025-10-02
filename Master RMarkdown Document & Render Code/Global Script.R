@@ -49,8 +49,8 @@ palette <- phsstyles::phs_colours(c(
 # Then adds a comma for numbers over 1000 (becomes "1,000")
 format_number_for_text <- function(number) {
   case_when(
-    abs(number) < 1L ~ round_half_up(number, 2),
-    abs(number) < 100L ~ round_half_up(number, 1),
+    abs(number) < 1 ~ round_half_up(number, 2),
+    abs(number) < 100 ~ round_half_up(number, 1),
     .default = round_half_up(number, 0)
   ) |>
     format(big.mark = ",")
