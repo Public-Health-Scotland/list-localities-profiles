@@ -383,6 +383,7 @@ scotpho_time_trend <- function(
     ) +
     scale_fill_manual(values = palette) +
     scale_colour_manual(values = palette) +
+    scale_y_continuous(labels = scales::comma) +
     theme_profiles() +
     expand_limits(y = 0) +
     labs(
