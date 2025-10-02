@@ -288,12 +288,12 @@ if (LOCALITY %in% check_missing_data_scotpho(life_exp)$area_name) {
   avg_life_exp_latest_male <- NA_real_
   avg_life_exp_latest_fem <- NA_real_
 } else {
-  avg_life_exp_latest <- life_exp |>
-    filter(
-      year == latest_year_life_exp_loc,
-      area_name == LOCALITY,
-      area_type == "Locality"
-    )
+  avg_life_exp_latest <- filter(
+    life_exp,
+    year == latest_year_life_exp_loc,
+    area_name == LOCALITY,
+    area_type == "Locality"
+  )
 
   avg_life_exp_latest_male <- avg_life_exp_latest |>
     filter(sex == "Male") |>
@@ -315,25 +315,24 @@ latest_period_deaths_15_44 <- unique(
 )
 
 ## Time trend
-deaths_15_44_time_trend <- deaths_15_44 %>%
-  scotpho_time_trend(
-    chart_title = "Deaths Aged 15 to 44 Time Trend",
-    xaxis_title = "Year Groups (3-year aggregates)",
-    yaxis_title = "Deaths, aged 15 to 44\n(Standardised rates per 100,000)",
-    string_wrap = 10
-  )
+deaths_15_44_time_trend <- scotpho_time_trend(
+  data = deaths_15_44,
+  chart_title = "Deaths Aged 15 to 44 Time Trend",
+  xaxis_title = "Year Groups (3-year aggregates)",
+  yaxis_title = "Deaths, aged 15 to 44\n(Standardised rates per 100,000)",
+  string_wrap = 10
+)
 
 
 ## Bar chart
-deaths_15_44_bar <- deaths_15_44 %>%
-  scotpho_bar_chart(
-    data = .,
-    chart_title = paste0(
-      "Deaths, Aged 15 to 44 by area, ",
-      max(.$period_short)
-    ),
-    xaxis_title = "Deaths (Standardised rates per 100,000)"
-  )
+deaths_15_44_bar <- scotpho_bar_chart(
+  data = deaths_15_44,
+  chart_title = paste0(
+    "Deaths, Aged 15 to 44 by area, ",
+    max(deaths_15_44[["period_short"]])
+  ),
+  xaxis_title = "Deaths (Standardised rates per 100,000)"
+)
 
 
 ## Numbers for text
@@ -370,13 +369,13 @@ prev_period_cancer_reg <- unique(
 )
 
 ## Time trend
-cancer_reg_time_trend <- cancer_reg %>%
-  scotpho_time_trend(
-    chart_title = "Cancer Registrations Time Trend",
-    xaxis_title = "Year Groups (3-year aggregates)",
-    yaxis_title = "Cancer registrations \n(Standardised rates per 100,000)",
-    string_wrap = 10
-  )
+cancer_reg_time_trend <- scotpho_time_trend(
+  data = cancer_reg,
+  chart_title = "Cancer Registrations Time Trend",
+  xaxis_title = "Year Groups (3-year aggregates)",
+  yaxis_title = "Cancer registrations \n(Standardised rates per 100,000)",
+  string_wrap = 10
+)
 
 
 ## Numbers for text
@@ -412,13 +411,13 @@ early_deaths_cancer_rate_latest <- filter(
 )$measure
 
 ## Time trend for cancer deaths
-early_deaths_cancer_time_trend <- early_deaths_cancer %>%
-  scotpho_time_trend(
-    chart_title = "Early Deaths from Cancer Time Trend",
-    xaxis_title = "Year Groups (3-year aggregates)",
-    yaxis_title = "Early deaths from cancer\n(Standardised rates per 100,000)",
-    string_wrap = 10
-  )
+early_deaths_cancer_time_trend <- scotpho_time_trend(
+  data = early_deaths_cancer,
+  chart_title = "Early Deaths from Cancer Time Trend",
+  xaxis_title = "Year Groups (3-year aggregates)",
+  yaxis_title = "Early deaths from cancer\n(Standardised rates per 100,000)",
+  string_wrap = 10
+)
 
 
 ## Figures for text
@@ -509,14 +508,14 @@ prev_period_adp_presc <- unique(
 )
 
 ## Time trend
-adp_presc_time_trend <- adp_presc %>%
-  scotpho_time_trend(
-    chart_title = "Anxiety, Depression and Psychosis Prescriptions Time Trend",
-    xaxis_title = "Financial Year",
-    yaxis_title = "Population prescribed\n medication (%)",
-    string_wrap = 20,
-    rotate_xaxis = TRUE
-  )
+adp_presc_time_trend <- scotpho_time_trend(
+  data = adp_presc,
+  chart_title = "Anxiety, Depression and Psychosis Prescriptions Time Trend",
+  xaxis_title = "Financial Year",
+  yaxis_title = "Population prescribed\n medication (%)",
+  string_wrap = 20,
+  rotate_xaxis = TRUE
+)
 
 
 ## Bar chart
@@ -572,11 +571,9 @@ adp_presc_diff_scot <- if_else(
 ############################ 3) SLF DATA (LTCs) ####################################
 
 # Extract SLF adjusted populations
-slf_pops <- ltc |>
-  distinct(age_group, hscp_locality, hscp2019name, slf_adj_pop)
+slf_pops <- distinct(ltc, age_group, hscp_locality, hscp2019name, slf_adj_pop)
 
-slf_pop_loc <- slf_pops %>%
-  filter(hscp_locality == LOCALITY)
+slf_pop_loc <- filter(slf_pops, hscp_locality == LOCALITY)
 
 # Determine year
 latest_year_ltc <- ltc[["year"]][1]
@@ -1297,14 +1294,14 @@ other_locs_summary_table <- function(data, latest_year) {
 
 hscp_scot_summary_table <- function(data, latest_year, area) {
   type <- if_else(area == HSCP, "HSCP", "Scotland")
-  temp <- data %>%
-    filter(
-      year == latest_year,
-      area_name == area,
-      area_type == type
-    )
+  temp <- filter(
+    data,
+    year == latest_year,
+    area_name == area,
+    area_type == type
+  )
 
-  round_half_up(temp$measure, 1)
+  round_half_up(temp[["measure"]], digits = 1)
 }
 
 # 1. Other localities

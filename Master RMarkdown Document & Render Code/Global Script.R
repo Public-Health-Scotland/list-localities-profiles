@@ -168,8 +168,14 @@ read_in_localities <- function(dz_level = FALSE) {
     dplyr::mutate(hscp_locality = sub("&", "and", hscp_locality, fixed = TRUE))
 
   if (!dz_level) {
-    data <- data |>
-      dplyr::distinct(hscp_locality, hscp2019name, hscp2019, hb2019name, hb2019)
+    data <- dplyr::distinct(
+      data,
+      hscp_locality,
+      hscp2019name,
+      hscp2019,
+      hb2019name,
+      hb2019
+    )
   }
 
   return(data)
@@ -377,6 +383,7 @@ scotpho_time_trend <- function(
     ) +
     scale_fill_manual(values = palette) +
     scale_colour_manual(values = palette) +
+    scale_y_continuous(labels = scales::comma) +
     theme_profiles() +
     expand_limits(y = 0) +
     labs(
