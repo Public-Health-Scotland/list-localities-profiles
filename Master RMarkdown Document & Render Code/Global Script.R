@@ -279,7 +279,8 @@ read_in_pop_proj <- function() {
     max() %>%
     read_rds() %>%
     clean_names() %>%
-    select(year, hscp2019, age, sex, sex_name, pop)
+    select(year, hscp2019, age, sex, sex_name, pop) %>%
+    mutate(year = as.numeric(year))
 
   # join with lookup so all hscp2019 names are the same
   hscp_lkp <- read_in_localities() %>%
