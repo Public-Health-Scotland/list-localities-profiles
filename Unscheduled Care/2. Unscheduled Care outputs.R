@@ -593,9 +593,12 @@ bed_days_scot <- read_parquet(path(
   import_folder,
   "bed_days_msg.parquet"
 )) %>%
-  filter(financial_year <= max_fy & !hscp2019name %in% c('Aberdeen City', 'Aberdeenshire', 'Moray'))
+  filter(
+    financial_year <= max_fy &
+      !hscp2019name %in% c('Aberdeen City', 'Aberdeenshire', 'Moray')
+  )
 
-bed_days <- rbind(bed_days,bed_days_scot)
+bed_days <- rbind(bed_days, bed_days_scot)
 
 
 # Plotting by age
