@@ -588,6 +588,16 @@ min_word_change_ea <- word_change_calc(latest_ea_min_age2, first_ea_min_age1)
 bed_days <- read_parquet(path(import_folder_moray, "bed_days_msg.parquet")) %>%
   filter(financial_year <= max_fy)
 
+#beddays function doesnt work so having to pull in Scotland values from standard MSG output. remove Moray, then bind Moray IZ MSG extract
+bed_days_scot <- read_parquet(path(
+  import_folder,
+  "bed_days_msg.parquet"
+)) %>%
+  filter(financial_year <= max_fy & !hscp2019name %in% c('Aberdeen City', 'Aberdeenshire', 'Moray'))
+
+bed_days <- rbind(bed_days,bed_days_scot)
+
+
 # Plotting by age
 bed_days_age <- bed_days %>%
   filter(hscp_locality == LOCALITY) %>%
