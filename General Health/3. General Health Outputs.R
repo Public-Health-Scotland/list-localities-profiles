@@ -1009,7 +1009,7 @@ ltc_plot_right <- ltc_types %>%
     plot.margin = unit(c(0.5, 0, 0, 0), "cm"),
     axis.title.y = element_blank(),
     axis.text.y = element_blank(),
-    axis.ticks.y = element_blank(),
+    axis.ticks.y = element_blank()
   ) +
   scale_y_discrete(limits = rev(levels(as.factor(ltc_types$key))))
 
