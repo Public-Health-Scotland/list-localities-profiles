@@ -913,7 +913,7 @@ ltc_types <- ltc2 %>%
   summarise(across(everything(), sum)) %>%
   ungroup() |>
   pivot_longer(
-    cols = c("Arthritis":"Renal failure"),
+    cols = "Arthritis":"Renal failure",
     names_to = "key",
     values_to = "value"
   )
@@ -1010,7 +1010,7 @@ ltc_plot_right <- ltc_types %>%
     plot.margin = unit(c(0.5, 0, 0, 0), "cm"),
     axis.title.y = element_blank(),
     axis.text.y = element_blank(),
-    axis.ticks.y = element_blank(),
+    axis.ticks.y = element_blank()
   ) +
   scale_y_discrete(limits = rev(levels(as.factor(ltc_types$key))))
 
@@ -1289,8 +1289,7 @@ otherloc_ltc_pops <- slf_pops %>%
 other_locs_ltc <- ltc |>
   inner_join(other_locs, by = join_by(hscp2019name, hscp_locality)) %>%
   select(hscp_locality, total_ltc, people) %>%
-  mutate(total_ltc = if_else(total_ltc == 0, 0, 1)) %>%
-  filter(total_ltc == 1) %>%
+  filter(total_ltc >= 1) %>%
   group_by(hscp_locality) %>%
   summarise(ltc_people = sum(people)) %>%
   ungroup() %>%

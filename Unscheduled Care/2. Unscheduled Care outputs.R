@@ -1126,7 +1126,8 @@ max_year_ae_area <- max(ae_att_areas$financial_year)
 first_fy_rate_ae_areas <- filter(
   ae_att_areas,
   financial_year == min(financial_year),
-  location == LOCALITY & area_type == "Locality",
+  location == LOCALITY,
+  area_type == "Locality"
 )$data
 
 latest_ae_att_loc <- ae_att_areas %>%
