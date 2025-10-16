@@ -13,12 +13,16 @@
 
 ### Script restructuring Nov 22 by C Puech
 
+###phslookups added to replace manual code Oct 25 by Mhairi Mcfaul######
+
 # SECTION 1: Packages, file paths, etc ----
 
 ## Libraries
+
 library(reshape2)
 library(ggrepel)
 library(sf)
+library(phslookups)
 
 # Source in global functions/themes script
 # source("Master RMarkdown Document & Render Code/Global Script.R")
@@ -36,7 +40,11 @@ library(sf)
 # SECTION 2: Data Imports ----
 
 ## Locality/DZ lookup
-lookup_dz <- read_in_localities(dz_level = TRUE)
+get_hscp_locality(version = "latest", col_select = NULL)
+
+git status
+
+
 
 ## Population data
 pop_raw_data <- read_in_dz_pops()
