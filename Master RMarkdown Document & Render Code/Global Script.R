@@ -8,6 +8,7 @@
 ## Packages for functions ----
 # (** note - should this contain all packages necessary for locality profiles?
 # and automatically installing missing packages?)
+library(data.table)
 library(dplyr)
 library(readr)
 library(tidyr)
