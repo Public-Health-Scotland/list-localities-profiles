@@ -8,6 +8,7 @@
 ## Packages for functions ----
 # (** note - should this contain all packages necessary for locality profiles?
 # and automatically installing missing packages?)
+library(data.table)
 library(dplyr)
 library(readr)
 library(tidyr)
@@ -69,7 +70,7 @@ get_article <- function(number) {
     return("-")
   }
 
-  if (substr(number, 1, 1) == "8" || substr(number, 1, 2) == "18") {
+  if (startsWith(number, "8") || startsWith(number, "18")) {
     return("an")
   } else {
     return("a")
