@@ -53,7 +53,7 @@ drug_hosp <- readRDS(paste0(
   "/scotpho_data_extract_drug_hosp.RDS"
 )) %>%
   clean_scotpho_dat() %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 18)))
+  mutate(period_short = gsub("to", "-", substr(period, 1, 18), fixed = TRUE))
 
 check_missing_data_scotpho(drug_hosp)
 
@@ -79,7 +79,7 @@ alcohol_deaths <- readRDS(paste0(
   "/scotpho_data_extract_alcohol_deaths.RDS"
 )) %>%
   clean_scotpho_dat() %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 12)))
+  mutate(period_short = gsub("to", "-", substr(period, 1, 12), fixed = TRUE))
 
 check_missing_data_scotpho(alcohol_deaths)
 
@@ -91,7 +91,7 @@ bowel_screening <- readRDS(paste0(
   "/scotpho_data_extract_bowel_screening.RDS"
 )) %>%
   clean_scotpho_dat() %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 12)))
+  mutate(period_short = gsub("to", "-", substr(period, 1, 12), fixed = TRUE))
 
 check_missing_data_scotpho(bowel_screening)
 

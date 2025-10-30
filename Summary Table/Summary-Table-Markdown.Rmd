@@ -84,8 +84,8 @@ make_summary_table <- function(data) {
       # Remove odd spaces in numbers
       across(all_of(c(other_loc_cols, hscp_col, scot_col)), str_squish),
       # Make any missing values a dash
-      across(all_of(c(other_loc_cols, hscp_col, scot_col)), \(x) na_if(x, "NA")),
-      across(all_of(c(other_loc_cols, hscp_col, scot_col)), \(x) replace_na(x, "-")),
+      across(all_of(c(other_loc_cols, hscp_col, scot_col)), \(figure_num) na_if(figure_num, "NA")),
+      across(all_of(c(other_loc_cols, hscp_col, scot_col)), \(figure_num) replace_na(figure_num, "-"))
     ) |>
     flextable() |>
     # Header

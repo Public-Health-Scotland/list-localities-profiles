@@ -82,7 +82,7 @@ msg_mh_beddays_raw <- read_parquet(paste0(
 msg_emergency_adm <- msg_emerg_adm_raw %>%
   mutate(age_group = age_group_1(age_group)) %>%
   mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
-  mutate(hscp_locality = gsub("&", "and", locality)) %>%
+  mutate(hscp_locality = gsub("&", "and", locality, fixed = TRUE)) %>%
   # join with localities lookup to get hscp
   left_join(hscp, by = "hscp_locality") %>%
   # aggregate
@@ -97,7 +97,7 @@ msg_emergency_adm <- msg_emerg_adm_raw %>%
 msg_bed_days <- msg_beddays_raw %>%
   mutate(age_group = age_group_1(age_group)) %>%
   mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
-  mutate(hscp_locality = gsub("&", "and", locality)) %>%
+  mutate(hscp_locality = gsub("&", "and", locality, fixed = TRUE)) %>%
   # join with localities lookup to get hscp
   left_join(hscp, by = "hscp_locality") %>%
   # aggregate
@@ -112,7 +112,7 @@ msg_bed_days <- msg_beddays_raw %>%
 msg_bed_days_mh <- msg_mh_beddays_raw %>%
   mutate(age_group = age_group_1(age_group)) %>%
   mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
-  mutate(hscp_locality = gsub("&", "and", locality)) %>%
+  mutate(hscp_locality = gsub("&", "and", locality, fixed = TRUE)) %>%
   # join with localities lookup to get hscp
   left_join(hscp, by = "hscp_locality") %>%
   # aggregate
@@ -127,7 +127,7 @@ msg_bed_days_mh <- msg_mh_beddays_raw %>%
 msg_ae <- msg_ae_raw %>%
   mutate(age_group = age_group_1(age_group)) %>%
   mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
-  mutate(hscp_locality = gsub("&", "and", locality)) %>%
+  mutate(hscp_locality = gsub("&", "and", locality, fixed = TRUE)) %>%
   # join with localities lookup to get hscp
   left_join(hscp, by = "hscp_locality") %>%
   # aggregate
@@ -142,9 +142,9 @@ msg_ae <- msg_ae_raw %>%
 msg_dd <- msg_dd_raw %>%
   mutate(age_group = age_group_1(age_group)) %>%
   mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
-  mutate(hscp_locality = gsub("&", "and", locality)) %>%
+  mutate(hscp_locality = gsub("&", "and", locality, fixed = TRUE)) %>%
   # this data set has some data with partnership but no locality, need to tidy names
-  mutate(hscp2019name = gsub("&", "and", council)) %>%
+  mutate(hscp2019name = gsub("&", "and", council, fixed = TRUE)) %>%
   mutate(hscp2019name = ptsp(hscp2019name)) %>%
   group_by(
     financial_year,
@@ -323,7 +323,7 @@ smr_readmissions <- read_dataframe %>%
   mutate(discharges = 1) %>%
   left_join(deaths, by = "link_no") %>%
   mutate(
-    discharge_dead = if_else(substr(discharge_type, 1, 1) == "4", 1, 0)
+    discharge_dead = if_else(startsWith(discharge_type, "4"), 1, 0)
   ) %>%
   mutate(
     discharge_to_death = time_length(
