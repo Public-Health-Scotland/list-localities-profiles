@@ -29,9 +29,10 @@ Request a lookup file from the team with the following columns:
 1.  Get the new lookups in order.
 2.  Create a new data folder and update variables in a handful of places to reflect this.
 3.  Run the MSG code in the Unscheduled Care folder to get MSG data at IZ-level-change folder path- change folder in `MSG 0`. Also note you must make sure the AE folder is in your new folder.
-4.  Run the `Unscheduled Care 1 IZ` and `Unscheduled care 2` scripts to produce the data files needed- change the folder name.
-5.  Run the `General Health 2` and `General Health 3` script to produce the data files needed- change folder and variable names.
-6.  Run the full indicators as usual.
+    1. Note that the beddays function needs a lot of memory and causes issues.
+5.  Run the `Unscheduled Care 1 IZ` and `Unscheduled care 2` scripts to produce the data files needed- change the folder name.
+6.  Run the `General Health 2` and `General Health 3` script to produce the data files needed- change folder and variable names.
+7.  Run the full indicators as usual.
 
 
 ## Notes
