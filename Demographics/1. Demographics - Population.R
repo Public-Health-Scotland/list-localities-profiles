@@ -133,8 +133,10 @@ pop_breakdown <- pops %>%
       gsub(
         "Plus",
         "+",
-        gsub("Pop", "", variable)
-      )
+        gsub("Pop", "", variable, fixed = TRUE),
+        fixed = TRUE
+      ),
+      fixed = TRUE
     )
   ) %>%
   rename(Gender = sex, Age = variable, Population = value) %>%
@@ -187,14 +189,9 @@ hist_pop_breakdown <- pops %>%
   select(-hscp_locality, -total_pop, -hscp2019name, -Pop65Plus) %>%
   reshape2::melt(id.vars = c("sex", "year")) %>%
   mutate(
-    variable = gsub(
-      "_",
-      "-",
-      gsub(
-        "Plus",
-        "+",
-        gsub("Pop", "", variable)
-      )
+    variable = str_replace_all(
+      variable,
+      c("Pop" = fixed(""), "Plus" = fixed("+"), "_" = fixed("-"))
     )
   ) %>%
   rename(Gender = sex, Age = variable, Population = value) %>%

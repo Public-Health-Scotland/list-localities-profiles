@@ -91,7 +91,7 @@ deaths_15_44 <- read_parquet(path(
   "scotpho_data_extract_deaths_15_44.parquet"
 )) %>%
   clean_scotpho_dat() %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 12)))
+  mutate(period_short = gsub("to", "-", substr(period, 1, 12), fixed = TRUE))
 
 check_missing_data_scotpho(deaths_15_44)
 
@@ -101,7 +101,7 @@ cancer_reg <- read_parquet(path(
   "scotpho_data_extract_cancer_reg.parquet"
 )) %>%
   clean_scotpho_dat() %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 12)))
+  mutate(period_short = gsub("to", "-", substr(period, 1, 12), fixed = TRUE))
 
 check_missing_data_scotpho(cancer_reg)
 
@@ -111,7 +111,7 @@ early_deaths_cancer <- read_parquet(path(
   "scotpho_data_extract_early_deaths_cancer.parquet"
 )) %>%
   clean_scotpho_dat() %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 12)))
+  mutate(period_short = gsub("to", "-", substr(period, 1, 12), fixed = TRUE))
 
 check_missing_data_scotpho(early_deaths_cancer)
 
@@ -122,7 +122,7 @@ asthma_hosp <- read_parquet(path(
   "scotpho_data_extract_asthma_hosp.parquet"
 )) %>%
   clean_scotpho_dat() %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 18)))
+  mutate(period_short = gsub("to", "-", substr(period, 1, 18), fixed = TRUE))
 
 check_missing_data_scotpho(asthma_hosp)
 
@@ -132,7 +132,7 @@ chd_hosp <- read_parquet(path(
   "scotpho_data_extract_chd_hosp.parquet"
 )) %>%
   clean_scotpho_dat() %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 18)))
+  mutate(period_short = gsub("to", "-", substr(period, 1, 18), fixed = TRUE))
 
 check_missing_data_scotpho(chd_hosp)
 
@@ -142,7 +142,7 @@ copd_hosp <- read_parquet(path(
   "scotpho_data_extract_copd_hosp.parquet"
 )) %>%
   clean_scotpho_dat() %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 18)))
+  mutate(period_short = gsub("to", "-", substr(period, 1, 18), fixed = TRUE))
 
 check_missing_data_scotpho(copd_hosp)
 
@@ -176,8 +176,10 @@ ltc <- read_parquet(path(gen_health_data_dir, "LTC_from_SLF.parquet")) %>%
     "Parkinsons" = "parkinsons",
     "Renal failure" = "refailure"
   ) %>%
-  mutate(hscp_locality = gsub("&", "and", hscp_locality)) %>%
-  mutate(year = paste0("20", substr(year, 1, 2), "/", substr(year, 3, 4)))
+  mutate(
+    hscp_locality = gsub("&", "and", hscp_locality, fixed = TRUE),
+    year = paste0("20", substr(year, 1, 2), "/", substr(year, 3, 4))
+  )
 
 
 ############################### 2) SCOTPHO DATA ####################################
@@ -456,9 +458,9 @@ disease_hosp <- bind_rows(
   ) %>%
   mutate(
     indicator = case_when(
-      str_detect(indicator, "Asthma") ~ "Asthma",
-      str_detect(indicator, "CHD") ~ "Coronary Heart Disease",
-      str_detect(indicator, "COPD") ~ "COPD"
+      str_detect(indicator, fixed("Asthma")) ~ "Asthma",
+      str_detect(indicator, fixed("CHD")) ~ "Coronary Heart Disease",
+      str_detect(indicator, fixed("COPD")) ~ "COPD"
     )
   ) %>%
   mutate(measure = round_half_up(measure, 1))
@@ -475,7 +477,7 @@ disease_hosp_table <- disease_hosp |>
     area_order = case_when(
       area_name == LOCALITY ~ 1L,
       area_name == HSCP ~ 2L,
-      str_starts(area_name, "NHS") ~ 4L,
+      str_starts(area_name, fixed("NHS")) ~ 4L,
       area_name == "Scotland" ~ 5L,
       .default = 2L
     )
