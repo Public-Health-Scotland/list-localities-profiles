@@ -1186,7 +1186,6 @@ top5_ltc_table <- bind_cols(
   font(fontname = "Arial", part = "all") %>%
   color(color = "white", part = "body") %>%
   bold(part = "header") %>%
-  italic(part = "header") %>%
   border(border = fp_border(color = "white", width = 5), part = "body")
 
 rm(
