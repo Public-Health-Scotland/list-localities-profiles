@@ -25,9 +25,9 @@ x <- x + 1
 ```{r }
 
   flextable(services_tibble, theme_fun = NULL)  %>%
-  my_ft_format() %>%
-  set_table_properties(layout = "autofit") #%>%
-  #set_header_labels(values = c("Service Type", "Service", "Number"))
+  my_ft_format()  %>%
+  set_header_labels(values = c("Service Type", "Service", "Number")) %>%
+  set_table_properties(layout = "autofit")
 
 y <- y + 1
 ```
