@@ -2,6 +2,7 @@
 rmd_files:
   - index.Rmd
   - Summary-Table.Rmd
+  - Notes-On-Profile.Rmd
   - Demographics.Rmd
   - Services.Rmd
   - Housing.Rmd
