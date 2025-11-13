@@ -1,14 +1,22 @@
 
-\newpage
-
-# Summary Table
-
 ```{r load_packages, include=FALSE}
 library(knitr)
 library(flextable)
 library(officer)
 library(officedown)
 ```
+
+\newpage
+
+<!---BLOCK_LANDSCAPE_START--->
+
+```{r, include=FALSE}
+
+block_section(prop_section(type = "continuous"))
+
+```
+
+# Summary Table
 
 ```{r locality_names, include=FALSE}
 # Set locality name object (with automatic wrapping)
@@ -102,6 +110,8 @@ demographics_table <- make_summary_table(demographic_values)
 
 demographics_table
 ```
+\newline
+######
 
 ```{r housing}
 indicators <- c(
@@ -133,6 +143,8 @@ housing_table <- make_summary_table(housing_values)
 
 housing_table
 ```
+\newline
+######
 
 ```{r general_health}
 indicators <- c(
@@ -175,7 +187,7 @@ general_health_table
 ```
 
 ###### \*At HSCP and Scotland level, the time period is a 3-year aggregate (`r latest_period_life_exp_otherareas`)
-
+\newline
 ```{r lifestyle_risk_factors}
 indicators <- c(
   "Alcohol-related hospital admissions per 100,000",
@@ -211,6 +223,8 @@ lifestyle_table <- make_summary_table(lifestyle_values)
 
 lifestyle_table
 ```
+\newline
+######
 
 ```{r hospital_community_care}
 indicators <- c(
@@ -249,6 +263,8 @@ usc_table <- make_summary_table(usc_values)
 
 usc_table
 ```
+\newline
+######
 
 ```{r hospital_mental_health}
 indicators <- c(
@@ -266,6 +282,7 @@ loc_values <- c(
     big.mark = ","
   )
 )
+
 other_loc_values <- bind_rows(other_locs_psych_hosp, other_loc_bed_days_mh)
 hscp_values <- c(
   format(filter(hscp_psych_hosp, year == max(year))$measure, big.mark = ","),
@@ -287,4 +304,12 @@ colnames(usc_mh_values) <- c("Hospital Care (Mental Health) Indicators", heading
 usc_mh_table <- make_summary_table(usc_mh_values)
 
 usc_mh_table
+```
+
+\newpage
+
+```{r, include=FALSE}
+
+block_section(prop_section(page_size = page_size(orient = "landscape")))
+
 ```
