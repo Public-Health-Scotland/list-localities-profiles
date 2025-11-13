@@ -10,8 +10,9 @@ Sys.umask("006")
 source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set file path
-lp_path <- lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
-output_dir <- path(lp_path, "Master RMarkdown Document & Render Code", "Output")
+# Set file path
+lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+output_dir <- path(lp_path, "Profiles Output")
 
 # Below creates locality list of all the localities in a chosen HSCP
 lookup <- read_in_localities()
@@ -76,8 +77,10 @@ for (HSCP in hscp_list) {
     bookdown::render_book(
       input = "lp_bookdown",
       output_dir = output_dir,
+      new_session=FALSE,
       output_file = glue("{LOCALITY} - Locality Profile.docx"),
-      output_format = "bookdown::word_document2"
+      output_format = "bookdown::word_document2",
+      config_file = "_bookdown.yaml"
     )
     
     # End of loop housekeeping ----
