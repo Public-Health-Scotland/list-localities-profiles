@@ -43,7 +43,8 @@ my_ft_format() %>%
   set_header_labels(values = c(
     "Year", "Total Dwellings", "Occupied Dwellings",
     "Vacant Dwellings", "Single Occupant Tax Discount", "Council Tax Exempt Dwellings", "Second Homes"
-  ))
+  )) %>%
+  set_table_properties(layout = "autofit")
 
 y <- y + 1
 ```
