@@ -67,12 +67,12 @@ format_number_for_text <- function(x) {
 get_article <- function(number) {
   # Cast as a character, so we are sure of the type
   number_chr <- as.character(number)
-  
+
   if (identical(number_chr, character(0))) {
     # If the number wasn't calculated we still need to deal with it.
     return("-")
   }
-  
+
   if (startsWith(number_chr, "8") || startsWith(number_chr, "18")) {
     return("an")
   } else {
