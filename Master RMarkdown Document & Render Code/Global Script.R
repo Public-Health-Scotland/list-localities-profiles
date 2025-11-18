@@ -65,12 +65,15 @@ format_number_for_text <- function(x) {
 # 7.2 -> an
 # To be used for "a xx increase" which could be "an xx increase"
 get_article <- function(number) {
-  if (identical(number, numeric(0))) {
+  # Cast as a character, so we are sure of the type
+  number_chr <- as.character(number)
+  
+  if (identical(number_chr, character(0))) {
     # If the number wasn't calculated we still need to deal with it.
     return("-")
   }
-
-  if (startsWith(number, "8") || startsWith(number, "18")) {
+  
+  if (startsWith(number_chr, "8") || startsWith(number_chr, "18")) {
     return("an")
   } else {
     return("a")
