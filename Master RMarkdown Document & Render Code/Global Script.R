@@ -8,6 +8,7 @@
 ## Packages for functions ----
 # (** note - should this contain all packages necessary for locality profiles?
 # and automatically installing missing packages?)
+library(data.table)
 library(dplyr)
 library(readr)
 library(tidyr)
@@ -69,7 +70,7 @@ get_article <- function(number) {
     return("-")
   }
 
-  if (substr(number, 1, 1) == "8" || substr(number, 1, 2) == "18") {
+  if (startsWith(number, "8") || startsWith(number, "18")) {
     return("an")
   } else {
     return("a")
@@ -300,7 +301,7 @@ read_in_pop_proj <- function() {
 clean_scotpho_dat <- function(data) {
   data %>%
     filter(area_type != "Council area" & area_type != "Intermediate zone") %>%
-    mutate(area_name = gsub("&", "and", area_name)) %>%
+    mutate(area_name = gsub("&", "and", area_name, fixed = TRUE)) %>%
     mutate(
       area_name = if_else(
         area_name == "Renfrewshire West",

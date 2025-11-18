@@ -64,7 +64,7 @@ csv_Files <- sapply(
 new_file_names <- path_file(path_ext_set(my_files, "RDS"))
 
 
-for (i in 1:length(csv_Files)) {
+for (i in seq_along(csv_Files)) {
   data_i <- csv_Files[[i]]
 
   saveRDS(

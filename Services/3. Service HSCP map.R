@@ -142,7 +142,7 @@ places <- read_csv(paste0(
     type = first(type)
   ) |>
   st_as_sf(coords = c("Longitude", "Latitude"), remove = FALSE, crs = 4326) |>
-  filter(!grepl("_", name)) |> # filter incorrect name types
+  filter(!grepl("_", name, fixed = TRUE)) |> # filter incorrect name types
   filter(type != "hamlet" & type != "village") # remove smaller places
 
 # 3.3 Background map ----
