@@ -38,7 +38,7 @@ shp <- st_transform(shp, 4326) |>
   select(hscp_local, HSCP_name, Shape_Leng, Shape_Area, geometry)
 
 shp <- shp |>
-  mutate(hscp_locality = gsub("&", "and", hscp_local)) |>
+  mutate(hscp_locality = gsub("&", "and", hscp_local, fixed = TRUE)) |>
   merge(lookup2, by = "hscp_locality")
 
 shp_hscp <- shp |>
@@ -145,7 +145,7 @@ places <- read_csv(paste0(
     type = first(type)
   ) |>
   st_as_sf(coords = c("Longitude", "Latitude"), remove = FALSE, crs = 4326) |>
-  filter(!grepl("_", name)) |> # filter incorrect name types
+  filter(!grepl("_", name, fixed = TRUE)) |> # filter incorrect name types
   filter(type != "hamlet", type != "village") # remove smaller places
 
 # 3.3 Background map ----
