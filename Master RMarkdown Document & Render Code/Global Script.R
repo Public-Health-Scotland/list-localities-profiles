@@ -253,7 +253,7 @@ read_in_dz_pops <- function() {
       read_in_localities(dz_level = TRUE),
       by = join_by(datazone2011)
     ) |>
-  mutate(year = as.integer(year))
+    mutate(year = as.integer(year))
 }
 
 read_in_dz_pops_proxy_year <- function() {
