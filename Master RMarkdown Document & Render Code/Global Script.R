@@ -216,7 +216,7 @@ read_in_postcodes <- function() {
 }
 
 
-## Function to read in latest population file by DZ ----
+## Function to read in the latest population file by DZ ----
 
 # No arguments needed, just use read_in_latest_dz_pops()
 # Function pulls the latest DZ populations DataZone2011_pop_est_2011_Xyear.rds
@@ -229,11 +229,11 @@ read_in_dz_pops <- function() {
       "Populations/Estimates/"
     ),
     regexp = glue("DataZone2011_pop_est_2011_.+?\\.rds$")
-  ) %>%
-    # Read in the most up to date lookup version
-    max() %>%
-    read_rds() %>%
-    clean_names() %>%
+  ) |>
+    # Read in the most up-to-date lookup version
+    max() |>
+    read_rds() |>
+    clean_names() |>
     select(
       -c(
         intzone2011,
@@ -255,21 +255,22 @@ read_in_dz_pops <- function() {
     left_join(
       read_in_localities(dz_level = TRUE),
       by = join_by(datazone2011)
-    )
+    ) |>
+    mutate(year = as.integer(year))
 }
 
 read_in_dz_pops_proxy_year <- function() {
   read_in_dz_pops() |>
-    filter(year == "2022") |>
+    filter(year == 2022L) |>
     select(-year) |>
-    mutate(year = 2023)
+    mutate(year = 2023L)
 }
 
 ## Function to read in latest population projections ----
 
 # No arguments needed, just use read_in_pop_proj()
 # Function pulls the latest projections HSCP2019_pop_proj....rds
-# Then joins this with hscp lookup to match hscp names
+# Then joins this with the hscp lookup to match hscp names
 
 read_in_pop_proj <- function() {
   proj <- fs::dir_ls(
@@ -278,16 +279,17 @@ read_in_pop_proj <- function() {
       "Populations/Projections/"
     ),
     regexp = glue("HSCP2019_pop_proj_20.+?_.+?\\.rds$")
-  ) %>%
-    # Read in the most up to date lookup version
-    max() %>%
-    read_rds() %>%
-    clean_names() %>%
-    select(year, hscp2019, age, sex, sex_name, pop)
+  ) |>
+    # Read in the most up-to-date lookup version
+    max() |>
+    read_rds() |>
+    clean_names() |>
+    select(year, hscp2019, age, sex, sex_name, pop) |>
+    mutate(year = as.integer(year))
 
   # join with lookup so all hscp2019 names are the same
-  hscp_lkp <- read_in_localities() %>%
-    select(hscp2019, hscp2019name) %>%
+  hscp_lkp <- read_in_localities() |>
+    select(hscp2019, hscp2019name) |>
     distinct()
 
   left_join(proj, hscp_lkp, by = join_by(hscp2019))
