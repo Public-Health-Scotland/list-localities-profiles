@@ -173,7 +173,7 @@ for (HSCP in hscp_list) {
     setColWidths(
       wb,
       sheet = dataframe_name,
-      cols = 1:ncol(output),
+      cols = seq_len(ncol(output)),
       widths = "auto"
     )
   }

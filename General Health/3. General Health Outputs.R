@@ -90,7 +90,7 @@ deaths_15_44 <- read_parquet(path(
   "scotpho_data_extract_deaths_15_44.parquet"
 )) %>%
   clean_scotpho_dat() %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 12)))
+  mutate(period_short = gsub("to", "-", substr(period, 1, 12), fixed = TRUE))
 
 check_missing_data_scotpho(deaths_15_44)
 
@@ -100,7 +100,7 @@ cancer_reg <- read_parquet(path(
   "scotpho_data_extract_cancer_reg.parquet"
 )) %>%
   clean_scotpho_dat() %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 12)))
+  mutate(period_short = gsub("to", "-", substr(period, 1, 12), fixed = TRUE))
 
 check_missing_data_scotpho(cancer_reg)
 
@@ -110,7 +110,7 @@ early_deaths_cancer <- read_parquet(path(
   "scotpho_data_extract_early_deaths_cancer.parquet"
 )) %>%
   clean_scotpho_dat() %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 12)))
+  mutate(period_short = gsub("to", "-", substr(period, 1, 12), fixed = TRUE))
 
 check_missing_data_scotpho(early_deaths_cancer)
 
@@ -121,7 +121,7 @@ asthma_hosp <- read_parquet(path(
   "scotpho_data_extract_asthma_hosp.parquet"
 )) %>%
   clean_scotpho_dat() %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 18)))
+  mutate(period_short = gsub("to", "-", substr(period, 1, 18), fixed = TRUE))
 
 check_missing_data_scotpho(asthma_hosp)
 
@@ -131,7 +131,7 @@ chd_hosp <- read_parquet(path(
   "scotpho_data_extract_chd_hosp.parquet"
 )) %>%
   clean_scotpho_dat() %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 18)))
+  mutate(period_short = gsub("to", "-", substr(period, 1, 18), fixed = TRUE))
 
 check_missing_data_scotpho(chd_hosp)
 
@@ -141,7 +141,7 @@ copd_hosp <- read_parquet(path(
   "scotpho_data_extract_copd_hosp.parquet"
 )) %>%
   clean_scotpho_dat() %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 18)))
+  mutate(period_short = gsub("to", "-", substr(period, 1, 18), fixed = TRUE))
 
 check_missing_data_scotpho(copd_hosp)
 
@@ -178,9 +178,11 @@ ltc <- read_parquet(path(
     "Parkinsons" = "parkinsons",
     "Renal failure" = "refailure"
   ) %>%
-  drop_na(hscp_locality) %>%
-  mutate(hscp_locality = gsub("&", "and", hscp_locality)) %>%
-  mutate(year = paste0("20", substr(year, 1, 2), "/", substr(year, 3, 4)))
+ drop_na(hscp_locality) %>%  
+ mutate(
+    hscp_locality = gsub("&", "and", hscp_locality, fixed = TRUE),
+    year = paste0("20", substr(year, 1, 2), "/", substr(year, 3, 4))
+  )
 
 
 ############################### 2) SCOTPHO DATA ####################################
@@ -459,9 +461,9 @@ disease_hosp <- bind_rows(
   ) %>%
   mutate(
     indicator = case_when(
-      str_detect(indicator, "Asthma") ~ "Asthma",
-      str_detect(indicator, "CHD") ~ "Coronary Heart Disease",
-      str_detect(indicator, "COPD") ~ "COPD"
+      str_detect(indicator, fixed("Asthma")) ~ "Asthma",
+      str_detect(indicator, fixed("CHD")) ~ "Coronary Heart Disease",
+      str_detect(indicator, fixed("COPD")) ~ "COPD"
     )
   ) %>%
   mutate(measure = round_half_up(measure, 1))
@@ -478,7 +480,7 @@ disease_hosp_table <- disease_hosp |>
     area_order = case_when(
       area_name == LOCALITY ~ 1L,
       area_name == HSCP ~ 2L,
-      str_starts(area_name, "NHS") ~ 4L,
+      str_starts(area_name, fixed("NHS")) ~ 4L,
       area_name == "Scotland" ~ 5L,
       .default = 2L
     )
@@ -916,7 +918,7 @@ ltc_types <- ltc2 %>%
   summarise(across(everything(), sum)) %>%
   ungroup() |>
   pivot_longer(
-    cols = c("Arthritis":"Renal failure"),
+    cols = "Arthritis":"Renal failure",
     names_to = "key",
     values_to = "value"
   )
@@ -1013,7 +1015,7 @@ ltc_plot_right <- ltc_types %>%
     plot.margin = unit(c(0.5, 0, 0, 0), "cm"),
     axis.title.y = element_blank(),
     axis.text.y = element_blank(),
-    axis.ticks.y = element_blank(),
+    axis.ticks.y = element_blank()
   ) +
   scale_y_discrete(limits = rev(levels(as.factor(ltc_types$key))))
 
@@ -1021,7 +1023,7 @@ title <- ggdraw() +
   draw_label(
     str_wrap(
       glue(
-        "Prevalence of Physical Long-Term Conditions {latest_year_ltc} in the {LOCALITY} Locality"
+        "Prevalence estimates for {latest_year_ltc} of Physical Long-Term Conditions in the {LOCALITY} Locality"
       ),
       width = 65
     ),
@@ -1030,7 +1032,11 @@ title <- ggdraw() +
   )
 
 caption <- ggdraw() +
-  draw_label("Source: Source Linkage Files", size = 10, hjust = -0.5)
+  draw_label(
+    "Source: SPARRA via the Source Linkage Files",
+    size = 10,
+    hjust = -0.5
+  )
 
 # Combine plots into 1
 ltc_types_plot <- plot_grid(
@@ -1062,7 +1068,7 @@ rm(
 
 ##### 3d Top LTCs Table #####
 
-# Most common ltc all round
+# Most common LTC all round
 ltc_totals <- ltc2 %>%
   filter(total_ltc != 0) %>%
   select(-hscp2019name, -total_ltc, -age_group) %>%
@@ -1224,7 +1230,7 @@ title <- ggdraw() +
   draw_label(
     str_wrap(
       glue(
-        "Top 5 most prevalent Physical Long-Term Conditions {latest_year_ltc}"
+        "Top 5 most common Physical Long-Term Conditions in {LOCALITY} Locality by prevelance estimates for {latest_year_ltc}, compared to {HSCP} HSCP and Scotland estimates."
       ),
       width = 65
     ),
@@ -1344,8 +1350,7 @@ otherloc_ltc_pops <- slf_pops %>%
 other_locs_ltc <- ltc |>
   inner_join(other_locs, by = join_by(hscp2019name, hscp_locality)) %>%
   select(hscp_locality, total_ltc, people) %>%
-  mutate(total_ltc = if_else(total_ltc == 0, 0, 1)) %>%
-  filter(total_ltc == 1) %>%
+  filter(total_ltc >= 1) %>%
   group_by(hscp_locality) %>%
   summarise(ltc_people = sum(people)) %>%
   ungroup() %>%

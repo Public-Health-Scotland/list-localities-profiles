@@ -1131,7 +1131,8 @@ max_year_ae_area <- max(ae_att_areas$financial_year)
 first_fy_rate_ae_areas <- filter(
   ae_att_areas,
   financial_year == min(financial_year),
-  location == LOCALITY & area_type == "Locality",
+  location == LOCALITY,
+  area_type == "Locality"
 )$data
 
 latest_ae_att_loc <- ae_att_areas %>%
@@ -1936,7 +1937,7 @@ psych_hosp <- read_csv(path(
   "scotpho_data_extract_psychiatric_admissions.csv"
 )) %>%
   clean_scotpho_dat() %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 18)))
+  mutate(period_short = gsub("to", "-", substr(period, 1, 18), fixed = TRUE))
 
 check_missing_data_scotpho(psych_hosp)
 
