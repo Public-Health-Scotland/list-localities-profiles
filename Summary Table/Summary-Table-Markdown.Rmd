@@ -197,7 +197,7 @@ time <- c(
 
 # Values
 
-loc_values <- round_half_up(c(avg_life_exp_latest_male, avg_life_exp_latest_fem, deaths_15_44_latest, ltc_percent_total_latest, cancer_reg_rate_latest, adp_presc_latest), 1)
+loc_values <- round_half_up(c(avg_life_exp_latest_male, avg_life_exp_latest_fem, deaths_15_44_latest, ltc_percent_total_latest, NA, NA), 1)
 other_loc_values <- rbind(other_locs_life_exp_male, other_locs_life_exp_fem, other_locs_deaths_15_44, other_locs_ltc, other_locs_cancer, other_locs_adp)
 hscp_values <- c(hscp_life_exp_male, hscp_life_exp_fem, hscp_deaths_15_44, hscp_ltc, hscp_cancer, hscp_adp)
 scot_values <- c(scot_life_exp_male, scot_life_exp_fem, scot_deaths_15_44, ltc_perc_scot, scot_cancer, scot_adp_presc)
@@ -234,7 +234,7 @@ time <- c(
 )
 
 # Values
-loc_values <- round_half_up(c(alcohol_hosp_latest, alcohol_deaths_latest, drug_hosp_latest, bowel_screening_latest), 1)
+loc_values <- round_half_up(c(alcohol_hosp_latest, NA, NA, bowel_screening_latest), 1)
 other_loc_values <- rbind(other_locs_alcohol_hosp, other_locs_alcohol_deaths, other_locs_drug_hosp, other_locs_bowel_screening)
 hscp_values <- c(hscp_alcohol_hosp, hscp_alcohol_deaths, hscp_drug_hosp, hscp_bowel_screening)
 scot_values <- c(scot_alcohol_hosp, scot_alcohol_deaths, scot_drug_hosp, scot_bowel_screening)
@@ -265,7 +265,7 @@ time <- c(max_fy, max_fy, max_fy, max_fy, max_fy)
 
 # Values
 loc_values <- format(
-  c(latest_emergency_adm_loc1, latest_bed_days_loc1, latest_ae_att_loc1, latest_dd_loc1, latest_ppa_loc1),
+  c(latest_emergency_adm_loc1, latest_bed_days_loc1, latest_ae_att_loc1, NA, latest_ppa_loc1),
   big.mark = ","
 )
 other_loc_values <- bind_rows(other_loc_emergency_adm, other_loc_bed_days, other_loc_ae_att, other_loc_dd, other_loc_ppa)
