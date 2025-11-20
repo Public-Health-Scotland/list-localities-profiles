@@ -1165,13 +1165,13 @@ loc.ltc.table <- str_wrap(
 
 hscp.ltc.table <- str_wrap(glue("{HSCP} HSCP"), width = 25)
 
-# Top5 LTC table as a table (instead of image)
+# Top5 LTC table as a table (instead of an image)
 top5_ltc_table <- bind_cols(
   select(top5ltc_loc, {{ loc.ltc.table }} := Prevalence),
   select(top5ltc_hscp, {{ hscp.ltc.table }} := Prevalence),
   select(top5ltc_scot, "Scotland" = Prevalence)
 ) |>
-  flextable(cwidth = 2) %>%
+  flextable(cwidth = 2) |>
   add_header_lines(
     values = str_wrap(
       glue(
@@ -1179,15 +1179,15 @@ top5_ltc_table <- bind_cols(
       ),
       width = 65
     )
-  ) %>%
-  bg(j = 1, bg = top5ltc_loc$colours) %>%
-  bg(j = 2, bg = top5ltc_hscp$colours) %>%
-  bg(j = 3, bg = top5ltc_scot$colours) %>%
-  fontsize(size = 16, part = "header") %>%
-  fontsize(size = 12, part = "body") %>%
-  font(fontname = "Arial", part = "all") %>%
-  color(color = "white", part = "body") %>%
-  bold(part = "header") %>%
+  ) |>
+  bg(j = 1, bg = top5ltc_loc$colours) |>
+  bg(j = 2, bg = top5ltc_hscp$colours) |>
+  bg(j = 3, bg = top5ltc_scot$colours) |>
+  fontsize(size = 16, part = "header") |>
+  fontsize(size = 12, part = "body") |>
+  font(fontname = "Arial", part = "all") |>
+  color(color = "white", part = "body") |>
+  bold(part = "header") |>
   border(border = fp_border(color = "white", width = 5), part = "body")
 
 rm(
