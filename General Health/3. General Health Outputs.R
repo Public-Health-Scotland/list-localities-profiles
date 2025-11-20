@@ -178,8 +178,8 @@ ltc <- read_parquet(path(
     "Parkinsons" = "parkinsons",
     "Renal failure" = "refailure"
   ) %>%
- drop_na(hscp_locality) %>%  
- mutate(
+  drop_na(hscp_locality) %>%
+  mutate(
     hscp_locality = gsub("&", "and", hscp_locality, fixed = TRUE),
     year = paste0("20", substr(year, 1, 2), "/", substr(year, 3, 4))
   )
