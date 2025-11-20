@@ -88,7 +88,7 @@ make_summary_table <- function(data) {
       across(all_of(c(loc_col, other_loc_cols, hscp_col, scot_col)), str_squish),
       # Make any missing values a dash
       across(all_of(c(loc_col, other_loc_cols, hscp_col, scot_col)), \(figure_num) na_if(figure_num, "NA")),
-      across(all_of(c(loc_col, other_loc_cols, hscp_col, scot_col)), \(figure_num) replace_na(figure_num, "-")),
+      across(all_of(c(loc_col, other_loc_cols, hscp_col, scot_col)), \(figure_num) replace_na(figure_num, "-"))
     ) |>
     flextable() |>
     # Header
@@ -179,7 +179,7 @@ indicators <- c(
   "Male average life expectancy in years",
   "Female average life expectancy in years",
   "Deaths aged 15-44 per 100,000",
-  "Population with long-term condition",
+  "Population estimated to have at least one LTC",
   "Cancer registrations per 100,000",
   "Anxiety, depression & psychosis prescriptions"
 )
