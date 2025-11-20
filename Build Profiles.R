@@ -71,44 +71,42 @@ for (HSCP in hscp_list) {
 
     # Appendices ----
     source("Master RMarkdown Document & Render Code/Tables for Appendix.R")
-    
+
     # Make sure your working directory is the project root
     bookdown::render_book(
       input = "lp_bookdown",
       output_dir = output_dir,
-      new_session=FALSE,
+      new_session = FALSE,
       output_file = glue("{LOCALITY} - Locality Profile.docx"),
       output_format = "bookdown::word_document2",
       config_file = "_bookdown.yaml"
     )
 
-    document_path <- paste0(output_dir, glue("/{LOCALITY} - Locality Profile.docx"))
-    
+    document_path <- paste0(
+      output_dir,
+      glue("/{LOCALITY} - Locality Profile.docx")
+    )
+
     cover_page_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/phs-mngtinfo-cover.docx"
-    
+
     main_title <- "Locality Profile"
     subtitle <- "test"
-    render_date <- format(Sys.Date(),"%d/%m/%Y")
-    
+    render_date <- format(Sys.Date(), "%d/%m/%Y")
+
     add_cover_page(
-      
       document_path,
       cover_page_path,
       main_title,
       subtitle,
       render_date
-      
     )
-    
-    phstemplates::apply_sensitivity_label(document_path,"OFFICIAL")
-    
+
+    phstemplates::apply_sensitivity_label(document_path, "OFFICIAL")
+
     # End of loop housekeeping ----
     # Clean up the environment by restoring it to the 'pre-loop' state.
     rm(list = setdiff(ls(), loop_env))
     # Force garbage collection to free up memory
     gc()
-    
-    
-    
   }
 }

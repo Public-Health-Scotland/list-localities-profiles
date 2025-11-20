@@ -58,7 +58,7 @@ format_number_for_text <- function(x) {
       round_half_up(x)
     )
   ) # if 10 =< x then no decimal places
-  
+
   format(x, big.mark = ",")
 }
 
@@ -94,7 +94,7 @@ theme_profiles <- function() {
   fontStyle <- "sans"
   gridLineColor <- grDevices::rgb(190 / 255, 190 / 255, 190 / 255)
   fontSize <- 11
-  
+
   ggplot2::theme(
     # Text format:
     # This sets the font, size, type and colour of text for the chart's title
@@ -103,7 +103,7 @@ theme_profiles <- function() {
       size = fontSize,
       face = "bold"
     ),
-    
+
     # Legend format
     # This sets the position and alignment of the legend, removes a title and
     # background for it and sets the requirements for any text within the legend.
@@ -118,7 +118,7 @@ theme_profiles <- function() {
       size = fontSize,
       hjust = 0 # Replaces legend.text.align = 0
     ),
-    
+
     # Axis format
     # This sets the text font, size and colour for the axis test, as well as
     # setting the margins and removes lines and ticks.
@@ -134,7 +134,7 @@ theme_profiles <- function() {
     ),
     axis.ticks = ggplot2::element_blank(),
     axis.line = ggplot2::element_blank(),
-    
+
     # Grid Lines
     # This removes all minor gridlines and adds major vertical gridlines.
     # In many cases you will want to change this to remove vertical gridlines
@@ -142,7 +142,7 @@ theme_profiles <- function() {
     panel.grid.minor = ggplot2::element_blank(),
     panel.grid.major.x = ggplot2::element_line(color = gridLineColor),
     panel.grid.major.y = ggplot2::element_blank(),
-    
+
     # Blank Background
     # This sets the panel background as blank, removing the standard grey ggplot
     # background colour from the plot
@@ -174,7 +174,7 @@ read_in_localities <- function(dz_level = FALSE) {
       hb2019
     ) |>
     dplyr::mutate(hscp_locality = sub("&", "and", hscp_locality, fixed = TRUE))
-  
+
   if (!dz_level) {
     data <- dplyr::distinct(
       data,
@@ -185,7 +185,7 @@ read_in_localities <- function(dz_level = FALSE) {
       hb2019
     )
   }
-  
+
   return(data)
 }
 
@@ -215,7 +215,7 @@ read_in_postcodes <- function() {
     by = dplyr::join_by(datazone2011),
     relationship = "many-to-one"
   )
-  
+
   return(data)
 }
 
@@ -353,7 +353,7 @@ scotpho_time_trend <- function(
   } else {
     rotation <- element_text(angle = 0)
   }
-  
+
   # filter and reorder data
   data %>%
     filter(
@@ -426,7 +426,7 @@ scotpho_time_trend_HSCP <- function(
   } else {
     rotation <- element_text(angle = 0)
   }
-  
+
   # filter and reorder data
   data %>%
     filter(
@@ -514,7 +514,7 @@ scotpho_bar_chart <- function(data, chart_title, xaxis_title) {
       area_name = fct_reorder(as.factor(str_wrap(area_name, 28)), measure)
     ) %>%
     arrange(area_name)
-  
+
   ggplot(data_for_plot) +
     aes(y = area_name, fill = area_type, weight = measure) +
     geom_bar(colour = "white") +
@@ -559,7 +559,7 @@ scotpho_bar_chart_HSCP <- function(data, chart_title, xaxis_title) {
       area_name = fct_reorder(as.factor(str_wrap(area_name, 28)), measure)
     ) %>%
     arrange(area_name)
-  
+
   ggplot(data_for_plot) +
     aes(y = area_name, fill = area_type, weight = measure) +
     geom_bar(colour = "white") +
@@ -665,15 +665,15 @@ hbres <- function(hbres_currentdate) {
 save_dataframes_to_excel <- function(dataframes, sheet_names, file_path) {
   # Create a new workbook using openxlsx2
   wb <- openxlsx2::wb_workbook()
-  
+
   # Loop over each dataframe and corresponding sheet name
   for (i in seq_along(dataframes)) {
     # Define the used columns
     cols <- seq_len(ncol(dataframes[[i]]))
-    
+
     # Define the header range
     header_range <- openxlsx2::wb_dims(rows = 1, cols = cols)
-    
+
     wb <- wb |>
       # Add a worksheet
       openxlsx2::wb_add_worksheet(sheet = sheet_names[[i]]) |>
@@ -684,10 +684,10 @@ save_dataframes_to_excel <- function(dataframes, sheet_names, file_path) {
       # Set column widths to auto
       openxlsx2::wb_set_col_widths(cols = cols, widths = "auto")
   }
-  
+
   # Create the directories if they don't exist
   fs::dir_create(fs::path_dir(file_path), mode = "u=rwx,g=rwx,o=rx")
-  
+
   # Save the workbook to a file
   openxlsx2::wb_save(wb, file = file_path, overwrite = TRUE)
 }
@@ -701,65 +701,70 @@ my_ft_format <- function(ft) {
     bg(bg = "#43358B", part = "header") %>%
     color(color = "white", part = "header") %>%
     height(height = 0.236, part = "body") %>%
-    hrule(rule = "atleast", part = "body") %>% 
+    hrule(rule = "atleast", part = "body") %>%
     align(align = "center", part = "header") %>%
     valign(valign = "center", part = "header") %>%
     valign(valign = "top", part = "body") %>%
     colformat_num(big.mark = "") %>%
     fontsize(size = 10, part = "all") %>%
-    border(border = fp_border_default(color = "#000000", width = 0.5),
-           part = "all")
+    border(
+      border = fp_border_default(color = "#000000", width = 0.5),
+      part = "all"
+    )
 }
 
-add_cover_page <- function(document_path,cover_page_path,main_title,subtitle,date){
-  
+add_cover_page <- function(
+  document_path,
+  cover_page_path,
+  main_title,
+  subtitle,
+  date
+) {
   # Load Cover Page And Replace Title etc. with user input values
   cover_page <- officer::read_docx(cover_page_path) %>%
     officer::body_replace_all_text("Publication title", main_title) %>%
     officer::body_replace_all_text("Subtitle", subtitle) %>%
     officer::body_replace_all_text("DD Month YYYY", date)
-  
+
   # Get name of document with cover page to be added from pathway to document
   document_name <- document_path %>%
     str_split("/") %>%
     unlist() %>%
     last()
-  
-  # Get folder document is stored in 
+
+  # Get folder document is stored in
   document_folder <- document_path %>%
     str_split("/") %>%
     unlist() %>%
     head(-1) %>%
-    paste0(collapse="/") %>%
+    paste0(collapse = "/") %>%
     paste0("/")
-  
-  # Get new document name which has no characters which don't work with block_pour_docx 
+
+  # Get new document name which has no characters which don't work with block_pour_docx
   esc_char_document_name <- document_name %>%
     gsub("&", "_", .) %>%
     gsub("-", "_", .) %>%
-    gsub(" ", "_", .) 
-  
+    gsub(" ", "_", .)
+
   # Get new path for document with acceptable name and rename doucment to this name
-  
+
   esc_char_document_path <- document_folder %>%
     paste0(esc_char_document_name)
-  
-  file.rename(document_path,esc_char_document_path)
-  
-  # Load in XML version of document 
+
+  file.rename(document_path, esc_char_document_path)
+
+  # Load in XML version of document
   xml_elt <- officer::to_wml(
     officer::block_pour_docx(esc_char_document_path),
     add_ns = TRUE
   )
-  
-  
+
   # Remove & signs from document path
   if (grepl("&", esc_char_document_path)) {
     output_escape <- gsub("&", "&amp;", esc_char_document_path)
     xml_elt <- gsub(esc_char_document_path, output_escape, xml_elt)
   }
-  
-  
+
   # Combine Cover and Report
   cover_page %>%
     officer::cursor_end() %>%
@@ -768,97 +773,76 @@ add_cover_page <- function(document_path,cover_page_path,main_title,subtitle,dat
     officer::set_doc_properties(title = main_title) %>%
     # Save out to document pathway with acceptable name
     print(esc_char_document_path)
-  
+
   # Rename the file back to it's original name
-  file.rename(esc_char_document_path,document_path)
-  
+  file.rename(esc_char_document_path, document_path)
 }
 
 
-create_testing_chapter <- function(chapters_oi,locality_oi,output_directory){
-  
+create_testing_chapter <- function(chapters_oi, locality_oi, output_directory) {
   output_dir <- output_directory
-  
+
   LOCALITY <- locality_oi
-  
+
   lookup <- read_in_localities()
-  
-  if ("Demographics.Rmd" %in% chapters_oi){
-    
+
+  if ("Demographics.Rmd" %in% chapters_oi) {
     # Demographics ----
     source("Demographics/1. Demographics - Population.R")
     source("Demographics/2. Demographics - SIMD.R")
-    
   }
-  
-  if ("Housing.Rmd" %in% chapters_oi){
-  
+
+  if ("Housing.Rmd" %in% chapters_oi) {
     # Housing ----
     source("Households/Households Code.R")
-  
   }
-  
-  if ("Services.Rmd" %in% chapters_oi){
-    
+
+  if ("Services.Rmd" %in% chapters_oi) {
     # Services ----
     source("Services/2. Services data manipulation & table.R")
     source("Services/3. Service HSCP map.R")
-    
-    
   }
-  
-  if ("General-Health.Rmd" %in% chapters_oi){
-    
+
+  if ("General-Health.Rmd" %in% chapters_oi) {
     # General Health ----
     source("General Health/3. General Health Outputs.R")
-    
-    
   }
-  
-  if ("Lifestyle-Risk-Factors.Rmd" %in% chapters_oi){
-    
+
+  if ("Lifestyle-Risk-Factors.Rmd" %in% chapters_oi) {
     # Lifestyle & Risk Factors ----
     source("Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
-    
-    
   }
-  
-  if ("Unscheduled-Care.Rmd" %in% chapters_oi){
-    
+
+  if ("Unscheduled-Care.Rmd" %in% chapters_oi) {
     # Unscheduled Care ----
     source("Unscheduled Care/2. Unscheduled Care outputs.R")
-    
-    
   }
-  
+
   chapters_oi_name <- chapters_oi %>%
-    gsub(".Rmd","",.) %>%
-    paste(collapse=" ")
-  
+    gsub(".Rmd", "", .) %>%
+    paste(collapse = " ")
+
   # read _bookdown.yaml file
   yaml_file <- yaml::read_yaml("lp_bookdown/_bookdown.yaml")
-  
+
   # change included chapters to relevant chapter(s) only + index.Rmd (sets formatting)
-  yaml_file$rmd_files <- c("index.Rmd",chapters_oi)
-  
+  yaml_file$rmd_files <- c("index.Rmd", chapters_oi)
+
   # write temporary yaml with relevant chapters to be used in rendering
-  yaml::write_yaml(yaml_file,"lp_bookdown/_practice_chapter_temp.yaml")
-  
+  yaml::write_yaml(yaml_file, "lp_bookdown/_practice_chapter_temp.yaml")
+
   # render test chapter
   bookdown::render_book(
     input = "lp_bookdown",
     output_dir = output_dir,
-    new_session=FALSE,
-    output_file = glue("{LOCALITY} - Locality Profile {chapters_oi_name} Practice Chapter.docx"),
+    new_session = FALSE,
+    output_file = glue(
+      "{LOCALITY} - Locality Profile {chapters_oi_name} Practice Chapter.docx"
+    ),
     output_format = "bookdown::word_document2",
     config_file = "_practice_chapter_temp.yaml"
   )
-  
+
   # remove temporary yaml file
   file.remove("lp_bookdown/_practice_chapter_temp.yaml")
-  
 }
-
-
-
-
