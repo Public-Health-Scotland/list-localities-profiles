@@ -244,7 +244,7 @@ locality_pop_trend <- pops %>%
   group_by(year) %>%
   summarise(pop = sum(total_pop)) %>%
   ungroup() %>%
-  mutate(year = as.numeric(year)) 
+  mutate(year = as.numeric(year))
 
 ## Population projections by locality
 
@@ -309,7 +309,7 @@ pop_proj_dat <- locality_pop_proj %>%
   group_by(year) %>%
   summarise(pop = sum(pop)) %>%
   ungroup() %>%
-  mutate(year = as.numeric(year)) 
+  mutate(year = as.numeric(year))
 
 
 ## 4b) Time trend plot ----

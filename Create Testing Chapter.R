@@ -1,4 +1,3 @@
-
 library(knitr)
 library(bookdown)
 
@@ -22,8 +21,5 @@ lp_path <- lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdo
 output_dir <- path(lp_path, "Profiles Output")
 
 
-# Creates Test Chapter 
-create_testing_chapter(chapter_oi,LOCALITY,output_dir)
-
-
-
+# Creates Test Chapter
+create_testing_chapter(chapter_oi, LOCALITY, output_dir)
