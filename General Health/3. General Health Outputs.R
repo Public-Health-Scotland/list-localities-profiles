@@ -11,8 +11,9 @@
 
 ## load packages
 library(cowplot)
-library(gridExtra)
 library(png)
+library(flextable)
+library(officer)
 
 # Determine locality (for testing only)
 # LOCALITY <- "Eastwood"
@@ -1168,92 +1169,39 @@ loc.ltc.table <- str_wrap(
 
 hscp.ltc.table <- str_wrap(glue("{HSCP} HSCP"), width = 25)
 
-
-ltc_loc_col <- tableGrob(
-  top5ltc_loc[, 1],
-  cols = loc.ltc.table,
-  rows = 1:5,
-  theme = ttheme_default(
-    core = list(
-      bg_params = list(fill = top5ltc_loc$colours),
-      fg_params = list(col = "white", fontface = 2, fontsize = 11)
-    ),
-    colhead = list(
-      bg_params = list(fill = "white"),
-      fg_params = list(fontface = 3, fontsize = 11)
-    )
-  )
-)
-ltc_hscp_col <- tableGrob(
-  top5ltc_hscp[, 1],
-  cols = hscp.ltc.table,
-  rows = NULL,
-  theme = ttheme_default(
-    core = list(
-      bg_params = list(fill = top5ltc_hscp$colours),
-      fg_params = list(col = "white", fontface = 2, fontsize = 11)
-    ),
-    colhead = list(
-      bg_params = list(fill = "white"),
-      fg_params = list(fontface = 3, fontsize = 11)
-    )
-  )
-)
-ltc_scot_col <- tableGrob(
-  top5ltc_scot[, 1],
-  cols = "Scotland",
-  rows = NULL,
-  theme = ttheme_default(
-    core = list(
-      bg_params = list(fill = top5ltc_scot$colours),
-      fg_params = list(col = "white", fontface = 2, fontsize = 11)
-    ),
-    colhead = list(
-      bg_params = list(fill = "white"),
-      fg_params = list(fontface = 3, fontsize = 11)
-    )
-  )
-)
-
-## Combine columns
-top5ltc_all_table <- as_gtable(gtable_combine(
-  ltc_loc_col,
-  ltc_hscp_col,
-  ltc_scot_col
-))
-
-title <- ggdraw() +
-  draw_label(
-    str_wrap(
+# Top5 LTC table as a table (instead of an image)
+top5_ltc_table <- bind_cols(
+  select(top5ltc_loc, {{ loc.ltc.table }} := Prevalence),
+  select(top5ltc_hscp, {{ hscp.ltc.table }} := Prevalence),
+  select(top5ltc_scot, "Scotland" = Prevalence)
+) |>
+  flextable(cwidth = 2) |>
+  add_header_lines(
+    values = str_wrap(
       glue(
         "Top 5 most common Physical Long-Term Conditions in {LOCALITY} Locality by prevelance estimates for {latest_year_ltc}, compared to {HSCP} HSCP and Scotland estimates."
       ),
       width = 65
-    ),
-    size = 11,
-    fontface = "bold"
-  )
-
-top5_ltc_table <- plot_grid(
-  title,
-  top5ltc_all_table,
-  nrow = 2,
-  rel_heights = c(0.1, 1.2)
-)
-
+    )
+  ) |>
+  bg(j = 1, bg = top5ltc_loc$colours) |>
+  bg(j = 2, bg = top5ltc_hscp$colours) |>
+  bg(j = 3, bg = top5ltc_scot$colours) |>
+  fontsize(size = 16, part = "header") |>
+  fontsize(size = 12, part = "body") |>
+  font(fontname = "Arial", part = "all") |>
+  color(color = "white", part = "body") |>
+  bold(part = "header") |>
+  border(border = fp_border(color = "white", width = 5), part = "body")
 
 rm(
   ltc_cols,
-  ltc_loc_col,
-  ltc_hscp_col,
-  ltc_scot_col,
   ltc_pops_total_loc,
   loc.ltc.table,
   hscp.ltc.table,
+  top5ltc_loc,
   top5ltc_hscp,
-  top5ltc_scot,
-  top5ltc_all_table,
-  title
+  top5ltc_scot
 )
 
 ## Objects for text
