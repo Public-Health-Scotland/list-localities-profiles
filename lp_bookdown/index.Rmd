@@ -23,6 +23,6 @@ table_heading_style <- fp_text(
 knitr::opts_chunk$set(echo = FALSE)
 options(kableExtra.auto_format = FALSE)
 
-x <- 1 # object for figure numbers
-y <- 1 # object for table numbers
+figure_num <- 1 # object for figure numbers
+table_num <- 1 # object for table numbers
 ```
