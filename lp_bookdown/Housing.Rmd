@@ -17,14 +17,14 @@ For the most recent time period available, `r LOCALITY` Locality had:
 
 The graph below shows the number of dwellings in `r LOCALITY` from `r min(house_dat$year)` to `r max_year_housing`.
 
-<!-- <Div custom-style = "Table or chart caption">Figure `r x`: Number of dwellings time trend.</Div> -->
+<!-- <Div custom-style = "Table or chart caption">Figure `r figure_num`: Number of dwellings time trend.</Div> -->
 
-`r ftext(paste0("Figure ",x,": Number of dwellings time trend."),table_heading_style)`
+`r ftext(paste0("Figure ",figure_num,": Number of dwellings time trend."),table_heading_style)`
 
 ```{r fig.width = 8.5, fig.height = 4, warning = FALSE}
 houses_ts
 
-x <- x + 1
+figure_num <- figure_num + 1
 ```
 
 Of the total number of dwellings in `r max_year_housing`, `r perc_single_discount`% (`r n_single_discount` households) were occupied by an individual receiving a single-occupant council tax discount. Furthermore, `r perc_exempt`% (`r n_exempt` households) were occupied and exempt from council tax.
@@ -32,53 +32,53 @@ Of the total number of dwellings in `r max_year_housing`, `r perc_single_discoun
 There were `r n_second_homes` dwellings classed as a second home in `r max_year_housing`, these dwellings made up `r perc_second_homes`% of the households in `r LOCALITY`.
 
 
-<!-- <Div custom-style = "Table or chart caption">Table `r y`: Breakdown of dwelling types by year for `r LOCALITY` locality.</Div> -->
+<!-- <Div custom-style = "Table or chart caption">Table `r table_num`: Breakdown of dwelling types by year for `r LOCALITY` locality.</Div> -->
 
-`r ftext(paste0("Table ",y,": Breakdown of dwelling types by year for ",LOCALITY," locality."),table_heading_style)`
+`r ftext(paste0("Table ",table_num,": Breakdown of dwelling types by year for ",LOCALITY," locality."),table_heading_style)`
 
 
 ```{r }
 flextable(house_table, theme_fun = NULL) %>%
-my_ft_format() %>%
+lp_flextable_theme() %>%
   set_header_labels(values = c(
     "Year", "Total Dwellings", "Occupied Dwellings",
     "Vacant Dwellings", "Single Occupant Tax Discount", "Council Tax Exempt Dwellings", "Second Homes"
   )) %>%
   set_table_properties(layout = "autofit")
 
-y <- y + 1
+table_num <- table_num + 1
 ```
 
 Source: Scottish Assessors' Association (via NRS) \newline
 
-The proportion of households within each council tax band are displayed in the chart below, figures are shown in Table `r y`.
+The proportion of households within each council tax band are displayed in the chart below, figures are shown in Table `r table_num`.
 
 
-<!-- <Div custom-style = "Table or chart caption">Figure `r x`: Breakdown of households by council tax band for `r LOCALITY` in `r max_year_housing`.</Div> -->
+<!-- <Div custom-style = "Table or chart caption">Figure `r figure_num`: Breakdown of households by council tax band for `r LOCALITY` in `r max_year_housing`.</Div> -->
 
-`r ftext(paste0("Figure ",x,": Breakdown of households by council tax band for ",LOCALITY," in ",max_year_housing,"."),table_heading_style)`
+`r ftext(paste0("Figure ",figure_num,": Breakdown of households by council tax band for ",LOCALITY," in ",max_year_housing,"."),table_heading_style)`
 
 ```{r fig.width = 7, fig.height = 2, warning = FALSE, fig.cap = 'A bar graph showing the proportion of Households in each council tax band for the locality for the most recent year'}
 ctb_plot
 
-x <- x + 1
+figure_num <- figure_num + 1
 ```
 
 
-<!-- <Div custom-style = "Table or chart caption">Table `r y`: Percentage of households by council tax band for `r LOCALITY` in `r max_year_housing`.</Div> -->
+<!-- <Div custom-style = "Table or chart caption">Table `r table_num`: Percentage of households by council tax band for `r LOCALITY` in `r max_year_housing`.</Div> -->
 
-`r ftext(paste0("Table ",y,": Percentage of households by council tax band for ",LOCALITY," in ",max_year_housing,"."),table_heading_style)`
+`r ftext(paste0("Table ",table_num,": Percentage of households by council tax band for ",LOCALITY," in ",max_year_housing,"."),table_heading_style)`
 
 
 ```{r }
 flextable(ctb_table, theme_fun = NULL) %>%
-my_ft_format() %>%
+lp_flextable_theme() %>%
   set_header_labels(values = c(
     "Tax Band", "A", "B", "C",
     "D", "E", "F", "G", "H"
   ))
 
-y <- y + 1
+table_num <- table_num + 1
 ```
 
 Source: Scottish Assessors' Association (via NRS)
