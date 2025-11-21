@@ -87,9 +87,13 @@ for (HSCP in hscp_list) {
       glue("{LOCALITY} - Locality Profile.docx")
     )
 
-    cover_page_path <- path(lp_path,"Master RMarkdown Document & Render Code","phs-mngtinfo-cover.docx")
+    cover_page_path <- path(
+      lp_path,
+      "Master RMarkdown Document & Render Code",
+      "phs-mngtinfo-cover.docx"
+    )
 
-    main_title <- paste(LOCALITY,"- Locality Profile")
+    main_title <- paste(LOCALITY, "- Locality Profile")
     subtitle <- "test"
     render_date <- format(Sys.Date(), "%d/%m/%Y")
 
@@ -101,7 +105,10 @@ for (HSCP in hscp_list) {
       render_date
     )
 
-    phstemplates::apply_sensitivity_label(document_path, "OFFICIAL_SENSITIVE_VMO")
+    phstemplates::apply_sensitivity_label(
+      document_path,
+      "OFFICIAL_SENSITIVE_VMO"
+    )
 
     # End of loop housekeeping ----
     # Clean up the environment by restoring it to the 'pre-loop' state.
