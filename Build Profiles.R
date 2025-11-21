@@ -87,9 +87,9 @@ for (HSCP in hscp_list) {
       glue("/{LOCALITY} - Locality Profile.docx")
     )
 
-    cover_page_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/phs-mngtinfo-cover.docx"
+    cover_page_path <- path(lp_path,"Master RMarkdown Document & Render Code","phs-mngtinfo-cover.docx")
 
-    main_title <- "Locality Profile"
+    main_title <- paste(LOCALITY,"- Locality Profile")
     subtitle <- "test"
     render_date <- format(Sys.Date(), "%d/%m/%Y")
 
