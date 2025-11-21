@@ -4,30 +4,30 @@
 # Services
 
 \newline
-<!-- <Div custom-style = "Table or chart caption">Figure `r x`: Map of services by locality in `r HSCP` HSCP^2^</Div> -->
+<!-- <Div custom-style = "Table or chart caption">Figure `r figure_num`: Map of services by locality in `r HSCP` HSCP^2^</Div> -->
 
-`r ftext(paste0("Figure ",x,": Map of services by locality in ", HSCP," HSCP^2"),table_heading_style)`
+`r ftext(paste0("Figure ",figure_num,": Map of services by locality in ", HSCP," HSCP^2"),table_heading_style)`
 
 
 ```{r fig.width=6, fig.cap= "A map of the health and social care partnership including a breakdown on localities with the locations of all the GP practices, care homes, emergency depertments and minor injury units."}
 service_map
 
-x <- x + 1
+figure_num <- figure_num + 1
 ```
 
 
 \newline
-<!-- <Div custom-style = "Table or chart caption">Table `r y`: Number of each type of service in `r LOCALITY` Locality^2^</Div> -->
+<!-- <Div custom-style = "Table or chart caption">Table `r table_num`: Number of each type of service in `r LOCALITY` Locality^2^</Div> -->
 
-`r ftext(paste0("Table ",y,": Number of each type of service in ",LOCALITY," Locality^2"),table_heading_style)`
+`r ftext(paste0("Table ",table_num,": Number of each type of service in ",LOCALITY," Locality^2"),table_heading_style)`
 
 
 ```{r }
 
   flextable(services_tibble, theme_fun = NULL)  %>%
-  my_ft_format()  %>%
+  lp_flextable_theme()  %>%
   set_header_labels(values = c("Service Type", "Service", "Number")) %>%
   set_table_properties(layout = "autofit")
 
-y <- y + 1
+table_num <- table_num + 1
 ```

@@ -24,7 +24,6 @@ library(phsstyles)
 library(scales)
 library(flextable)
 library(officer)
-library(magrittr)
 
 # Prefer dplyr functions if there's a conflict
 conflicted::conflict_prefer_all("dplyr", quiet = TRUE)
@@ -695,7 +694,7 @@ save_dataframes_to_excel <- function(dataframes, sheet_names, file_path) {
 
 # flextable function
 
-my_ft_format <- function(ft) {
+lp_flextable_theme <- function(ft) {
   ft %>%
     bold(part = "header") %>%
     bg(bg = "#43358B", part = "header") %>%
