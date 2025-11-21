@@ -82,9 +82,9 @@ for (HSCP in hscp_list) {
       config_file = "_bookdown.yaml"
     )
 
-    document_path <- paste0(
+    document_path <- path(
       output_dir,
-      glue("/{LOCALITY} - Locality Profile.docx")
+      glue("{LOCALITY} - Locality Profile.docx")
     )
 
     cover_page_path <- path(lp_path,"Master RMarkdown Document & Render Code","phs-mngtinfo-cover.docx")
