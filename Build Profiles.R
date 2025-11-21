@@ -101,7 +101,7 @@ for (HSCP in hscp_list) {
       render_date
     )
 
-    phstemplates::apply_sensitivity_label(document_path, "OFFICIAL")
+    phstemplates::apply_sensitivity_label(document_path, "OFFICIAL_SENSITIVE_VMO")
 
     # End of loop housekeeping ----
     # Clean up the environment by restoring it to the 'pre-loop' state.
