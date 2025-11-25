@@ -9,4 +9,4 @@
 
 -   Definitions for the indicators shown are available in Appendix 1.
 
--   Any zero figures for some indicators will indicate either suppression of small data or a complete lack of data available for this locality
+-   Any zero figures for some indicators will indicate either suppression of small data or a complete lack of data available for this locality.
