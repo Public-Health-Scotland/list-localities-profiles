@@ -17,7 +17,7 @@ chapter_oi <- c("Demographics.Rmd")
 LOCALITY <- "Falkirk West"
 
 # Output Directory
-lp_path <- lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 output_dir <- path(lp_path, "Profiles Output")
 
 
