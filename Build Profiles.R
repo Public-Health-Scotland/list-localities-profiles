@@ -94,7 +94,7 @@ for (HSCP in hscp_list) {
     )
 
     main_title <- paste(LOCALITY, "- Locality Profile")
-    subtitle <- "test"
+    subtitle <- ""
     render_date <- format(Sys.Date(), "%d/%m/%Y")
 
     add_cover_page(
