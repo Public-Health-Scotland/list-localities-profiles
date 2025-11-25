@@ -727,28 +727,19 @@ add_cover_page <- function(
 
   # Get name of document with cover page to be added from pathway to document
   document_name <- document_path %>%
-    str_split("/") %>%
-    unlist() %>%
-    last()
+    basename()
 
   # Get folder document is stored in
   document_folder <- document_path %>%
-    str_split("/") %>%
-    unlist() %>%
-    head(-1) %>%
-    paste0(collapse = "/") %>%
-    paste0("/")
+    dirname()
 
   # Get new document name which has no characters which don't work with block_pour_docx
   esc_char_document_name <- document_name %>%
-    gsub("&", "_", .) %>%
-    gsub("-", "_", .) %>%
-    gsub(" ", "_", .)
+    gsub("[&- ]", "_", .)
 
   # Get new path for document with acceptable name and rename doucment to this name
 
-  esc_char_document_path <- document_folder %>%
-    paste0(esc_char_document_name)
+  esc_char_document_path <- fs::path(document_folder, esc_char_document_name)
 
   file.rename(document_path, esc_char_document_path)
 
@@ -759,8 +750,8 @@ add_cover_page <- function(
   )
 
   # Remove & signs from document path
-  if (grepl("&", esc_char_document_path)) {
-    output_escape <- gsub("&", "&amp;", esc_char_document_path)
+  if (grepl("&", esc_char_document_path,fixed=TRUE)) {
+    output_escape <- fs::path_sanitize(esc_char_document_path)
     xml_elt <- gsub(esc_char_document_path, output_escape, xml_elt)
   }
 
