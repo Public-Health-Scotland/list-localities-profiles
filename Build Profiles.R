@@ -89,7 +89,7 @@ for (HSCP in hscp_list) {
 
     cover_page_path <- path(
       lp_path,
-      "Master RMarkdown Document & Render Code",
+      "templates",
       "phs-mngtinfo-cover.docx"
     )
 
