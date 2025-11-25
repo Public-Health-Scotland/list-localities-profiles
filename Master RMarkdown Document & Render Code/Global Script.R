@@ -750,7 +750,7 @@ add_cover_page <- function(
   )
 
   # Remove & signs from document path
-  if (grepl("&", esc_char_document_path,fixed=TRUE)) {
+  if (grepl("&", esc_char_document_path, fixed = TRUE)) {
     output_escape <- fs::path_sanitize(esc_char_document_path)
     xml_elt <- gsub(esc_char_document_path, output_escape, xml_elt)
   }
