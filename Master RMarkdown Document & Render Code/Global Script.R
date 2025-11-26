@@ -21,6 +21,7 @@ library(glue)
 library(fs)
 library(arrow)
 library(phsstyles)
+library(memoise)
 
 # Prefer dplyr functions if there's a conflict
 conflicted::conflict_prefer_all("dplyr", quiet = TRUE)
@@ -153,7 +154,7 @@ theme_profiles <- function() {
 # default is F - datazones are not imported, there is one line per locality (125 rows)
 # if changed to dz_level = TRUE, this shows all the datazones in each locality (6976 rows)
 
-read_in_localities <- function(dz_level = FALSE) {
+read_in_localities_raw <- function(dz_level = FALSE) {
   data <- fs::dir_ls(
     path = "/conf/linkage/output/lookups/Unicode/Geography/HSCP Locality",
     regexp = "HSCP Localities_DZ11_Lookup_.+?\\.rds$"
@@ -184,6 +185,7 @@ read_in_localities <- function(dz_level = FALSE) {
 
   return(data)
 }
+read_in_localities <- memoise(read_in_localities_raw)
 
 count_localities <- function(locality_lookup, hscp_name) {
   return(sum(locality_lookup[["hscp2019name"]] == hscp_name))
@@ -194,7 +196,7 @@ count_localities <- function(locality_lookup, hscp_name) {
 # No arguments needed, just use read_in_latest_postcodes()
 # The function pulls the latest "Scottish_Postcode_Directory_year_version.rds"
 
-read_in_postcodes <- function() {
+read_in_postcodes_raw <- function() {
   data <- fs::dir_ls(
     path = "/conf/linkage/output/lookups/Unicode/Geography/Scottish Postcode Directory",
     regexp = "\\.parquet$"
@@ -214,7 +216,7 @@ read_in_postcodes <- function() {
 
   return(data)
 }
-
+read_in_postcodes <- memoise(read_in_postcodes_raw)
 
 ## Function to read in the latest population file by DZ ----
 
@@ -222,7 +224,7 @@ read_in_postcodes <- function() {
 # Function pulls the latest DZ populations DataZone2011_pop_est_2011_Xyear.rds
 # Then joins this with the localities lookup to match hscp_locality
 
-read_in_dz_pops <- function() {
+read_in_dz_pops_raw <- function() {
   fs::dir_ls(
     glue(
       "/conf/linkage/output/lookups/Unicode/",
@@ -258,6 +260,7 @@ read_in_dz_pops <- function() {
     ) |>
     mutate(year = as.integer(year))
 }
+read_in_dz_pops <- memoise(read_in_dz_pops_raw)
 
 read_in_dz_pops_proxy_year <- function() {
   read_in_dz_pops() |>
@@ -272,7 +275,7 @@ read_in_dz_pops_proxy_year <- function() {
 # Function pulls the latest projections HSCP2019_pop_proj....rds
 # Then joins this with the hscp lookup to match hscp names
 
-read_in_pop_proj <- function() {
+read_in_pop_proj_raw <- function() {
   proj <- fs::dir_ls(
     glue(
       "/conf/linkage/output/lookups/Unicode/",
@@ -294,6 +297,7 @@ read_in_pop_proj <- function() {
 
   left_join(proj, hscp_lkp, by = join_by(hscp2019))
 }
+read_in_pop_proj <- memoise(read_in_pop_proj_raw)
 
 #### Functions for ScotPHO data ####
 
