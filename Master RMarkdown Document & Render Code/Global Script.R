@@ -713,59 +713,55 @@ lp_flextable_theme <- function(ft) {
 }
 
 add_cover_page <- function(
-  document_path,
-  cover_page_path,
-  main_title,
-  subtitle,
-  date
-) {
-  # Load Cover Page And Replace Title etc. with user input values
-  cover_page <- officer::read_docx(cover_page_path) %>%
-    officer::body_replace_all_text("Publication title", main_title) %>%
-    officer::body_replace_all_text("Subtitle", subtitle) %>%
+    document_path,
+    cover_page_path,
+    main_title,
+    subtitle,
+    date) {
+  # Load and update cover page
+  cover_page <- cover_page_path |>
+    officer::read_docx() |>
+    officer::body_replace_all_text("Publication title", main_title) |>
+    officer::body_replace_all_text("Subtitle", subtitle) |>
     officer::body_replace_all_text("DD Month YYYY", date)
 
-  # Get name of document with cover page to be added from pathway to document
-  document_name <- document_path %>%
-    basename()
+  # Extract document name and folder
+  document_name <- fs::path_file(document_path)
+  document_folder <- fs::path_dir(document_path)
 
-  # Get folder document is stored in
-  document_folder <- document_path %>%
-    dirname()
+  # Sanitize and apply custom replacements
+  esc_char_document_name <- document_name |>
+    fs::path_sanitize() |>
+    stringr::str_replace_all("[&\\- ]", "_")
 
-  # Get new document name which has no characters which don't work with block_pour_docx
-  esc_char_document_name <- document_name %>%
-    gsub("[&- ]", "_", .)
-
-  # Get new path for document with acceptable name and rename doucment to this name
-
+  # Build new path and rename original file
   esc_char_document_path <- fs::path(document_folder, esc_char_document_name)
+  fs::file_move(document_path, esc_char_document_path)
 
-  file.rename(document_path, esc_char_document_path)
+  # Convert document to XML for merging
+  xml_elt <- esc_char_document_path |>
+    officer::block_pour_docx() |>
+    officer::to_wml(add_ns = TRUE)
 
-  # Load in XML version of document
-  xml_elt <- officer::to_wml(
-    officer::block_pour_docx(esc_char_document_path),
-    add_ns = TRUE
-  )
-
-  # Remove & signs from document path
-  if (grepl("&", esc_char_document_path, fixed = TRUE)) {
-    output_escape <- fs::path_sanitize(esc_char_document_path)
-    xml_elt <- gsub(esc_char_document_path, output_escape, xml_elt)
+  # Ensure XML references match sanitized path
+  if (stringr::str_detect(xml_elt, esc_char_document_path)) {
+    xml_elt <- stringr::str_replace_all(
+      xml_elt,
+      stringr::fixed(esc_char_document_path),
+      esc_char_document_path
+    )
   }
 
-  # Combine Cover and Report
-  cover_page %>%
-    officer::cursor_end() %>%
-    officer::body_add_break() %>%
-    officer::body_add_xml(str = xml_elt) %>%
-    officer::set_doc_properties(title = main_title) %>%
-    # Save out to document pathway with acceptable name
+  # Merge cover page and report
+  cover_page |>
+    officer::cursor_end() |>
+    officer::body_add_break() |>
+    officer::body_add_xml(str = xml_elt) |>
+    officer::set_doc_properties(title = main_title) |>
     print(esc_char_document_path)
 
-  # Rename the file back to it's original name
-  file.rename(esc_char_document_path, document_path)
+  # Restore original filename
+  fs::file_move(esc_char_document_path, document_path)
 }
 
 
