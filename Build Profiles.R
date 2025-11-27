@@ -3,11 +3,13 @@ library(bookdown)
 library(phstemplates)
 
 rlang::check_installed(
-  pkg = "phstemplates", 
+  pkg = "phstemplates",
   reason = "v1.3.0 is needed to apply sensitivity labels",
   version = "1.3.0",
-  action = \(pkg, ...) remotes::install_github(paste0("Public-Health-Scotland/", pkg))
-  )
+  action = \(pkg, ...) {
+    remotes::install_github(paste0("Public-Health-Scotland/", pkg))
+  }
+)
 
 
 rm(list = ls())

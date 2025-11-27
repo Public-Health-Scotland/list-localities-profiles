@@ -713,11 +713,12 @@ lp_flextable_theme <- function(ft) {
 }
 
 add_cover_page <- function(
-    document_path,
-    cover_page_path,
-    main_title,
-    subtitle,
-    date) {
+  document_path,
+  cover_page_path,
+  main_title,
+  subtitle,
+  date
+) {
   # Load and update cover page
   cover_page <- cover_page_path |>
     officer::read_docx() |>
