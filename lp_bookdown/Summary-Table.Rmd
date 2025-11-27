@@ -1,53 +1,10 @@
----
-title: ''
-output: 
-  word_document:
-    reference_docx: "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Summary Table/ST_ref_doc.docx"
----
+# Summary Table
 
 ```{r load_packages, include=FALSE}
 library(knitr)
 library(flextable)
 library(officer)
 library(officedown)
-```
-
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-```
-
-```{r testing_setup, include=FALSE}
-# Lines below for testing only (pick one locality):
-# LOCALITY <- "Falkirk West"
-# LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
-# LOCALITY <- "Mid-Argyll, Kintyre and Islay"
-# LOCALITY <- "City of Dunfermline"
-# LOCALITY <- "Barra"
-# LOCALITY <- "Whalsay and Skerries"
-# LOCALITY <- "Inverclyde East"
-# LOCALITY <- "Kirkcaldy"
-
-# # Project file path
-# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
-#
-# # Source in global functions/themes script
-# source("Master RMarkdown Document & Render Code/Global Script.R")
-#
-# # Demographics
-# source("Demographics/1. Demographics - Population.R")
-# source("Demographics/2. Demographics - SIMD.R")
-#
-# # Housing
-# source("Households/Households Code.R")
-#
-# # General Health
-# source("General Health/3. General Health Outputs.R")
-#
-# # Lifestyle & Risk Factors
-# source("Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
-#
-# # Unscheduled Care
-# source("Unscheduled Care/2. Unscheduled Care outputs.R")
 ```
 
 ```{r locality_names, include=FALSE}

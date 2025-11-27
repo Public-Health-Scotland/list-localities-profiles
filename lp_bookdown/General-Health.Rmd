@@ -1,40 +1,4 @@
----
-title: ''
-output:
-  word_document:
-    reference_docx: "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality
-      Profiles/Master RMarkdown Document & Render Code/Locality_Profiles_Report_Template.docx"
-  html_document:
-    df_print: paged
----
-
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-options(kableExtra.auto_format = FALSE)
-
-# Line below for testing only
-LOCALITY <- "Inverclyde East"
-# LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
-# LOCALITY <- "Ayr North and Former Coalfield Communities"
-# LOCALITY <- "Helensburgh and Lomond"
-# LOCALITY <- "City of Dunfermline"
-# LOCALITY <- "Skye, Lochalsh and West Ross"
-# LOCALITY <- "East Dunbartonshire West"
-
-# Set file path
-source("Master RMarkdown Document & Render Code/Global Script.R")
-
-lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
-
-figure_num <- 1 # object for figure numbers
-table_num <- 1 # object for table numbers
-```
-
-```{r produce_data, include = FALSE}
-source("General Health/3. General Health Outputs.R")
-```
-
-## General Health
+# General Health
 
 ### Summary
 

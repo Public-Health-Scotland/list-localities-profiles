@@ -1,33 +1,4 @@
----
-title: ''
-output:
-  word_document:
-    reference_docx: "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality
-      Profiles/Master RMarkdown Document & Render Code/Locality_Profiles_Report_Template.docx"
-  html_document:
-    df_print: paged
----
-
-
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-options(kableExtra.auto_format = FALSE)
-
-# Line below for testing only
-# LOCALITY <- "Falkirk West"
-# LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
-# LOCALITY <- "Helensburgh and Lomond"
-# LOCALITY <- "City of Dunfermline"
-# LOCALITY <- "Skye, Lochalsh and West Ross"
-# LOCALITY <- "Ayr North and Former Coalfield Communities"
-
-source("Households/Households Code.R")
-
-figure_num <- 1 # object for figure numbers
-table_num <- 1 # object for table numbers
-```
-
-## Housing
+# Housing
 
 \newline
 
