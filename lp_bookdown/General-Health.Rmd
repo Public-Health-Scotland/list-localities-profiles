@@ -36,7 +36,7 @@ if (is.na(avg_life_exp_latest_male)) {
 
 ```{r, fig.width = 8, fig.height = 4.5, fig.cap = 'A line graph showing the trent for average life expectancy in the locality for male and female residents'}
 if (LOCALITY %in% check_missing_data_scotpho(life_exp)$area_name) {
-  print("No data available for this locality")
+  cat("No data available for this locality")
 } else {
   life_exp_trend
 }
