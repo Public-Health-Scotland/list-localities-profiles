@@ -9,10 +9,10 @@ documentclass: book
 library(officedown)
 
 table_heading_style <- fp_text(
-  color="#43358B",
-  font.size=12,
-  bold=TRUE,
-  font.family="Arial"
+  color = "#43358B",
+  font.size = 12,
+  bold = TRUE,
+  font.family = "Arial"
 )
 ```
 

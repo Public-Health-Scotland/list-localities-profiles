@@ -11,9 +11,7 @@ library(officedown)
 <!---BLOCK_LANDSCAPE_START--->
 
 ```{r, include=FALSE}
-
 block_section(prop_section(type = "continuous"))
-
 ```
 
 # Summary Table
@@ -309,7 +307,5 @@ usc_mh_table
 \newpage
 
 ```{r, include=FALSE}
-
 block_section(prop_section(page_size = page_size(orient = "landscape")))
-
 ```
