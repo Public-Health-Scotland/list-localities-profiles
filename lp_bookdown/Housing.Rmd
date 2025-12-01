@@ -38,12 +38,12 @@ There were `r n_second_homes` dwellings classed as a second home in `r max_year_
 
 
 ```{r }
-flextable(house_table, theme_fun = NULL) %>%
-lp_flextable_theme() %>%
+flextable(house_table, theme_fun = NULL) |>
+  lp_flextable_theme() |>
   set_header_labels(values = c(
     "Year", "Total Dwellings", "Occupied Dwellings",
     "Vacant Dwellings", "Single Occupant Tax Discount", "Council Tax Exempt Dwellings", "Second Homes"
-  )) %>%
+  )) |>
   set_table_properties(layout = "autofit")
 
 table_num <- table_num + 1
@@ -71,8 +71,8 @@ figure_num <- figure_num + 1
 
 
 ```{r }
-flextable(ctb_table, theme_fun = NULL) %>%
-lp_flextable_theme() %>%
+flextable(ctb_table, theme_fun = NULL) |>
+  lp_flextable_theme() |>
   set_header_labels(values = c(
     "Tax Band", "A", "B", "C",
     "D", "E", "F", "G", "H"

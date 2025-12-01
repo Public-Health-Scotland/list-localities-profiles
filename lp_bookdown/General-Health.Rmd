@@ -54,9 +54,9 @@ Table `r table_num` provides the average life expectancy for men and women in di
 
 
 ```{r}
-flextable(life_exp_table, theme_fun = NULL) %>%
-  lp_flextable_theme() %>%
-  width(width = 6.5/ncol(life_exp_table))
+flextable(life_exp_table, theme_fun = NULL) |>
+  lp_flextable_theme() |>
+  width(width = 6.5 / ncol(life_exp_table))
 
 table_num <- table_num + 1
 ```
@@ -116,9 +116,9 @@ The co-occurrence of two or more conditions, known as multi-morbidity, is broken
 
 
 ```{r ltc_multimorbidity_table}
-flextable(ltc_multimorbidity_table, theme_fun = NULL) %>%
-  lp_flextable_theme() %>%
-  width(width = 6.5/ncol(ltc_multimorbidity_table)) 
+flextable(ltc_multimorbidity_table, theme_fun = NULL) |>
+  lp_flextable_theme() |>
+  width(width = 6.5 / ncol(ltc_multimorbidity_table))
 
 table_num <- table_num + 1
 ```
@@ -188,10 +188,10 @@ Patient hospitalisations can indicate how certain diseases have varying impacts 
 
 
 ```{r disease_hosp_table}
-flextable(disease_hosp_table, theme_fun = NULL) %>%
-  lp_flextable_theme() %>%
-  width(width = 6.5 / ncol(disease_hosp_table)) %>%
-  set_table_properties(layout = "autofit", width = 1) 
+flextable(disease_hosp_table, theme_fun = NULL) |>
+  lp_flextable_theme() |>
+  width(width = 6.5 / ncol(disease_hosp_table)) |>
+  set_table_properties(layout = "autofit", width = 1)
 
 table_num <- table_num + 1
 ```
