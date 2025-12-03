@@ -126,7 +126,7 @@ places <- read_csv(path(
   filter(
     between(Longitude, min_long, max_long),
     between(Latitude, min_lat, max_lat)
-    ) |>
+  ) |>
   group_by(name) |>
   summarise(
     Longitude = first(Longitude),
