@@ -135,12 +135,12 @@ places <- read_csv(path(
   ) |>
   st_as_sf(coords = c("Longitude", "Latitude"), remove = FALSE, crs = 4326) |>
   # filter incorrect name types
-  filter(!grepl("_", name, fixed = TRUE)) |> 
+  filter(!grepl("_", name, fixed = TRUE)) |>
   # remove smaller places
   filter(
     type != "hamlet",
     type != "village"
-  ) 
+  )
 
 # 3.3 Background map ----
 # Download map background from stadia maps, using API key
