@@ -9,7 +9,6 @@ Sys.umask("006")
 # Source in functions code
 source("Master RMarkdown Document & Render Code/Global Script.R")
 
-
 # Enter Rmarkdown file of Chapter(s) You Wish To Test
 # More than 1 can be entered at a time (c() format)
 
@@ -20,6 +19,5 @@ LOCALITY <- "Falkirk West"
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 output_dir <- path(lp_path, "Profiles Output")
 
-
-# Creates Test Chapter
+# Create Test Chapter
 create_testing_chapter(chapter_oi, LOCALITY, output_dir)
