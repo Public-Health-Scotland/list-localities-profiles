@@ -51,51 +51,40 @@ shp_hscp <- read_sf(path(
 # 3.1 Palettes ----
 
 # Create colour palettes for different numbers of localities
-if (n_loc < 5) {
-  col_palette <- c("#3F3685", "#9B4393", "#0078D4", "#83BB26")
-} else if (n_loc %in% c(5, 6)) {
-  col_palette <- c(
-    "#3F3685",
-    "#9B4393",
-    "#0078D4",
-    "#83BB26",
-    "#948DA3",
-    "#1E7F84"
-  )
-} else if (n_loc == 7) {
-  col_palette <- c(
-    "#3F3685",
-    "#9B4393",
-    "#0078D4",
-    "#83BB26",
-    "#948DA3",
-    "#1E7F84",
-    "#6B5C85"
-  )
-} else if (n_loc == 8) {
-  col_palette <- c(
-    "#3F3685",
-    "#9B4393",
-    "#0078D4",
-    "#83BB26",
-    "#948DA3",
-    "#1E7F84",
-    "#6B5C85",
-    "#C73918"
-  )
-} else if (n_loc == 9) {
-  col_palette <- c(
-    "#3F3685",
-    "#9B4393",
-    "#0078D4",
-    "#83BB26",
-    "#948DA3",
-    "#1E7F84",
-    "#6B5C85",
-    "#C73918",
-    "orchid3"
-  )
-}
+phs_colours_palette <- c(
+  phs_colours(c(
+    "phs-purple",
+    "phs-magenta",
+    "phs-blue",
+    "phs-green",
+    "phs-graphite",
+    "phs-teal",
+    "phs-liberty",
+    "phs-rust"
+  )),
+  "orchid3"
+)
+
+phs_accessible_colours <- c(
+  "#12436D",
+  "#28A197",
+  "#801650",
+  "#F46A25",
+  "#3F085C",
+  "#3E8ECC",
+  "#3D3D3D",
+  "#A285D1"
+)
+
+colours_needed <- case_match(
+  n_loc,
+  1:4 ~ 4,
+  5:6 ~ 6,
+  7 ~ 7,
+  8 ~ 8
+)
+
+col_palette <- phs_accessible_colours[1:colours_needed]
 
 # 3.2 Locality shapes ----
 # Get latitude and longitude coordinates for each data locality, find min and max.
