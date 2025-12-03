@@ -816,8 +816,7 @@ create_testing_chapter <- function(chapters_oi, locality_oi, output_directory) {
   yaml_file$rmd_files <- c("index.Rmd", chapters_oi)
 
   # write temporary yaml with relevant chapters to be used in rendering
-  yaml::write_yaml(yaml_file, "lp_bookdown/_practice_chapter_temp.yaml")
-
+  yaml::write_yaml(yaml_file, path(tempdir(), "_practice_chapter_temp.yaml"))
   # render test chapter
   bookdown::render_book(
     input = "lp_bookdown",
@@ -827,9 +826,7 @@ create_testing_chapter <- function(chapters_oi, locality_oi, output_directory) {
       "{LOCALITY} - Locality Profile {chapters_oi_name} Practice Chapter.docx"
     ),
     output_format = "bookdown::word_document2",
-    config_file = "_practice_chapter_temp.yaml"
+    config_file = path(tempdir(), "_practice_chapter_temp.yaml")
   )
 
-  # remove temporary yaml file
-  file.remove("lp_bookdown/_practice_chapter_temp.yaml")
 }
