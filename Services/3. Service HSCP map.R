@@ -124,11 +124,9 @@ places <- read_csv(path(
   filter(datazone2011 %in% hscp_datazones) |>
   # extra filter to remove place names with coordinates outwith locality
   filter(
-    Longitude >= min_long &
-      Longitude <= max_long &
-      Latitude >= min_lat &
-      Latitude <= max_lat
-  ) |>
+    between(Longitude, min_long, max_long),
+    between(Latitude, min_lat, max_lat)
+    ) |>
   group_by(name) |>
   summarise(
     Longitude = first(Longitude),
