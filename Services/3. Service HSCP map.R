@@ -28,22 +28,21 @@ library(sf)
 library(ggrepel)
 library(ggmap)
 
+lookups_dir <- path("/conf/linkage/output/lookups/Unicode")
+shapefiles_dir <- path(lookups_dir, "Geography", "Shapefiles")
+
 # 2. Read in locality shape files ----
 
-shp <- read_sf(
-  "/conf/linkage/output/lookups/Unicode/Geography/Shapefiles/HSCP Locality (Datazone2011 Base)/HSCP_Locality.shp"
-)
-shp <- st_transform(shp, 4326) |>
-  select(hscp_local, HSCP_name, Shape_Leng, Shape_Area, geometry)
-
-shp <- shp |>
-  mutate(hscp_locality = gsub("&", "and", hscp_local, fixed = TRUE)) |>
-  merge(lookup2, by = "hscp_locality")
-
-shp_hscp <- shp |>
-  filter(hscp2019name == HSCP) |>
+shp_hscp <- read_sf(path(
+  shapefiles_dir,
+  "HSCP Locality (Datazone2011 Base)",
+  "HSCP_Locality.shp"
+)) |>
+  st_transform(4326) |>
+  select(hscp_local, HSCP_name, geometry) |>
+  filter(HSCP_name == HSCP) |>
   mutate(
-    hscp_locality = stringr::str_wrap(hscp_locality, 24),
+    hscp_locality = str_wrap(gsub("&", "and", hscp_local, fixed = TRUE), 24),
     hscp_local = str_wrap(hscp_local, 24),
     border_thickness = if_else(hscp_locality == LOCALITY, 0.8, 0.2)
   )
@@ -119,15 +118,21 @@ max_lat <- zones_coord$max_lat + 0.01
 
 # get data zones in HSCP
 hscp_loc <- read_csv(
-  "/conf/linkage/output/lookups/Unicode/Geography/HSCP Locality/HSCP Localities_DZ11_Lookup_20240513.csv"
+  path(
+    lookups_dir,
+    "Geography",
+    "HSCP Locality",
+    "HSCP Localities_DZ11_Lookup_20240513.csv"
+  )
 ) |>
   select(datazone2011, hscp2019name) |>
   filter(hscp2019name == HSCP)
 
 # get place names of cities, towns and villages within locality
-places <- read_csv(paste0(
-  "/conf/linkage/output/lookups/Unicode/Geography/",
-  "Shapefiles/Scottish Places/Places to Data Zone Lookup.csv"
+places <- read_csv(path(
+  shapefiles_dir,
+  "Scottish Places",
+  "Places to Data Zone Lookup.csv"
 )) |>
   rename(datazone2011 = DataZone) |>
   filter(datazone2011 %in% hscp_loc$datazone2011) |>
@@ -149,7 +154,7 @@ places <- read_csv(paste0(
   filter(type != "hamlet" & type != "village") # remove smaller places
 
 # 3.3 Background map ----
-locality_map_id <- read_csv(paste0(lp_path, "Services/", "locality_map_id.csv"))
+locality_map_id <- read_csv(path(lp_path, "Services", "locality_map_id.csv"))
 api_key <- locality_map_id$id
 # upload map background from stadia maps, enter registration key, filter for max and min long/lat
 register_stadiamaps(key = api_key)
