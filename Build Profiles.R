@@ -11,7 +11,6 @@ rlang::check_installed(
   }
 )
 
-
 rm(list = ls())
 
 # system unmask function so files have read-write permissions
@@ -83,20 +82,20 @@ for (HSCP in hscp_list) {
     # Appendices ----
     source("Master RMarkdown Document & Render Code/Tables for Appendix.R")
 
+    main_title <- glue("{LOCALITY} - Locality Profile")
+    output_doc_name <- path_ext_set(main_title, "docx")
+    
     # Make sure your working directory is the project root
     bookdown::render_book(
       input = "lp_bookdown",
       output_dir = output_dir,
+      output_file = output_doc_name,
       new_session = FALSE,
-      output_file = glue("{LOCALITY} - Locality Profile.docx"),
       output_format = "bookdown::word_document2",
       config_file = "_bookdown.yaml"
     )
 
-    document_path <- path(
-      output_dir,
-      glue("{LOCALITY} - Locality Profile.docx")
-    )
+    document_path <- path(output_dir, output_doc_name)
 
     cover_page_path <- path(
       lp_path,
@@ -104,7 +103,6 @@ for (HSCP in hscp_list) {
       "phs-mngtinfo-cover.docx"
     )
 
-    main_title <- paste(LOCALITY, "- Locality Profile")
     subtitle <- ""
     render_date <- format(Sys.Date(), "%d/%m/%Y")
 
