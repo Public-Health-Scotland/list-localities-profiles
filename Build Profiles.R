@@ -84,7 +84,7 @@ for (HSCP in hscp_list) {
 
     main_title <- glue("{LOCALITY} - Locality Profile")
     output_doc_name <- path_ext_set(main_title, "docx")
-    
+
     # Make sure your working directory is the project root
     bookdown::render_book(
       input = "lp_bookdown",

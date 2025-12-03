@@ -817,11 +817,11 @@ create_testing_chapter <- function(chapters_oi, locality_oi, output_directory) {
 
   # write temporary yaml with relevant chapters to be used in rendering
   yaml::write_yaml(yaml_file, path(tempdir(), "_practice_chapter_temp.yaml"))
-  
+
   output_doc_name <- glue(
     "{LOCALITY} - Locality Profile {chapters_oi_name} Practice Chapter.docx"
   )
-  
+
   # render test chapter
   bookdown::render_book(
     input = "lp_bookdown",
@@ -831,13 +831,13 @@ create_testing_chapter <- function(chapters_oi, locality_oi, output_directory) {
     output_format = "bookdown::word_document2",
     config_file = path(tempdir(), "_practice_chapter_temp.yaml")
   )
-  
+
   document_path <- path(output_dir, output_doc_name)
-  
+
   apply_sensitivity_label(
     document_path,
     "OFFICIAL_SENSITIVE_VMO"
   )
-  
+
   return(document_path)
 }
