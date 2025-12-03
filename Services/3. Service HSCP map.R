@@ -99,7 +99,7 @@ min_lat <- min(zones_coord$Y) - 0.01
 max_lat <- max(zones_coord$Y) + 0.01
 
 # get data zones in HSCP
-hscp_loc <- read_csv(
+hscp_datazones <- read_csv(
   path(
     lookups_dir,
     "Geography",
@@ -107,8 +107,8 @@ hscp_loc <- read_csv(
     "HSCP Localities_DZ11_Lookup_20240513.csv"
   )
 ) |>
-  select(datazone2011, hscp2019name) |>
-  filter(hscp2019name == HSCP)
+  filter(hscp2019name == HSCP) |>
+  pull(datazone2011)
 
 # get place names of cities, towns and villages within locality
 places <- read_csv(path(
@@ -117,7 +117,7 @@ places <- read_csv(path(
   "Places to Data Zone Lookup.csv"
 )) |>
   rename(datazone2011 = DataZone) |>
-  filter(datazone2011 %in% hscp_loc$datazone2011) |>
+  filter(datazone2011 %in% hscp_datazones) |>
   # extra filter to remove place names with coordinates outwith locality
   filter(
     Longitude >= min_long &
