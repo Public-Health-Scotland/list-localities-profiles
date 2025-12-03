@@ -51,19 +51,19 @@ shp_hscp <- read_sf(path(
 # 3.1 Palettes ----
 
 # Create colour palettes for different numbers of localities
-phs_colours_palette <- c(
-  phs_colours(c(
-    "phs-purple",
-    "phs-magenta",
-    "phs-blue",
-    "phs-green",
-    "phs-graphite",
-    "phs-teal",
-    "phs-liberty",
-    "phs-rust"
-  )),
-  "orchid3"
-)
+# phs_colours_palette <- c(
+#   phs_colours(c(
+#     "phs-purple",
+#     "phs-magenta",
+#     "phs-blue",
+#     "phs-green",
+#     "phs-graphite",
+#     "phs-teal",
+#     "phs-liberty",
+#     "phs-rust"
+#   )),
+#   "orchid3"
+# )
 
 phs_accessible_colours <- c(
   "#12436D",
