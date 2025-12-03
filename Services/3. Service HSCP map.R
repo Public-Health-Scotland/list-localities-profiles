@@ -86,6 +86,8 @@ colours_needed <- case_match(
 
 col_palette <- phs_accessible_colours[1:colours_needed]
 
+rm(colours_needed, n_loc, phs_accessible_colours)
+
 # 3.2 Locality shapes ----
 # Get latitude and longitude coordinates for each data locality, find min and max.
 zones_coord <- shp_hscp |>
@@ -97,6 +99,8 @@ min_long <- min(zones_coord$X) - 0.01
 max_long <- max(zones_coord$X) + 0.01
 min_lat <- min(zones_coord$Y) - 0.01
 max_lat <- max(zones_coord$Y) + 0.01
+
+rm(zones_coord)
 
 # get data zones in HSCP
 hscp_datazones <- read_csv(
@@ -310,6 +314,8 @@ all_markers <- bind_rows(
 ) |>
   select(name, latitude, longitude, type)
 
+rm(markers_care_home, markers_emergency_dep, markers_gp, markers_miu)
+
 service_map_2 <- ggmap(service_map_background) +
   geom_point(
     data = all_markers,
@@ -380,48 +386,25 @@ service_map <- cowplot::plot_grid(
 # preview final service map
 # plot(service_map)
 
-# 4 Cleanup ----
-# remove unnecessary objects
-rm(
-  blank_leg,
-  Clacks_Royal,
-  data,
-  hosp_postcodes,
-  hosp_types,
-  leg1,
-  leg2,
-  leg12,
-  markers_care_home,
-  markers_emergency_dep,
-  markers_gp,
-  markers_miu,
-  other_care_type,
-  postcode_lkp,
-  service_map_1,
-  service_map_2,
-  service_map_background,
-  shp,
-  shp_hscp,
-  zones_coord
-)
-
 # Housekeeping ----
-# These objects are left over after the script is run
-# but don't appear to be used in any 'downstream' process:
-# Main markdown, Summary Table, Excel data tables, SDC output.
-# TODO: Investigate if these can be removed earlier or not created at all.
 rm(
   all_markers,
-  api_key,
+  blank_leg,
   col_palette,
   ext_year,
   hscp_loc,
-  locality_map_id,
+  leg1,
+  leg12,
+  leg2,
   lookup2,
-  max_lat,
-  max_long,
-  min_lat,
-  min_long,
-  places
+  lookups_dir,
+  palette,
+  places,
+  service_map_1,
+  service_map_2,
+  service_map_background,
+  shapefiles_dir,
+  shp_hscp
 )
+
 gc()
