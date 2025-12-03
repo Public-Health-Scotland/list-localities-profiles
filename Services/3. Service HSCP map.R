@@ -90,20 +90,13 @@ col_palette <- phs_accessible_colours[1:colours_needed]
 # Get latitude and longitude coordinates for each data locality, find min and max.
 zones_coord <- shp_hscp |>
   st_coordinates() |>
-  as_tibble() |>
-  select("long" = X, "lat" = Y) |>
-  summarise(
-    min_long = min(long),
-    max_long = max(long),
-    min_lat = min(lat),
-    max_lat = max(lat)
-  )
+  as_tibble()
 
 # Get min and max longitude for locality, add a 0.01 extra to add a border to map.
-min_long <- zones_coord$min_long - 0.01
-max_long <- zones_coord$max_long + 0.01
-min_lat <- zones_coord$min_lat - 0.01
-max_lat <- zones_coord$max_lat + 0.01
+min_long <- min(zones_coord$X) - 0.01
+max_long <- max(zones_coord$X) + 0.01
+min_lat <- min(zones_coord$Y) - 0.01
+max_lat <- max(zones_coord$Y) + 0.01
 
 # get data zones in HSCP
 hscp_loc <- read_csv(
