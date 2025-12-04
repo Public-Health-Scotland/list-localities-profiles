@@ -35,7 +35,7 @@ As presented in Figure `r figure_num`, the emergency admissions rate in the `r L
 `r ftext(paste0("Figure ",figure_num,": Emergency admissions by geographical area"),table_heading_style)`
 
 
-```{r fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing six-year time trends for emergency admissions per 100,000 population for Locality, HSCP, Health Board and all Scotland."}
+```{r emergency-admissions-time-series, fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing six-year time trends for emergency admissions per 100,000 population for Locality, HSCP, Health Board and all Scotland."}
 EAs_loc_ts
 
 figure_num <- figure_num + 1
@@ -50,7 +50,7 @@ As presented in Figure `r figure_num`, the highest emergency admissions rate for
 `r ftext(paste0("Figure ",figure_num,": Emergency admissions by age group"),table_heading_style)`
 
 
-```{r fig.width = 8.5, fig.height = 4, warning = FALSE,  fig.cap = "A line graph showing six-year time trends for emergency admissions per 100,000 population split by age group."}
+```{r emergency-admissions-by-age-time-series, fig.width = 8.5, fig.height = 4, warning = FALSE,  fig.cap = "A line graph showing six-year time trends for emergency admissions per 100,000 population split by age group."}
 EAs_age_ts
 
 figure_num <- figure_num + 1
@@ -67,7 +67,7 @@ As presented in Figure `r figure_num`, the unscheduled bed days rate in the `r L
 `r ftext(paste0("Figure ",figure_num,": Unscheduled acute bed days by geographical area"),table_heading_style)`
 
 
-```{r fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing six-year time trends for unscheduled acute bed days per 100,000 population for Locality, HSCP, Health Board and all Scotland."}
+```{r unscheduled-bed-days-time-series, fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing six-year time trends for unscheduled acute bed days per 100,000 population for Locality, HSCP, Health Board and all Scotland."}
 BDs_loc_ts
 
 figure_num <- figure_num + 1
@@ -83,7 +83,7 @@ As presented in Figure `r figure_num`, the highest unscheduled bed days rate for
 `r ftext(paste0("Figure ",figure_num,": Unscheduled acute bed days by age group"),table_heading_style)`
 
 
-```{r fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing six-year time trends for emergency admissions per 100,000 population split by age group."}
+```{r unscheduled-bed-days-by-age-time-series, fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing six-year time trends for emergency admissions per 100,000 population split by age group."}
 BDs_age_ts
 
 figure_num <- figure_num + 1
@@ -100,7 +100,7 @@ As presented in Figure `r figure_num`, the A&E attendance rate per 100,000 in th
 
 `r ftext(paste0("Figure ",figure_num,": A&E attendances by geographical area"),table_heading_style)`
 
-```{r fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing six-year time trends for A&E attendancess per 100,000 population for Locality, HSCP, Health Board and all Scotland."}
+```{r ae-attendances-time-series, fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing six-year time trends for A&E attendancess per 100,000 population for Locality, HSCP, Health Board and all Scotland."}
 AandE_loc_ts
 
 figure_num <- figure_num + 1
@@ -114,7 +114,7 @@ As presented in Figure `r figure_num`, the highest A&E attendance rate for the `
 
 `r ftext(paste0("Figure ",figure_num,": A&E attendances by age group"),table_heading_style)`
 
-```{r fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing six-year time trends for A&E attendancess per 100,000 population split by age group."}
+```{r ae-attendances-by-age-time-series, fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing six-year time trends for A&E attendancess per 100,000 population split by age group."}
 AandE_age_ts
 
 figure_num <- figure_num + 1
@@ -132,7 +132,7 @@ As presented in Figure `r figure_num`, the emergency readmission (28 days) rate 
 `r ftext(paste0("Figure ",figure_num,": Emergency readmissions (28 days) by geographical area"),table_heading_style)`
 
 
-```{r fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing seven-year time trends for emergency readmissions per 1,000 discharges split by geographical area."}
+```{r emergency-readmissions-time-series, fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing seven-year time trends for emergency readmissions per 1,000 discharges split by geographical area."}
 read_loc_ts
 
 figure_num <- figure_num + 1
@@ -146,7 +146,7 @@ As presented in Figure `r figure_num`, the highest emergency readmission (28 day
 
 `r ftext(paste0("Figure ",figure_num,": Emergency readmissions (28 days) by age group"),table_heading_style)`
 
-```{r fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing seven-year time trends for emergency readmissions per 1,000 discharges split by age group."}
+```{r emergency-readmissions-by-age-time-series, fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing seven-year time trends for emergency readmissions per 1,000 discharges split by age group."}
 read_age_ts
 
 figure_num <- figure_num + 1
@@ -164,7 +164,7 @@ As presented in Figure `r figure_num`, the number of delayed discharge bed days 
 `r ftext(paste0("Figure ",figure_num,": Delayed discharge bed days in the population aged 65+ by geographical area"),table_heading_style)`
 
 
-```{r fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing seven-year time trends for delayed discharge beddays per 100,000 population aged 65+ split by geographical area."}
+```{r delayed-discharge-bed-days-time-series, fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing seven-year time trends for delayed discharge beddays per 100,000 population aged 65+ split by geographical area."}
 DD_loc_ts
 
 figure_num <- figure_num + 1
@@ -181,7 +181,7 @@ As presented in Figure `r figure_num`, the emergency admissions from falls rate 
 `r ftext(paste0("Figure ",figure_num,": Falls in the population aged 65+ by geographical area"),table_heading_style)`
 
 
-```{r fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing seven-year time trends for emergency admissions from a fall per 100,000 population aged 65+ split by geographical area."}
+```{r emergency-admissions-from-fall-time-series, fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing seven-year time trends for emergency admissions from a fall per 100,000 population aged 65+ split by geographical area."}
 Falls_loc_ts
 
 figure_num <- figure_num + 1
@@ -199,7 +199,7 @@ Figure `r figure_num` presents the PPA rate per 100,000 population in the `r LOC
 `r ftext(paste0("Figure ",figure_num,": Potentially Preventable Admissions (PPAs) by geographical area"),table_heading_style)`
 
 
-```{r fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing seven-year time trends for potentially preventable admissions per 100,000 population split by geographical area."}
+```{r potentially-preventable-admissions-time-series, fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing seven-year time trends for potentially preventable admissions per 100,000 population split by geographical area."}
 ppa_loc_ts
 
 figure_num <- figure_num + 1
@@ -231,7 +231,7 @@ As presented in Figure `r figure_num`, the 3-year aggregate psychiatric patient 
 `r ftext(paste0("Figure ",figure_num,": Psychiatric patient hospitalisations by geographical area"),table_heading_style)`
 
 
-```{r fig.width = 8.5, fig.height = 4.5, warning = FALSE, fig.cap = "A line graph showing ten-year time trends grouped into 3 year aggregates for psychiatric patient hospitalisations per 100,000 population split by geographical area."}
+```{r psychiatric-patient-hospitalisations-time-series, fig.width = 8.5, fig.height = 4.5, warning = FALSE, fig.cap = "A line graph showing ten-year time trends grouped into 3 year aggregates for psychiatric patient hospitalisations per 100,000 population split by geographical area."}
 psych_hosp_time_trend
 
 figure_num <- figure_num + 1
@@ -249,7 +249,7 @@ As presented in Figure `r figure_num`, the unscheduled mental health bed days ra
 `r ftext(paste0("Figure ",figure_num,": Unscheduled mental health specialty bed days by geographical area"),table_heading_style)`
 
 
-```{r fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing six-year time trends for uncscheduled mental health specialty bed days per 100,000 population split by geographical area."}
+```{r unscheduled-mental-health-bed-days-time-series, fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing six-year time trends for uncscheduled mental health specialty bed days per 100,000 population split by geographical area."}
 BDMH_loc_ts
 
 figure_num <- figure_num + 1
@@ -263,7 +263,7 @@ As presented in Figure `r figure_num`, the highest unscheduled mental health bed
 
 `r ftext(paste0("Figure ",figure_num,": Unscheduled mental health specialty bed days by age group"),table_heading_style)`
 
-```{r fig.width = 8.5, fig.height = 4.5, warning = FALSE, fig.cap = "A line graph showing six-year time trends for uncscheduled mental health specialty bed days per 100,000 population split by geographical area."}
+```{r unscheduled-mental-health-bed-days-by-age-time-series, fig.width = 8.5, fig.height = 4.5, warning = FALSE, fig.cap = "A line graph showing six-year time trends for uncscheduled mental health specialty bed days per 100,000 population split by geographical area."}
 BDMH_age_ts
 
 figure_num <- figure_num + 1
