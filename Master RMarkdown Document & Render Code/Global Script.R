@@ -716,8 +716,8 @@ add_cover_page <- function(
   document_path,
   cover_page_path,
   main_title,
-  subtitle = "",
-  date = format(Sys.Date(), "%d/%m/%Y")
+  date = format(Sys.Date(), "%d/%m/%Y"),
+  subtitle = ""
 ) {
   # Load and update cover page
   cover_page <- cover_page_path |>
