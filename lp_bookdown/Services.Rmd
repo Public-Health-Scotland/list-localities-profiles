@@ -9,7 +9,7 @@
 `r ftext(paste0("Figure ",figure_num,": Map of services by locality in ", HSCP," HSCP^2"),table_heading_style)`
 
 
-```{r fig.width=6, fig.cap= "A map of the health and social care partnership including a breakdown on localities with the locations of all the GP practices, care homes, emergency depertments and minor injury units."}
+```{r service-map, fig.width=6, fig.cap= "A map of the health and social care partnership including a breakdown on localities with the locations of all the GP practices, care homes, emergency depertments and minor injury units."}
 service_map
 
 figure_num <- figure_num + 1
@@ -22,7 +22,7 @@ figure_num <- figure_num + 1
 `r ftext(paste0("Table ",table_num,": Number of each type of service in ",LOCALITY," Locality^2"),table_heading_style)`
 
 
-```{r }
+```{r number-of-services-flextable}
 flextable(services_tibble, theme_fun = NULL) |>
   lp_flextable_theme() |>
   set_header_labels(values = c("Service Type", "Service", "Number")) |>
