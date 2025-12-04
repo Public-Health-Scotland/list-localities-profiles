@@ -8,7 +8,7 @@
 
 For the most recent time period available^3^, `r LOCALITY` Locality had:
 
-```{r life_exp_text}
+```{r life-expectancy-summary-text}
 if (is.na(avg_life_exp_latest_male)) {
   life_exp_text <- "No data available for life expectancy."
   life_exp_text2 <- "No data available for life expectancy at locality level."
@@ -34,7 +34,7 @@ if (is.na(avg_life_exp_latest_male)) {
 
 `r ftext(paste0("Figure ",figure_num,": Average life expectancy in men and women over time"),table_heading_style)`
 
-```{r, fig.width = 8, fig.height = 4.5, fig.cap = 'A line graph showing the trent for average life expectancy in the locality for male and female residents'}
+```{r life-expectancy-trend, fig.width = 8, fig.height = 4.5, fig.cap = 'A line graph showing the trent for average life expectancy in the locality for male and female residents'}
 if (LOCALITY %in% check_missing_data_scotpho(life_exp)$area_name) {
   cat("No data available for this locality")
 } else {
@@ -53,7 +53,7 @@ Table `r table_num` provides the average life expectancy for men and women in di
 `r ftext(paste0("Table ",figure_num,": Average life expectancy in years for the latest time periods (",latest_period_life_exp_loc,"aggregated years for the locality; ",latest_period_life_exp_otherareas," aggregated years for other areas)."),table_heading_style)`
 
 
-```{r}
+```{r life-expectancy-flextable}
 flextable(life_exp_table, theme_fun = NULL) |>
   lp_flextable_theme() |>
   width(width = 6.5 / ncol(life_exp_table))
@@ -77,7 +77,7 @@ The following chart shows a trend of death rates among people aged 15 to 44 per 
 `r ftext(paste0("Figure ",figure_num,": Deaths aged 15 to 44 years by geographical area and over time."),table_heading_style)`
 
 
-```{r, fig.width = 8.5, fig.height = 4.2, fig.cap = 'A line graph showing the ten-year time trend for the 3-year aggregate rate of deaths per 100,000 population for 15 to 44 year olds by locality, HSCP, health board and all Scotland'}
+```{r deaths-15-44-time-trend, fig.width = 8.5, fig.height = 4.2, fig.cap = 'A line graph showing the ten-year time trend for the 3-year aggregate rate of deaths per 100,000 population for 15 to 44 year olds by locality, HSCP, health board and all Scotland'}
 deaths_15_44_time_trend
 
 figure_num <- figure_num + 1
@@ -91,7 +91,7 @@ Figure `r figure_num` provides comparisons of deaths at ages 15 to 44 across all
 `r ftext(paste0("Figure ",figure_num,": Deaths at ages 15 to 44 by area for the latest time period available."),table_heading_style)`
 
 
-```{r, fig.width = 7.5, fig.height = 4.8, fig.cap = 'A bar graph showing the rate of deaths per 100,000 population for residents aged 15 to 44 by locality, HSCP, health board and all Scotland and for other localitiies in the HSCP between 2019 and 2021.'}
+```{r deaths-15-44-bar-chart, fig.width = 7.5, fig.height = 4.8, fig.cap = 'A bar graph showing the rate of deaths per 100,000 population for residents aged 15 to 44 by locality, HSCP, health board and all Scotland and for other localitiies in the HSCP between 2019 and 2021.'}
 deaths_15_44_bar
 
 figure_num <- figure_num + 1
@@ -106,7 +106,7 @@ The estimates in the following sections are based on an individual being hospita
 
 In the financial year `r latest_year_ltc`, in `r LOCALITY` Locality, it is estimated that **`r format_number_for_text(ltc_percent_total_latest)`%** of the population had at least one physical long-term condition (LTC). These include cardiovascular, neurodegenerative, and respiratory conditions, as well as other organ conditions (namely liver disease and renal failure), arthritis, cancer, diabetes, and epilepsy. *Please note that estimates for this section are based on people who had contact with NHS services - see footnotes for further information and caveats on identifying LTCs.^5^*
 
-```{r, fig.width = 9, fig.height = 3.5, fig.cap = 'Infographic split by age group showing the number of people out of ten that have at least one LTC. The age groups shown are under 65, 65-74, 75-84, and over 85.'}
+```{r ltc-waffles, fig.width = 9, fig.height = 3.5, fig.cap = 'Infographic split by age group showing the number of people out of ten that have at least one LTC. The age groups shown are under 65, 65-74, 75-84, and over 85.'}
 ltc_waffles
 ```
 
@@ -137,7 +137,7 @@ Below is a breakdown of the physical LTCs, for the financial year `r latest_year
 
 `r ftext(paste0("Figure ",figure_num,": The percentage of people with each physical LTC by age group."),table_heading_style)`
 
-```{r, fig.width = 7.5, fig.height = 5, fig.cap = "A graph showing the prevalence of physical long term conditions by percentage of population for Under 65s and for Over 65s."}
+```{r ltc-types-plot, fig.width = 7.5, fig.height = 5, fig.cap = "A graph showing the prevalence of physical long term conditions by percentage of population for Under 65s and for Over 65s."}
 ltc_types_plot
 
 figure_num <- figure_num + 1
@@ -150,7 +150,7 @@ figure_num <- figure_num + 1
 `r ftext(paste0("Table ",table_num,": Prevalence of the five most common physical LTCs as a percentage of the population across geographical areas (1 is the most prevalent)."),table_heading_style)`
 
 
-```{r, fig.width = 7.5, fig.height = 3.5}
+```{r top-5-ltc-table, fig.width = 7.5, fig.height = 3.5}
 top5_ltc_table
 
 table_num <- table_num + 1
@@ -166,7 +166,7 @@ For the period `r latest_period_cancer_reg`, there were **`r format_number_for_t
 
 `r ftext(paste0("Figure ",figure_num,": Cancer registration rate over time and by area."),table_heading_style)`
 
-```{r, fig.width = 8.5, fig.height = 3.7, fig.cap = "A line graph showing 10-year time trends for cancer registrations per 100,000 population for Locality, HSCP, Health Board and all Scotland."}
+```{r cancer-registrations-time-trend, fig.width = 8.5, fig.height = 3.7, fig.cap = "A line graph showing 10-year time trends for cancer registrations per 100,000 population for Locality, HSCP, Health Board and all Scotland."}
 cancer_reg_time_trend
 
 figure_num <- figure_num + 1
@@ -177,7 +177,7 @@ figure_num <- figure_num + 1
 `r ftext(paste0("Figure ",figure_num,": Early deaths from cancer (<75 years) over time and by area."),table_heading_style)`
 
 
-```{r, fig.width = 8.5, fig.height = 3.7, fig.cap = "A line graph showing 10-year time trends for early deaths from cancer per 100,000 population for Locality, HSCP, Health Board and all Scotland."}
+```{r early-deaths-cancer-time-trend, fig.width = 8.5, fig.height = 3.7, fig.cap = "A line graph showing 10-year time trends for early deaths from cancer per 100,000 population for Locality, HSCP, Health Board and all Scotland."}
 early_deaths_cancer_time_trend
 
 figure_num <- figure_num + 1
@@ -193,7 +193,7 @@ Patient hospitalisations can indicate how certain diseases have varying impacts 
 `r ftext(paste0("Table ",table_num,": Patient hospitalisations by condition and geographical area, age-sex standardised rates per 100,000."),table_heading_style)`
 
 
-```{r disease_hosp_table}
+```{r disease-hospitalisations-flextable}
 flextable(disease_hosp_table, theme_fun = NULL) |>
   lp_flextable_theme() |>
   width(width = 6.5 / ncol(disease_hosp_table)) |>
@@ -212,7 +212,7 @@ In `r latest_period_adp_presc`, **`r format_number_for_text(adp_presc_latest)`%*
 `r ftext(paste0("Figure ",figure_num,": Anxiety, depression and psychosis prescriptions over time and by geographical area."),table_heading_style)`
 
 
-```{r, fig.width = 8.5, fig.height = 3.8, fig.cap = "A line graph showing 10-year time trends for anxiety, depression and psychosis prescriptions by percentage of population for Locality, HSCP, Health Board and all Scotland."}
+```{r adp-prescriptions-time-trend, fig.width = 8.5, fig.height = 3.8, fig.cap = "A line graph showing 10-year time trends for anxiety, depression and psychosis prescriptions by percentage of population for Locality, HSCP, Health Board and all Scotland."}
 adp_presc_time_trend
 
 figure_num <- figure_num + 1
@@ -226,7 +226,7 @@ In `r latest_period_adp_presc`, `r LOCALITY` had a `r adp_presc_diff_scot` propo
 `r ftext(paste0("Figure ",figure_num,": Percentage population prescribed medication for anxiety, depression and psychosis by area for the latest period available."),table_heading_style)`
 
 
-```{r, fig.width = 7.5, fig.height = 4.8, fig.cap = "A bar graph showing the percentage of the population prescribed anxiety, depression and psychosis medication in the most recent financial year for all Localities in the partnership and the total percentage for the HSCP, Health Board and all Scotland."}
+```{r adp-prescriptions-bar-chart, fig.width = 7.5, fig.height = 4.8, fig.cap = "A bar graph showing the percentage of the population prescribed anxiety, depression and psychosis medication in the most recent financial year for all Localities in the partnership and the total percentage for the HSCP, Health Board and all Scotland."}
 adp_presc_bar
 
 figure_num <- figure_num + 1
