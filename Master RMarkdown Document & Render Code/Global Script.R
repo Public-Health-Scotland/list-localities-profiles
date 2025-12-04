@@ -1,7 +1,7 @@
 ######################### GLOBAL LOCALITY PROFILES CODE ########################
 
 # Contains various settings and functions to be used in other locality profile scripts
-
+#TEST#
 # How to use this script:
 # source("Master RMarkdown Document & Render Code/Global Script.R)
 
