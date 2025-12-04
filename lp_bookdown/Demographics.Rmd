@@ -3,9 +3,7 @@
 
 # Demographics
 
- 
-
-**Summary**
+## Summary
 
 For the most recent time period available, `r LOCALITY` Locality had:
 
@@ -14,7 +12,7 @@ For the most recent time period available, `r LOCALITY` Locality had:
 
  
 
-### Population
+## Population
 
 <!-- Total Population Text -->
 
@@ -58,7 +56,7 @@ hist_pop_change
 figure_num <- figure_num + 1
 ```
 
-### Deprivation
+## Deprivation
 
 The following section explores the deprivation structure of `r LOCALITY` through the Scottish Index of Multiple Deprivation (SIMD). The SIMD ranks all datazones in Scotland by a number of factors; Access, Crime, Education, Employment, Health, Housing and Income. Based on these ranks, each datazone is then given an overall deprivation rank, which is used to split datazones into Deprivation Quintiles (Quintile 1 being the most deprived, and Quintile 5 the least). The most recent SIMD ranking was carried out in 2020. This section mainly focuses on the SIMD 2020 classifications, however, the 2016 classifications are used to assess how deprivation has changed in `r LOCALITY` when compared to the rest of Scotland.
 

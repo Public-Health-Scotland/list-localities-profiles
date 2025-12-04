@@ -1,11 +1,9 @@
 
- \newpage
+\newpage
 
 # Housing
 
- 
-
-**Summary**
+## Summary
 
 For the most recent time period available, `r LOCALITY` Locality had:
 

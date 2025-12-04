@@ -2,7 +2,7 @@
 
 # General Health
 
-### Summary
+## Summary
 
 
 
@@ -26,7 +26,7 @@ if (is.na(avg_life_exp_latest_male)) {
 
 
 
-### Life Expectancy
+## Life Expectancy
 
 `r life_exp_text2`
 
@@ -68,7 +68,7 @@ Source: ScotPHO
 `r if(HSCP == "Clackmannanshire and Stirling") {"Note that data is unavailable for Clackmannanshire & Stirling HSCP."}`
 
 
-### Deaths, aged 15 to 44
+## Deaths, aged 15 to 44
 
 The following chart shows a trend of death rates among people aged 15 to 44 per 100,000 age-sex standardised population^4^ by area. In the most recent aggregate time period available (`r latest_period_deaths_15_44`), the mortality rate in `r LOCALITY` locality was **`r format_number_for_text(deaths_15_44_latest)`** deaths per 100,000 population.
 
@@ -98,7 +98,7 @@ figure_num <- figure_num + 1
 ```
 
 
-### Long-Term Physical Health Conditions and Multi-morbidity
+## Long-Term Physical Health Conditions and Multi-morbidity
 
 The estimates in the following sections are based on an individual being hospitalised with a relevant condition *at any point* in the past. This methodology can lead to both undercounts and overcounts depending on the condition; see the footnotes for more details.^5^
 
@@ -158,7 +158,7 @@ table_num <- table_num + 1
 
 Source: Source Linkage Files
 
-### Cancer
+## Cancer
 
 For the period `r latest_period_cancer_reg`, there were **`r format_number_for_text(cancer_reg_total_latest)`** new cancer registrations per year on average (a rate of **`r format_number_for_text(cancer_reg_rate_latest)`** registrations per 100,000 age-sex standardised population) in `r LOCALITY` locality. For the period `r latest_period_early_deaths_cancer`, there were also **`r format_number_for_text(early_deaths_cancer_rate_latest)`** early deaths per 100,000 from cancer in the locality, this is a **`r format_number_for_text(cancer_deaths_perc_change)`%** `r cancer_deaths_changeword` compared to the rate 10 years prior.
 
@@ -184,7 +184,7 @@ figure_num <- figure_num + 1
 ```
 
 
-### Hospitalisations by condition
+## Hospitalisations by condition
 
 Patient hospitalisations can indicate how certain diseases have varying impacts on people's lives. In the latest time period available in `r LOCALITY`, the condition with the highest rate of hospitalisations was `r highest_hosp_disease$indicator`.
 
@@ -203,7 +203,7 @@ table_num <- table_num + 1
 ```
 
 
-### Anxiety, Depression and Psychosis (ADP) prescriptions
+## Anxiety, Depression and Psychosis (ADP) prescriptions
 
 In `r latest_period_adp_presc`, **`r format_number_for_text(adp_presc_latest)`%** of people were prescribed medication for anxiety, depression or psychosis in `r LOCALITY` Locality. This is a **`r format_number_for_text(adp_presc_perc_change)`% `r adp_presc_changeword`** from the rate 10 years prior in `r prev_period_adp_presc` which was `r format_number_for_text(adp_presc_earliest)`%.
 

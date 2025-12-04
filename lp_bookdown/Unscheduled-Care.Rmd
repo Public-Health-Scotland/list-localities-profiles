@@ -5,7 +5,7 @@
 
 
 
-**Summary**
+## Summary
 
 **For the most recent time periods available, `r LOCALITY` had:**
 
@@ -23,7 +23,7 @@
 
 -   **`r latest_ppa_loc$formatted_data[2]`** potentially preventable hospital admissions per 100,000 population, compared to `r scot_ppa$formatted_data[2]` in Scotland.
 
-### Emergency Admissions
+## Emergency Admissions
 
 Figure `r figure_num` presents the emergency admissions rate per 100,000 population in the `r LOCALITY` locality from `r min_year_ea` to `r max_year_ea`.
 
@@ -56,7 +56,7 @@ EAs_age_ts
 figure_num <- figure_num + 1
 ```
 
-### Unscheduled Acute Bed Days
+## Unscheduled Acute Bed Days
 
 Figure `r figure_num` presents the unscheduled bed days rate per 100,000 population in the `r LOCALITY` locality from `r min_year_ubd` to `r max_year_ubd`.
 
@@ -90,7 +90,7 @@ figure_num <- figure_num + 1
 ```
 
 
-### A&E Attendances
+## A&E Attendances
 
 Figure `r figure_num` presents the A&E attendance rate per 100,000 population in the `r LOCALITY` locality from `r min_year_ae_area` to `r max_year_ae_area`.
 
@@ -121,7 +121,7 @@ figure_num <- figure_num + 1
 ```
 
 
-### Emergency Readmissions (28 days)
+## Emergency Readmissions (28 days)
 
 Figure `r figure_num` presents the emergency readmission (28 days) rate per 1,000 discharges in the `r LOCALITY` locality from `r min_year_re_area` to `r max_year_re_area`.
 
@@ -153,7 +153,7 @@ figure_num <- figure_num + 1
 ```
 
 
-### Delayed Discharge Bed Days
+## Delayed Discharge Bed Days
 
 Figure `r figure_num` presents the number of delayed discharge bed days per 100,000 population aged over 65+ in the `r LOCALITY` locality from `r min_year_dd` to `r max_year_dd`.
 
@@ -170,7 +170,7 @@ DD_loc_ts
 figure_num <- figure_num + 1
 ```
 
-### Emergency admissions from a fall
+## Emergency admissions from a fall
 
 Figure `r figure_num` presents the emergency admissions from falls rate per 100,000 population aged 65 and over in the `r LOCALITY` locality from `r min_year_falls` to `r max_year_falls`.
 
@@ -188,7 +188,7 @@ figure_num <- figure_num + 1
 ```
 
 
-### Potentially Preventable Admissions (PPAs)
+## Potentially Preventable Admissions (PPAs)
 
 Information on the conditions included in Potentially Preventable Admissions (PPA)s is available in Appendix 3. In `r max_fy`, **`r latest_ppa_65plus`%** of PPAs in `r LOCALITY` were amongst those aged 65 and over, and **`r latest_ppa_under65`%** were amongst those aged under 65.
 
@@ -207,11 +207,11 @@ figure_num <- figure_num + 1
 
 \newpage
 
-## Hospital Care (Mental Health Speciality)
+# Hospital Care (Mental Health Speciality)
 
 
 
-**Summary**
+## Summary
 
 This section looks at mental health-related unscheduled care indicators. For the most recent time period available, `r LOCALITY` had:
 
@@ -220,7 +220,7 @@ This section looks at mental health-related unscheduled care indicators. For the
 
 
 
-### Psychiatric patient hospitalisations
+## Psychiatric patient hospitalisations
 
 Figure `r figure_num` presents the psychiatric patient hospitalisation 3-year aggregate rate per 100,000 population in the `r LOCALITY` locality from `r loc_psych_hosp$period_short[1]` to `r loc_psych_hosp$period_short[2]`.
 
@@ -238,7 +238,7 @@ figure_num <- figure_num + 1
 ```
 
 
-### Unscheduled Mental Health Specialty Bed Days
+## Unscheduled Mental Health Specialty Bed Days
 
 Figure `r figure_num` presents the unscheduled mental health bed days rate per 100,000 population in the `r LOCALITY` locality from `r min_year_bd_mh_areas` to `r max_year_bd_mh_areas`.
 
