@@ -100,13 +100,10 @@ for (HSCP in hscp_list) {
       "phs-mngtinfo-cover.docx"
     )
 
-    render_date <- format(Sys.Date(), "%d/%m/%Y")
-
     add_cover_page(
       document_path,
       cover_page_path,
-      main_title,
-      render_date
+      main_title
     )
 
     apply_sensitivity_label(
