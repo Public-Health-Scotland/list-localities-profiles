@@ -15,7 +15,7 @@ For the most recent time period available, `r LOCALITY` Locality had:
 
 In `r pop_max_year`, the total population of `r LOCALITY` locality was `r total_population`. The graph below shows the population distribution of the locality. Overall, **`r gender_breakdown[gender_breakdown$sex == "M",]$perc`** of the population are male, and **`r gender_breakdown[gender_breakdown$sex == "F",]$perc`** are female.
 
-```{r fig.width = 7, fig.height = 4, warning = FALSE, fig.cap = "A bar chart showing the population distribution of the locality grouped by age and sex"}
+```{r population-pyramid, fig.width = 7, fig.height = 4, warning = FALSE, fig.cap = "A bar chart showing the population distribution of the locality grouped by age and sex"}
 ftext(paste0("Figure ", figure_num, ": Population by age and sex."), table_heading_style)
 
 pop_pyramid
@@ -29,7 +29,7 @@ figure_num <- figure_num + 1
 
 Figure `r figure_num` shows the historical population of `r LOCALITY`, along with the NRS population projections. `r pop_graph_text` `r pop_proj_text`. *Please see the footnotes for more information on how the population projections were calculated^1^.*
 
-```{r fig.width = 7.5, fig.height = 4, warning = FALSE, fig.cap= "A line graph showing the trend in population over time"}
+```{r population-time-series, fig.width = 7.5, fig.height = 4, warning = FALSE, fig.cap= "A line graph showing the trend in population over time"}
 ftext(paste0("Figure ", figure_num, ": Population time trend and projection."), table_heading_style)
 
 pop_ts_plot
@@ -39,7 +39,7 @@ figure_num <- figure_num + 1
 
 Figure `r figure_num` shows how the population structure has changed between `r pop_min_year` and `r pop_max_year`.
 
-```{r fig.width = 9, fig.height = 4, warning = FALSE, fig.cap= "A bar chart showing the percentage change in population structure, split by age and sex, over the last five years"}
+```{r historical-population-change, fig.width = 9, fig.height = 4, warning = FALSE, fig.cap= "A bar chart showing the percentage change in population structure, split by age and sex, over the last five years"}
 ftext(paste0("Figure ", figure_num, ": Change in population structure over the last five years."), table_heading_style)
 
 hist_pop_change
@@ -53,7 +53,7 @@ The following section explores the deprivation structure of `r LOCALITY` through
 
 Of the `r pop_max_year` population in `r LOCALITY`, **`r perc_bottom_quintile`%** live in the most deprived Quintile (SIMD 1), and **`r perc_top_quintile`%** live in the least deprived Quintile (SIMD 5).
 
-```{r fig.width = 8, warning = FALSE, fig.cap = 'A map of the locality which is broken down by data zones with the colouring showing the SIMD quintile for each.'}
+```{r simd-map, fig.width = 8, warning = FALSE, fig.cap = 'A map of the locality which is broken down by data zones with the colouring showing the SIMD quintile for each.'}
 ftext(paste0("Figure ", figure_num, ": Map of Data Zones within ", LOCALITY, " coloured by SIMD quintiles."), table_heading_style)
 
 simd_map
@@ -63,7 +63,7 @@ figure_num <- figure_num + 1
 
 Table `r table_num` details the percentage of the locality's 2016 population living in the 2016 SIMD Quintiles, the percentage of the `r pop_max_year` population living in the 2020 SIMD Quintiles, and their difference for comparison. Figure `r figure_num` then breaks down SIMD by domain in `r LOCALITY`.
 
-```{r }
+```{r simd-diff-flextable}
 ftext(paste0("Table ", table_num, ": Percentage of the ", LOCALITY, " population living in the 2016 and 2020 SIMD Datazone Quintiles in 2016 and ", pop_max_year, " respectively."), table_heading_style)
 
 flextable(simd_diff_overall, theme_fun = NULL) |>
@@ -82,7 +82,7 @@ table_num <- table_num + 1
 
 Source: Scottish Government, Public Health Scotland, National Records Scotland.
 
-```{r fig.width = 8, fig.height = 5, warning = FALSE, fig.cap = 'A bar graph showing the proportion of the population in each SIMD decile for each SIMD domain.'}
+```{r simd-domains, fig.width = 8, fig.height = 5, warning = FALSE, fig.cap = 'A bar graph showing the proportion of the population in each SIMD decile for each SIMD domain.'}
 ftext(paste0("Figure ", figure_num, ": Proportion of the population that reside in each 2020 SIMD quintile by domain in ", pop_max_year, "."), table_heading_style)
 
 simd_domains
