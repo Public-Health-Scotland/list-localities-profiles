@@ -26,7 +26,7 @@ Figure `r figure_num + 1` then compares different areas, including the other loc
 
 `r ftext(paste0("Figure ",figure_num,": Alcohol-related hospital admission rates by area and over time."),table_heading_style)`
 
-```{r fig.width = 8.5, fig.height = 4.5, warning = FALSE, fig.cap = "A line graph showing 10-year time trends for alcohol-related hospital admissions per 100,000 population for Locality, HSCP, Health Board and all Scotland."}
+```{r alcohol-hospital-admissions-time-trend, fig.width = 8.5, fig.height = 4.5, warning = FALSE, fig.cap = "A line graph showing 10-year time trends for alcohol-related hospital admissions per 100,000 population for Locality, HSCP, Health Board and all Scotland."}
 alcohol_hosp_time_trend
 
 figure_num <- figure_num + 1
@@ -36,7 +36,7 @@ figure_num <- figure_num + 1
 
 `r ftext(paste0("Figure ",figure_num,": Alcohol-related hospital admissions by area for the latest time period."),table_heading_style)`
 
-```{r fig.width = 7.5, fig.height = 4.8, warning = FALSE, fig.cap = "A bar graph showing alcohol-related hospital admissions per 100,000 population for Locality, HSCP, Health Board and all Scotland and all other localities in the HSCP for the most recent financial year."}
+```{r alcohol-hospital-admissions-bar-chart, fig.width = 7.5, fig.height = 4.8, warning = FALSE, fig.cap = "A bar graph showing alcohol-related hospital admissions per 100,000 population for Locality, HSCP, Health Board and all Scotland and all other localities in the HSCP for the most recent financial year."}
 alcohol_hosp_bar
 
 figure_num <- figure_num + 1
@@ -52,7 +52,7 @@ Data on alcohol-specific deaths is available as 5-year aggregates. In `r LOCALIT
 
 `r ftext(paste0("Figure ",figure_num,": Alcohol-specific deaths by area and over time."),table_heading_style)`
 
-```{r fig.width = 8.5, fig.height = 4.5, warning = FALSE, fig.cap = "A line graph showing 10-year time trends for 5 year aggregate rates of alcohol-specific deaths per 100,000 population for Locality, HSCP, Health Board and all Scotland."}
+```{r alcohol-deaths-time-trend, fig.width = 8.5, fig.height = 4.5, warning = FALSE, fig.cap = "A line graph showing 10-year time trends for 5 year aggregate rates of alcohol-specific deaths per 100,000 population for Locality, HSCP, Health Board and all Scotland."}
 alcohol_deaths_time_trend
 
 figure_num <- figure_num + 1
@@ -62,7 +62,7 @@ figure_num <- figure_num + 1
 
 `r ftext(paste0("Figure ",figure_num,": Alcohol-specific deaths by area for the latest time period available."),table_heading_style)`
 
-```{r fig.width = 7.5, fig.height = 4.5, warning = FALSE, fig.cap =  "A bar graph showing the 5 year aggregate rate of alcohol-specific deaths per 100,000 population for Locality, HSCP, Health Board and all Scotland and all other localities in the HSCP for the most recent time period."}
+```{r alcohol-deaths-bar-chart, fig.width = 7.5, fig.height = 4.5, warning = FALSE, fig.cap =  "A bar graph showing the 5 year aggregate rate of alcohol-specific deaths per 100,000 population for Locality, HSCP, Health Board and all Scotland and all other localities in the HSCP for the most recent time period."}
 alcohol_deaths_bar
 
 figure_num <- figure_num + 1
@@ -79,7 +79,7 @@ A comparison of areas at the most recent time period (`r latest_period_drug_hosp
 
 `r ftext(paste0("Figure ",figure_num,": Drug-related hospital admission rates by area and over time."),table_heading_style)`
 
-```{r fig.width = 8.5, fig.height = 4.5, warning = FALSE, fig.cap = "A line graph showing time trends for 3 year aggregate rates of drug-related hospital admissions per 100,000 population for Locality, HSCP, Health Board and all Scotland."}
+```{r drug-hospital-admissions-time-trend, fig.width = 8.5, fig.height = 4.5, warning = FALSE, fig.cap = "A line graph showing time trends for 3 year aggregate rates of drug-related hospital admissions per 100,000 population for Locality, HSCP, Health Board and all Scotland."}
 drug_hosp_time_trend
 
 figure_num <- figure_num + 1
@@ -89,7 +89,7 @@ figure_num <- figure_num + 1
 
 `r ftext(paste0("Figure ",figure_num,": Drug-related hospital admission rates by area for the latest time period available."),table_heading_style)`
 
-```{r fig.width = 8, fig.height = 4.8, warning = FALSE, fig.cap= "A bar graph showing the 3 year rate of drug-related hospital admissions per 100,000 population for Locality, HSCP, Health Board and all Scotland and all other localities in the HSCP for the most recent time period."}
+```{r drug-hospital-admissions-bar-chart, fig.width = 8, fig.height = 4.8, warning = FALSE, fig.cap= "A bar graph showing the 3 year rate of drug-related hospital admissions per 100,000 population for Locality, HSCP, Health Board and all Scotland and all other localities in the HSCP for the most recent time period."}
 drug_hosp_bar
 
 figure_num <- figure_num + 1
@@ -107,7 +107,7 @@ A trend of the percentage uptake of bowel screening among the eligible populatio
 
 `r ftext(paste0("Figure ",figure_num,": Bowel screening uptake for eligible men and women, by area and over time."),table_heading_style)`
 
-```{r fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing time trends for 3 year aggregate rates for bowel screening uptake by percentage of eligible population for Locality, HSCP, Health Board and all Scotland."}
+```{r bowel-screening-uptake-time-trend, fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing time trends for 3 year aggregate rates for bowel screening uptake by percentage of eligible population for Locality, HSCP, Health Board and all Scotland."}
 bowel_screening_time_trend
 
 figure_num <- figure_num + 1
@@ -117,7 +117,7 @@ figure_num <- figure_num + 1
 
 `r ftext(paste0("Figure ",figure_num,": Bowel screening uptake by area for the latest time period available."),table_heading_style)`
 
-```{r fig.width = 7.5, fig.height = 4.8, warning = FALSE, fig.cap = "A bar graph showing the most recent 3 year aggregate rates for bowel screening uptake by percentage of eligible population for Locality, HSCP, Health Board and all Scotland and for all localities within the HSCP."}
+```{r bowel-screening-uptake-bar-chart, fig.width = 7.5, fig.height = 4.8, warning = FALSE, fig.cap = "A bar graph showing the most recent 3 year aggregate rates for bowel screening uptake by percentage of eligible population for Locality, HSCP, Health Board and all Scotland and for all localities within the HSCP."}
 bowel_screening_bar
 
 figure_num <- figure_num + 1
