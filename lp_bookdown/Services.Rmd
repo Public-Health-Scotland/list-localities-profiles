@@ -3,7 +3,7 @@
 
 # Services
 
-\newline
+
 <!-- <Div custom-style = "Table or chart caption">Figure `r figure_num`: Map of services by locality in `r HSCP` HSCP^2^</Div> -->
 
 `r ftext(paste0("Figure ",figure_num,": Map of services by locality in ", HSCP," HSCP^2"),table_heading_style)`
@@ -16,7 +16,7 @@ figure_num <- figure_num + 1
 ```
 
 
-\newline
+
 <!-- <Div custom-style = "Table or chart caption">Table `r table_num`: Number of each type of service in `r LOCALITY` Locality^2^</Div> -->
 
 `r ftext(paste0("Table ",table_num,": Number of each type of service in ",LOCALITY," Locality^2"),table_heading_style)`

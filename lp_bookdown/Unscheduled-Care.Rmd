@@ -3,7 +3,7 @@
 
 # Hospital and Community Care
 
-\newline
+
 
 **Summary**
 
@@ -209,7 +209,7 @@ figure_num <- figure_num + 1
 
 ## Hospital Care (Mental Health Speciality)
 
-\newline
+
 
 **Summary**
 
@@ -218,7 +218,7 @@ This section looks at mental health-related unscheduled care indicators. For the
 -   **`r psych_hosp_latest`** psychiatric patient hospitalisations per 100,000, compared to `r scot_psych_hosp$measure[2]` in Scotland^4^.
 -   **`r latest_bed_days_mh_loc1`** unscheduled mental health specialty bed days per 100,000, compared to `r scot_bed_days_mh1` in Scotland.
 
-\newline
+
 
 ### Psychiatric patient hospitalisations
 

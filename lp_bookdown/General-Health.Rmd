@@ -4,7 +4,7 @@
 
 ### Summary
 
-\newline
+
 
 For the most recent time period available^3^, `r LOCALITY` Locality had:
 
@@ -24,7 +24,7 @@ if (is.na(avg_life_exp_latest_male)) {
 -   A cancer registration rate of **`r format_number_for_text(cancer_reg_rate_latest)`** registrations per 100,000 age-sex standardised population (compared to `r format_number_for_text(scot_cancer)` in Scotland), and an early death rate (\<75 years) from cancer of **`r format_number_for_text(early_deaths_cancer_rate_latest)`** per 100,000 age-sex standardised population (compared to `r format_number_for_text(scot_cancer_deaths)` in Scotland)^4^.
 -   **`r format_number_for_text(adp_presc_latest)`%** of the population being prescribed medication for anxiety, depression, or psychosis. This is a `r adp_presc_diff_scot` proportion than Scotland (`r format_number_for_text(scot_adp_presc)`%).
 
-\newline
+
 
 ### Life Expectancy
 
@@ -63,7 +63,7 @@ table_num <- table_num + 1
 
 Source: ScotPHO
 
-\newline
+
 
 `r if(HSCP == "Clackmannanshire and Stirling") {"Note that data is unavailable for Clackmannanshire & Stirling HSCP."}`
 
@@ -102,7 +102,7 @@ figure_num <- figure_num + 1
 
 The estimates in the following sections are based on an individual being hospitalised with a relevant condition *at any point* in the past. This methodology can lead to both undercounts and overcounts depending on the condition; see the footnotes for more details.^5^
 
-\newline
+
 
 In the financial year `r latest_year_ltc`, in `r LOCALITY` Locality, it is estimated that **`r format_number_for_text(ltc_percent_total_latest)`%** of the population had at least one physical long-term condition (LTC). These include cardiovascular, neurodegenerative, and respiratory conditions, as well as other organ conditions (namely liver disease and renal failure), arthritis, cancer, diabetes, and epilepsy. *Please note that estimates for this section are based on people who had contact with NHS services - see footnotes for further information and caveats on identifying LTCs.^5^*
 

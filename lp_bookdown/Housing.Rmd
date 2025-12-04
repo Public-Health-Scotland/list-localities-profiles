@@ -1,9 +1,9 @@
 
-\newpage
+ \newpage
 
 # Housing
 
-\newline
+ 
 
 **Summary**
 
@@ -13,7 +13,7 @@ For the most recent time period available, `r LOCALITY` Locality had:
 -   **`r perc_single_discount`%** of dwellers received a single-occupant council tax discount, and **`r perc_exempt`%** were exempt from council tax entirely.
 -   **`r perc_houses_AC`%** of houses were within council tax bands A to C, and **`r perc_houses_FH`%** were in bands F to H.
 
-\newline
+ 
 
 The graph below shows the number of dwellings in `r LOCALITY` from `r min(house_dat$year)` to `r max_year_housing`.
 
@@ -49,7 +49,7 @@ flextable(house_table, theme_fun = NULL) |>
 table_num <- table_num + 1
 ```
 
-Source: Scottish Assessors' Association (via NRS) \newline
+Source: Scottish Assessors' Association (via NRS)  
 
 The proportion of households within each council tax band are displayed in the chart below, figures are shown in Table `r table_num`.
 
