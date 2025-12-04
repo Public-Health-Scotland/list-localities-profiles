@@ -13,9 +13,6 @@ rlang::check_installed(
 
 rm(list = ls())
 
-# system unmask function so files have read-write permissions
-Sys.umask("006")
-
 # Source in functions code
 source("Master RMarkdown Document & Render Code/Global Script.R")
 
