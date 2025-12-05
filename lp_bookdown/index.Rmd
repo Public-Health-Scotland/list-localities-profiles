@@ -14,6 +14,14 @@ table_heading_style <- fp_text(
   bold = TRUE,
   font.family = "Arial"
 )
+
+superscript_style <- fp_text(
+  color = "black",
+  font.size = 8,
+  italic = TRUE,
+  font.family = "Arial"
+)
+
 ```
 
 ```{r setup, include = FALSE}

@@ -141,7 +141,7 @@ ltc_types_plot
 figure_num <- figure_num + 1
 ```
 
-\^\*COPD: Chronic Obstructive Pulmonary Disease\^
+`r ftext("*COPD: Chronic Obstructive Pulmonary Disease",superscript_style)`
 
 <!-- <div custom-style = "table-caption-heading">Table `r table_num`: Prevalence of the five most common physical LTCs as a percentage of the population across geographical areas (1 is the most prevalent).</div> -->
 
