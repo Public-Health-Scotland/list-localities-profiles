@@ -73,8 +73,6 @@ simd_map
 figure_num <- figure_num + 1
 ```
 
-##### Page break
-
 Table `r table_num` details the percentage of the locality's 2016 population living in the 2016 SIMD Quintiles, the percentage of the `r pop_max_year` population living in the 2020 SIMD Quintiles, and their difference for comparison. Figure `r figure_num` then breaks down SIMD by domain in `r LOCALITY`.
 
 <!-- <Div custom-style = "Table or chart caption">Table `r table_num`: Percentage of the `r LOCALITY` population living in the 2016 and 2020 SIMD Datazone Quintiles in 2016 and `r pop_max_year` respectively.</Div> -->

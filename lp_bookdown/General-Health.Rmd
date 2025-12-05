@@ -44,8 +44,6 @@ if (LOCALITY %in% check_missing_data_scotpho(life_exp)$area_name) {
 figure_num <- figure_num + 1
 ```
 
-##### Page break
-
 Table `r table_num` provides the average life expectancy for men and women in different areas for the latest time period available.
 
 <!-- <div custom-style = "table-caption-heading">Table `r table_num`: Average life expectancy in years for the latest time periods (`r latest_period_life_exp_loc` aggregated years for the locality; `r latest_period_life_exp_otherareas` aggregated years for other areas).</div> -->
