@@ -30,7 +30,7 @@ indicator_defs <- read_excel(
   path = indicator_workbook_path,
   sheet = "Definitions",
   col_types = "text"
-) 
+)
 
 ## Data extraction dates ----
 
@@ -45,7 +45,9 @@ dates_extract <- read_excel(
   col_types = c("text", "text", "date")
 ) |>
   replace_na(list("Date of data extraction" = Sys.Date())) |>
-  mutate(`Date of data extraction`=format(`Date of data extraction`,"%d/%m/%Y"))
+  mutate(
+    `Date of data extraction` = format(`Date of data extraction`, "%d/%m/%Y")
+  )
 
 ## PPA conditions included ----
 
