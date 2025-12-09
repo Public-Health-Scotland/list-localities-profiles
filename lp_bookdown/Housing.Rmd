@@ -17,9 +17,10 @@ The graph below shows the number of dwellings in `r LOCALITY` from `r min(house_
 
 <!-- <Div custom-style = "Table or chart caption">Figure `r figure_num`: Number of dwellings time trend.</Div> -->
 
-`r ftext(paste0("Figure ",figure_num,": Number of dwellings time trend."),table_heading_style)`
-
 ```{r fig.width = 8.5, fig.height = 4, warning = FALSE}
+
+ftext(paste0("Figure ",figure_num,": Number of dwellings time trend."),table_heading_style)
+
 houses_ts
 
 figure_num <- figure_num + 1
@@ -32,10 +33,11 @@ There were `r n_second_homes` dwellings classed as a second home in `r max_year_
 
 <!-- <Div custom-style = "Table or chart caption">Table `r table_num`: Breakdown of dwelling types by year for `r LOCALITY` locality.</Div> -->
 
-`r ftext(paste0("Table ",table_num,": Breakdown of dwelling types by year for ",LOCALITY," locality."),table_heading_style)`
-
 
 ```{r }
+
+ftext(paste0("Table ",table_num,": Breakdown of dwelling types by year for ",LOCALITY," locality."),table_heading_style)
+
 flextable(house_table, theme_fun = NULL) |>
   lp_flextable_theme() |>
   set_header_labels(values = c(
@@ -54,9 +56,10 @@ The proportion of households within each council tax band are displayed in the c
 
 <!-- <Div custom-style = "Table or chart caption">Figure `r figure_num`: Breakdown of households by council tax band for `r LOCALITY` in `r max_year_housing`.</Div> -->
 
-`r ftext(paste0("Figure ",figure_num,": Breakdown of households by council tax band for ",LOCALITY," in ",max_year_housing,"."),table_heading_style)`
-
 ```{r fig.width = 7, fig.height = 2, warning = FALSE, fig.cap = 'A bar graph showing the proportion of Households in each council tax band for the locality for the most recent year'}
+
+ftext(paste0("Figure ",figure_num,": Breakdown of households by council tax band for ",LOCALITY," in ",max_year_housing,"."),table_heading_style)
+
 ctb_plot
 
 figure_num <- figure_num + 1
@@ -65,10 +68,10 @@ figure_num <- figure_num + 1
 
 <!-- <Div custom-style = "Table or chart caption">Table `r table_num`: Percentage of households by council tax band for `r LOCALITY` in `r max_year_housing`.</Div> -->
 
-`r ftext(paste0("Table ",table_num,": Percentage of households by council tax band for ",LOCALITY," in ",max_year_housing,"."),table_heading_style)`
-
-
 ```{r }
+
+ftext(paste0("Table ",table_num,": Percentage of households by council tax band for ",LOCALITY," in ",max_year_housing,"."),table_heading_style)
+
 flextable(ctb_table, theme_fun = NULL) |>
   lp_flextable_theme() |>
   set_header_labels(values = c(
