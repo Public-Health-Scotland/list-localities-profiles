@@ -837,15 +837,15 @@ rm(
 ###### 3b Multi-morbidity LTC Table ######
 
 ## Create df with under 65 vs over 65 - will be used for rest of LTC work
-ltc2 <- ltc %>%
+ltc_age_grouped <- ltc %>%
   select(-year) %>%
   mutate(age_group = if_else(age_group == "Under 65", "Under 65", "65+")) %>%
   group_by(hscp2019name, hscp_locality, age_group, total_ltc) %>%
   summarise(across(everything(), sum)) %>%
   ungroup()
 
-ltc_multimorbidity <- ltc2 %>%
-  na.omit(ltc2) %>%
+ltc_multimorbidity <- ltc_age_grouped %>%
+  na.omit(ltc_age_grouped) %>%
   filter(
     hscp_locality == LOCALITY,
     total_ltc != 0
@@ -908,7 +908,7 @@ ltc_multimorbidity_ov65_perc <- sum(
 
 
 # ###### 3c Prevalence of LTC Types ######
-ltc_types <- ltc2 %>%
+ltc_types <- ltc_age_grouped %>%
   select(-hscp2019name, -total_ltc, -people) %>%
   filter(hscp_locality == LOCALITY) %>%
   group_by(hscp_locality, age_group) %>%
@@ -1066,19 +1066,17 @@ rm(
 ##### 3d Top LTCs Table #####
 
 # Most common LTC all round
-ltc_totals <- ltc2 %>%
-  filter(total_ltc != 0) %>%
-  select(-hscp2019name, -total_ltc, -age_group) %>%
-  group_by(hscp_locality) %>%
-  summarise(across(everything(), sum)) %>%
-  ungroup()
-
-ltc_totals <- left_join(
-  ltc_totals,
-  select(lookup, hscp_locality, hscp2019name),
-  by = join_by(hscp_locality),
-  relationship = "one-to-one"
-)
+ltc_totals <- ltc_age_grouped |>
+  filter(total_ltc != 0) |>
+  select(-hscp2019name, -total_ltc, -age_group) |>
+  group_by(hscp_locality) |>
+  summarise(across(everything(), sum)) |>
+  ungroup() |>
+  left_join(
+    select(lookup, hscp_locality, hscp2019name),
+    by = join_by(hscp_locality),
+    relationship = "one-to-one"
+  )
 
 # Extract population totals to make %
 ltc_pops_total_loc <- sum(slf_pop_loc$slf_adj_pop)
@@ -1382,13 +1380,13 @@ rm(
   gen_health_data_dir,
   hscp_scot_summary_table,
   latest_year_life_exp_loc,
+  ltc_age_grouped,
   ltc_infographic,
   ltc_pops_total_hscp,
   ltc_pops_total_scot,
   ltc_hscp,
   ltc_scot,
   ltc_totals,
-  ltc2,
   other_locs,
   other_locs_summary_table,
   otherloc_ltc_pops,
