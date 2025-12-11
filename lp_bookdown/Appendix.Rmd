@@ -1,4 +1,3 @@
-
 \newpage
 
 ## Footnotes
@@ -11,9 +10,7 @@
 
 4.  ScotPHO data is often reported using the European Age-Sex Standardised Rate per 100,000. This allows for comparisons across different areas to be made. For more information on how these rates are calculated, please refer to the [PHS website: Geography, population and deprivation support](https://publichealthscotland.scot/services/geography-population-and-deprivation-support/population/){.uri}.
 
-5.  Data on physical long-term conditions (LTC) is sourced from the SPARRA LTC table via the Source Linkage Files (SLFs). These conditions are identified using ICD-9 and ICD-10 diagnosis codes on acute (SMR01) admissions which have occurred since 1981. This underlying methodology will result in undercounts where individuals have an LTC but don't have a hospitalisation, and undercounts when individuals have a relevant hospitalisation but subsequently have no other symptoms. These under and overcounts will vary in scale for each condition.
-Additionally, LTC rates are based on an adjusted population indicator in the Source Linkage Files, ensuring that the population sizes align more closely with official estimates.
-
+5.  Data on physical long-term conditions (LTC) is sourced from the SPARRA LTC table via the Source Linkage Files (SLFs). These conditions are identified using ICD-9 and ICD-10 diagnosis codes on acute (SMR01) admissions which have occurred since 1981. This underlying methodology will result in undercounts where individuals have an LTC but don't have a hospitalisation, and undercounts when individuals have a relevant hospitalisation but subsequently have no other symptoms. These under and overcounts will vary in scale for each condition. Additionally, LTC rates are based on an adjusted population indicator in the Source Linkage Files, ensuring that the population sizes align more closely with official estimates.
 
 \newpage
 
@@ -23,8 +20,8 @@ Additionally, LTC rates are based on an adjusted population indicator in the Sou
 
 ```{r echo = FALSE, fig.width = 4, fig.height = 10, ft.split = TRUE}
 flextable(indicator_defs, theme_fun = NULL) |>
-  lp_flextable_theme()|>
-  bold(j = 1, part = "body")|>
+  lp_flextable_theme() |>
+  bold(j = 1, part = "body") |>
   set_table_properties(layout = "autofit")
 ```
 
@@ -34,8 +31,8 @@ flextable(indicator_defs, theme_fun = NULL) |>
 
 ```{r echo = FALSE, fig.width = 4, fig.height = 10, ft.split = TRUE}
 flextable(dates_extract, theme_fun = NULL) |>
-  lp_flextable_theme()|>
-  bold(j = 1, part = "body")|>
+  lp_flextable_theme() |>
+  bold(j = 1, part = "body") |>
   set_table_properties(layout = "autofit")
 ```
 
@@ -45,8 +42,7 @@ flextable(dates_extract, theme_fun = NULL) |>
 
 ```{r echo = FALSE, fig.width = 7, fig.height = 10, warning = FALSE}
 flextable(ppa_def, theme_fun = NULL) |>
-  lp_flextable_theme()|>
-  bold(j = 1, part = "body")|>
+  lp_flextable_theme() |>
+  bold(j = 1, part = "body") |>
   set_table_properties(layout = "autofit")
 ```
-

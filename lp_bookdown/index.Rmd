@@ -19,7 +19,7 @@ table_heading_superscript_style <- fp_text(
   color = "#43358B",
   font.size = 12,
   font.family = "Arial",
-  vertical.align="superscript"
+  vertical.align = "superscript"
 )
 
 superscript_style <- fp_text(
@@ -27,9 +27,8 @@ superscript_style <- fp_text(
   font.size = 12,
   italic = TRUE,
   font.family = "Arial",
-  vertical.align="superscript"
+  vertical.align = "superscript"
 )
-
 ```
 
 ```{r setup, include = FALSE}
