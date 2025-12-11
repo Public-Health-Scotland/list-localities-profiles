@@ -1120,9 +1120,9 @@ top5ltc_loc <- ltc_totals %>%
   slice_max(n = 5, order_by = value, with_ties = FALSE) %>%
   mutate(percent = round_half_up((value / ltc_pops_total_loc) * 100, 2)) %>%
   select(-value) %>%
-  left_join(ltc_cols, by = join_by(topltc)) %>%
   unite("Prevalence", topltc, percent, sep = "\n") %>%
   mutate(Prevalence = paste(Prevalence, "%"))
+  left_join(ltc_colours, by = join_by(topltc)) |>
 
 # Top 5 HSCP
 top5ltc_hscp <- ltc_totals %>%
@@ -1137,8 +1137,8 @@ top5ltc_hscp <- ltc_totals %>%
   slice_max(n = 5, order_by = value, with_ties = FALSE) %>%
   mutate(percent = round_half_up((value / ltc_pops_total_hscp) * 100, 2)) %>%
   select(-value) %>%
-  left_join(ltc_cols, by = join_by(topltc)) %>%
   unite("Prevalence", topltc, percent, sep = "\n") %>%
+  left_join(ltc_colours, by = join_by(topltc)) |>
   mutate(Prevalence = paste(Prevalence, "%"))
 
 # Top 5 Scotland
@@ -1153,8 +1153,8 @@ top5ltc_scot <- ltc_totals %>%
   slice_max(n = 5, order_by = value, with_ties = FALSE) %>%
   mutate(percent = round_half_up((value / ltc_pops_total_scot) * 100, 2)) %>%
   select(-value) %>%
-  left_join(ltc_cols, by = join_by(topltc)) %>%
   unite("Prevalence", topltc, percent, sep = "\n") %>%
+  left_join(ltc_colours, by = join_by(topltc)) |>
   mutate(Prevalence = paste(Prevalence, "%"))
 
 
@@ -1396,37 +1396,3 @@ rm(
   table8_year_title
 )
 gc()
-
-## Stat disclosure control for LTC
-
-# sdc1 <- ltc %>%
-#   filter(total_ltc > 0) %>%
-#   select(hscp2019name, hscp_locality, age_group, total_ltc, people) %>%
-#   group_by(hscp2019name, hscp_locality, age_group) %>%
-#   summarise(people = sum(people)) %>%
-#   ungroup() %>%
-#   left_join(slf_pops)
-#
-# sdc2 <- ltc2 %>%
-#   na.omit(ltc2) %>%
-#   filter(total_ltc != 0) %>%
-#   mutate(total_ltc = case_when(total_ltc == 1 ~ "1 LTC",
-#                                total_ltc == 2 ~ "2 LTCs",
-#                                total_ltc == 3 ~ "3 LTCs",
-#                                total_ltc >= 4 ~ "4 or more LTCs")) %>%
-#   group_by(hscp2019name, hscp_locality, age_group, total_ltc, slf_adj_pop) %>%
-#   summarise(people = sum(people)) %>%
-#   ungroup()
-#
-# sdc3 <-  ltc2 %>%
-#   select(-total_ltc, -people) %>%
-#   group_by(hscp2019name, hscp_locality, age_group, slf_adj_pop) %>%
-#   summarise_all(sum) %>%
-#   gather(key ="key", value  ="value", c(`Arthritis`:`Renal failure`)) %>%
-#   filter(value != 0)
-#
-#
-# writexl::write_xlsx(x = list("Total Pop with LTC Age" = sdc1,
-#                              "LTC Multimorbidity Age" = sdc2,
-#                              "LTC Types Age" = sdc3),
-#                     path = path(lp_path, "Publishing", "LTC Data.xlsx"))
