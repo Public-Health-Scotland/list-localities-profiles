@@ -1086,9 +1086,9 @@ ltc_pops_total_scot <- sum(slf_pops$slf_adj_pop)
 ltc_pops_total_hscp <- sum(filter(slf_pops, hscp2019name == HSCP)$slf_adj_pop)
 
 # Colour lookup for table
-ltc_cols <- ltc_scot %>%
-  select(!c(total_ltc, age_group, people)) %>%
-  summarise(across(everything(), sum)) %>%
+ltc_colours <- ltc_scot |>
+  select(!c(total_ltc, age_group, people)) |>
+  summarise(across(everything(), sum)) |>
   pivot_longer(
     cols = everything(),
     names_to = "topltc",
@@ -1176,26 +1176,17 @@ top5_ltc_table <- bind_cols(
   select(top5ltc_scot, "Scotland" = Prevalence)
 ) |>
   flextable(cwidth = 2) |>
-  add_header_lines(
-    values = str_wrap(
-      glue(
-        "Top 5 most common Physical Long-Term Conditions in {LOCALITY} Locality by prevelance estimates for {latest_year_ltc}, compared to {HSCP} HSCP and Scotland estimates."
-      ),
-      width = 65
-    )
-  ) |>
+  lp_flextable_theme() |>
   bg(j = 1, bg = top5ltc_loc$colours) |>
   bg(j = 2, bg = top5ltc_hscp$colours) |>
   bg(j = 3, bg = top5ltc_scot$colours) |>
-  fontsize(size = 16, part = "header") |>
-  fontsize(size = 12, part = "body") |>
   font(fontname = "Arial", part = "all") |>
   color(color = "white", part = "body") |>
   bold(part = "header") |>
-  border(border = fp_border(color = "white", width = 5), part = "body")
+  border(border = fp_border(color = "white", width = 5), part = "all")
 
 rm(
-  ltc_cols,
+  ltc_colours,
   ltc_pops_total_loc,
   loc.ltc.table,
   hscp.ltc.table,
