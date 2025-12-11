@@ -53,7 +53,7 @@ jobs:
 
       - name: Install styler
         if: steps.changed.outputs.rmd_changed == 'true'
-        run: Rscript -e 'install.packages("styler", repos="https://cloud.r-project.org")'
+        run: Rscript -e 'install.packages(c("styler", "knitr"), repos="https://cloud.r-project.org")'
 
       - name: Style directory with styler (Rmd)
         if: steps.changed.outputs.rmd_changed == 'true'
