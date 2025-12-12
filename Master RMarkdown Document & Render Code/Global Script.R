@@ -251,7 +251,7 @@ read_in_dz_pops <- function() {
         hb2018,
         hb2014
       )
-    ) %>%
+    ) |>
     left_join(
       read_in_localities(dz_level = TRUE),
       by = join_by(datazone2011)
@@ -303,16 +303,16 @@ read_in_pop_proj <- function() {
 # Removes unwanted areas like council area and IZ
 
 clean_scotpho_dat <- function(data) {
-  data %>%
-    filter(area_type != "Council area" & area_type != "Intermediate zone") %>%
-    mutate(area_name = gsub("&", "and", area_name, fixed = TRUE)) %>%
+  data |>
+    filter(area_type != "Council area" & area_type != "Intermediate zone") |>
+    mutate(area_name = gsub("&", "and", area_name, fixed = TRUE)) |>
     mutate(
       area_name = if_else(
         area_name == "Renfrewshire West",
         "West Renfrewshire",
         area_name
       )
-    ) %>%
+    ) |>
     mutate(
       area_type = if_else(area_type == "HSC partnership", "HSCP", area_type),
       area_type = if_else(area_type == "HSC locality", "Locality", area_type)
@@ -351,14 +351,14 @@ scotpho_time_trend <- function(
   }
 
   # filter and reorder data
-  data %>%
+  data |>
     filter(
       (area_name == LOCALITY & area_type == "Locality") |
         (area_name == HSCP & area_type == "HSCP") |
         area_name == HB |
         area_name == "Scotland"
-    ) %>%
-    filter(year >= max(year) - trend_years) %>%
+    ) |>
+    filter(year >= max(year) - trend_years) |>
     mutate(
       area_type = factor(
         area_type,
@@ -368,7 +368,7 @@ scotpho_time_trend <- function(
         as.factor(str_wrap(area_name, 23)),
         as.numeric(area_type)
       )
-    ) %>%
+    ) |>
     # plot
     ggplot(aes(
       x = str_wrap(period_short, width = string_wrap),
@@ -424,13 +424,13 @@ scotpho_time_trend_HSCP <- function(
   }
 
   # filter and reorder data
-  data %>%
+  data |>
     filter(
       (area_name == HSCP & area_type == "HSCP") |
         area_name == HB |
         area_name == "Scotland"
-    ) %>%
-    filter(year >= max(year) - 10) %>%
+    ) |>
+    filter(year >= max(year) - 10) |>
     mutate(
       area_type = factor(
         area_type,
@@ -440,7 +440,7 @@ scotpho_time_trend_HSCP <- function(
         as.factor(str_wrap(area_name, 23)),
         as.numeric(area_type)
       )
-    ) %>%
+    ) |>
     # plot
     ggplot(aes(
       x = str_wrap(period_short, width = string_wrap),
@@ -491,8 +491,8 @@ scotpho_time_trend_HSCP <- function(
 # chart_title, xaxis_title : titles for chart and x axis
 
 scotpho_bar_chart <- function(data, chart_title, xaxis_title) {
-  data_for_plot <- data %>%
-    filter(year == max(year)) %>%
+  data_for_plot <- data |>
+    filter(year == max(year)) |>
     filter(
       (area_name %in%
         c(LOCALITY, other_locs$hscp_locality) &
@@ -500,7 +500,7 @@ scotpho_bar_chart <- function(data, chart_title, xaxis_title) {
         (area_name == HSCP & area_type == "HSCP") |
         area_name == HB |
         area_name == "Scotland"
-    ) %>%
+    ) |>
     mutate(
       text_highlight = area_name == LOCALITY,
       area_type = factor(
@@ -508,7 +508,7 @@ scotpho_bar_chart <- function(data, chart_title, xaxis_title) {
         levels = c("Locality", "HSCP", "Health board", "Scotland")
       ),
       area_name = fct_reorder(as.factor(str_wrap(area_name, 28)), measure)
-    ) %>%
+    ) |>
     arrange(area_name)
 
   ggplot(data_for_plot) +
@@ -538,14 +538,14 @@ scotpho_bar_chart <- function(data, chart_title, xaxis_title) {
 
 
 scotpho_bar_chart_HSCP <- function(data, chart_title, xaxis_title) {
-  data_for_plot <- data %>%
-    filter(year == max(year)) %>%
+  data_for_plot <- data |>
+    filter(year == max(year)) |>
     filter(
       (area_name %in% c(other_locs$hscp_locality) & area_type == "Locality") |
         (area_name == HSCP & area_type == "HSCP") |
         area_name == HB |
         area_name == "Scotland"
-    ) %>%
+    ) |>
     mutate(
       text_highlight = area_name == HSCP,
       area_type = factor(
@@ -553,7 +553,7 @@ scotpho_bar_chart_HSCP <- function(data, chart_title, xaxis_title) {
         levels = c("Locality", "HSCP", "Health board", "Scotland")
       ),
       area_name = fct_reorder(as.factor(str_wrap(area_name, 28)), measure)
-    ) %>%
+    ) |>
     arrange(area_name)
 
   ggplot(data_for_plot) +
@@ -582,11 +582,11 @@ scotpho_bar_chart_HSCP <- function(data, chart_title, xaxis_title) {
 
 ## Checking for missing data
 check_missing_data_scotpho <- function(data) {
-  data %>%
-    filter(area_type == "Locality") %>%
-    filter(year == max(year)) %>%
-    right_join(read_in_localities(), by = c("area_name" = "hscp_locality")) %>%
-    filter(is.na(indicator)) %>%
+  data |>
+    filter(area_type == "Locality") |>
+    filter(year == max(year)) |>
+    right_join(read_in_localities(), by = c("area_name" = "hscp_locality")) |>
+    filter(is.na(indicator)) |>
     select(area_name, hscp2019name)
 }
 
