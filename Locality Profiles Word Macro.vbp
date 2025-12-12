@@ -1,179 +1,342 @@
-Sub LocalityProfilesMacro()
-    Dim file
-    Dim path        As String
-    path = "\\Isdsf00d03\LIST_analytics\West Hub\02 - Scaled Up Work\RMarkdown\Locality Profiles\Master RMarkdown Document & Render Code\Output\"
-    
-    file = Dir(path & "*.docx")
-    Do While file <> ""
-        Documents.Open FileName:=path & file
-        
-        ' This is the call to the macro you want to run on each file the folder
-        Call SetStyleOfAllTablesAndPreserveAlignment
-        Selection.HomeKey Unit:=wdStory        'go back to beginning of document
-        ' Saves the file
-        Call InsertSummaryTable        'Insert summary table and convert pages to landscape
-        Call TableOfContents
-        Selection.HomeKey Unit:=wdStory        'go back to beginning of document
-        Call Cover_Page        'Insert Cover Page
-        ' Saves the file
-        'Insert Cover Page
+Sub process_locality_profiles()
+    ' Description:
+    '   This macro iterates through Word documents in a specific folder,
+    '   opens each document, and applies a sequence of formatting and
+    '   content updates using helper subroutines. It then saves and closes
+    '   each processed document.
+
+    ' --- Configuration ---
+    ' Define the network path to the folder containing the documents.
+    Dim document_folder_path As String
+    document_folder_path = "\\Isdsf00d03\LIST_analytics\West Hub\02 - Scaled Up Work\RMarkdown\Locality Profiles\Master RMarkdown Document & Render Code\Output\"
+
+    ' --- Variables ---
+    ' Variable to store the name of the current file found by Dir().
+    Dim document_file_name
+
+    ' --- Main Process ---
+
+    ' Get the name of the first Word document (.docx) in the specified path.
+    document_file_name = Dir(document_folder_path & "*.docx")
+
+    ' Loop through all found files until Dir() returns an empty string.
+    Do While document_file_name <> ""
+        ' Open the current document using its full path.
+        Documents.Open FileName:=document_folder_path & document_file_name
+
+        ' --- Apply document updates ---
+
+        ' Call a subroutine to set the style for all tables in the document
+        ' while attempting to preserve their original column alignment.
+        Call set_table_styles_and_preserve_alignment
+
+        ' Move the cursor to the very beginning of the document.
+        Selection.HomeKey Unit:=wdStory
+
+        ' Call a subroutine to insert a specific summary table into the document.
+        ' Note: This subroutine also converts pages containing the table to landscape.
+        Call insert_summary_table
+
+        ' Call a subroutine to insert a Table of Contents into the document.
+        Call insert_table_of_contents
+
+        ' Move the cursor back to the beginning of the document after insertions.
+        Selection.HomeKey Unit:=wdStory
+
+        ' Call a subroutine to insert a cover page at the beginning of the document.
+        Call insert_cover_page
+
+        ' Update the first Table of Contents in the document to reflect the current headings.
         ActiveDocument.TablesOfContents(1).Update
-        Call CoverName
+
+        ' Call a subroutine which appears to insert the locality name, likely on the cover page.
+        Call update_locality_name_placeholder ' Renamed from CoverName based on its internal logic
+
+        ' Set the DifferentFirstPageHeaderFooter property for the first section.
+        ' This allows the first page (cover page) to have a different or no header/footer.
         ActiveDocument.Sections.First.PageSetup.DifferentFirstPageHeaderFooter = TRUE
+
+        ' Save the changes made to the active document.
         ActiveDocument.Save
+
+        ' Close the active document.
         ActiveDocument.Close
-        ' set file to next in Dir
-        file = Dir()
+
+        ' Get the name of the next file in the directory for the next iteration of the loop.
+        document_file_name = Dir()
     Loop
+
 End Sub
 
-Sub SetStyleOfAllTablesAndPreserveAlignment()
-    ' SetStyleOfAllTablesAndPreserveAlignment Macro
-    
-    For Each objTable In ActiveDocument.Tables
-        
-        '******This first section is for recording the old column alignments*****'
-        numCols = objTable.Columns.Count        'first find the number of columns within the table.
-        ReDim oldColumnAlignments(numCols) As Integer        'initialize an integer array of length 'numCols'.
-        column_index = 0
-        For Each tableColumn In objTable.Columns
-            oldColumnAlignments(column_index) = tableColumn.Cells(1).Range.ParagraphFormat.Alignment
-            column_index = column_index + 1
-        Next tableColumn
-        '************************************************************************'
-        
-        '-------This section changes the styles of the tables to what they should be. -------'
-        objTable.Style = "ISD_Pubs_Tables"
-        PreviousBookmarkID = objTable.Range.PreviousBookmarkID
-        PreviousBookmarkName = ActiveDocument.Range.Bookmarks(PreviousBookmarkID)
-        
-        If PreviousBookmarkName = "glossary" Then
-            objTable.Style = "Glossary_Style"
+Sub set_table_styles_and_preserve_alignment()
+    ' Description:
+    '   Iterates through all tables in the active document.
+    '   For each table, it records the current column alignments,
+    '   applies table styles (default and specific based on preceding bookmark),
+    '   and then restores the original column alignments. Finally, it sets
+    '   the table's preferred width.
+
+    ' --- Variables ---
+    ' Represents each table object in the document during iteration.
+    Dim current_table As Word.Table
+    ' Variable to store the number of columns in the current table.
+    Dim number_of_columns
+    ' Array to temporarily store the original alignment settings for each column.
+    Dim original_column_alignments() As Integer
+    ' Counter variable used for indexing the alignment array.
+    Dim column_array_index
+    ' Represents each column object within a table during iteration.
+    Dim table_column As Word.Column
+    ' Variable to store the ID of the bookmark immediately preceding the table.
+    Dim preceding_bookmark_id
+    ' Variable to store the name of the bookmark immediately preceding the table.
+    Dim preceding_bookmark_name
+
+    ' Iterate through each table in the active document.
+    For Each current_table In ActiveDocument.Tables
+
+        ' --- Record Original Column Alignments ---
+        ' Get the number of columns in the current table.
+        number_of_columns = current_table.Columns.Count
+        ' Initialize an integer array of the same size as the number of columns.
+        ReDim original_column_alignments(number_of_columns) As Integer
+        ' Initialize the array index counter.
+        column_array_index = 0
+
+        ' Loop through each column in the table to record its alignment.
+        For Each table_column In current_table.Columns
+            ' Store the alignment of the first cell in the column.
+            original_column_alignments(column_array_index) = table_column.Cells(1).Range.ParagraphFormat.Alignment
+            ' Increment the index.
+            column_array_index = column_array_index + 1
+        Next table_column
+
+        ' --- Apply Table Styles ---
+        ' Apply a default table style.
+        current_table.Style = "ISD_Pubs_Tables"
+
+        ' Get the ID of the bookmark located immediately before the table.
+        preceding_bookmark_id = current_table.Range.PreviousBookmarkID
+        ' Get the name of the bookmark using its ID.
+        preceding_bookmark_name = ActiveDocument.Range.Bookmarks(preceding_bookmark_id)
+
+        ' Check if the preceding bookmark name is "glossary" and apply a specific style if true.
+        If preceding_bookmark_name = "glossary" Then
+            current_table.Style = "Glossary_Style"
         End If
-        
-        If PreviousBookmarkName = "tableA" Then        'Change these as needed for each style type!
-        objTable.Style = "TableA_Style"
-    End If
-    
-    If PreviousBookmarkName = "tableB" Then
-        objTable.Style = "TableB_Style"
-    End If
-    
-    If PreviousBookmarkName = "tableC" Then
-        objTable.Style = "TableC_Style"
-    End If
-    '------------------------------------------------------------------------------------'
-    
-    '^^^^This last section sets the alignments of each column of the table to what they were ^^^^'
-    '^^^^before the style of the table was changed.^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^'
-    i = 0
-    For Each tableColumn In objTable.Columns
-        tableColumn.Select
-        Selection.ParagraphFormat.Alignment = oldColumnAlignments(i)
-        i = i + 1
-    Next tableColumn
-    '^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^'
-    
-    objTable.PreferredWidth = 100        'Sets the Preferred Table width to 100% of the width of the page.
-    
-Next objTable
+
+        ' Check if the preceding bookmark name is "tableA" and apply a specific style if true.
+        ' Change these bookmark names and style names as needed.
+        If preceding_bookmark_name = "tableA" Then
+            current_table.Style = "TableA_Style"
+        End If
+
+        ' Check if the preceding bookmark name is "tableB" and apply a specific style if true.
+        If preceding_bookmark_name = "tableB" Then
+            current_table.Style = "TableB_Style"
+        End If
+
+        ' Check if the preceding bookmark name is "tableC" and apply a specific style if true.
+        If preceding_bookmark_name = "tableC" Then
+            current_table.Style = "TableC_Style"
+        End If
+
+        ' --- Restore Original Column Alignments ---
+        ' Reset the array index counter for restoring alignments.
+        column_array_index = 0
+
+        ' Loop through each column again to set its alignment back to the original.
+        For Each table_column In current_table.Columns
+            ' Select the current column.
+            table_column.Select
+            ' Apply the saved alignment from the array using the current index.
+            Selection.ParagraphFormat.Alignment = original_column_alignments(column_array_index)
+            ' Increment the index.
+            column_array_index = column_array_index + 1
+        Next table_column
+
+        ' Sets the Preferred Table width to 100% of the width of the page area.
+        current_table.PreferredWidth = 100
+
+    Next current_table
 
 End Sub
 
-Sub InsertSummaryTable()
-    
-    'Identify locality to select correct summary table
+Sub insert_summary_table()
+    ' Description:
+    '   Inserts a section break, determines the locality name from the file name,
+    '   inserts a corresponding summary table document, and then sets the
+    '   orientation of the page(s) containing the summary table to Landscape.
+
+    ' Go back to the beginning of the document.
     Selection.HomeKey Unit:=wdStory
-    Dim Locality    As String
-    Locality = ActiveDocument.FullName
-    Locality = Left(Locality, InStrRev(Locality, "-") - 1)
-    Locality = Right(Locality, Len(Locality) - InStrRev(Locality, "\"))
+
+    ' --- Determine Locality Name ---
+    ' Variable to hold the extracted locality name.
+    Dim locality_name As String
+
+    ' Get the full file path of the active document.
+    locality_name = ActiveDocument.FullName
+    ' Extract the part of the string before the last hyphen.
+    locality_name = Left(locality_name, InStrRev(locality_name, "-") - 1)
+    ' Extract the part of the string after the last backslash (the file name part).
+    locality_name = Right(locality_name, Len(locality_name) - InStrRev(locality_name, "\"))
+
+    ' Debug Print statement from original code (myOutput is not defined here).
     Debug.Print "File Extension: " & myOutput
-    
-    'Insert summary table
+
+    ' --- Insert Summary Table Document ---
+    ' Insert a section break to isolate the summary table.
     Selection.InsertBreak Type:=wdSectionBreakNextPage
-    Selection.InsertFile ("\\stats\LIST_analytics\West Hub\02 - Scaled Up Work\RMarkdown\Locality Profiles\Master RMarkdown Document & Render Code\Output\Summary Tables\" & Locality & "- Summary Table.docx")
-    
-    'Convert summary table pages to landscape
+
+    ' Insert the summary table document. The path is constructed
+    ' using a fixed base path, the extracted locality name, and a fixed suffix.
+    Selection.InsertFile ("\\stats\LIST_analytics\West Hub\02 - Scaled Up Work\RMarkdown\Locality Profiles\Master RMarkdown Document & Render Code\Output\Summary Tables\" & locality_name & "- Summary Table.docx")
+
+    ' --- Set Page Orientation ---
+    ' Insert a page break before the section break to ensure the table starts on a new page.
     Selection.InsertBreak Type:=wdPageBreak
+    ' Insert another section break after the inserted table content.
+    ' This new section will contain the inserted table.
     Selection.InsertBreak Type:=wdSectionBreakNextPage
+
+    ' Move the selection up a couple of lines. The exact number might vary.
     Selection.MoveUp Unit:=wdLine, Count:=2
+
+    ' Check the current page orientation of the selected section
+    ' and toggle it between Portrait and Landscape.
+    ' Note: This will always set it to Landscape the first time unless it's already Landscape.
     If Selection.PageSetup.Orientation = wdOrientPortrait Then
         Selection.PageSetup.Orientation = wdOrientLandscape
     Else
         Selection.PageSetup.Orientation = wdOrientPortrait
     End If
+
+    ' Original cursor movements - likely related to screen view, not document structure.
     ActiveWindow.ActivePane.SmallScroll Down:=-3
     ActiveWindow.ActivePane.LargeScroll Down:=1
-    
+
 End Sub
 
-Sub TableOfContents()
-    Selection.HomeKey Unit:=wdStory        'go back to beginning of document
+Sub insert_table_of_contents()
+    ' Description:
+    '   Inserts a "Table of Contents" heading and then inserts a
+    '   Table of Contents field at the current cursor position,
+    '   generated from Heading 2 and Heading 3 styles.
+
+    ' Go back to the beginning of the document to ensure TOC is placed at the start.
+    Selection.HomeKey Unit:=wdStory
+
+    ' Insert a new paragraph where the heading will be placed.
     Selection.TypeParagraph
-    MyText = "Table of Contents"
-    Selection.TypeText (MyText)
-    
-    Set MyRange = Selection.Range
+
+    ' Define the text for the Table of Contents heading.
+    Dim toc_heading_text As String
+    toc_heading_text = "Table of Contents"
+
+    ' Type the heading text into the document.
+    Selection.TypeText (toc_heading_text)
+
+    ' Define the range where the Table of Contents will be inserted.
+    ' Selection.Range refers to the current cursor position.
+    Dim toc_insertion_range As Range
+    Set toc_insertion_range = Selection.Range
+
+    ' Add a Table of Contents field to the document.
     ActiveDocument.TablesOfContents.Add _
-                                        Range:=MyRange, _
-                                        UseFields:=False, _
-                                        UseHeadingStyles:=True, _
-                                        LowerHeadingLevel:=3, _
-                                        UpperHeadingLevel:=2, _
-                                        AddedStyles:="Heading 2, Heading 3"
+                                        Range:=toc_insertion_range, _
+                                        UseFields:=False, _         ' Do not use TC fields
+                                        UseHeadingStyles:=True, _   ' Generate from built-in heading styles
+                                        LowerHeadingLevel:=3, _     ' Include headings up to level 3
+                                        UpperHeadingLevel:=2, _     ' Include headings from level 2
+                                        AddedStyles:="Heading 2, Heading 3" ' Also include these specific styles
+
 End Sub
 
-Sub LocalityName()
-    Dim Locality    As String
-    Locality = ActiveDocument.FullName
-    Locality = Left(Locality, InStrRev(Locality, "-") - 1)
-    Locality = Right(Locality, Len(Locality) - InStrRev(Locality, "\"))
-    Debug.Print "File Extension: " & myOutput
-    Selection.TypeText (Locality)
-End Sub
+Sub update_locality_name_placeholder()
+    ' Description:
+    '   Determines the locality name from the active document's file name
+    '   and performs a find and replace operation across all story ranges
+    '   to replace the placeholder "[Insert Locality Name]" with the
+    '   extracted locality name.
 
-Sub CoverName()
-    Dim Locality    As String
-    Locality = ActiveDocument.FullName
-    Locality = Left(Locality, InStrRev(Locality, "-") - 1)
-    Locality = Right(Locality, Len(Locality) - InStrRev(Locality, "\"))
+    ' --- Variables ---
+    ' Variable to hold the extracted locality name.
+    Dim locality_name As String
+    ' Object representing a story range (main text, header, footer, etc.).
+    Dim current_story_range As Range
+
+    ' Get the full file path of the active document.
+    locality_name = ActiveDocument.FullName
+    ' Extract the part of the string before the last hyphen.
+    locality_name = Left(locality_name, InStrRev(locality_name, "-") - 1)
+    ' Extract the part of the string after the last backslash (the file name part).
+    locality_name = Right(locality_name, Len(locality_name) - InStrRev(locality_name, "\"))
+
+    ' Debug Print statement from original code (myOutput is not defined here).
     Debug.Print "File Extension: " & myOutput
-    
-    Dim rngStory    As Range
-    For Each rngStory In ActiveDocument.StoryRanges
-        With rngStory.Find
+
+    ' --- Find and Replace ---
+    ' Loop through all story ranges in the document.
+    For Each current_story_range In ActiveDocument.StoryRanges
+        ' Perform a find and replace operation within the current story range.
+        With current_story_range.Find
+            ' Set the text to find.
             .Text = "[Insert Locality Name]"
-            .Replacement.Text = Locality
+            ' Set the replacement text using the extracted locality name.
+            .Replacement.Text = locality_name
+            ' Continue searching from the current position within the range.
             .Wrap = wdFindContinue
+            ' Execute the find and replace operation, replacing all occurrences.
             .Execute Replace:=wdReplaceAll
         End With
-    Next rngStory
-    lbl_Exit:
-    Exit Sub
-    
+    Next current_story_range
+
+    ' Original code included a label and Exit Sub, which are not necessary here
+    ' as the sub will exit naturally after the loop completes.
+    ' lbl_Exit:
+    ' Exit Sub
+
 End Sub
 
-Sub Cover_Page()
-    
+Sub insert_cover_page()
+    ' Description:
+    '   Inserts a cover page by finding and inserting a specific Building Block
+    '   entry ("Locality_Profiles_Cover_Page") from the "Building Blocks.dotx"
+    '   template at the beginning of the document. It also sets the document's
+    '   built-in "Title" property.
+
+    ' Go back to the beginning of the document to insert the cover page at the start.
     Selection.HomeKey Unit:=wdStory
-    
-    Dim t           As Template, BB As Template
-    ' make sure all building blocks are loaded
+
+    ' --- Insert Building Block ---
+    ' Variables to represent templates.
+    Dim current_template As Template
+    Dim building_blocks_template As Template
+
+    ' Ensure all building blocks are loaded into memory.
     Templates.LoadBuildingBlocks
-    ' get Building Blocks.dotx as a Template variable
-    For Each t In Templates
-        If LCase(t.Name) = "building blocks.dotx" Then
-            Set BB = t
+
+    ' Loop through available templates to find the specific Building Blocks template.
+    For Each current_template In Templates
+        ' Compare template names case-insensitively.
+        If LCase(current_template.Name) = "building blocks.dotx" Then
+            Set building_blocks_template = current_template
         End If
     Next
-    If Not BB Is Nothing Then
-        ' insert the entry
-        BB.BuildingBlockEntries("Locality_Profiles_Cover_Page").Insert _
-        Where:=Selection.Range, RichText:=True
-        
-        'Find and replace
+
+    ' Check if the Building Blocks template was found.
+    If Not building_blocks_template Is Nothing Then
+        ' Insert the specified Building Block entry from the template
+        ' at the current selection range.
+        building_blocks_template.BuildingBlockEntries("Locality_Profiles_Cover_Page").Insert _
+            Where:=Selection.Range, RichText:=True
+
+        ' --- Set Document Property ---
+        ' Set the document's built-in "Title" property.
+        ' This is often linked to fields within cover pages or headers.
         ActiveDocument.BuiltInDocumentProperties("Title") = "Locality Profile"
-        
+
     End If
+
 End Sub
