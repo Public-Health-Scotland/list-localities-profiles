@@ -9,6 +9,7 @@ rmd_files:
   - General-Health.Rmd
   - Lifestyle-Risk-Factors.Rmd
   - Unscheduled-Care.Rmd
+  - Appendix.Rmd
 
 # This deletes the merged file Bookdown creates internally after build
 delete_merged_file: true

@@ -10,8 +10,63 @@ on:
 permissions:
   contents: write
 
+
 jobs:
-  style_check:
+  style_rmd_with_styler:
+    name: Style Rmd using styler (runs only if .Rmd changed)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          # Use PR head ref for pull_request, otherwise use current ref for push
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref || github.ref }}
+          fetch-depth: 0  # Full history so diff works
+
+      - name: Detect changed .Rmd files
+        id: changed
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE_SHA="${{ github.event.pull_request.base.sha }}"
+            HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+          else
+            BASE_SHA="${{ github.event.before }}"
+            HEAD_SHA="${{ github.sha }}"
+          fi
+
+          echo "Diffing $BASE_SHA..$HEAD_SHA"
+          # List changed files across the push/PR and filter for .Rmd
+          CHANGED_RMD="$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | grep -E '\.Rmd$' || true)"
+          if [ -n "$CHANGED_RMD" ]; then
+            echo "rmd_changed=true" >> "$GITHUB_OUTPUT"
+            printf "%s\n" "$CHANGED_RMD"
+          else
+            echo "rmd_changed=false" >> "$GITHUB_OUTPUT"
+            echo "No .Rmd changes detected."
+          fi
+
+      - name: Setup R
+        if: steps.changed.outputs.rmd_changed == 'true'
+        uses: r-lib/actions/setup-r@v2
+
+      - name: Install styler
+        if: steps.changed.outputs.rmd_changed == 'true'
+        run: Rscript -e 'install.packages(c("styler", "knitr"), repos="https://cloud.r-project.org")'
+
+      - name: Style directory with styler (Rmd)
+        if: steps.changed.outputs.rmd_changed == 'true'
+        run: Rscript -e 'styler::style_dir(".", filetype = c("rmd", "rmarkdown"))'
+
+      - name: Commit and push styler changes
+        if: steps.changed.outputs.rmd_changed == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Style code with styler (R/Rmd)"
+          skip_checkout: true
+
+  style_with_air:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
