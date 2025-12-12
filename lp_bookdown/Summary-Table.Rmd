@@ -1,5 +1,5 @@
 
-```{r load_packages, include=FALSE}
+```{r load-packages-summary, include=FALSE}
 library(knitr)
 library(flextable)
 library(officer)
@@ -10,13 +10,13 @@ library(officedown)
 
 <!---BLOCK_LANDSCAPE_START--->
 
-```{r, include=FALSE}
+```{r summary-table-setup, include=FALSE}
 block_section(prop_section(type = "continuous"))
 ```
 
 # Summary Table
 
-```{r locality_names, include=FALSE}
+```{r define-locality-names, include=FALSE}
 # Set locality name object (with automatic wrapping)
 loc_name <- paste(LOCALITY, "Locality", sep = "\n") |>
   str_wrap(width = case_when(n_loc < 4 ~ 20, n_loc == 4 ~ 15, n_loc > 4 ~ 8))
@@ -40,7 +40,7 @@ headings <- c(
 )
 ```
 
-```{r summary_table_func, include=FALSE}
+```{r summary-table-function, include=FALSE}
 make_summary_table <- function(data) {
   info_cols <- 1:3
   loc_col <- 4
@@ -78,7 +78,7 @@ make_summary_table <- function(data) {
 }
 ```
 
-```{r demographics}
+```{r demographics-data}
 indicators <- c(
   "Total population",
   "Ratio male to female",
@@ -111,7 +111,7 @@ demographics_table
 \newline
 ######
 
-```{r housing}
+```{r housing-data}
 indicators <- c(
   "Total number of households",
   "Households with single occupant tax discount",
@@ -144,7 +144,7 @@ housing_table
 \newline
 ######
 
-```{r general_health}
+```{r general-health-data}
 indicators <- c(
   "Male average life expectancy in years",
   "Female average life expectancy in years",
@@ -186,7 +186,7 @@ general_health_table
 
 ###### \*At HSCP and Scotland level, the time period is a 3-year aggregate (`r latest_period_life_exp_otherareas`)
 \newline
-```{r lifestyle_risk_factors}
+```{r lifestyle-risk-factors-data}
 indicators <- c(
   "Alcohol-related hospital admissions per 100,000",
   "Alcohol-specific mortality per 100,000",
@@ -224,7 +224,7 @@ lifestyle_table
 \newline
 ######
 
-```{r hospital_community_care}
+```{r hospital-community-care-data}
 indicators <- c(
   "Emergency admissions per 100,000",
   "Unscheduled bed days per 100,000",
@@ -264,7 +264,7 @@ usc_table
 \newline
 ######
 
-```{r hospital_mental_health}
+```{r hospital-mental-health-data}
 indicators <- c(
   "Psychiatric patient hospitalisations per 100,000",
   "Unscheduled bed days per 100,000"
@@ -306,6 +306,6 @@ usc_mh_table
 
 \newpage
 
-```{r, include=FALSE}
+```{r set-landscape-orientation, include=FALSE}
 block_section(prop_section(page_size = page_size(orient = "landscape")))
 ```
