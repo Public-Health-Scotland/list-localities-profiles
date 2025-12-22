@@ -5,14 +5,7 @@ library(flextable)
 library(officer)
 library(officedown)
 ```
-
-\newpage
-
-<!---BLOCK_LANDSCAPE_START--->
-
-```{r, include=FALSE}
-block_section(prop_section(type = "continuous"))
-```
+# contents_anchor
 
 # Summary Table
 
@@ -304,8 +297,4 @@ usc_mh_table <- make_summary_table(usc_mh_values)
 usc_mh_table
 ```
 
-\newpage
-
-```{r, include=FALSE}
-block_section(prop_section(page_size = page_size(orient = "landscape")))
-```
+summary_anchor
