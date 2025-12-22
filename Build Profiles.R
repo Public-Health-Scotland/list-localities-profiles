@@ -94,6 +94,8 @@ for (HSCP in hscp_list) {
 
     document_path <- path(output_dir, output_doc_name)
 
+    orient(document_path)
+    
     cover_page_path <- path(
       lp_path,
       "templates",
