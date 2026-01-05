@@ -10,8 +10,32 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
+  style_with_air:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }} 
+          fetch-depth: 0  # Fetch full history for accurate diff
+      
+      - name: Install air
+        uses: posit-dev/setup-air@v1
+
+      - name: Style code using air
+        run: air format .
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Style code"
+          skip_checkout: true
+
   style_rmd_with_styler:
     name: Style Rmd using styler (runs only if .Rmd changed)
     runs-on: ubuntu-latest
@@ -64,25 +88,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Style code with styler (R/Rmd)"
-          skip_checkout: true
-
-  style_with_air:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.ref }} 
-          fetch-depth: 0  # Fetch full history for accurate diff
-      
-      - name: Install air
-        uses: posit-dev/setup-air@v1
-
-      - name: Style code using air
-        run: air format .
-
-      - name: Commit and push changes
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "Style code"
           skip_checkout: true
