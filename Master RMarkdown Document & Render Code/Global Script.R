@@ -844,9 +844,8 @@ create_testing_chapter <- function(chapters_oi, locality_oi, output_directory) {
 
 
 orient <- function(document_path) {
-  doc <- read_docx(document_path)
-  # Always start from the beginning
-  doc <- cursor_begin(doc)
+  doc <- read_docx(document_path) |>
+      cursor_begin(doc)
 
   # Define sections: each with a start keyword and orientation
   sections <- list(
@@ -868,22 +867,14 @@ orient <- function(document_path) {
     }
   }
 
-  #now remove anchors from body of report
-  sections <- list(
-    list(keyword = "contents_anchor", orientation = "portrait"),
-    list(keyword = "summary_anchor", orientation = "landscape") # revert back
-  )
-
-  # Loop through sections and apply orientation
-  for (sec in sections) {
+  # Remove anchors (only first two)
+  for (sec in sections[1:2]) {
     # Move cursor to the start of this section
     doc <- cursor_reach(doc, keyword = sec$keyword, fixed = TRUE)
 
     # remove anchors
-
     doc <- body_replace_all_text(doc, old_value = sec$keyword, new_value = "")
   }
 
-  # Save updated document
   print(doc, target = document_path)
 }
