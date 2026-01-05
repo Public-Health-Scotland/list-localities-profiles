@@ -847,7 +847,6 @@ create_testing_chapter <- function(chapters_oi, locality_oi, output_directory) {
 }
 
 
-  
 orient <- function(document_path)
 {
   
