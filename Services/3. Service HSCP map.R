@@ -45,7 +45,8 @@ shp_hscp <- shp |>
   filter(hscp2019name == HSCP) |>
   mutate(
     hscp_locality = stringr::str_wrap(hscp_locality, 24),
-    hscp_local = stringr::str_wrap(hscp_local, 24)
+    hscp_local = str_wrap(hscp_local, 24),
+    border_thickness = if_else(hscp_locality == LOCALITY, 0.8, 0.2)
   )
 
 # 3. Map Code ----
@@ -172,12 +173,14 @@ service_map <- ggmap(service_map_background) +
   geom_sf(
     data = shp_hscp,
     mapping = aes(
-      fill = hscp_local
+      fill = hscp_local,
+      linewidth = border_thickness
     ),
     colour = "black",
     alpha = 0.5,
     inherit.aes = FALSE
   ) +
+  scale_linewidth(range = c(0.2, 1), guide = "none") +
   labs(fill = "Locality")
 
 # check if services markers exist for locality
@@ -286,12 +289,14 @@ service_map_1 <- ggmap(service_map_background) +
   geom_sf(
     data = shp_hscp,
     mapping = aes(
-      fill = hscp_local
+      fill = hscp_local,
+      linewidth = border_thickness
     ),
     colour = "black",
     alpha = 0.5,
     inherit.aes = FALSE
   ) +
+  scale_linewidth(range = c(0.2, 1), guide = "none") +
   labs(fill = "Locality") +
   theme(legend.title = element_blank()) +
   scale_fill_manual(values = col_palette) +
