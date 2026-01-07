@@ -12,11 +12,15 @@ lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality
 
 # Source in functions code
 source("Master RMarkdown Document & Render Code/Global Script.R")
+source(
+  "Master RMarkdown Document & Render Code/overwrite_with_custom_functions.R"
+)
+
 lookup <- read_in_localities()
 # Specify HSCP(s) ----
 # use `unique(lookup$hscp2019name)` for all
 # hscp_list <- unique(lookup$hscp2019name)
-hscp_list <- "Angus"
+hscp_list <- "Moray"
 
 # NOTE - This checks that it exactly matches the lookup
 stopifnot(all(hscp_list %in% unique(lookup$hscp2019name)))
@@ -188,8 +192,7 @@ for (HSCP in hscp_list) {
     paste0(
       lp_path,
       "Master RMarkdown Document & Render Code/Output/background data/",
-      HSCP,
-      " - Locality Profile data.xlsx"
+      "custom Forres & Lossiemouth.xlsx"
     ),
     overwrite = TRUE
   )

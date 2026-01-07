@@ -158,7 +158,10 @@ check_missing_data_scotpho(adp_presc)
 
 
 # Long-term conditions
-ltc <- read_parquet(path(gen_health_data_dir, "LTC_from_SLF.parquet")) %>%
+ltc <- read_parquet(path(
+  gen_health_data_dir,
+  "LTC_from_SLF_Moray_custom.parquet"
+)) |>
   rename(
     "Arthritis" = "arth",
     "Asthma" = "asthma",
@@ -176,6 +179,7 @@ ltc <- read_parquet(path(gen_health_data_dir, "LTC_from_SLF.parquet")) %>%
     "Parkinsons" = "parkinsons",
     "Renal failure" = "refailure"
   ) %>%
+  drop_na(hscp_locality) %>%
   mutate(
     hscp_locality = gsub("&", "and", hscp_locality, fixed = TRUE),
     year = paste0("20", substr(year, 1, 2), "/", substr(year, 3, 4))
