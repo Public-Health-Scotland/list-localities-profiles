@@ -1,5 +1,3 @@
-\newpage
-
 ## Footnotes
 
 1.  The National Records Scotland (NRS) does not currently provide population projections at the locality level. To explore how the population in `r LOCALITY` is expected to change in the future, the percent changes in population projection to 2025 for `r HSCP` by age group and gender were calculated using the NRS Local Authority Population Projections. These percent changes were then applied to the `r LOCALITY` 2022 mid-year population estimates (also split by age group and gender) to obtain population projection estimates for `r LOCALITY`, based on the projections for the HSCP and the current population structure of the locality.
@@ -46,3 +44,4 @@ flextable(ppa_def, theme_fun = NULL) |>
   bold(j = 1, part = "body") |>
   set_table_properties(layout = "autofit")
 ```
+{{main_anchor}}

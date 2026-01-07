@@ -1,11 +1,11 @@
-
 ```{r load_packages, include=FALSE}
 library(knitr)
 library(flextable)
 library(officer)
 library(officedown)
 ```
-# contents_anchor
+
+{{contents_anchor}}
 
 # Summary Table
 
@@ -297,4 +297,4 @@ usc_mh_table <- make_summary_table(usc_mh_values)
 usc_mh_table
 ```
 
-summary_anchor
+{{summary_anchor}}
