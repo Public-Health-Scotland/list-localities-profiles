@@ -853,9 +853,9 @@ orient <- function(document_path) {
 
   # Define sections: each with a start keyword and orientation
   sections <- list(
-    list(keyword = "contents_anchor", orientation = "portrait"),
-    list(keyword = "summary_anchor", orientation = "landscape"),
-    list(keyword = "All years shown ", orientation = "portrait") # revert back
+    list(keyword = "{{contents_anchor}}", orientation = "portrait"),
+    list(keyword = "{{summary_anchor}}", orientation = "landscape"),
+    list(keyword = "{{main_anchor}}", orientation = "portrait")
   )
 
   # Loop through sections and apply orientation
@@ -869,11 +869,9 @@ orient <- function(document_path) {
     } else {
       doc <- officer::body_end_section_portrait(doc)
     }
-  }
 
-  # Remove anchors (only first two)
-  for (sec in sections[1:2]) {
-    # Move cursor to the start of this section
+    # Remove anchors
+    # Move cursor back to the anchor keyword
     doc <- officer::cursor_reach(doc, keyword = sec$keyword, fixed = TRUE)
 
     # remove anchors
