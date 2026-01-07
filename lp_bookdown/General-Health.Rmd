@@ -130,10 +130,9 @@ ftext("*COPD: Chronic Obstructive Pulmonary Disease", superscript_style)
 
 <!-- <div custom-style = "table-caption-heading">Table `r table_num`: Prevalence of the five most common physical LTCs as a percentage of the population across geographical areas (1 is the most prevalent).</div> -->
 
-`r ftext(glue("Table {table_num}: Top five most common physical LTCs in, {LOCALITY} Locality as a percentage of the population for {latest_year_ltc}, compared to {HSCP} HSCP and Scotland."), table_heading_style)`
 
 ```{r, fig.width = 7.5, fig.height = 3.5}
-ftext(paste0("Table ", table_num, ": Prevalence of the five most common physical LTCs as a percentage of the population across geographical areas (1 is the most prevalent)."), table_heading_style)
+ftext(glue("Table {table_num}: Top five most common physical LTCs in, {LOCALITY} Locality as a percentage of the population for {latest_year_ltc}, compared to {HSCP} HSCP and Scotland."), table_heading_style)
 
 top5_ltc_table
 
