@@ -102,8 +102,6 @@ demographics_table <- make_summary_table(demographic_values)
 demographics_table
 ```
 \newline
-######
-
 ```{r housing}
 indicators <- c(
   "Total number of households",
@@ -135,8 +133,6 @@ housing_table <- make_summary_table(housing_values)
 housing_table
 ```
 \newline
-######
-
 ```{r general_health}
 indicators <- c(
   "Male average life expectancy in years",
@@ -175,9 +171,10 @@ colnames(general_health_values) <- c("General Health Indicators", headings)
 general_health_table <- make_summary_table(general_health_values)
 
 general_health_table
-```
 
-###### \*At HSCP and Scotland level, the time period is a 3-year aggregate (`r latest_period_life_exp_otherareas`)
+ftext(
+  glue("*At HSCP and Scotland level, the time period is a 3-year aggregate ({latest_period_life_exp_otherareas})"), superscript_style)
+```
 \newline
 ```{r lifestyle_risk_factors}
 indicators <- c(
@@ -215,8 +212,6 @@ lifestyle_table <- make_summary_table(lifestyle_values)
 lifestyle_table
 ```
 \newline
-######
-
 ```{r hospital_community_care}
 indicators <- c(
   "Emergency admissions per 100,000",
@@ -255,8 +250,6 @@ usc_table <- make_summary_table(usc_values)
 usc_table
 ```
 \newline
-######
-
 ```{r hospital_mental_health}
 indicators <- c(
   "Psychiatric patient hospitalisations per 100,000",
