@@ -81,9 +81,16 @@ ltc_data <- slf |>
   ungroup()
 
 # Save data as parquet ----
+export_folder <- path(
+  lp_path,
+  "General Health",
+  paste("South Ayrshire Data", ext_year)
+)
+dir.create(export_folder, showWarnings = FALSE, recursive = TRUE)
+
 write_parquet(
   ltc_data,
-  path(gen_health_data_dir, "LTC_from_SLF.parquet")
+  path(export_folder, "LTC_from_SLF_South_Ayrshire_custom.parquet")
 )
 
 # Clean up the environment
