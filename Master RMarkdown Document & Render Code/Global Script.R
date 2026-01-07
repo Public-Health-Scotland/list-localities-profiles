@@ -849,7 +849,7 @@ create_testing_chapter <- function(chapters_oi, locality_oi, output_directory) {
 
 orient <- function(document_path) {
   doc <- read_docx(document_path) |>
-    cursor_begin(doc)
+    cursor_begin()
 
   # Define sections: each with a start keyword and orientation
   sections <- list(
