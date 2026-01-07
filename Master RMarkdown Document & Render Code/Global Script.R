@@ -844,8 +844,8 @@ create_testing_chapter <- function(chapters_oi, locality_oi, output_directory) {
 
 
 orient <- function(document_path) {
-  doc <- read_docx(document_path) |>
-    cursor_begin()
+  doc <- officer::read_docx(document_path) |>
+    officer::cursor_begin()
 
   # Define sections: each with a start keyword and orientation
   sections <- list(
@@ -857,23 +857,28 @@ orient <- function(document_path) {
   # Loop through sections and apply orientation
   for (sec in sections) {
     # Move cursor to the start of this section
-    doc <- cursor_reach(doc, keyword = sec$keyword, fixed = TRUE)
+    doc <- officer::ursor_reach(doc, keyword = sec$keyword, fixed = TRUE)
 
     # Apply section break + orientation
     if (sec$orientation == "landscape") {
-      doc <- body_end_section_landscape(doc)
+      doc <- officer::body_end_section_landscape(doc)
     } else {
-      doc <- body_end_section_portrait(doc)
+      doc <- officer::body_end_section_portrait(doc)
     }
   }
 
   # Remove anchors (only first two)
   for (sec in sections[1:2]) {
     # Move cursor to the start of this section
-    doc <- cursor_reach(doc, keyword = sec$keyword, fixed = TRUE)
+    doc <- officer::cursor_reach(doc, keyword = sec$keyword, fixed = TRUE)
 
     # remove anchors
-    doc <- body_replace_all_text(doc, old_value = sec$keyword, new_value = "")
+    doc <- officer::body_replace_all_text(
+      doc,
+      old_value = sec$keyword,
+      new_value = "",
+      fixed = TRUE
+    )
   }
 
   print(doc, target = document_path)
