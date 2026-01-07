@@ -1,6 +1,7 @@
 ##### LOCALITY PROFILES MASTER DOC RENDER CODE #####
 
 library(rmarkdown)
+library(fs)
 
 rm(list = ls())
 
@@ -10,6 +11,11 @@ Sys.umask("006")
 # Source in functions code
 source("Master RMarkdown Document & Render Code/Global Script.R")
 
+# Source custom localities function to overwrite the standard
+source(
+  "Master RMarkdown Document & Render Code/overwrite_with_custom_functions.R"
+)
+
 # Set file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 output_dir <- path(lp_path, "Master RMarkdown Document & Render Code", "Output")
@@ -18,15 +24,16 @@ output_dir <- path(lp_path, "Master RMarkdown Document & Render Code", "Output")
 lookup <- read_in_localities()
 
 # Specify HSCP(s) ----
-# use `unique(lookup$hscp2019name)` for all
-# or create a vector for multiple e.g. `c("Angus", "West Lothian")`
 # For a larger test, use the below to produce profiles for HSCPs likely to cause issues.
 # source("Master RMarkdown Document & Render Code/find_hscp_outliers.R")
 # hscp_list <- outlier_hscps
-hscp_list <- "Angus"
+hscp_list <- "Moray"
 
 # NOTE - This checks that it exactly matches the lookup
 stopifnot(hscp_list %in% unique(lookup[["hscp2019name"]]))
+
+# We don't want to create a profile doc for 'other areas'
+locality_list <- locality_list[locality_list != "Other areas"]
 
 # Loop over HSCP ----
 # 'looping' over one HSCP is fine.
