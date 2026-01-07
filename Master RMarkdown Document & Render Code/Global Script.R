@@ -861,7 +861,7 @@ orient <- function(document_path) {
   # Loop through sections and apply orientation
   for (sec in sections) {
     # Move cursor to the start of this section
-    doc <- officer::ursor_reach(doc, keyword = sec$keyword, fixed = TRUE)
+    doc <- officer::cursor_reach(doc, keyword = sec$keyword, fixed = TRUE)
 
     # Apply section break + orientation
     if (sec$orientation == "landscape") {
