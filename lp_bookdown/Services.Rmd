@@ -10,7 +10,7 @@ fpar(
   ftext("2", table_heading_superscript_style) # Superscript
 )
 
-service_map
+print(service_map)
 
 figure_num <- figure_num + 1
 ```
