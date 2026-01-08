@@ -838,7 +838,7 @@ create_testing_chapter <- function(chapters_oi, locality_oi, output_directory) {
 
   document_path <- path(output_dir, output_doc_name)
 
-  apply_sensitivity_label(
+  phstemplates::apply_sensitivity_label(
     document_path,
     "OFFICIAL_SENSITIVE_VMO"
   )
