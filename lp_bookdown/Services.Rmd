@@ -1,0 +1,29 @@
+\newpage
+
+# Services
+
+```{r fig.width=6, fig.cap= "A map of the health and social care partnership including a breakdown on localities with the locations of all the GP practices, care homes, emergency depertments and minor injury units."}
+fpar(
+  ftext(paste0("Figure ", figure_num, ": Map of services by locality in ", HSCP, " HSCP"), table_heading_style),
+  ftext("2", table_heading_superscript_style) # Superscript
+)
+
+print(service_map)
+
+figure_num <- figure_num + 1
+```
+
+```{r }
+fpar(
+  ftext(paste0("Table ", table_num, ": Number of each type of service in ", LOCALITY, " Locality"), table_heading_style),
+  ftext("2", table_heading_superscript_style) # Superscript
+)
+
+flextable(services_tibble, theme_fun = NULL) |>
+  lp_flextable_theme() |>
+  bold(j = 1, part = "body") |>
+  set_header_labels(values = c("Service Type", "Service", "Number")) |>
+  set_table_properties(layout = "autofit")
+
+table_num <- table_num + 1
+```

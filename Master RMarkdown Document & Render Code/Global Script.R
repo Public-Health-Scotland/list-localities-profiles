@@ -21,6 +21,9 @@ library(glue)
 library(fs)
 library(arrow)
 library(phsstyles)
+library(scales)
+library(flextable)
+library(officer)
 library(memoise)
 
 # Prefer dplyr functions if there's a conflict
@@ -690,4 +693,195 @@ save_dataframes_to_excel <- function(dataframes, sheet_names, file_path) {
 
   # Save the workbook to a file
   openxlsx2::wb_save(wb, file = file_path, overwrite = TRUE)
+}
+
+
+# flextable function
+
+lp_flextable_theme <- function(ft) {
+  ft %>%
+    bold(part = "header") %>%
+    bg(bg = "#43358B", part = "header") %>%
+    color(color = "white", part = "header") %>%
+    height(height = 0.236, part = "body") %>%
+    hrule(rule = "atleast", part = "body") %>%
+    align(align = "center", part = "header") %>%
+    valign(valign = "center", part = "header") %>%
+    valign(valign = "top", part = "body") %>%
+    colformat_num(big.mark = "") %>%
+    fontsize(size = 10, part = "all") %>%
+    border(
+      border = fp_border_default(color = "#000000", width = 0.5),
+      part = "all"
+    )
+}
+
+add_cover_page <- function(
+  document_path,
+  cover_page_path,
+  main_title,
+  date = format(Sys.Date(), "%d/%m/%Y"),
+  subtitle = ""
+) {
+  # Load and update cover page
+  cover_page <- cover_page_path |>
+    officer::read_docx() |>
+    officer::body_replace_all_text("Publication title", main_title) |>
+    officer::body_replace_all_text("Subtitle", subtitle) |>
+    officer::body_replace_all_text("DD Month YYYY", date)
+
+  # Extract document name and folder
+  document_name <- fs::path_file(document_path)
+  document_folder <- fs::path_dir(document_path)
+
+  # Sanitize and apply custom replacements
+  esc_char_document_name <- document_name |>
+    fs::path_sanitize() |>
+    stringr::str_replace_all("[&\\- ]", "_")
+
+  # Build new path and rename original file
+  esc_char_document_path <- fs::path(document_folder, esc_char_document_name)
+  fs::file_move(document_path, esc_char_document_path)
+
+  # Convert document to XML for merging
+  xml_elt <- esc_char_document_path |>
+    officer::block_pour_docx() |>
+    officer::to_wml(add_ns = TRUE)
+
+  # Ensure XML references match sanitized path
+  if (stringr::str_detect(xml_elt, esc_char_document_path)) {
+    xml_elt <- stringr::str_replace_all(
+      xml_elt,
+      stringr::fixed(esc_char_document_path),
+      esc_char_document_path
+    )
+  }
+
+  # Merge cover page and report
+  cover_page |>
+    officer::cursor_end() |>
+    officer::body_add_break() |>
+    officer::body_add_xml(str = xml_elt) |>
+    officer::set_doc_properties(title = main_title) |>
+    print(esc_char_document_path)
+
+  # Restore original filename
+  fs::file_move(esc_char_document_path, document_path)
+}
+
+
+create_testing_chapter <- function(chapters_oi, locality_oi, output_directory) {
+  output_dir <- output_directory
+
+  LOCALITY <- locality_oi
+
+  lookup <- read_in_localities()
+
+  if ("Demographics.Rmd" %in% chapters_oi) {
+    # Demographics ----
+    source("Demographics/1. Demographics - Population.R")
+    source("Demographics/2. Demographics - SIMD.R")
+  }
+
+  if ("Housing.Rmd" %in% chapters_oi) {
+    # Housing ----
+    source("Households/Households Code.R")
+  }
+
+  if ("Services.Rmd" %in% chapters_oi) {
+    # Services ----
+    source("Services/2. Services data manipulation & table.R")
+    source("Services/3. Service HSCP map.R")
+  }
+
+  if ("General-Health.Rmd" %in% chapters_oi) {
+    # General Health ----
+    source("General Health/3. General Health Outputs.R")
+  }
+
+  if ("Lifestyle-Risk-Factors.Rmd" %in% chapters_oi) {
+    # Lifestyle & Risk Factors ----
+    source("Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
+  }
+
+  if ("Unscheduled-Care.Rmd" %in% chapters_oi) {
+    # Unscheduled Care ----
+    source("Unscheduled Care/2. Unscheduled Care outputs.R")
+  }
+
+  chapters_oi_name <- chapters_oi %>%
+    gsub(".Rmd", "", .) %>%
+    paste(collapse = " ")
+
+  # read _bookdown.yaml file
+  yaml_file <- yaml::read_yaml("lp_bookdown/_bookdown.yaml")
+
+  # change included chapters to relevant chapter(s) only + index.Rmd (sets formatting)
+  yaml_file$rmd_files <- c("index.Rmd", chapters_oi)
+
+  # write temporary yaml with relevant chapters to be used in rendering
+  yaml::write_yaml(yaml_file, path(tempdir(), "_practice_chapter_temp.yaml"))
+
+  output_doc_name <- glue(
+    "{LOCALITY} - Locality Profile {chapters_oi_name} Practice Chapter.docx"
+  )
+
+  # render test chapter
+  bookdown::render_book(
+    input = "lp_bookdown",
+    output_dir = output_dir,
+    new_session = FALSE,
+    output_file = output_doc_name,
+    output_format = "bookdown::word_document2",
+    config_file = path(tempdir(), "_practice_chapter_temp.yaml")
+  )
+
+  document_path <- path(output_dir, output_doc_name)
+
+  phstemplates::apply_sensitivity_label(
+    document_path,
+    "OFFICIAL_SENSITIVE_VMO"
+  )
+
+  return(document_path)
+}
+
+
+orient <- function(document_path) {
+  doc <- officer::read_docx(document_path) |>
+    officer::cursor_begin()
+
+  # Define sections: each with a start keyword and orientation
+  sections <- list(
+    list(keyword = "{{contents_anchor}}", orientation = "portrait"),
+    list(keyword = "{{summary_anchor}}", orientation = "landscape"),
+    list(keyword = "{{main_anchor}}", orientation = "portrait")
+  )
+
+  # Loop through sections and apply orientation
+  for (sec in sections) {
+    # Move cursor to the start of this section
+    doc <- officer::cursor_reach(doc, keyword = sec$keyword, fixed = TRUE)
+
+    # Apply section break + orientation
+    if (sec$orientation == "landscape") {
+      doc <- officer::body_end_section_landscape(doc)
+    } else {
+      doc <- officer::body_end_section_portrait(doc)
+    }
+
+    # Remove anchors
+    # Move cursor back to the anchor keyword
+    doc <- officer::cursor_reach(doc, keyword = sec$keyword, fixed = TRUE)
+
+    # remove anchors
+    doc <- officer::body_replace_all_text(
+      doc,
+      old_value = sec$keyword,
+      new_value = "",
+      fixed = TRUE
+    )
+  }
+
+  print(doc, target = document_path)
 }

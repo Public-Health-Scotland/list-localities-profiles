@@ -1,0 +1,10 @@
+
+# Notes for this profile
+
+-   All years shown are calendar years unless otherwise specified.
+
+-   Upper and lower 95% confidence intervals are shown throughout this document where available. In charts, these are displayed as shaded areas on either side of trend lines or as black error bars in bar charts. Confidence intervals show the range of possible values and a certainty that the true value falls within them.
+
+-   Definitions for the indicators shown are available in Appendix 1.
+
+-   Any zero figures for some indicators will indicate either suppression of small data or a complete lack of data available for this locality.
