@@ -12,8 +12,6 @@ For the most recent time period available, `r LOCALITY` Locality had:
 
 The graph below shows the number of dwellings in `r LOCALITY` from `r min(house_dat$year)` to `r max_year_housing`.
 
-<!-- <Div custom-style = "Table or chart caption">Figure `r figure_num`: Number of dwellings time trend.</Div> -->
-
 ```{r fig.width = 8.5, fig.height = 4, warning = FALSE}
 ftext(paste0("Figure ", figure_num, ": Number of dwellings time trend."), table_heading_style)
 
@@ -25,8 +23,6 @@ figure_num <- figure_num + 1
 Of the total number of dwellings in `r max_year_housing`, `r perc_single_discount`% (`r n_single_discount` households) were occupied by an individual receiving a single-occupant council tax discount. Furthermore, `r perc_exempt`% (`r n_exempt` households) were occupied and exempt from council tax.
 
 There were `r n_second_homes` dwellings classed as a second home in `r max_year_housing`, these dwellings made up `r perc_second_homes`% of the households in `r LOCALITY`.
-
-<!-- <Div custom-style = "Table or chart caption">Table `r table_num`: Breakdown of dwelling types by year for `r LOCALITY` locality.</Div> -->
 
 ```{r }
 ftext(paste0("Table ", table_num, ": Breakdown of dwelling types by year for ", LOCALITY, " locality."), table_heading_style)
@@ -46,8 +42,6 @@ Source: Scottish Assessors' Association (via NRS)
 
 The proportion of households within each council tax band are displayed in the chart below, figures are shown in Table `r table_num`.
 
-<!-- <Div custom-style = "Table or chart caption">Figure `r figure_num`: Breakdown of households by council tax band for `r LOCALITY` in `r max_year_housing`.</Div> -->
-
 ```{r fig.width = 7, fig.height = 2, warning = FALSE, fig.cap = 'A bar graph showing the proportion of Households in each council tax band for the locality for the most recent year'}
 ftext(paste0("Figure ", figure_num, ": Breakdown of households by council tax band for ", LOCALITY, " in ", max_year_housing, "."), table_heading_style)
 
@@ -55,8 +49,6 @@ ctb_plot
 
 figure_num <- figure_num + 1
 ```
-
-<!-- <Div custom-style = "Table or chart caption">Table `r table_num`: Percentage of households by council tax band for `r LOCALITY` in `r max_year_housing`.</Div> -->
 
 ```{r }
 ftext(paste0("Table ", table_num, ": Percentage of households by council tax band for ", LOCALITY, " in ", max_year_housing, "."), table_heading_style)
