@@ -1,3 +1,4 @@
+source("renv/activate.R")
 # readr options ----
 # Use lazy reading for CSVs (should be faster)
 # https://www.tidyverse.org/blog/2021/11/readr-2-1-0-lazy/
