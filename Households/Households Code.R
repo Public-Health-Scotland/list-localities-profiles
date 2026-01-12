@@ -42,6 +42,17 @@ ext_year <- 2024
 # LOCALITY <- "Whalsay and Skerries"
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
 
+# Global Script Function to read in Localities Lookup
+lookup <- read_in_localities(dz_level = TRUE) %>%
+  select(datazone2011, hscp_locality) %>%
+  filter(hscp_locality == LOCALITY)
+
+# Global Script Function to read in Localities Lookup
+lookup2 <- read_in_localities(dz_level = FALSE)
+
+# This will set the HSCP for the chosen locality. Testing only.
+# HSCP <- get_hscp_from_locality(LOCALITY, lookup2)
+
 ##################### Section 2 - Households Data #############################
 
 ## 2a) Data imports & cleaning ----
@@ -66,11 +77,6 @@ house_raw_dat <- map(
   }
 ) |>
   list_rbind()
-
-# Global Script Function to read in Localities Lookup
-lookup <- read_in_localities(dz_level = TRUE) %>%
-  select(datazone2011, hscp_locality) %>%
-  filter(hscp_locality == LOCALITY)
 
 
 # filter housing data for locality of interest
@@ -289,12 +295,6 @@ perc_houses_FH <- format_number_for_text(
 ########################## Section 4 - Objects for Summary Table ########################
 
 ## Relevant lookups for creating the table objects
-
-# Global Script Function to read in Localities Lookup
-lookup2 <- read_in_localities(dz_level = FALSE)
-
-# Determine HSCP and HB based on Loc
-HSCP <- as.character(filter(lookup2, hscp_locality == LOCALITY)$hscp2019name)
 
 # Determine other localities based on LOCALITY object
 other_locs <- lookup2 %>%
