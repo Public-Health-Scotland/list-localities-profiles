@@ -54,8 +54,9 @@ pop_10y_groups <- pop_raw_data |>
   pivot_longer(
     cols = starts_with("age"),
     names_to = "age_label",
-    names_transform = \(age_label)
-      str_sub(string = age_label, start = 4, end = 5),
+    names_transform = \(age_label) {
+      str_sub(string = age_label, start = 4, end = 5)
+    },
     names_ptypes = character(),
     values_to = "pop",
     values_ptypes = integer()
