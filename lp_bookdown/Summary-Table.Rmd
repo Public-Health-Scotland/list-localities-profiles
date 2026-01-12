@@ -173,7 +173,8 @@ general_health_table <- make_summary_table(general_health_values)
 general_health_table
 
 ftext(
-  glue("*At HSCP and Scotland level, the time period is a 3-year aggregate ({latest_period_life_exp_otherareas})"), superscript_style)
+  glue("*At HSCP and Scotland level, the time period is a 3-year aggregate ({latest_period_life_exp_otherareas})"), superscript_style
+)
 ```
 \newline
 ```{r lifestyle_risk_factors}
