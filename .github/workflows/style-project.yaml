@@ -111,7 +111,3 @@ jobs:
         with:
           commit_message: "Style code"
           skip_checkout: true
-          file_pattern: |
-            **/*.R
-            **/*.Rmd
-            **/*.Rmarkdown
