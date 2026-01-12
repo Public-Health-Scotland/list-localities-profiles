@@ -41,7 +41,10 @@ figure_num <- figure_num + 1
 Table `r table_num` provides the average life expectancy for men and women in different areas for the latest time period available.
 
 ```{r}
-ftext(paste0("Table ", figure_num, ": Average life expectancy in years for the latest time periods (", latest_period_life_exp_loc, "aggregated years for the locality; ", latest_period_life_exp_otherareas, " aggregated years for other areas)."), table_heading_style)
+ftext(
+   glue("Table {figure_num}: Average life expectancy in years for the latest time periods ({latest_period_life_exp_loc} aggregated years for the locality; {latest_period_life_exp_otherareas} aggregated years for other areas)."),
+   table_heading_style
+)
 
 flextable(life_exp_table, theme_fun = NULL) |>
   lp_flextable_theme() |>
