@@ -37,6 +37,7 @@ jobs:
             any::lifecycle
             any::purrr
             any::gh
+            any::cyclocomp
 
       - name: Extract and lint files changed by this PR
         run: |
