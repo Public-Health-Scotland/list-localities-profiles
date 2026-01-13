@@ -1,10 +1,3 @@
----
-title: ''
-output: 
-  word_document:
-    reference_docx: "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Summary Table/ST_ref_doc.docx"
----
-
 ```{r load_packages, include=FALSE}
 library(knitr)
 library(flextable)
@@ -12,43 +5,9 @@ library(officer)
 library(officedown)
 ```
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-```
+{{contents_anchor}}
 
-```{r testing_setup, include=FALSE}
-# Lines below for testing only (pick one locality):
-# LOCALITY <- "Falkirk West"
-# LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
-# LOCALITY <- "Mid-Argyll, Kintyre and Islay"
-# LOCALITY <- "City of Dunfermline"
-# LOCALITY <- "Barra"
-# LOCALITY <- "Whalsay and Skerries"
-# LOCALITY <- "Inverclyde East"
-# LOCALITY <- "Kirkcaldy"
-
-# # Project file path
-# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
-#
-# # Source in global functions/themes script
-# source("Master RMarkdown Document & Render Code/Global Script.R")
-#
-# # Demographics
-# source("Demographics/1. Demographics - Population.R")
-# source("Demographics/2. Demographics - SIMD.R")
-#
-# # Housing
-# source("Households/Households Code.R")
-#
-# # General Health
-# source("General Health/3. General Health Outputs.R")
-#
-# # Lifestyle & Risk Factors
-# source("Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
-#
-# # Unscheduled Care
-# source("Unscheduled Care/2. Unscheduled Care outputs.R")
-```
+# Summary Table
 
 ```{r locality_names, include=FALSE}
 # Set locality name object (with automatic wrapping)
@@ -142,7 +101,7 @@ demographics_table <- make_summary_table(demographic_values)
 
 demographics_table
 ```
-
+\newline
 ```{r housing}
 indicators <- c(
   "Total number of households",
@@ -173,13 +132,13 @@ housing_table <- make_summary_table(housing_values)
 
 housing_table
 ```
-
+\newline
 ```{r general_health}
 indicators <- c(
   "Male average life expectancy in years",
   "Female average life expectancy in years",
   "Deaths aged 15-44 per 100,000",
-  "Population with long-term condition",
+  "Population estimated to have at least one LTC",
   "Cancer registrations per 100,000",
   "Anxiety, depression & psychosis prescriptions"
 )
@@ -212,10 +171,12 @@ colnames(general_health_values) <- c("General Health Indicators", headings)
 general_health_table <- make_summary_table(general_health_values)
 
 general_health_table
+
+ftext(
+  glue("*At HSCP and Scotland level, the time period is a 3-year aggregate ({latest_period_life_exp_otherareas})"), superscript_style
+)
 ```
-
-###### \*At HSCP and Scotland level, the time period is a 3-year aggregate (`r latest_period_life_exp_otherareas`)
-
+\newline
 ```{r lifestyle_risk_factors}
 indicators <- c(
   "Alcohol-related hospital admissions per 100,000",
@@ -251,7 +212,7 @@ lifestyle_table <- make_summary_table(lifestyle_values)
 
 lifestyle_table
 ```
-
+\newline
 ```{r hospital_community_care}
 indicators <- c(
   "Emergency admissions per 100,000",
@@ -289,7 +250,7 @@ usc_table <- make_summary_table(usc_values)
 
 usc_table
 ```
-
+\newline
 ```{r hospital_mental_health}
 indicators <- c(
   "Psychiatric patient hospitalisations per 100,000",
@@ -306,6 +267,7 @@ loc_values <- c(
     big.mark = ","
   )
 )
+
 other_loc_values <- bind_rows(other_locs_psych_hosp, other_loc_bed_days_mh)
 hscp_values <- c(
   format(filter(hscp_psych_hosp, year == max(year))$measure, big.mark = ","),
@@ -328,3 +290,5 @@ usc_mh_table <- make_summary_table(usc_mh_values)
 
 usc_mh_table
 ```
+
+{{summary_anchor}}

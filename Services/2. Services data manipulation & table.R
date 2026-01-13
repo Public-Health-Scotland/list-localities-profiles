@@ -47,7 +47,7 @@ n_loc <- count_localities(lookup2, HSCP)
 ## Read in Postcode file for latitudes and longitudes
 
 postcode_lkp <- read_in_postcodes() %>%
-  mutate(postcode = gsub(" ", "", pc7)) %>%
+  mutate(postcode = gsub(" ", "", pc7, fixed = TRUE)) %>%
   select(
     postcode,
     grid_reference_easting,
@@ -93,7 +93,7 @@ rm(curr, hosp, MDSF)
 
 prac <- prac %>%
   select(practice_code, gp_practice_name, practice_list_size, postcode) %>%
-  mutate(postcode = gsub(" ", "", postcode))
+  mutate(postcode = gsub(" ", "", postcode, fixed = TRUE))
 
 # Merge practice data with postcode and locality lookups
 markers_gp <- left_join(prac, postcode_lkp, by = "postcode") %>%
@@ -118,7 +118,7 @@ hosp_lookup <- hosp_types %>%
     select(hosp_postcodes, location, postcode),
     by = join_by(location)
   ) %>%
-  mutate(postcode = gsub(" ", "", postcode)) %>%
+  mutate(postcode = gsub(" ", "", postcode, fixed = TRUE)) %>%
   left_join(postcode_lkp, by = "postcode")
 
 # MIUs
@@ -158,7 +158,7 @@ markers_care_home <- care_homes %>%
   ) %>%
   filter(type == "Care Home Service") %>%
   filter(subtype == "Older People") %>%
-  mutate(postcode = gsub(" ", "", service_postcode)) %>%
+  mutate(postcode = gsub(" ", "", service_postcode, fixed = TRUE)) %>%
   left_join(postcode_lkp, by = "postcode") %>%
   filter(hscp2019name == HSCP)
 
@@ -175,13 +175,13 @@ other_care_type <- care_homes %>%
   ) %>%
   filter(type == "Care Home Service") %>%
   filter(subtype != "Older People") %>%
-  mutate(postcode = gsub(" ", "", service_postcode)) %>%
+  mutate(postcode = gsub(" ", "", service_postcode, fixed = TRUE)) %>%
   left_join(postcode_lkp, by = "postcode") %>%
   filter(hscp_locality == LOCALITY)
 
 # Create table
 services_tibble <- tibble(
-  Type = c("**Primary Care**", "**A&E**", "", "**Care Home**", ""),
+  Type = c("Primary Care", "A&E", "", "Care Home", ""),
   Service = c(
     "GP Practice",
     "Emergency Department",

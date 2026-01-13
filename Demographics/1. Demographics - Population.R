@@ -133,8 +133,10 @@ pop_breakdown <- pops %>%
       gsub(
         "Plus",
         "+",
-        gsub("Pop", "", variable)
-      )
+        gsub("Pop", "", variable, fixed = TRUE),
+        fixed = TRUE
+      ),
+      fixed = TRUE
     )
   ) %>%
   rename(Gender = sex, Age = variable, Population = value) %>%
@@ -187,14 +189,9 @@ hist_pop_breakdown <- pops %>%
   select(-hscp_locality, -total_pop, -hscp2019name, -Pop65Plus) %>%
   reshape2::melt(id.vars = c("sex", "year")) %>%
   mutate(
-    variable = gsub(
-      "_",
-      "-",
-      gsub(
-        "Plus",
-        "+",
-        gsub("Pop", "", variable)
-      )
+    variable = str_replace_all(
+      variable,
+      c("Pop" = fixed(""), "Plus" = fixed("+"), "_" = fixed("-"))
     )
   ) %>%
   rename(Gender = sex, Age = variable, Population = value) %>%
@@ -315,13 +312,14 @@ pop_proj_dat <- locality_pop_proj %>%
 
 ## 4b) Time trend plot ----
 
-pop_plot_dat <- rbind(
-  clean_names(mutate(locality_pop_trend, data = "HISTORICAL")),
-  clean_names(mutate(pop_proj_dat, data = "PROJECTION"))
-) %>%
+pop_plot_dat <- bind_rows(
+  HISTORICAL = clean_names(locality_pop_trend),
+  PROJECTION = clean_names(pop_proj_dat),
+  .id = "data"
+) |>
   mutate(
     plot_lab = if_else(
-      as.numeric(year) %% 2 == 0,
+      year %% 2 == 0,
       format(pop, big.mark = ","),
       ""
     )

@@ -361,7 +361,7 @@ simd2016_dom <- simd2016_dom %>%
   ) %>%
   mutate(
     perc_16 = pop / total_pop,
-    domain = gsub("_16", "", variable)
+    domain = gsub("_16", "", variable, fixed = TRUE)
   ) %>%
   ungroup() %>%
   select(domain, perc_16, quintile = value)
@@ -379,7 +379,7 @@ simd2020_dom <- simd2020_dom %>%
   ) %>%
   mutate(
     perc_20 = pop / total_pop,
-    domain = gsub("_20", "", variable)
+    domain = gsub("_20", "", variable, fixed = TRUE)
   ) %>%
   ungroup() %>%
   select(domain, perc_20, quintile = value)
