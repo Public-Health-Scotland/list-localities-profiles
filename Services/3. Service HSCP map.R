@@ -44,7 +44,7 @@ shp <- shp |>
 shp_hscp <- shp |>
   filter(hscp2019name == HSCP) |>
   mutate(
-    hscp_locality = stringr::str_wrap(hscp_locality, 24),
+    hscp_locality = str_wrap(hscp_locality, 24),
     hscp_local = str_wrap(hscp_local, 24),
     border_thickness = if_else(hscp_locality == LOCALITY, 0.8, 0.2)
   )
