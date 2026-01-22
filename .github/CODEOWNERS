@@ -5,22 +5,49 @@
 # the repo. Unless a later match takes precedence,
 # @Public-Health-Scotland/list-locality-profiles will be requested for
 # review when someone opens a pull request.
-*  @Public-Health-Scotland/list-locality-profiles
+* @Public-Health-Scotland/list-locality-profiles
 
-# Demographics
-/Demographics/ @cfraser2020
+# GitHub infrastructure - James
+/.github/ @moohan
+/README.md @moohan
+/LICENSE @moohan
+/.lintr @moohan
+/.all-contributorsrc @moohan
 
-# Housing
-/Households/ @JosieSteele
+# Top-level
+/.Rprofile @moohan
+/Build\ Profiles.R @moohan
+/Create\ Testing\ Chapter.R @RyanDuffy01
 
-# General Health
-/General\ Health/ @moohan
+# Build / Render / Release
+/Master\ RMarkdown\ Document\ &\ Render\ Code/ @moohan
+/final_copying/ @moohan
+/Master\ RMarkdown\ Document\ &\ Render\ Code/make_sdc_output.R @Cfraser2020
 
-# Lifestyle & Risk Factors
-/Lifestyle\ \&\ Risk\ Factors @JosieSteele
+# Demographics - Ryan
+/Demographics/ @RyanDuffy01
+/lp_bookdown/Demographics.Rmd @RyanDuffy01
 
-# Services
+# General Health - Clive (with James)
+/General\ Health/ @moohan @CliveWG
+/lp_bookdown/General-Health.Rmd @moohan @CliveWG
+
+# Housing - Khansa
+/Households/ @khansh01
+/lp_bookdown/Housing.Rmd @khansh01
+
+# Lifestyle & Risk Factors - Clive
+/Lifestyle\ &\ Risk\ Factors/ @CliveWG
+/lp_bookdown/Lifestyle-Risk-Factors.Rmd @CliveWG
+
+# Services - Ryan
 /Services/ @RyanDuffy01
+/lp_bookdown/Services.Rmd @RyanDuffy01
 
-# Hospital & Community Care
-/Unscheduled\ Care/ @CliveWG
+# Hospital & Community Care (Unscheduled Care) - Craig
+/Unscheduled\ Care/ @Cfraser2020
+/lp_bookdown/Unscheduled-Care.Rmd @Cfraser2020
+
+# Bookdown - Ryan
+/lp_bookdown/*.yaml  @RyanDuffy01
+/lp_bookdown/index.Rmd @RyanDuffy01
