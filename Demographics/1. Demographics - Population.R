@@ -205,36 +205,61 @@ pop_pyramid <- ggplot(
   )
 
 # Population Structure Changes
-hist_pop_breakdown <- pops %>%
+hist_pop_breakdown_10y_agebands <- pop_raw_data |>
   filter(
     hscp_locality == LOCALITY,
     year %in% c(max(year), max(year) - 5)
   ) %>%
-  select(-hscp_locality, -total_pop, -hscp2019name, -Pop65Plus) %>%
-  reshape2::melt(id.vars = c("sex", "year")) %>%
+  select(year, sex, starts_with("age")) |>
+  pivot_longer(
+    cols = starts_with("age"),
+    names_to = "age_label",
+    names_transform = \(age_label) {
+      str_sub(string = age_label, start = 4, end = 5)
+    },
+    names_ptypes = character(),
+    values_to = "pop",
+    values_ptypes = integer()
+  ) |>
   mutate(
-    variable = str_replace_all(
-      variable,
-      c("Pop" = fixed(""), "Plus" = fixed("+"), "_" = fixed("-"))
-    )
-  ) %>%
-  rename(Gender = sex, Age = variable, Population = value) %>%
-  group_by(Gender, Age) %>%
+    age_group = create_age_groups(
+      as.integer(age_label),
+      by = 10,
+      as_factor = TRUE
+    ),
+    sex = factor(sex, levels = c("F", "M"), labels = c("Female", "Male"))
+  ) |>
+  group_by(year, sex, age_group) |>
+  summarise(pop = sum(pop)) |>
+  ungroup() %>%
+  #rename(Gender = sex, Age = variable, Population = value) %>%
+  group_by(sex, age_group) %>%
   arrange(year) %>%
   summarise(
-    change = (last(Population) - first(Population)) / first(Population)
+    change = (last(pop) - first(pop)) / first(pop)
   ) %>%
-  ungroup() %>%
-  mutate(Gender = ifelse(Gender == "F", "Female", "Male"))
+  ungroup()
 
-ord <- c("0-4", "5-17", "18-44", "45-64", "65-74", "75-84", "85+")
+
+ord <- c(
+  "0-9",
+  "10-19",
+  "20-29",
+  "30-39",
+  "40-49",
+  "50-59",
+  "60-69",
+  "70-79",
+  "80-89",
+  "90+"
+)
 
 hist_pop_change <- ggplot(
-  hist_pop_breakdown,
+  hist_pop_breakdown_10y_agebands,
   aes(
-    x = factor(Age, levels = ord),
+    x = factor(age_group, levels = ord),
     y = change,
-    fill = Gender
+    fill = sex
   )
 ) +
   geom_col(position = position_dodge()) +
@@ -256,7 +281,6 @@ hist_pop_change <- ggplot(
     ),
     caption = "Source: National Records Scotland"
   )
-
 
 ######################## SECTION 4: Population over time ############################
 
