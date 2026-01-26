@@ -133,10 +133,10 @@ places <- read_csv(paste0(
   filter(datazone2011 %in% hscp_loc$datazone2011) |>
   # extra filter to remove place names with coordinates outwith locality
   filter(
-    Longitude >= min_long &
-      Longitude <= max_long &
-      Latitude >= min_lat &
-      Latitude <= max_lat
+    Longitude >= min_long,
+    Longitude <= max_long,
+    Latitude >= min_lat,
+    Latitude <= max_lat
   ) |>
   group_by(name) |>
   summarise(
@@ -146,7 +146,7 @@ places <- read_csv(paste0(
   ) |>
   st_as_sf(coords = c("Longitude", "Latitude"), remove = FALSE, crs = 4326) |>
   filter(!grepl("_", name, fixed = TRUE)) |> # filter incorrect name types
-  filter(type != "hamlet" & type != "village") # remove smaller places
+  filter(type != "hamlet", type != "village") # remove smaller places
 
 # 3.3 Background map ----
 locality_map_id <- read_csv(paste0(lp_path, "Services/", "locality_map_id.csv"))

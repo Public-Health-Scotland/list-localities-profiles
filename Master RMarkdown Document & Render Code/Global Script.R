@@ -312,7 +312,7 @@ read_in_pop_proj <- memoise(read_in_pop_proj_raw)
 
 clean_scotpho_dat <- function(data) {
   data |>
-    filter(area_type != "Council area" & area_type != "Intermediate zone") |>
+    filter(area_type != "Council area", area_type != "Intermediate zone") |>
     mutate(area_name = gsub("&", "and", area_name, fixed = TRUE)) |>
     mutate(
       area_name = if_else(
