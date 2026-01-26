@@ -17,7 +17,7 @@ lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality
 # Delete the full csv extract
 
 filt_and_save <- function(file_name) {
-  data <- read_csv(paste0(
+  raw_data <- read_csv(paste0(
     lp_path,
     "Services/DATA ",
     ext_year,
@@ -39,6 +39,8 @@ filt_and_save <- function(file_name) {
     file_name,
     ".csv"
   ))
+
+  return(raw_data)
 }
 
 # Extract all file names that have .csv within the services data folder (at any folder level)
