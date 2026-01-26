@@ -313,15 +313,13 @@ read_in_pop_proj <- memoise(read_in_pop_proj_raw)
 clean_scotpho_dat <- function(data) {
   data |>
     filter(area_type != "Council area" & area_type != "Intermediate zone") |>
-    mutate(area_name = gsub("&", "and", area_name, fixed = TRUE)) |>
     mutate(
+      area_name = gsub("&", "and", area_name, fixed = TRUE),
       area_name = if_else(
         area_name == "Renfrewshire West",
         "West Renfrewshire",
         area_name
-      )
-    ) |>
-    mutate(
+      ),
       area_type = if_else(area_type == "HSC partnership", "HSCP", area_type),
       area_type = if_else(area_type == "HSC locality", "Locality", area_type)
     )
