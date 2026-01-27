@@ -16,8 +16,10 @@
 ## Select a locality based on the HSCP (for source code "2. Services Outputs" to run - it does not matter which one is chosen)
 # LOCALITY <- read_in_localities() |> filter(hscp2019name == HSCP) |> slice(1) |> pull(hscp_locality)
 
-# Source the data manipulation script for services
-# source("Services/2. Services data manipulation & table.R")
+# Source the data manipulation scripts for services
+# source("Services/2a. hscp_services_data_manipulation.R")
+# source("Services/2b. locality_services_table.R")
+
 
 # 1. Set up ----
 
@@ -39,7 +41,7 @@ shp <- st_transform(shp, 4326) |>
 
 shp <- shp |>
   mutate(hscp_locality = gsub("&", "and", hscp_local, fixed = TRUE)) |>
-  merge(lookup2, by = "hscp_locality")
+  merge(lookup, by = "hscp_locality")
 
 shp_hscp <- shp |>
   filter(hscp2019name == HSCP) |>
@@ -431,7 +433,7 @@ rm(
   ext_year,
   hscp_loc,
   locality_map_id,
-  lookup2,
+  lookup,
   max_lat,
   max_long,
   min_lat,
