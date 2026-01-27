@@ -42,6 +42,9 @@ for (HSCP in hscp_list) {
     filter(hscp2019name == HSCP) |>
     pull(hscp_locality)
 
+  # Source in HSCP-level scripts
+  source("Services/2a. hscp_services_data_manipulation.R")
+
   # Loop to create the profiles for all the localities in the list
 
   # There are several stages to the profiles:
@@ -64,7 +67,7 @@ for (HSCP in hscp_list) {
     source("Households/Households Code.R")
 
     # Services ----
-    source("Services/2. Services data manipulation & table.R")
+    source("Services/2b. locality_services_table.R")
     source("Services/3. Service HSCP map.R")
 
     # General Health ----
