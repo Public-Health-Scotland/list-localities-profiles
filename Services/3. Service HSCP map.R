@@ -20,7 +20,6 @@
 # source("Services/2a. hscp_services_data_manipulation.R")
 # source("Services/2b. locality_services_table.R")
 
-
 # 1. Set up ----
 
 ## Load packages
