@@ -20,63 +20,110 @@ Sub HSCPProfilesMacro()
         ActiveDocument.TablesOfContents(1).Update
         Call CoverNameHSCP
         ActiveDocument.Sections.First.PageSetup.DifferentFirstPageHeaderFooter = TRUE
+
+        ' Save the changes made to the active document.
         ActiveDocument.Save
+
+        ' Close the active document.
         ActiveDocument.Close
-        ' set file to next in Dir
-        file = Dir()
+
+        ' Get the name of the next file in the directory for the next iteration of the loop.
+        document_file_name = Dir()
     Loop
+
 End Sub
 
-Sub SetStyleOfAllTablesAndPreserveAlignment()
-    ' SetStyleOfAllTablesAndPreserveAlignment Macro
-    
-    For Each objTable In ActiveDocument.Tables
-        
-        '******This first section is for recording the old column alignments*****'
-        numCols = objTable.Columns.Count        'first find the number of columns within the table.
-        ReDim oldColumnAlignments(numCols) As Integer        'initialize an integer array of length 'numCols'.
-        column_index = 0
-        For Each tableColumn In objTable.Columns
-            oldColumnAlignments(column_index) = tableColumn.Cells(1).Range.ParagraphFormat.Alignment
-            column_index = column_index + 1
-        Next tableColumn
-        '************************************************************************'
-        
-        '-------This section changes the styles of the tables to what they should be. -------'
-        objTable.Style = "ISD_Pubs_Tables"
-        PreviousBookmarkID = objTable.Range.PreviousBookmarkID
-        PreviousBookmarkName = ActiveDocument.Range.Bookmarks(PreviousBookmarkID)
-        
-        If PreviousBookmarkName = "glossary" Then
-            objTable.Style = "Glossary_Style"
+Sub set_table_styles_and_preserve_alignment()
+    ' Description:
+    '   Iterates through all tables in the active document.
+    '   For each table, it records the current column alignments,
+    '   applies table styles (default and specific based on preceding bookmark),
+    '   and then restores the original column alignments. Finally, it sets
+    '   the table's preferred width.
+
+    ' --- Variables ---
+    ' Represents each table object in the document during iteration.
+    Dim current_table As Word.Table
+    ' Variable to store the number of columns in the current table.
+    Dim number_of_columns
+    ' Array to temporarily store the original alignment settings for each column.
+    Dim original_column_alignments() As Integer
+    ' Counter variable used for indexing the alignment array.
+    Dim column_array_index
+    ' Represents each column object within a table during iteration.
+    Dim table_column As Word.Column
+    ' Variable to store the ID of the bookmark immediately preceding the table.
+    Dim preceding_bookmark_id
+    ' Variable to store the name of the bookmark immediately preceding the table.
+    Dim preceding_bookmark_name
+
+    ' Iterate through each table in the active document.
+    For Each current_table In ActiveDocument.Tables
+
+        ' --- Record Original Column Alignments ---
+        ' Get the number of columns in the current table.
+        number_of_columns = current_table.Columns.Count
+        ' Initialize an integer array of the same size as the number of columns.
+        ReDim original_column_alignments(number_of_columns) As Integer
+        ' Initialize the array index counter.
+        column_array_index = 0
+
+        ' Loop through each column in the table to record its alignment.
+        For Each table_column In current_table.Columns
+            ' Store the alignment of the first cell in the column.
+            original_column_alignments(column_array_index) = table_column.Cells(1).Range.ParagraphFormat.Alignment
+            ' Increment the index.
+            column_array_index = column_array_index + 1
+        Next table_column
+
+        ' --- Apply Table Styles ---
+        ' Apply a default table style.
+        current_table.Style = "ISD_Pubs_Tables"
+
+        ' Get the ID of the bookmark located immediately before the table.
+        preceding_bookmark_id = current_table.Range.PreviousBookmarkID
+        ' Get the name of the bookmark using its ID.
+        preceding_bookmark_name = ActiveDocument.Range.Bookmarks(preceding_bookmark_id)
+
+        ' Check if the preceding bookmark name is "glossary" and apply a specific style if true.
+        If preceding_bookmark_name = "glossary" Then
+            current_table.Style = "Glossary_Style"
         End If
-        
-        If PreviousBookmarkName = "tableA" Then        'Change these as needed for each style type!
-        objTable.Style = "TableA_Style"
-    End If
-    
-    If PreviousBookmarkName = "tableB" Then
-        objTable.Style = "TableB_Style"
-    End If
-    
-    If PreviousBookmarkName = "tableC" Then
-        objTable.Style = "TableC_Style"
-    End If
-    '------------------------------------------------------------------------------------'
-    
-    '^^^^This last section sets the alignments of each column of the table to what they were ^^^^'
-    '^^^^before the style of the table was changed.^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^'
-    i = 0
-    For Each tableColumn In objTable.Columns
-        tableColumn.Select
-        Selection.ParagraphFormat.Alignment = oldColumnAlignments(i)
-        i = i + 1
-    Next tableColumn
-    '^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^'
-    
-    objTable.PreferredWidth = 100        'Sets the Preferred Table width to 100% of the width of the page.
-    
-Next objTable
+
+        ' Check if the preceding bookmark name is "tableA" and apply a specific style if true.
+        ' Change these bookmark names and style names as needed.
+        If preceding_bookmark_name = "tableA" Then
+            current_table.Style = "TableA_Style"
+        End If
+
+        ' Check if the preceding bookmark name is "tableB" and apply a specific style if true.
+        If preceding_bookmark_name = "tableB" Then
+            current_table.Style = "TableB_Style"
+        End If
+
+        ' Check if the preceding bookmark name is "tableC" and apply a specific style if true.
+        If preceding_bookmark_name = "tableC" Then
+            current_table.Style = "TableC_Style"
+        End If
+
+        ' --- Restore Original Column Alignments ---
+        ' Reset the array index counter for restoring alignments.
+        column_array_index = 0
+
+        ' Loop through each column again to set its alignment back to the original.
+        For Each table_column In current_table.Columns
+            ' Select the current column.
+            table_column.Select
+            ' Apply the saved alignment from the array using the current index.
+            Selection.ParagraphFormat.Alignment = original_column_alignments(column_array_index)
+            ' Increment the index.
+            column_array_index = column_array_index + 1
+        Next table_column
+
+        ' Sets the Preferred Table width to 100% of the width of the page area.
+        current_table.PreferredWidth = 100
+
+    Next current_table
 
 End Sub
 
@@ -89,39 +136,69 @@ Sub InsertSummaryTableHSCP()
     HSCP = Left(HSCP, InStrRev(HSCP, "-") - 1)
     HSCP = Right(HSCP, Len(HSCP) - InStrRev(HSCP, "\"))
     Debug.Print "File Extension: " & myOutput
-    
-    'Insert summary table
+
+    ' --- Insert Summary Table Document ---
+    ' Insert a section break to isolate the summary table.
     Selection.InsertBreak Type:=wdSectionBreakNextPage
     Selection.InsertFile ("\\stats\LIST_analytics\West Hub\02 - Scaled Up Work\RMarkdown\Locality Profiles\Master RMarkdown Document & Render Code\Output\Summary Tables\" & HSCP & "- Summary Table.docx")
     
     'Convert summary table pages to landscape
     Selection.InsertBreak Type:=wdPageBreak
+    ' Insert another section break after the inserted table content.
+    ' This new section will contain the inserted table.
     Selection.InsertBreak Type:=wdSectionBreakNextPage
+
+    ' Move the selection up a couple of lines. The exact number might vary.
     Selection.MoveUp Unit:=wdLine, Count:=2
+
+    ' Check the current page orientation of the selected section
+    ' and toggle it between Portrait and Landscape.
+    ' Note: This will always set it to Landscape the first time unless it's already Landscape.
     If Selection.PageSetup.Orientation = wdOrientPortrait Then
         Selection.PageSetup.Orientation = wdOrientLandscape
     Else
         Selection.PageSetup.Orientation = wdOrientPortrait
     End If
+
+    ' Original cursor movements - likely related to screen view, not document structure.
     ActiveWindow.ActivePane.SmallScroll Down:=-3
     ActiveWindow.ActivePane.LargeScroll Down:=1
-    
+
 End Sub
 
-Sub TableOfContents()
-    Selection.HomeKey Unit:=wdStory        'go back to beginning of document
+Sub insert_table_of_contents()
+    ' Description:
+    '   Inserts a "Table of Contents" heading and then inserts a
+    '   Table of Contents field at the current cursor position,
+    '   generated from Heading 2 and Heading 3 styles.
+
+    ' Go back to the beginning of the document to ensure TOC is placed at the start.
+    Selection.HomeKey Unit:=wdStory
+
+    ' Insert a new paragraph where the heading will be placed.
     Selection.TypeParagraph
-    MyText = "Table of Contents"
-    Selection.TypeText (MyText)
-    
-    Set MyRange = Selection.Range
+
+    ' Define the text for the Table of Contents heading.
+    Dim toc_heading_text As String
+    toc_heading_text = "Table of Contents"
+
+    ' Type the heading text into the document.
+    Selection.TypeText (toc_heading_text)
+
+    ' Define the range where the Table of Contents will be inserted.
+    ' Selection.Range refers to the current cursor position.
+    Dim toc_insertion_range As Range
+    Set toc_insertion_range = Selection.Range
+
+    ' Add a Table of Contents field to the document.
     ActiveDocument.TablesOfContents.Add _
-                                        Range:=MyRange, _
-                                        UseFields:=False, _
-                                        UseHeadingStyles:=True, _
-                                        LowerHeadingLevel:=3, _
-                                        UpperHeadingLevel:=2, _
-                                        AddedStyles:="Heading 2, Heading 3"
+                                        Range:=toc_insertion_range, _
+                                        UseFields:=False, _         ' Do not use TC fields
+                                        UseHeadingStyles:=True, _   ' Generate from built-in heading styles
+                                        LowerHeadingLevel:=3, _     ' Include headings up to level 3
+                                        UpperHeadingLevel:=2, _     ' Include headings from level 2
+                                        AddedStyles:="Heading 2, Heading 3" ' Also include these specific styles
+
 End Sub
 
 Sub HSCPName()
@@ -151,25 +228,35 @@ Sub CoverNameHSCP()
             .Text = "[Insert HSCP Name]Locality"
             .Replacement.Text = HSCP
             .Wrap = wdFindContinue
+            ' Execute the find and replace operation, replacing all occurrences.
             .Execute Replace:=wdReplaceAll
         End With
-    Next rngStory
-    lbl_Exit:
-    Exit Sub
-    
+    Next current_story_range
+
+    ' Original code included a label and Exit Sub, which are not necessary here
+    ' as the sub will exit naturally after the loop completes.
+    ' lbl_Exit:
+    ' Exit Sub
+
 End Sub
 
 Sub Cover_PageHSCP()
     
     Selection.HomeKey Unit:=wdStory
-    
-    Dim t           As Template, BB As Template
-    ' make sure all building blocks are loaded
+
+    ' --- Insert Building Block ---
+    ' Variables to represent templates.
+    Dim current_template As Template
+    Dim building_blocks_template As Template
+
+    ' Ensure all building blocks are loaded into memory.
     Templates.LoadBuildingBlocks
-    ' get Building Blocks.dotx as a Template variable
-    For Each t In Templates
-        If LCase(t.Name) = "building blocks.dotx" Then
-            Set BB = t
+
+    ' Loop through available templates to find the specific Building Blocks template.
+    For Each current_template In Templates
+        ' Compare template names case-insensitively.
+        If LCase(current_template.Name) = "building blocks.dotx" Then
+            Set building_blocks_template = current_template
         End If
     Next
     If Not BB Is Nothing Then
@@ -181,4 +268,5 @@ Sub Cover_PageHSCP()
         ActiveDocument.BuiltInDocumentProperties("Title") = "HSCP Profile"
         
     End If
+
 End Sub

@@ -361,19 +361,17 @@ figure_num <- figure_num + 1
 
 ### Long-Term Physical Health Conditions and Multi-morbidity
 
-\newline
+The estimates in the following sections are based on an individual being hospitalised with a relevant condition *at any point* in the past. This methodology can lead to both undercounts and overcounts depending on the condition; see the footnotes for more details.^5^
 
 In the financial year `r latest_year_ltc`, in `r HSCP` HSCP, it is estimated that **`r format_number_for_text(ltc_percent_total_latest)`%** of the population had at least one physical long-term condition (LTC). These include cardiovascular, neurodegenerative, and respiratory conditions, as well as other organ conditions (namely liver disease and renal failure), arthritis, cancer, diabetes, and epilepsy. *Please note that estimates for this section are based on people who had contact with NHS services - see footnotes for further information and caveats on identifying LTCs.^6^*
 
-```{r ltc_waffles, echo = FALSE, fig.width = 9, fig.height = 3.5, fig.cap = 'Infographic split by age group showing the number of people out of ten that have at least one LTC. The age groups shown are under 65, 65-74, 75-84, and over 85.'}
+```{r ltc_waffles, echo = FALSE, fig.width = 9, fig.height = 3.5, fig.cap = 'Infographic split by age group showing the number of people out of ten estimated to have at least one LTC. The age groups shown are under 65, 65-74, 75-84, and over 85.'}
 ltc_waffles
 ```
 
-\newline
-
 The co-occurrence of two or more conditions, known as multi-morbidity, is broken down in Table `r table_num`, distinguishing between age groups. Overall, **`r format_number_for_text(ltc_multimorbidity_un65_perc)`**% of those under 65 have more than one LTC, compared to **`r format_number_for_text(ltc_multimorbidity_ov65_perc)`**% of those over 65.
 
-#### Table `r table_num`: Multi-morbidity of physical long-term conditions by age group in `r latest_year_ltc`. \newline
+#### Table `r table_num`: Multi-morbidity estimate of physical long-term conditions by age group in `r latest_year_ltc`. \newline
 
 ```{r ltc_multimorbidity_table, echo = FALSE}
 knitr::kable(ltc_multimorbidity_table)
@@ -387,26 +385,22 @@ table_num <- table_num + 1
 
 Below is a breakdown of the physical LTCs, for the financial year `r latest_year_ltc`. Figure `r figure_num` shows the prevalence of different LTCs in each age group in `r HSCP` HSCP, and Table `r table_num` illustrates the five most prevalent physical LTCs across all ages at the partnership, and Scotland levels.
 
-#### Figure `r figure_num`: The percentage of people with each physical LTC by age group. \newline
+#### Figure `r figure_num`: Prevalence estimates for physical LTC by age group for `r LOCALITY` Locality. \newline
 
-```{r ltc_types_plot, echo = FALSE, fig.width = 7.5, fig.height = 5, fig.cap = "A graph showing the prevalence of physical long term conditions by percentage of population for Under 65s and for Over 65s."}
+```{r ltc_types_plot, echo = FALSE, fig.width = 7.5, fig.height = 5, fig.cap = "A graph showing the prevalence estimates of physical long-term conditions by percentage of population for under 65s and for over 65s."}
 ltc_types_plot
 
 figure_num <- figure_num + 1
 ```
-
 \*COPD: Chronic Obstructive Pulmonary Disease
 
-#### Table `r table_num`: Prevalence of the five most common physical LTCs as a percentage of the population across geographical areas (1 is the most prevalent).
-
-\newline
+#### Table `r table_num`: Prevalence estimates of the five most common physical long-term conditions as a percentage of the population across areas (1 indicates the most prevalent).
 
 ```{r top5_ltc_table, echo = FALSE, fig.width = 7.5, fig.height = 3.5}
 top5_ltc_table
 
 table_num <- table_num + 1
 ```
-
 Source: Source Linkage Files
 
 ### Cancer
@@ -883,7 +877,8 @@ figure_num <- figure_num + 1
 
 4.  ScotPHO data is often reported using the European Age-Sex Standardised Rate per 100,000. This allows for comparisons across different areas to be made. For more information on how these rates are calculated, please refer to the [PHS website: Geography, population and deprivation support](https://publichealthscotland.scot/services/geography-population-and-deprivation-support/population/){.uri}.
 
-5.  Data on physical long-term conditions (LTC) is sourced from the Source Linkage Files (SLFs). These conditions are identified using ICD-9 and ICD-10 codes found in inpatient admissions' diagnosis fields for acute and mental health cases. Note that this data does not include all service users in Scotland diagnosed with an LTC, as not all of these individuals have utilized these services. Additionally, LTC rates are based on an adjusted population indicator in the Source Linkage Files, ensuring that the population sizes align more closely with official estimates.
+5.  Data on physical long-term conditions (LTC) is sourced from the SPARRA LTC table via the Source Linkage Files (SLFs). These conditions are identified using ICD-9 and ICD-10 diagnosis codes on acute (SMR01) admissions which have occurred since 1981. This underlying methodology will result in undercounts where individuals have an LTC but don't have a hospitalisation, and undercounts when individuals have a relevant hospitalisation but subsequently have no other symptoms. These under and overcounts will vary in scale for each condition.
+Additionally, LTC rates are based on an adjusted population indicator in the Source Linkage Files, ensuring that the population sizes align more closely with official estimates.
 
 ##### Page Break
 

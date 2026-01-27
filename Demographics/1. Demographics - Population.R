@@ -315,13 +315,14 @@ pop_proj_dat <- hscp_pop_proj_weight %>%
 
 ## 4b) Time trend plot ----
 
-pop_plot_dat <- rbind(
-  clean_names(mutate(locality_pop_trend, data = "HISTORICAL")),
-  clean_names(mutate(pop_proj_dat, data = "PROJECTION"))
-) %>%
+pop_plot_dat <- bind_rows(
+  HISTORICAL = clean_names(locality_pop_trend),
+  PROJECTION = clean_names(pop_proj_dat),
+  .id = "data"
+) |>
   mutate(
     plot_lab = if_else(
-      as.numeric(year) %% 2 == 0,
+      year %% 2 == 0,
       format(pop, big.mark = ","),
       ""
     )
