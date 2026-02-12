@@ -1,0 +1,40 @@
+---
+title: "Localities Profiles"
+author: "Public Health Scotland"
+site: bookdown::bookdown_site
+documentclass: book
+---
+
+```{r,echo=FALSE}
+library(officedown)
+
+table_heading_style <- fp_text(
+  color = "#43358B",
+  font.size = 12,
+  bold = TRUE,
+  font.family = "Arial"
+)
+
+table_heading_superscript_style <- fp_text(
+  color = "#43358B",
+  font.size = 12,
+  font.family = "Arial",
+  vertical.align = "superscript"
+)
+
+superscript_style <- fp_text(
+  color = "black",
+  font.size = 12,
+  italic = TRUE,
+  font.family = "Arial",
+  vertical.align = "superscript"
+)
+```
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+options(kableExtra.auto_format = FALSE)
+
+figure_num <- 1 # object for figure numbers
+table_num <- 1 # object for table numbers
+```

@@ -1,0 +1,47 @@
+## Footnotes
+
+1.  The National Records Scotland (NRS) does not currently provide population projections at the locality level. To explore how the population in `r LOCALITY` is expected to change in the future, the percent changes in population projection to 2025 for `r HSCP` by age group and gender were calculated using the NRS Local Authority Population Projections. These percent changes were then applied to the `r LOCALITY` 2022 mid-year population estimates (also split by age group and gender) to obtain population projection estimates for `r LOCALITY`, based on the projections for the HSCP and the current population structure of the locality.
+
+2.  Care Home data included in the Services Map and Table was sourced from the [Care Inspectorate](https://www.careinspectorate.com/index.php/about-us). [GP Practice](https://www.opendata.nhs.scot/dataset/gp-practice-contact-details-and-list-sizes), [Hospital](https://www.opendata.nhs.scot/dataset/hospital-codes) and [A&E](https://www.opendata.nhs.scot/dataset/nhs-scotland-accident-emergency-sites) data were sourced from Public Health Scotland Open Data platform. Only services within the physical boundary of the HSCP or Locality are included in the map and table, so there may be services outside `r HSCP` that residents use but are not shown. Information on access deprivation was taken from the [ScotPHO profiles](https://scotland.shinyapps.io/ScotPHO_profiles_tool/) (The Scottish Public Health Observatory).
+
+3.  Sourced from [ScotPHO](https://scotland.shinyapps.io/ScotPHO_profiles_tool/). More recent data may be available for the indicators elsewhere.
+
+4.  ScotPHO data is often reported using the European Age-Sex Standardised Rate per 100,000. This allows for comparisons across different areas to be made. For more information on how these rates are calculated, please refer to the [PHS website: Geography, population and deprivation support](https://publichealthscotland.scot/services/geography-population-and-deprivation-support/population/){.uri}.
+
+5.  Data on physical long-term conditions (LTC) is sourced from the SPARRA LTC table via the Source Linkage Files (SLFs). These conditions are identified using ICD-9 and ICD-10 diagnosis codes on acute (SMR01) admissions which have occurred since 1981. This underlying methodology will result in undercounts where individuals have an LTC but don't have a hospitalisation, and undercounts when individuals have a relevant hospitalisation but subsequently have no other symptoms. These under and overcounts will vary in scale for each condition. Additionally, LTC rates are based on an adjusted population indicator in the Source Linkage Files, ensuring that the population sizes align more closely with official estimates.
+
+\newpage
+
+## Appendices
+
+### Appendix 1: Indicator Definitions
+
+```{r echo = FALSE, fig.width = 4, fig.height = 10, ft.split = TRUE}
+flextable(indicator_defs, theme_fun = NULL) |>
+  lp_flextable_theme() |>
+  bold(j = 1, part = "body") |>
+  set_table_properties(layout = "autofit")
+```
+
+\newpage
+
+### Appendix 2: Date of Indicator Data Extractions
+
+```{r echo = FALSE, fig.width = 4, fig.height = 10, ft.split = TRUE}
+flextable(dates_extract, theme_fun = NULL) |>
+  lp_flextable_theme() |>
+  bold(j = 1, part = "body") |>
+  set_table_properties(layout = "autofit")
+```
+
+\newpage
+
+### Appendix 3: Conditions included as Potentially Preventable Admissions (PPAs)
+
+```{r echo = FALSE, fig.width = 7, fig.height = 10, warning = FALSE}
+flextable(ppa_def, theme_fun = NULL) |>
+  lp_flextable_theme() |>
+  bold(j = 1, part = "body") |>
+  set_table_properties(layout = "autofit")
+```
+{{main_anchor}}

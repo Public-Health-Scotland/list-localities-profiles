@@ -630,13 +630,12 @@ ppl_faint_o85 <- readPNG(path(
 
 # LTC infographic waffle chart
 create_infographic <- function(
-  image1,
-  image2,
-  perc_ltc,
-  col,
-  age_label1,
-  age_label2
-) {
+    image1,
+    image2,
+    perc_ltc,
+    col,
+    age_label1,
+    age_label2) {
   ggplot() +
     scale_x_continuous(name = "x") +
     scale_y_continuous(name = "y") +
@@ -840,15 +839,15 @@ rm(
 ###### 3b Multi-morbidity LTC Table ######
 
 ## Create df with under 65 vs over 65 - will be used for rest of LTC work
-ltc2 <- ltc %>%
+ltc_age_grouped <- ltc %>%
   select(-year) %>%
   mutate(age_group = if_else(age_group == "Under 65", "Under 65", "65+")) %>%
   group_by(hscp2019name, hscp_locality, age_group, total_ltc) %>%
   summarise(across(everything(), sum)) %>%
   ungroup()
 
-ltc_multimorbidity <- ltc2 %>%
-  na.omit(ltc2) %>%
+ltc_multimorbidity <- ltc_age_grouped %>%
+  na.omit(ltc_age_grouped) %>%
   filter(
     hscp2019name == HSCP,
     total_ltc != 0
@@ -1083,15 +1082,15 @@ ltc_pops_total_scot <- sum(slf_pops$slf_adj_pop)
 ltc_pops_total_hscp <- sum(filter(slf_pops, hscp2019name == HSCP)$slf_adj_pop)
 
 # Colour lookup for table
-ltc_cols <- ltc_scot %>%
-  select(!c(total_ltc, age_group, people)) %>%
-  summarise(across(everything(), sum)) %>%
+ltc_colours <- ltc_scot |>
+  select(!c(total_ltc, age_group, people)) |>
+  summarise(across(everything(), sum)) |>
   pivot_longer(
     cols = everything(),
     names_to = "topltc",
     values_to = "value"
-  ) %>%
-  arrange(desc(value)) %>%
+  ) |>
+  arrange(desc(value)) |>
   mutate(
     colours = c(
       palette,
@@ -1118,13 +1117,13 @@ top5ltc_hscp <- ltc_totals %>%
     cols = everything(),
     names_to = "topltc",
     values_to = "value"
-  ) %>%
-  slice_max(n = 5, order_by = value, with_ties = FALSE) %>%
-  mutate(percent = round_half_up((value / ltc_pops_total_hscp) * 100, 2)) %>%
-  select(-value) %>%
-  left_join(ltc_cols, by = join_by(topltc)) %>%
-  unite("Prevalence", topltc, percent, sep = "\n") %>%
-  mutate(Prevalence = paste(Prevalence, "%"))
+  ) |>
+  slice_max(n = 5, order_by = value, with_ties = FALSE) |>
+  mutate(percent = round_half_up((value / ltc_pops_total_hscp) * 100, 2)) |>
+  select(-value) |>
+  left_join(ltc_colours, by = join_by(topltc)) |>
+  mutate(Prevalence = str_c(topltc, paste(percent, "%"), sep = "\n"))
+
 
 # Top 5 Scotland
 top5ltc_scot <- ltc_totals %>%
@@ -1134,13 +1133,12 @@ top5ltc_scot <- ltc_totals %>%
     cols = everything(),
     names_to = "topltc",
     values_to = "value"
-  ) %>%
-  slice_max(n = 5, order_by = value, with_ties = FALSE) %>%
-  mutate(percent = round_half_up((value / ltc_pops_total_scot) * 100, 2)) %>%
-  select(-value) %>%
-  left_join(ltc_cols, by = join_by(topltc)) %>%
-  unite("Prevalence", topltc, percent, sep = "\n") %>%
-  mutate(Prevalence = paste(Prevalence, "%"))
+  ) |>
+  slice_max(n = 5, order_by = value, with_ties = FALSE) |>
+  mutate(percent = round_half_up((value / ltc_pops_total_scot) * 100, 2)) |>
+  select(-value) |>
+  left_join(ltc_colours, by = join_by(topltc)) |>
+  mutate(Prevalence = str_c(topltc, paste(percent, "%"), sep = "\n"))
 
 
 ## Create column headers
@@ -1153,26 +1151,17 @@ top5_ltc_table <- bind_cols(
   select(top5ltc_scot, "Scotland" = Prevalence)
 ) |>
   flextable(cwidth = 2) |>
-  add_header_lines(
-    values = str_wrap(
-      glue(
-        "Top 5 most common Physical Long-Term Conditions in {LOCALITY} Locality by prevelance estimates for {latest_year_ltc}, compared to {HSCP} HSCP and Scotland estimates."
-      ),
-      width = 65
-    )
-  ) |>
+  lp_flextable_theme() |>
   bg(j = 1, bg = top5ltc_loc$colours) |>
   bg(j = 2, bg = top5ltc_hscp$colours) |>
   bg(j = 3, bg = top5ltc_scot$colours) |>
-  fontsize(size = 16, part = "header") |>
-  fontsize(size = 12, part = "body") |>
   font(fontname = "Arial", part = "all") |>
   color(color = "white", part = "body") |>
   bold(part = "header") |>
-  border(border = fp_border(color = "white", width = 5), part = "body")
+  border(border = fp_border(color = "white", width = 5), part = "all")
 
 rm(
-  ltc_cols,
+  ltc_colours,
   ltc_pops_total_loc,
   loc.ltc.table,
   hscp.ltc.table,
@@ -1367,13 +1356,13 @@ rm(
   gen_health_data_dir,
   hscp_scot_summary_table,
   latest_year_life_exp_loc,
+  ltc_age_grouped,
   ltc_infographic,
   ltc_pops_total_hscp,
   ltc_pops_total_scot,
   ltc_hscp,
   ltc_scot,
   ltc_totals,
-  ltc2,
   other_locs,
   other_locs_summary_table,
   otherloc_ltc_pops,

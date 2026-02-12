@@ -1,0 +1,15 @@
+# List the Rmd files in the order you want them to appear in the final document
+rmd_files:
+  - index.Rmd
+  - Summary-Table.Rmd
+  - Notes-On-Profile.Rmd
+  - Demographics.Rmd
+  - Services.Rmd
+  - Housing.Rmd
+  - General-Health.Rmd
+  - Lifestyle-Risk-Factors.Rmd
+  - Unscheduled-Care.Rmd
+  - Appendix.Rmd
+
+# This deletes the merged file Bookdown creates internally after build
+delete_merged_file: true
