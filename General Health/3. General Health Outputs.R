@@ -11,8 +11,9 @@
 
 ## load packages
 library(cowplot)
-library(gridExtra)
 library(png)
+library(flextable)
+library(officer)
 
 # Determine locality (for testing only)
 # HSCP <- 'East Renfrewshire'
@@ -839,15 +840,15 @@ rm(
 ###### 3b Multi-morbidity LTC Table ######
 
 ## Create df with under 65 vs over 65 - will be used for rest of LTC work
-ltc2 <- ltc %>%
+ltc_age_grouped <- ltc %>%
   select(-year) %>%
   mutate(age_group = if_else(age_group == "Under 65", "Under 65", "65+")) %>%
   group_by(hscp2019name, hscp_locality, age_group, total_ltc) %>%
   summarise(across(everything(), sum)) %>%
   ungroup()
 
-ltc_multimorbidity <- ltc2 %>%
-  na.omit(ltc2) %>%
+ltc_multimorbidity <- ltc_age_grouped %>%
+  na.omit(ltc_age_grouped) %>%
   filter(
     hscp2019name == HSCP,
     total_ltc != 0
@@ -1031,7 +1032,11 @@ title <- ggdraw() +
   )
 
 caption <- ggdraw() +
-  draw_label("Source: Source Linkage Files", size = 10, hjust = -0.5)
+  draw_label(
+    "Source: SPARRA via the Source Linkage Files",
+    size = 10,
+    hjust = -0.5
+  )
 
 # Combine plots into 1
 ltc_types_plot <- plot_grid(
@@ -1063,7 +1068,7 @@ rm(
 
 ##### 3d Top LTCs Table #####
 
-# Most common ltc all round
+# Most common LTC all round
 ltc_totals <- ltc2 %>%
   filter(total_ltc != 0) %>%
   select(-hscp_locality, -total_ltc, -age_group) %>%
@@ -1078,15 +1083,15 @@ ltc_pops_total_scot <- sum(slf_pops$slf_adj_pop)
 ltc_pops_total_hscp <- sum(filter(slf_pops, hscp2019name == HSCP)$slf_adj_pop)
 
 # Colour lookup for table
-ltc_cols <- ltc_scot %>%
-  select(!c(total_ltc, age_group, people)) %>%
-  summarise(across(everything(), sum)) %>%
+ltc_colours <- ltc_scot |>
+  select(!c(total_ltc, age_group, people)) |>
+  summarise(across(everything(), sum)) |>
   pivot_longer(
     cols = everything(),
     names_to = "topltc",
     values_to = "value"
-  ) %>%
-  arrange(desc(value)) %>%
+  ) |>
+  arrange(desc(value)) |>
   mutate(
     colours = c(
       palette,
@@ -1113,13 +1118,13 @@ top5ltc_hscp <- ltc_totals %>%
     cols = everything(),
     names_to = "topltc",
     values_to = "value"
-  ) %>%
-  slice_max(n = 5, order_by = value, with_ties = FALSE) %>%
-  mutate(percent = round_half_up((value / ltc_pops_total_hscp) * 100, 2)) %>%
-  select(-value) %>%
-  left_join(ltc_cols, by = join_by(topltc)) %>%
-  unite("Prevalence", topltc, percent, sep = "\n") %>%
-  mutate(Prevalence = paste(Prevalence, "%"))
+  ) |>
+  slice_max(n = 5, order_by = value, with_ties = FALSE) |>
+  mutate(percent = round_half_up((value / ltc_pops_total_hscp) * 100, 2)) |>
+  select(-value) |>
+  left_join(ltc_colours, by = join_by(topltc)) |>
+  mutate(Prevalence = str_c(topltc, paste(percent, "%"), sep = "\n"))
+
 
 # Top 5 Scotland
 top5ltc_scot <- ltc_totals %>%
@@ -1129,85 +1134,40 @@ top5ltc_scot <- ltc_totals %>%
     cols = everything(),
     names_to = "topltc",
     values_to = "value"
-  ) %>%
-  slice_max(n = 5, order_by = value, with_ties = FALSE) %>%
-  mutate(percent = round_half_up((value / ltc_pops_total_scot) * 100, 2)) %>%
-  select(-value) %>%
-  left_join(ltc_cols, by = join_by(topltc)) %>%
-  unite("Prevalence", topltc, percent, sep = "\n") %>%
-  mutate(Prevalence = paste(Prevalence, "%"))
+  ) |>
+  slice_max(n = 5, order_by = value, with_ties = FALSE) |>
+  mutate(percent = round_half_up((value / ltc_pops_total_scot) * 100, 2)) |>
+  select(-value) |>
+  left_join(ltc_colours, by = join_by(topltc)) |>
+  mutate(Prevalence = str_c(topltc, paste(percent, "%"), sep = "\n"))
 
 
 ## Create column headers
 
 hscp.ltc.table <- str_wrap(glue("{HSCP} HSCP"), width = 25)
 
-
-ltc_hscp_col <- tableGrob(
-  top5ltc_hscp[, 1],
-  cols = hscp.ltc.table,
-  rows = NULL,
-  theme = ttheme_default(
-    core = list(
-      bg_params = list(fill = top5ltc_hscp$colours),
-      fg_params = list(col = "white", fontface = 2, fontsize = 11)
-    ),
-    colhead = list(
-      bg_params = list(fill = "white"),
-      fg_params = list(fontface = 3, fontsize = 11)
-    )
-  )
-)
-ltc_scot_col <- tableGrob(
-  top5ltc_scot[, 1],
-  cols = "Scotland",
-  rows = NULL,
-  theme = ttheme_default(
-    core = list(
-      bg_params = list(fill = top5ltc_scot$colours),
-      fg_params = list(col = "white", fontface = 2, fontsize = 11)
-    ),
-    colhead = list(
-      bg_params = list(fill = "white"),
-      fg_params = list(fontface = 3, fontsize = 11)
-    )
-  )
-)
-
-## Combine columns
-top5ltc_all_table <- as_gtable(gtable_combine(ltc_hscp_col, ltc_scot_col))
-
-title <- ggdraw() +
-  draw_label(
-    str_wrap(
-      glue(
-        "Top 5 most prevalent Physical Long-Term Conditions {latest_year_ltc}"
-      ),
-      width = 65
-    ),
-    size = 11,
-    fontface = "bold"
-  )
-
-top5_ltc_table <- plot_grid(
-  title,
-  top5ltc_all_table,
-  nrow = 2,
-  rel_heights = c(0.1, 1.2)
-)
-
+# Top5 LTC table as a table (instead of an image)
+top5_ltc_table <- bind_cols(
+  select(top5ltc_hscp, {{ hscp.ltc.table }} := Prevalence),
+  select(top5ltc_scot, "Scotland" = Prevalence)
+) |>
+  flextable(cwidth = 2) |>
+  lp_flextable_theme() |>
+  bg(j = 1, bg = top5ltc_loc$colours) |>
+  bg(j = 2, bg = top5ltc_hscp$colours) |>
+  bg(j = 3, bg = top5ltc_scot$colours) |>
+  font(fontname = "Arial", part = "all") |>
+  color(color = "white", part = "body") |>
+  bold(part = "header") |>
+  border(border = fp_border(color = "white", width = 5), part = "all")
 
 rm(
-  ltc_cols,
-  ltc_loc_col,
-  ltc_hscp_col,
-  ltc_scot_col,
+  ltc_colours,
   ltc_pops_total_loc,
   loc.ltc.table,
   hscp.ltc.table,
-  top5ltc_scot,
-  top5ltc_all_table,
-  title
+  top5ltc_hscp,
+  top5ltc_scot
 )
 
 ## Objects for text
@@ -1397,13 +1357,13 @@ rm(
   gen_health_data_dir,
   hscp_scot_summary_table,
   latest_year_life_exp_loc,
+  ltc_age_grouped,
   ltc_infographic,
   ltc_pops_total_hscp,
   ltc_pops_total_scot,
   ltc_hscp,
   ltc_scot,
   ltc_totals,
-  ltc2,
   other_locs,
   other_locs_summary_table,
   otherloc_ltc_pops,
