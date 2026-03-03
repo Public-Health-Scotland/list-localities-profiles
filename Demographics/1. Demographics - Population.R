@@ -28,7 +28,7 @@ library(reshape2)
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
 
 ########################## SECTION 2: Data Imports ###############################
-
+# test
 ## Locality/DZ lookup
 lookup <- read_in_localities()
 
