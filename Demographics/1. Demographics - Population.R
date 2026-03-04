@@ -233,7 +233,7 @@ hist_pop_change <- ggplot(
     caption = "Source: National Records Scotland"
   )
 
-
+# test3
 ######################## SECTION 4: Population over time ############################
 
 ## 4a) Data wrangling ----
@@ -466,7 +466,7 @@ rm(
   locality_pop_proj
 )
 
-
+# test4
 ##################### SECTION 5: Objects for summary table #######################
 
 ## Relevant lookups for creating the table objects
