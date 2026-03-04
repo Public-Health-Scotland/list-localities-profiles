@@ -42,7 +42,7 @@ hscp_pop_proj <- read_in_pop_proj()
 pop_max_year <- max(pop_raw_data$year)
 pop_min_year <- pop_max_year - 5
 
-
+# test2
 ######################## SECTION 3: Gender and Age #############################
 
 ## Population data manipulation
