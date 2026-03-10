@@ -865,16 +865,7 @@ ltc_multimorbidity <- ltc_age_grouped |>
     )
   ) |> 
   group_by(total_ltc) |> 
-  summarise(people = sum(people)) mutate(
-    ltc_pop = if_else(
-      age_group == "Under 65",
-      filter(slf_pop_loc, age_group == "Under 65")$slf_adj_pop,
-      sum(filter(slf_pop_loc, age_group != "Under 65")$slf_adj_pop)
-    )
-  ) |> 
-  group_by(age_group) |> 
-  mutate(percent = round_half_up(people / ltc_pop * 100, 1))
-  ungroup() |> 
+  summarise(people = sum(people))  |> 
   mutate(
     ltc_pop = sum(slf_pop_loc$slf_adj_pop)
   ) |> 
