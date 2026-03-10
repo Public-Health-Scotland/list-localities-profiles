@@ -837,11 +837,11 @@ rm(
 ###### 3b Multi-morbidity LTC Table ######
 
 ## Create df with under 65 vs over 65 - will be used for rest of LTC work
-ltc_age_grouped <- ltc %>%
-  select(-year) %>%
-  mutate(age_group = if_else(age_group == "Under 65", "Under 65", "65+")) %>%
-  group_by(hscp2019name, hscp_locality, age_group, total_ltc) %>%
-  summarise(across(everything(), sum)) %>%
+ltc_age_grouped <- ltc |> 
+  select(-year) |> 
+  mutate(age_group = if_else(age_group == "Under 65", "Under 65", "65+")) |> 
+  group_by(hscp2019name, hscp_locality, age_group, total_ltc) |> 
+  summarise(across(everything(), sum)) |> 
   ungroup()
 
 ltc_multimorbidity <- ltc_age_grouped |> 
