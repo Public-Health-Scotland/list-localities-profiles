@@ -844,12 +844,12 @@ ltc_age_grouped <- ltc %>%
   summarise(across(everything(), sum)) %>%
   ungroup()
 
-ltc_multimorbidity <- ltc_age_grouped %>%
-  na.omit(ltc_age_grouped) %>%
+ltc_multimorbidity <- ltc_age_grouped |> 
+  na.omit(ltc_age_grouped) |> 
   filter(
     hscp_locality == LOCALITY,
     total_ltc != 0
-  ) %>%
+  ) |> 
   mutate(
     total_ltc = case_when(
       total_ltc == 1 ~ "1 LTC",
@@ -857,36 +857,37 @@ ltc_multimorbidity <- ltc_age_grouped %>%
       total_ltc == 3 ~ "3 LTCs",
       total_ltc >= 4 ~ "4 or more LTCs"
     )
-  ) %>%
+  ) |> 
   mutate(
     total_ltc = factor(
       total_ltc,
       levels = c("1 LTC", "2 LTCs", "3 LTCs", "4 or more LTCs")
     )
-  ) %>%
-  group_by(age_group, total_ltc) %>%
-  summarise(people = sum(people)) %>%
-  ungroup() %>%
-  mutate(
+  ) |> 
+  group_by(total_ltc) |> 
+  summarise(people = sum(people)) mutate(
     ltc_pop = if_else(
       age_group == "Under 65",
       filter(slf_pop_loc, age_group == "Under 65")$slf_adj_pop,
       sum(filter(slf_pop_loc, age_group != "Under 65")$slf_adj_pop)
     )
-  ) %>%
-  group_by(age_group) %>%
-  mutate(percent = round_half_up(people / ltc_pop * 100, 1)) %>%
+  ) |> 
+  group_by(age_group) |> 
+  mutate(percent = round_half_up(people / ltc_pop * 100, 1))
+  ungroup() |> 
+  mutate(
+    ltc_pop = sum(slf_pop_loc$slf_adj_pop)
+  ) |> 
+ # group_by(age_group) %>%
+  mutate(percent = round_half_up(people / ltc_pop * 100, 1)) |> 
   ungroup()
 
 
-ltc_multimorbidity_table <- ltc_multimorbidity %>%
-  select(age_group, total_ltc, percent) %>%
-  pivot_wider(names_from = age_group, values_from = percent) %>%
+ltc_multimorbidity_table <- ltc_multimorbidity |> 
+  select(total_ltc, percent) |> 
   rename(
     " " = total_ltc,
-    "Percentage under 65" = "Under 65",
-    "Percentage over 65" = "65+"
-  )
+    "Percentage" = "percent")
 
 
 ## Figures for text
