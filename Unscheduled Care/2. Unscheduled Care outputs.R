@@ -60,9 +60,9 @@ n_loc <- count_localities(localities, HSCP)
 
 populations <- read_in_dz_pops()
 
-populations_proxy_year <- read_in_dz_pops_proxy_year()
+#populations_proxy_year <- read_in_dz_pops_proxy_year() - Removed due to updated SAPE - keep as placeholder for future? 
 
-populations <- rbind(populations, populations_proxy_year)
+#populations <- rbind(populations, populations_proxy_year)
 
 
 # compute age bands
