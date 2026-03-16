@@ -625,6 +625,18 @@ age_group_2 <- function(age) {
   )
 }
 
+# Reformat age groups to specific strings shown i.e. add spaces
+age_group_1.2 <- function(age_group) {
+  dplyr::case_match(
+    age_group,
+    c("<18", "0-17","18-24") ~ "0 - 24",
+    c("25-29", "30-34", "35-39", "40-44") ~ "25 - 44",
+    c("45-49", "50-54", "55-59", "60-64") ~ "45 - 64",
+    c("65-69", "70-74","75-79", "80-84", "85-89", "90-94", "95-99", "Over 100", "100+") ~ "65+",
+    .default = "NA"
+  )
+}
+
 # reformat partnership names # 1
 
 ptsp <- function(partnership) {
@@ -885,4 +897,11 @@ orient <- function(document_path) {
   }
 
   print(doc, target = document_path)
+}
+
+
+#rounding function for SDC 
+
+round_sdc <- function(x) {
+  ifelse(x == 0, 0, ifelse(x < 10, round(x / 5) * 5, x))
 }
