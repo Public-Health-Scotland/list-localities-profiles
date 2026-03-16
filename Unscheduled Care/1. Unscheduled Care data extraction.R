@@ -8,13 +8,13 @@
 ####################### SECTION 1: Packages, file paths, lookups, etc #########################
 
 ## Manually set year that the profiles are being run (extract year)
-ext_year <- 2024
+ext_year <- 2025
 
 ## Manually set the name of the latest MSG folder
-latest_msg_folder <- "2024-12 December"
+latest_msg_folder <- "2026-03 March"
 
 # Set locality profiles file path
-# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 ## Packages
 library(lubridate)
@@ -267,8 +267,8 @@ smr_falls <- smr1_extract %>%
   filter(fall_flag == 1) %>%
   select(-fall_flag) %>%
   rename(datazone2011 = datazone_2011, age = age_in_years) %>%
-  mutate(year = year(discharge_date)) %>%
-  mutate(month_num = month(discharge_date)) %>%
+  mutate(year = lubridate::year(discharge_date)) %>%
+  mutate(month_num = lubridate::month(discharge_date)) %>%
   mutate(AdDate = ISOdate(year, month_num, 1, 0, 0, 0, "GMT")) %>%
   arrange(datazone2011) %>%
   left_join(datazones, by = "datazone2011") %>%
@@ -344,8 +344,8 @@ smr_readmissions <- read_dataframe %>%
   mutate(
     discharges = if_else(discharge_dead != 1 & !(is.na(discharge_dead)), 1, 0)
   ) %>%
-  mutate(year = year(discharge_date)) %>%
-  mutate(month_num = month(discharge_date)) %>%
+  mutate(year = lubridate::year(discharge_date)) %>%
+  mutate(month_num = lubridate::month(discharge_date)) %>%
   mutate(AdDate = make_datetime(year, month_num, 1)) %>%
   arrange(datazone2011) %>%
   left_join(datazones, by = "datazone2011") %>%
