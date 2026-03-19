@@ -901,11 +901,11 @@ ltc_multimorbidity_ov65_perc <- sum(
 
 
 # ###### 3c Prevalence of LTC Types ######
-ltc_types <- ltc_age_grouped |> 
-  select(-hscp2019name, -total_ltc, -people, -age_group) |> 
-  filter(hscp_locality == LOCALITY) |> 
-  group_by(hscp_locality) |> 
-  summarise(across(everything(), sum)) |> 
+ltc_types <- ltc_age_grouped |>
+  select(-hscp2019name, -total_ltc, -people, -age_group) |>
+  filter(hscp_locality == LOCALITY) |>
+  group_by(hscp_locality) |>
+  summarise(across(everything(), sum)) |>
   ungroup() |>
   pivot_longer(
     cols = "Arthritis":"Renal failure",
@@ -929,7 +929,7 @@ lims.ov <- case_when(
 
 rm(max_ltc_types_pct)
 
-ltc_plot <- ltc_types |> 
+ltc_plot <- ltc_types |>
   ggplot(aes(x = percent, y = key, label = round_half_up(percent, 1))) +
   geom_point(colour = palette[1], size = 3) +
   geom_segment(
