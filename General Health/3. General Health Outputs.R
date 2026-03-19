@@ -904,7 +904,7 @@ ltc_multimorbidity_ov65_perc <- sum(
 ltc_types <- ltc_age_grouped |> 
   select(-hscp2019name, -total_ltc, -people, -age_group) |> 
   filter(hscp_locality == LOCALITY) |> 
-  group_by(hscp_locality |> 
+  group_by(hscp_locality) |> 
   summarise(across(everything(), sum)) |> 
   ungroup() |>
   pivot_longer(
