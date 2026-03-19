@@ -901,50 +901,27 @@ ltc_multimorbidity_ov65_perc <- sum(
 
 
 # ###### 3c Prevalence of LTC Types ######
-ltc_types <- ltc_age_grouped %>%
-  select(-hscp2019name, -total_ltc, -people) %>%
-  filter(hscp_locality == LOCALITY) %>%
-  group_by(hscp_locality, age_group) %>%
-  summarise(across(everything(), sum)) %>%
+ltc_types <- ltc_age_grouped |> 
+  select(-hscp2019name, -total_ltc, -people, -age_group) |> 
+  filter(hscp_locality == LOCALITY) |> 
+  group_by(hscp_locality |> 
+  summarise(across(everything(), sum)) |> 
   ungroup() |>
   pivot_longer(
     cols = "Arthritis":"Renal failure",
     names_to = "key",
     values_to = "value"
-  )
-
-# Create negative values for chart
-ltc_types_temp <- ltc_types %>%
-  filter(age_group == "Under 65") %>%
-  mutate(
-    percent = (value /
-      (filter(slf_pop_loc, age_group == "Under 65")$slf_adj_pop) *
-      -100)
-  )
-
-ltc_types <- ltc_types %>%
-  filter(age_group == "65+") %>%
-  mutate(
-    percent = (value /
-      sum(filter(slf_pop_loc, age_group != "Under 65")$slf_adj_pop) *
-      100)
   ) %>%
-  bind_rows(ltc_types_temp)
+  mutate(
+    percent = (value / sum(slf_pop_loc$slf_adj_pop)) * 100
+  )
 
-rm(ltc_types_temp)
-
-
-#### lollipop with 3 separate plots put together
+#### lollipop
 
 ## create conditionals for expand limits
 max_ltc_types_pct <- max(ltc_types$percent)
 
-lims.un65 <- case_when(
-  max_ltc_types_pct < 20 ~ -10,
-  between(max_ltc_types_pct, 20, 24) ~ -12,
-  max_ltc_types_pct > 24 ~ -15
-)
-lims.ov65 <- case_when(
+lims.ov <- case_when(
   max_ltc_types_pct < 20 ~ 20,
   between(max_ltc_types_pct, 20, 24) ~ 24,
   max_ltc_types_pct > 24 ~ 30
@@ -952,8 +929,7 @@ lims.ov65 <- case_when(
 
 rm(max_ltc_types_pct)
 
-ltc_plot_left <- ltc_types %>%
-  filter(age_group == "Under 65") %>%
+ltc_plot <- ltc_types |> 
   ggplot(aes(x = percent, y = key, label = round_half_up(percent, 1))) +
   geom_point(colour = palette[1], size = 3) +
   geom_segment(
@@ -961,51 +937,15 @@ ltc_plot_left <- ltc_types %>%
     linewidth = 0.4
   ) +
   labs(
-    x = "People under 65 with\nthe condition (%)",
-    y = "",
-    title = "UNDER 65"
-  ) +
-  scale_x_continuous(breaks = seq(-100, 0, 2), labels = abs) +
-  expand_limits(x = lims.un65) +
-  theme_profiles() +
-  theme(
-    title = element_text(colour = palette[1]),
-    plot.margin = unit(c(0.5, 0, 0, 0), "cm"),
-    axis.title.y = element_blank(),
-    axis.text.y = element_blank(),
-    axis.ticks.y = element_blank()
-  ) +
-  scale_y_discrete(limits = rev(levels(as.factor(ltc_types$key))))
-
-ltc_axis <- ltc_types %>%
-  filter(age_group == "Under 65") %>%
-  ggplot(aes(x = 0, y = key, label = key)) +
-  geom_text() +
-  scale_y_discrete(limits = rev(levels(as.factor(ltc_types$key)))) +
-  theme_void()
-
-ltc_plot_right <- ltc_types %>%
-  filter(age_group == "65+") %>%
-  ggplot(aes(x = percent, y = key, label = round_half_up(percent, 1))) +
-  geom_point(colour = palette[2], size = 3) +
-  geom_segment(
-    aes(x = 0, y = key, xend = percent, yend = key),
-    linewidth = 0.4
-  ) +
-  labs(
-    x = "People over 65 with\nthe condition (%)",
-    y = "",
-    title = "OVER 65"
+    x = "People with the condition (%)",
+    y = ""
   ) +
   scale_x_continuous(breaks = seq(0, 100, 2)) +
-  expand_limits(x = lims.ov65) +
+  expand_limits(x = lims.ov) +
   theme_profiles() +
   theme(
-    title = element_text(colour = palette[2]),
     plot.margin = unit(c(0.5, 0, 0, 0), "cm"),
-    axis.title.y = element_blank(),
-    axis.text.y = element_blank(),
-    axis.ticks.y = element_blank()
+    axis.title.y = element_blank()
   ) +
   scale_y_discrete(limits = rev(levels(as.factor(ltc_types$key))))
 
@@ -1031,28 +971,17 @@ caption <- ggdraw() +
 # Combine plots into 1
 ltc_types_plot <- plot_grid(
   title,
-  plot_grid(
-    ltc_plot_left,
-    ltc_axis,
-    ltc_plot_right,
-    ncol = 3,
-    align = "h",
-    rel_widths = c(0.5, 0.6, 1)
-  ),
+  ltc_plot,
   caption,
   nrow = 3,
   rel_heights = c(3, 20, 1)
 )
 
-
 rm(
-  ltc_plot_left,
-  ltc_axis,
-  ltc_plot_right,
+  ltc_plot,
   title,
   caption,
-  lims.ov65,
-  lims.un65
+  lims.ov
 )
 
 
