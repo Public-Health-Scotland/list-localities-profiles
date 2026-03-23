@@ -59,11 +59,19 @@ msg_beddays_raw <- read_parquet(paste0(
 ))
 
 
-msg_beddays_raw1718 <- read_parquet("/conf/LIST_analytics/MSG/Previous years data - 1415-1819/2a-Acute-Beddays-breakdown-1718.parquet")
+msg_beddays_raw1718 <- read_parquet(
+  "/conf/LIST_analytics/MSG/Previous years data - 1415-1819/2a-Acute-Beddays-breakdown-1718.parquet"
+)
 
-msg_beddays_raw1819 <- read_parquet("/conf/LIST_analytics/MSG/Previous years data - 1415-1819/2a-Acute-Beddays-breakdown-1819.parquet")
+msg_beddays_raw1819 <- read_parquet(
+  "/conf/LIST_analytics/MSG/Previous years data - 1415-1819/2a-Acute-Beddays-breakdown-1819.parquet"
+)
 
-msg_beddays_raw <- rbind(msg_beddays_raw,msg_beddays_raw1718,msg_beddays_raw1819)
+msg_beddays_raw <- rbind(
+  msg_beddays_raw,
+  msg_beddays_raw1718,
+  msg_beddays_raw1819
+)
 
 msg_ae_raw <- read_parquet(paste0(
   "/conf/LIST_analytics/MSG/",
@@ -83,11 +91,19 @@ msg_mh_beddays_raw <- read_parquet(paste0(
   "/Breakdowns/2c-MH-Beddays-breakdown.parquet"
 ))
 
-msg_mh_beddays_raw1718 <- read_parquet("/conf/LIST_analytics/MSG/Previous years data - 1415-1819/2c-MH-Beddays-breakdown-1718.parquet")
+msg_mh_beddays_raw1718 <- read_parquet(
+  "/conf/LIST_analytics/MSG/Previous years data - 1415-1819/2c-MH-Beddays-breakdown-1718.parquet"
+)
 
-msg_mh_beddays_raw1819 <- read_parquet("/conf/LIST_analytics/MSG/Previous years data - 1415-1819/2c-MH-Beddays-breakdown-1819.parquet")
+msg_mh_beddays_raw1819 <- read_parquet(
+  "/conf/LIST_analytics/MSG/Previous years data - 1415-1819/2c-MH-Beddays-breakdown-1819.parquet"
+)
 
-msg_mh_beddays_raw <- rbind(msg_mh_beddays_raw,msg_mh_beddays_raw1718,msg_mh_beddays_raw1819)
+msg_mh_beddays_raw <- rbind(
+  msg_mh_beddays_raw,
+  msg_mh_beddays_raw1718,
+  msg_mh_beddays_raw1819
+)
 
 
 # 1. Emergency Admissions ----
