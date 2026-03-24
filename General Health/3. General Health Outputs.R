@@ -43,9 +43,9 @@ HSCP <- filter(lookup, hscp_locality == LOCALITY)[["hscp2019name"]]
 HB <- filter(lookup, hscp_locality == LOCALITY)[["hb2019name"]]
 
 # Determine other localities based on LOCALITY object
-other_locs <- lookup %>%
-  select(hscp_locality, hscp2019name) %>%
-  filter(hscp2019name == HSCP & hscp_locality != LOCALITY) %>%
+other_locs <- lookup |> 
+  select(hscp_locality, hscp2019name) |> 
+  filter(hscp2019name == HSCP & hscp_locality != LOCALITY) |> 
   arrange(hscp_locality)
 
 # Find number of locs per partnership
@@ -68,7 +68,7 @@ life_exp_fem <- read_parquet(path(
 )) %>%
   clean_scotpho_dat()
 
-life_exp <- bind_rows(life_exp_male, life_exp_fem) %>%
+life_exp <- bind_rows(life_exp_male, life_exp_fem) |> 
   mutate(
     sex = case_match(
       indicator,
@@ -158,7 +158,7 @@ check_missing_data_scotpho(adp_presc)
 
 
 # Long-term conditions
-ltc <- read_parquet(path(gen_health_data_dir, "LTC_from_SLF.parquet")) %>%
+ltc <- read_parquet(path(gen_health_data_dir, "LTC_from_SLF.parquet")) |> 
   rename(
     "Arthritis" = "arth",
     "Asthma" = "asthma",
@@ -211,7 +211,7 @@ latest_period_life_exp_otherareas <- life_exp |>
 
 
 # Create time trend
-life_exp_trend <- life_exp %>%
+life_exp_trend <- life_exp |> 
   filter(
     area_name == LOCALITY,
     area_type == "Locality",
@@ -256,7 +256,7 @@ life_exp_trend <- life_exp %>%
 
 # Make a table to compare with other areas
 
-life_exp_table <- life_exp %>%
+life_exp_table <- life_exp |> 
   filter(
     (year == latest_year_life_exp_loc &
       (area_name == LOCALITY & area_type == "Locality")) |
@@ -264,16 +264,16 @@ life_exp_table <- life_exp %>%
         ((area_name == HSCP & area_type == "HSCP") |
           area_name == HB |
           area_name == "Scotland")
-  ) %>%
+  ) |> 
   mutate(
     measure = round_half_up(measure, 1),
     area_type = ordered(
       area_type,
       levels = c("Locality", "HSCP", "Health board", "Scotland")
     )
-  ) %>%
-  arrange(area_type) %>%
-  select("Sex" = sex, area_name, measure) %>%
+  ) |> 
+  arrange(area_type) |> 
+  select("Sex" = sex, area_name, measure) |> 
   pivot_wider(names_from = area_name, values_from = measure)
 
 
@@ -465,7 +465,7 @@ disease_hosp <- bind_rows(
   ) %>%
   mutate(measure = round_half_up(measure, 1))
 
-highest_hosp_disease <- disease_hosp %>%
+highest_hosp_disease <- disease_hosp |> 
   filter(
     area_name == LOCALITY,
     area_type == "Locality"
@@ -574,10 +574,10 @@ slf_pop_loc <- filter(slf_pops, hscp_locality == LOCALITY)
 latest_year_ltc <- ltc[["year"]][1]
 
 ## Create Scotland totals
-ltc_scot <- ltc %>%
-  select(-year, -hscp2019name, -hscp_locality, -slf_adj_pop) %>%
-  group_by(total_ltc, age_group) %>%
-  summarise(across(everything(), sum)) %>%
+ltc_scot <- ltc |> 
+  select(-year, -hscp2019name, -hscp_locality, -slf_adj_pop) |> 
+  group_by(total_ltc, age_group) |> 
+  summarise(across(everything(), sum)) |> 
   ungroup()
 
 
@@ -701,13 +701,13 @@ create_infographic <- function(
 }
 
 # Set percentage with LTC for infographic
-ltc_infographic <- ltc %>%
-  filter(hscp_locality == LOCALITY) %>%
-  filter(total_ltc > 0) %>%
-  group_by(hscp_locality, age_group) %>%
-  summarise(people = sum(people)) %>%
-  ungroup() %>%
-  left_join(slf_pop_loc, by = join_by(hscp_locality, age_group)) %>%
+ltc_infographic <- ltc |> 
+  filter(hscp_locality == LOCALITY) |> 
+  filter(total_ltc > 0) |> 
+  group_by(hscp_locality, age_group) |> 
+  summarise(people = sum(people)) |> 
+  ungroup() |> 
+  left_join(slf_pop_loc, by = join_by(hscp_locality, age_group)) |> 
   mutate(perc_with_ltc = round_half_up(people / slf_adj_pop, 2))
 
 # objects for each percentage for text + cropping images
@@ -844,12 +844,12 @@ ltc_age_grouped <- ltc |>
   summarise(across(everything(), sum)) |>
   ungroup()
 
-ltc_multimorbidity <- ltc_age_grouped |>
-  na.omit(ltc_age_grouped) |>
+ltc_multimorbidity <- ltc_age_grouped |> 
+  na.omit(ltc_age_grouped) |> 
   filter(
     hscp_locality == LOCALITY,
     total_ltc != 0
-  ) |>
+  ) %>%
   mutate(
     total_ltc = case_when(
       total_ltc == 1 ~ "1 LTC",
@@ -857,28 +857,35 @@ ltc_multimorbidity <- ltc_age_grouped |>
       total_ltc == 3 ~ "3 LTCs",
       total_ltc >= 4 ~ "4 or more LTCs"
     )
-  ) |>
+  ) |> 
   mutate(
     total_ltc = factor(
       total_ltc,
       levels = c("1 LTC", "2 LTCs", "3 LTCs", "4 or more LTCs")
     )
-  ) |>
-  group_by(total_ltc) |>
-  summarise(people = sum(people)) |>
+  ) |> 
+  group_by(age_group, total_ltc) |> 
+  summarise(people = sum(people)) |> 
+  ungroup() |> 
   mutate(
-    ltc_pop = sum(slf_pop_loc$slf_adj_pop)
-  ) |>
-  # group_by(age_group) %>%
-  mutate(percent = round_half_up(people / ltc_pop * 100, 1)) |>
+    ltc_pop = if_else(
+      age_group == "Under 65",
+      filter(slf_pop_loc, age_group == "Under 65")$slf_adj_pop,
+      sum(filter(slf_pop_loc, age_group != "Under 65")$slf_adj_pop)
+    )
+  ) |> 
+  group_by(age_group) |> 
+  mutate(percent = round_half_up(people / ltc_pop * 100, 1)) |> 
   ungroup()
 
 
-ltc_multimorbidity_table <- ltc_multimorbidity |>
-  select(total_ltc, percent) |>
+ltc_multimorbidity_table <- ltc_multimorbidity |> 
+  select(age_group, total_ltc, percent) |> 
+  pivot_wider(names_from = age_group, values_from = percent) |> 
   rename(
     " " = total_ltc,
-    "Percentage" = "percent"
+    "Percentage under 65" = "Under 65",
+    "Percentage over 65" = "65+"
   )
 
 
@@ -1134,11 +1141,11 @@ ltc_diff_scot <- if_else(
 # Function to get latest data from scotpho
 
 other_locs_summary_table <- function(data, latest_year) {
-  data %>%
+  data |> 
     filter(
       year == latest_year,
       area_type == "Locality"
-    ) %>%
+    ) |> 
     rename("hscp_locality" = "area_name") %>%
     right_join(other_locs, by = join_by(hscp_locality)) %>%
     arrange(hscp_locality) %>%
@@ -1194,23 +1201,23 @@ other_locs_adp <- other_locs_summary_table(
 
 
 ## ltc
-otherloc_ltc_pops <- slf_pops %>%
-  inner_join(other_locs, by = "hscp_locality") %>%
-  group_by(hscp_locality) %>%
-  summarise(slf_adj_pop = sum(slf_adj_pop)) %>%
+otherloc_ltc_pops <- slf_pops |> 
+  inner_join(other_locs, by = "hscp_locality") |> 
+  group_by(hscp_locality) |> 
+  summarise(slf_adj_pop = sum(slf_adj_pop)) |> 
   ungroup()
 
 other_locs_ltc <- ltc |>
-  inner_join(other_locs, by = join_by(hscp2019name, hscp_locality)) %>%
-  select(hscp_locality, total_ltc, people) %>%
-  filter(total_ltc >= 1) %>%
-  group_by(hscp_locality) %>%
-  summarise(ltc_people = sum(people)) %>%
-  ungroup() %>%
-  left_join(otherloc_ltc_pops, by = "hscp_locality") %>%
-  mutate(percent = round_half_up(ltc_people / slf_adj_pop * 100, 1)) %>%
-  arrange(hscp_locality) %>%
-  select(hscp_locality, percent) %>%
+  inner_join(other_locs, by = join_by(hscp2019name, hscp_locality)) |> 
+  select(hscp_locality, total_ltc, people) |> 
+  filter(total_ltc >= 1) |> 
+  group_by(hscp_locality) |> 
+  summarise(ltc_people = sum(people)) |> 
+  ungroup() |> 
+  left_join(otherloc_ltc_pops, by = "hscp_locality") |> 
+  mutate(percent = round_half_up(ltc_people / slf_adj_pop * 100, 1)) |> 
+  arrange(hscp_locality) |> 
+  select(hscp_locality, percent) |> 
   pivot_wider(names_from = hscp_locality, values_from = percent)
 
 
