@@ -122,8 +122,8 @@ asthma_hosp <- read_parquet(path(
   "scotpho_data_extract_asthma_hosp.parquet"
 )) %>%
   clean_scotpho_dat() %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 18), fixed = TRUE))# |> 
-  #filter(year != 2023)
+  mutate(period_short = gsub("to", "-", substr(period, 1, 18), fixed = TRUE)) # |>
+#filter(year != 2023)
 
 check_missing_data_scotpho(asthma_hosp)
 
