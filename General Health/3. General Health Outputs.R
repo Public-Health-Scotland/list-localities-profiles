@@ -16,14 +16,14 @@ library(flextable)
 library(officer)
 
 # Determine locality (for testing only)
-#LOCALITY <- "Inverness"
+#LOCALITY <- "Aberdeen Central"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
 # LOCALITY <- "Mid-Argyll, Kintyre and Islay"
 # LOCALITY <- "City of Dunfermline"
 # LOCALITY <- "Barra"
 
 # Set year of data extracts for folder
-ext_year <- 2025
+ext_year <- 2024
 
 # Source in functions code
 #source("Master RMarkdown Document & Render Code/Global Script.R")
@@ -122,7 +122,8 @@ asthma_hosp <- read_parquet(path(
   "scotpho_data_extract_asthma_hosp.parquet"
 )) %>%
   clean_scotpho_dat() %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 18), fixed = TRUE))
+  mutate(period_short = gsub("to", "-", substr(period, 1, 18), fixed = TRUE)) # |>
+#filter(year != 2023)
 
 check_missing_data_scotpho(asthma_hosp)
 
