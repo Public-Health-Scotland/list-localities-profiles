@@ -105,7 +105,7 @@ table_num <- table_num + 1
 
 -   Figure `r figure_num` shows the Long-Term condition prevalence estimates for `r LOCALITY` Locality in the financial year `r latest_year_ltc` across all ages.
 
--   Table `r table_num` orders the prevalance estimates to show the most common five physical LTCs across all ages at the locality, partnership, and Scotland levels.
+-   Table `r table_num` orders the prevalence estimates to show the five most common physical LTCs across all ages at the Locality, Partnership, and Scotland levels.
 
 Below is a breakdown of the physical LTCs, for the financial year `r latest_year_ltc`. Figure `r figure_num` shows the prevalence of different LTCs in `r LOCALITY` locality, and Table `r table_num` illustrates the five most prevalent physical LTCs across all ages at the locality, partnership, and Scotland levels.
 
