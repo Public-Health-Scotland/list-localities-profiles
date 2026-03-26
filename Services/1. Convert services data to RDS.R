@@ -6,7 +6,7 @@
 source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Change year to be the year in the data folder name
-ext_year <- 2024
+ext_year <- 2025
 
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
@@ -44,7 +44,7 @@ filt_and_save <- function(file_name) {
 # Extract all file names that have .csv within the services data folder (at any folder level)
 
 my_files <- list.files(
-  paste0(lp_path, "Services/DATA ", ext_year, "/CSV"),
+  paste0(lp_path, "Services/DATA ", ext_year),
   pattern = ".csv",
   recursive = TRUE,
   full.names = TRUE

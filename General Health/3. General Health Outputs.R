@@ -16,7 +16,7 @@ library(flextable)
 library(officer)
 
 # Determine locality (for testing only)
-# LOCALITY <- "Eastwood"
+#LOCALITY <- "Aberdeen Central"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
 # LOCALITY <- "Mid-Argyll, Kintyre and Islay"
 # LOCALITY <- "City of Dunfermline"
@@ -26,10 +26,10 @@ library(officer)
 ext_year <- 2024
 
 # Source in functions code
-# source("Master RMarkdown Document & Render Code/Global Script.R")
+#source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set file path
-# lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
+#lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
 
 gen_health_data_dir <- path(lp_path, "General Health", glue("DATA {ext_year}"))
 
@@ -122,7 +122,8 @@ asthma_hosp <- read_parquet(path(
   "scotpho_data_extract_asthma_hosp.parquet"
 )) %>%
   clean_scotpho_dat() %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 18), fixed = TRUE))
+  mutate(period_short = gsub("to", "-", substr(period, 1, 18), fixed = TRUE)) # |>
+#filter(year != 2023)
 
 check_missing_data_scotpho(asthma_hosp)
 
