@@ -103,7 +103,7 @@ table_num <- table_num + 1
 
 **Most common physical Long-Term Conditions (LTCs)**
 
--   Figure `r figure_num` shows the Long-Term condition prevalence estimates for `r LOCALITY` Locality in the financial year `r latest_year_ltc` across all ages.
+-   Figure `r figure_num` shows the Long Term condition prevalence estimates for `r LOCALITY` Locality in the financial year `r latest_year_ltc` across all ages.
 
 -   Table `r table_num` orders the prevalence estimates to show the five most common physical LTCs across all ages at the Locality, Partnership, and Scotland levels.
 
