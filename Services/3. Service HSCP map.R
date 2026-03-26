@@ -42,7 +42,11 @@ shp_hscp <- read_sf(path(
   select(hscp_local, HSCP_name, geometry) |>
   filter(HSCP_name == HSCP) |>
   mutate(
+<<<<<<< services_map/tidy_code
     hscp_locality = str_wrap(gsub("&", "and", hscp_local, fixed = TRUE), 24),
+=======
+    hscp_locality = str_wrap(hscp_locality, 24),
+>>>>>>> services_map/bold_locality
     hscp_local = str_wrap(hscp_local, 24),
     border_thickness = if_else(hscp_locality == LOCALITY, 0.8, 0.2)
   )
