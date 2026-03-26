@@ -18,7 +18,7 @@ if (is.na(avg_life_exp_latest_male)) {
 
 -   `r life_exp_text`
 -   A death rate for ages 15 to 44 of **`r format_number_for_text(deaths_15_44_latest)`** deaths per 100,000 age-sex standardised population. This is `r deaths_15_44_diff_scot` than Scotland (`r format_number_for_text(scot_deaths_15_44)` deaths per 100,000)^4^.
--   **`r format_number_for_text(ltc_percent_total_latest)`%** of the locality's population with at least one long-term physical health condition. This is `r ltc_diff_scot` than Scotland (`r format_number_for_text(ltc_perc_scot)`%).
+-   **`r format_number_for_text(ltc_percent_total_latest)`%** of the locality's population with at least one long term physical health condition. This is `r ltc_diff_scot` than Scotland (`r format_number_for_text(ltc_perc_scot)`%).
 -   A cancer registration rate of **`r format_number_for_text(cancer_reg_rate_latest)`** registrations per 100,000 age-sex standardised population (compared to `r format_number_for_text(scot_cancer)` in Scotland), and an early death rate (\<75 years) from cancer of **`r format_number_for_text(early_deaths_cancer_rate_latest)`** per 100,000 age-sex standardised population (compared to `r format_number_for_text(scot_cancer_deaths)` in Scotland)^4^.
 -   **`r format_number_for_text(adp_presc_latest)`%** of the population being prescribed medication for anxiety, depression, or psychosis. This is a `r adp_presc_diff_scot` proportion than Scotland (`r format_number_for_text(scot_adp_presc)`%).
 
@@ -79,11 +79,11 @@ deaths_15_44_bar
 figure_num <- figure_num + 1
 ```
 
-## Long-Term Physical Health Conditions and Multi-morbidity
+## Long Term Physical Health Conditions and Multi-morbidity
 
 The estimates in the following sections are based on an individual being hospitalised with a relevant condition *at any point* in the past. This methodology can lead to both undercounts and overcounts depending on the condition; see the footnotes for more details.^5^
 
-In the financial year `r latest_year_ltc`, in `r LOCALITY` Locality, it is estimated that **`r format_number_for_text(ltc_percent_total_latest)`%** of the population had at least one physical long-term condition (LTC). These include cardiovascular, neurodegenerative, and respiratory conditions, as well as other organ conditions (namely liver disease and renal failure), arthritis, cancer, diabetes, and epilepsy. *Please note that estimates for this section are based on people who had contact with NHS services - see footnotes for further information and caveats on identifying LTCs.^5^*
+In the financial year `r latest_year_ltc`, in `r LOCALITY` Locality, it is estimated that **`r format_number_for_text(ltc_percent_total_latest)`%** of the population had at least one physical Long Term Condition (LTC). These include cardiovascular, neurodegenerative, and respiratory conditions, as well as other organ conditions (namely liver disease and renal failure), arthritis, cancer, diabetes, and epilepsy. *Please note that estimates for this section are based on people who had contact with NHS services - see footnotes for further information and caveats on identifying LTCs.^5^*
 
 ```{r, fig.width = 9, fig.height = 3.5, fig.cap = 'Infographic split by age group showing the number of people out of ten that have at least one LTC. The age groups shown are under 65, 65-74, 75-84, and over 85.'}
 ltc_waffles
@@ -92,7 +92,7 @@ ltc_waffles
 The co-occurrence of two or more conditions, known as multi-morbidity, is broken down in Table `r table_num`, distinguishing between age groups. Overall, **`r format_number_for_text(ltc_multimorbidity_un65_perc)`**% of those under 65 have more than one LTC, compared to **`r format_number_for_text(ltc_multimorbidity_ov65_perc)`**% of those over 65.
 
 ```{r ltc_multimorbidity_table}
-ftext(paste0("Table ", table_num, ": Multi-morbidity of physical long-term conditions by age group in", latest_year_ltc), table_heading_style)
+ftext(paste0("Table ", table_num, ": Multi-morbidity of physical LTCs by age group in", latest_year_ltc), table_heading_style)
 
 flextable(ltc_multimorbidity_table, theme_fun = NULL) |>
   lp_flextable_theme() |>
@@ -101,9 +101,9 @@ flextable(ltc_multimorbidity_table, theme_fun = NULL) |>
 table_num <- table_num + 1
 ```
 
-**Most common physical Long-Term Conditions (LTCs)**
+**Most common physical Long Term Conditions (LTCs)**
 
--   Figure `r figure_num` shows the Long Term condition prevalence estimates for `r LOCALITY` Locality in the financial year `r latest_year_ltc` across all ages.
+-   Figure `r figure_num` shows the LTC prevalence estimates for `r LOCALITY` Locality in the financial year `r latest_year_ltc` across all ages.
 
 -   Table `r table_num` orders the prevalence estimates to show the five most common physical LTCs across all ages at the Locality, Partnership, and Scotland levels.
 
