@@ -59,13 +59,13 @@ n_loc <- count_localities(lookup, HSCP)
 life_exp_male <- read_parquet(path(
   gen_health_data_dir,
   "scotpho_data_extract_life_exp_male.parquet"
-)) %>%
+)) |>
   clean_scotpho_dat()
 # Females
 life_exp_fem <- read_parquet(path(
   gen_health_data_dir,
   "scotpho_data_extract_life_exp_fem.parquet"
-)) %>%
+)) |>
   clean_scotpho_dat()
 
 life_exp <- bind_rows(life_exp_male, life_exp_fem) |>
@@ -75,7 +75,7 @@ life_exp <- bind_rows(life_exp_male, life_exp_fem) |>
       "Life expectancy, males" ~ "Male",
       "Life expectancy, females" ~ "Female"
     )
-  ) %>%
+  ) |>
   mutate(
     period_short = str_replace(period, fixed(" to "), "-") |>
       str_sub(end = 9)
@@ -89,8 +89,8 @@ check_missing_data_scotpho(life_exp)
 deaths_15_44 <- read_parquet(path(
   gen_health_data_dir,
   "scotpho_data_extract_deaths_15_44.parquet"
-)) %>%
-  clean_scotpho_dat() %>%
+)) |>
+  clean_scotpho_dat() |>
   mutate(period_short = gsub("to", "-", substr(period, 1, 12), fixed = TRUE))
 
 check_missing_data_scotpho(deaths_15_44)
@@ -99,8 +99,8 @@ check_missing_data_scotpho(deaths_15_44)
 cancer_reg <- read_parquet(path(
   gen_health_data_dir,
   "scotpho_data_extract_cancer_reg.parquet"
-)) %>%
-  clean_scotpho_dat() %>%
+)) |>
+  clean_scotpho_dat() |>
   mutate(period_short = gsub("to", "-", substr(period, 1, 12), fixed = TRUE))
 
 check_missing_data_scotpho(cancer_reg)
@@ -109,8 +109,8 @@ check_missing_data_scotpho(cancer_reg)
 early_deaths_cancer <- read_parquet(path(
   gen_health_data_dir,
   "scotpho_data_extract_early_deaths_cancer.parquet"
-)) %>%
-  clean_scotpho_dat() %>%
+)) |>
+  clean_scotpho_dat() |>
   mutate(period_short = gsub("to", "-", substr(period, 1, 12), fixed = TRUE))
 
 check_missing_data_scotpho(early_deaths_cancer)
@@ -120,8 +120,8 @@ check_missing_data_scotpho(early_deaths_cancer)
 asthma_hosp <- read_parquet(path(
   gen_health_data_dir,
   "scotpho_data_extract_asthma_hosp.parquet"
-)) %>%
-  clean_scotpho_dat() %>%
+)) |>
+  clean_scotpho_dat() |>
   mutate(period_short = gsub("to", "-", substr(period, 1, 18), fixed = TRUE)) # |>
 #filter(year != 2023)
 
@@ -131,8 +131,8 @@ check_missing_data_scotpho(asthma_hosp)
 chd_hosp <- read_parquet(path(
   gen_health_data_dir,
   "scotpho_data_extract_chd_hosp.parquet"
-)) %>%
-  clean_scotpho_dat() %>%
+)) |>
+  clean_scotpho_dat() |>
   mutate(period_short = gsub("to", "-", substr(period, 1, 18), fixed = TRUE))
 
 check_missing_data_scotpho(chd_hosp)
@@ -141,8 +141,8 @@ check_missing_data_scotpho(chd_hosp)
 copd_hosp <- read_parquet(path(
   gen_health_data_dir,
   "scotpho_data_extract_copd_hosp.parquet"
-)) %>%
-  clean_scotpho_dat() %>%
+)) |>
+  clean_scotpho_dat() |>
   mutate(period_short = gsub("to", "-", substr(period, 1, 18), fixed = TRUE))
 
 check_missing_data_scotpho(copd_hosp)
@@ -151,8 +151,8 @@ check_missing_data_scotpho(copd_hosp)
 adp_presc <- read_parquet(path(
   gen_health_data_dir,
   "scotpho_data_extract_adp_presc.parquet"
-)) %>%
-  clean_scotpho_dat() %>%
+)) |>
+  clean_scotpho_dat() |>
   mutate(period_short = substr(period, 1, 7))
 
 check_missing_data_scotpho(adp_presc)
@@ -176,7 +176,7 @@ ltc <- read_parquet(path(gen_health_data_dir, "LTC_from_SLF.parquet")) |>
     "Multiple sclerosis" = "ms",
     "Parkinsons" = "parkinsons",
     "Renal failure" = "refailure"
-  ) %>%
+  ) |>
   mutate(
     hscp_locality = gsub("&", "and", hscp_locality, fixed = TRUE),
     year = paste0("20", substr(year, 1, 2), "/", substr(year, 3, 4))
@@ -217,11 +217,11 @@ life_exp_trend <- life_exp |>
     area_name == LOCALITY,
     area_type == "Locality",
     year >= max(year) - 10
-  ) %>%
+  ) |>
   mutate(
     period_short = period_short,
     measure = round_half_up(measure, 1)
-  ) %>%
+  ) |>
   ggplot(aes(
     x = period_short,
     y = measure,
@@ -443,34 +443,34 @@ disease_hosp <- bind_rows(
   filter(asthma_hosp, year == max(year)),
   filter(chd_hosp, year == max(year)),
   filter(copd_hosp, year == max(year))
-) %>%
+) |>
   filter(
     (area_name == LOCALITY & area_type == "Locality") |
       (area_name == HSCP & area_type == "HSCP") |
       area_name == HB |
       area_name == "Scotland"
-  ) %>%
+  ) |>
   mutate(
     area_type = factor(
       area_type,
       levels = c("Locality", "HSCP", "Health board", "Scotland")
     ),
     area_name = fct_reorder(as.factor(area_name), as.numeric(area_type))
-  ) %>%
+  ) |>
   mutate(
     indicator = case_when(
       str_detect(indicator, fixed("Asthma")) ~ "Asthma",
       str_detect(indicator, fixed("CHD")) ~ "Coronary Heart Disease",
       str_detect(indicator, fixed("COPD")) ~ "COPD"
     )
-  ) %>%
+  ) |>
   mutate(measure = round_half_up(measure, 1))
 
 highest_hosp_disease <- disease_hosp |>
   filter(
     area_name == LOCALITY,
     area_type == "Locality"
-  ) %>%
+  ) |>
   filter(measure == max(measure))
 
 disease_hosp_table <- disease_hosp |>
@@ -515,7 +515,7 @@ adp_presc_time_trend <- scotpho_time_trend(
 
 
 ## Bar chart
-adp_presc_bar <- adp_presc %>%
+adp_presc_bar <- adp_presc |>
   scotpho_bar_chart(
     data = .,
     chart_title = paste0(
@@ -850,7 +850,7 @@ ltc_multimorbidity <- ltc_age_grouped |>
   filter(
     hscp_locality == LOCALITY,
     total_ltc != 0
-  ) %>%
+  ) |>
   mutate(
     total_ltc = case_when(
       total_ltc == 1 ~ "1 LTC",
@@ -919,7 +919,7 @@ ltc_types <- ltc_age_grouped |>
     cols = "Arthritis":"Renal failure",
     names_to = "key",
     values_to = "value"
-  ) %>%
+  ) |>
   mutate(
     percent = (value / sum(slf_pop_loc$slf_adj_pop)) * 100
   )
@@ -1147,11 +1147,11 @@ other_locs_summary_table <- function(data, latest_year) {
       year == latest_year,
       area_type == "Locality"
     ) |>
-    rename("hscp_locality" = "area_name") %>%
-    right_join(other_locs, by = join_by(hscp_locality)) %>%
-    arrange(hscp_locality) %>%
-    select(hscp_locality, measure) %>%
-    mutate(measure = round_half_up(measure, 1)) %>%
+    rename("hscp_locality" = "area_name") |>
+    right_join(other_locs, by = join_by(hscp_locality)) |>
+    arrange(hscp_locality) |>
+    select(hscp_locality, measure) |>
+    mutate(measure = round_half_up(measure, 1)) |>
     pivot_wider(names_from = hscp_locality, values_from = measure)
 }
 
