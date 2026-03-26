@@ -6,7 +6,7 @@ rmd_files:
   - Services.Rmd
   - Demographics.Rmd
   - Housing.Rmd
-  - Population-Health.Rmd
+  - General-Health.Rmd
   - Lifestyle-Risk-Factors.Rmd
   - Unscheduled-Care.Rmd
   - Appendix.Rmd
