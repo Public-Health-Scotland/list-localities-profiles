@@ -16,23 +16,23 @@ library(flextable)
 library(officer)
 
 # Determine locality (for testing only)
-# LOCALITY <- "Eastwood"
+#LOCALITY <- "Aberdeen Central"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
 # LOCALITY <- "Mid-Argyll, Kintyre and Islay"
 # LOCALITY <- "City of Dunfermline"
 # LOCALITY <- "Barra"
 
 # Set year of data extracts for folder
-ext_year <- 2024
+ext_year <- 2025
 
 # Source in functions code
-# source("Master RMarkdown Document & Render Code/Global Script.R")
+#source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set file path
-# lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
+#lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
 
 gen_health_data_dir <- path(lp_path, "General Health", glue("DATA {ext_year}"))
-
+gen_health_data_dir_LE <- path(lp_path, "General Health/DATA 2024")
 ### Geographical lookups and objects ----
 
 # Locality lookup
@@ -57,13 +57,13 @@ n_loc <- count_localities(lookup, HSCP)
 
 # Males
 life_exp_male <- read_parquet(path(
-  gen_health_data_dir,
+  gen_health_data_dir_LE,
   "scotpho_data_extract_life_exp_male.parquet"
 )) %>%
   clean_scotpho_dat()
 # Females
 life_exp_fem <- read_parquet(path(
-  gen_health_data_dir,
+  gen_health_data_dir_LE,
   "scotpho_data_extract_life_exp_fem.parquet"
 )) %>%
   clean_scotpho_dat()
@@ -122,7 +122,8 @@ asthma_hosp <- read_parquet(path(
   "scotpho_data_extract_asthma_hosp.parquet"
 )) %>%
   clean_scotpho_dat() %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 18), fixed = TRUE))
+  mutate(period_short = gsub("to", "-", substr(period, 1, 18), fixed = TRUE)) # |>
+#filter(year != 2023)
 
 check_missing_data_scotpho(asthma_hosp)
 
@@ -1226,12 +1227,12 @@ other_locs_summary_table <- function(data, latest_year) {
 }
 
 hscp_scot_summary_table <- function(data, latest_year, area) {
-  type <- if_else(area == HSCP, "HSCP", "Scotland")
+  area_type <- if_else(area == HSCP, "HSCP", "Scotland")
   temp <- filter(
     data,
     year == latest_year,
     area_name == area,
-    area_type == type
+    area_type == area_type
   )
 
   round_half_up(temp[["measure"]], digits = 1)
