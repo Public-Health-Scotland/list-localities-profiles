@@ -13,13 +13,13 @@
 #source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Select a locality based on the HSCP (for source code "2. Services Outputs" to run - it does not matter which one is chosen)
-# LOCALITY <- read_in_localities() |>
-#   filter(hscp2019name == HSCP) |>
-#   slice(1) |>
-#   pull(hscp_locality)
+ LOCALITY <- read_in_localities() |>
+   filter(hscp2019name == HSCP) |>
+   slice(1) |>
+   pull(hscp_locality)
 
 ## Source the data manipulation script for services
-# source("Services/2. Services data manipulation & table.R")
+ source("Services/2. Services data manipulation & table.R")
 
 # 1. Set up ----
 
@@ -44,7 +44,7 @@ shp_hscp <- read_sf(path(
   mutate(
     hscp_locality = str_wrap(gsub("&", "and", hscp_local, fixed = TRUE), 24),
     hscp_local = str_wrap(hscp_local, 24),
-    border_thickness = if_else(hscp_locality == LOCALITY, 0.8, 0.2)
+    border_thickness = if_else(hscp_locality == LOCALITY, 0.2, 0.1)
   )
 
 # 3. Map Code ----
@@ -155,7 +155,8 @@ service_map_background <- get_stadiamap(
     max_long,
     max_lat
   ),
-  maptype = "stamen_terrain_background"
+  #maptype = "stamen_terrain_background"
+  maptype =  "alidade_smooth"
 )
 
 # preview map
@@ -170,12 +171,28 @@ service_map <- ggmap(service_map_background) +
       fill = hscp_local,
       linewidth = border_thickness
     ),
-    colour = "black",
-    alpha = 0.5,
+    colour = "white",
+    alpha = 0.4,
     inherit.aes = FALSE
   ) +
   scale_linewidth(range = c(0.2, 1), guide = "none") +
-  labs(fill = "Locality")
+  labs(fill = "Locality")+
+  geom_sf(
+    data = shp_hscp |> dplyr::filter(hscp_locality == LOCALITY),
+    fill = NA,                  #  keep original fill visible
+    colour = "white", #E63946",         #  highlight colour
+    linewidth = 1.5,            #  strong border
+    alpha = 0.3,
+    inherit.aes = FALSE
+  )+
+  # crisp border on top
+  geom_sf(
+    data = shp_hscp |> dplyr::filter(hscp_locality == LOCALITY),
+    fill = NA,
+    colour = "#3F085C",
+    linewidth = 0.8,
+    inherit.aes = FALSE
+  )
 
 # check if services markers exist for locality
 if (nrow(markers_gp) > 0) {
@@ -277,6 +294,8 @@ service_map <- service_map +
   labs(caption = "Source: Public Health Scotland") +
   theme(legend.position = "none")
 
+
+
 # Create Map of Just the Locality Areas in order to take its legend (of locality colours) ----
 
 service_map_1 <- ggmap(service_map_background) +
@@ -286,14 +305,14 @@ service_map_1 <- ggmap(service_map_background) +
       fill = hscp_local,
       linewidth = border_thickness
     ),
-    colour = "black",
+    colour = "white",
     alpha = 0.5,
     inherit.aes = FALSE
   ) +
   scale_linewidth(range = c(0.2, 1), guide = "none") +
   labs(fill = "Locality") +
   theme(legend.title = element_blank()) +
-  scale_fill_manual(values = col_palette) +
+  scale_fill_manual(values = col_palette)+
   theme(
     axis.text.x = element_blank(),
     axis.text.y = element_blank(),
@@ -347,7 +366,7 @@ service_map_2 <- ggmap(service_map_background) +
       "Emergency Department" = 23,
       "Minor Injury Unit" = 24
     )
-  ) +
+  )+
   theme(legend.title = element_blank()) +
   theme(
     axis.text.x = element_blank(),
