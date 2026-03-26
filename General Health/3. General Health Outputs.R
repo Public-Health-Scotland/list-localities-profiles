@@ -23,7 +23,7 @@ library(officer)
 # LOCALITY <- "Barra"
 
 # Set year of data extracts for folder
-ext_year <- 2024
+ext_year <- 2025
 
 # Source in functions code
 #source("Master RMarkdown Document & Render Code/Global Script.R")
@@ -32,7 +32,7 @@ ext_year <- 2024
 #lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
 
 gen_health_data_dir <- path(lp_path, "General Health", glue("DATA {ext_year}"))
-
+gen_health_data_dir_LE <- path(lp_path, "General Health/DATA 2024")
 ### Geographical lookups and objects ----
 
 # Locality lookup
@@ -57,13 +57,13 @@ n_loc <- count_localities(lookup, HSCP)
 
 # Males
 life_exp_male <- read_parquet(path(
-  gen_health_data_dir,
+  gen_health_data_dir_LE,
   "scotpho_data_extract_life_exp_male.parquet"
 )) %>%
   clean_scotpho_dat()
 # Females
 life_exp_fem <- read_parquet(path(
-  gen_health_data_dir,
+  gen_health_data_dir_LE,
   "scotpho_data_extract_life_exp_fem.parquet"
 )) %>%
   clean_scotpho_dat()
