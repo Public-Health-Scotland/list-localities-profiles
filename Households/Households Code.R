@@ -9,12 +9,6 @@
 ###
 ### When rerunning for a new year of data, manually change dates at lines 39 and 41
 ###
-### First Created: 05/09/2019
-### UPDATES
-### Oct 2021  Aidan Morrison
-### Sep 2022  Diane Wilson  Updated to use functions within Global Script and updated palette
-###
-###
 ### Contents:
 ### Section 1 - Packages, working directory etc
 ### Section 2 - Households Data
@@ -28,18 +22,18 @@ library(readxl)
 library(reshape2)
 
 # Update Data Year (this is the maximum year available for both housing data sets from NRS)
-max_year_housing <- 2023
+max_year_housing <- 2024
 # Update Publication Year (the year marked on the Data folder)
-ext_year <- 2024
+ext_year <- 2025
 
 # Set Directory.
-# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+#lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 # Read in Global Script for RMarkdown (For testing only)
-# source("Master RMarkdown Document & Render Code/Global Script.R")
+#source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set locality (for testing only)
-# LOCALITY <- "Whalsay and Skerries"
+#LOCALITY <- "Inverness"
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
 
 ##################### Section 2 - Households Data #############################

@@ -266,12 +266,14 @@ read_in_dz_pops_raw <- function() {
 }
 read_in_dz_pops <- memoise(read_in_dz_pops_raw)
 
-read_in_dz_pops_proxy_year <- function() {
-  read_in_dz_pops() |>
-    filter(year == 2022L) |>
-    select(-year) |>
-    mutate(year = 2023L)
-}
+###No longer required with new re-based 2011 datazones
+
+#read_in_dz_pops_proxy_year <- function() {
+#  read_in_dz_pops() |>
+#    filter(year == 2022L) |>
+#    select(-year) |>
+#    mutate(year = 2023L)
+#}
 
 ## Function to read in latest population projections ----
 
