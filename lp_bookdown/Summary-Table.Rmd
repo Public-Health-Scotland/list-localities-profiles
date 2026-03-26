@@ -133,7 +133,7 @@ housing_table <- make_summary_table(housing_values)
 housing_table
 ```
 \newline
-```{r general_health}
+```{r population_health}
 indicators <- c(
   "Male average life expectancy in years",
   "Female average life expectancy in years",
