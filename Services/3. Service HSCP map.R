@@ -15,8 +15,8 @@
 ## Select a locality based on the HSCP (for source code "2. Services Outputs" to run - it does not matter which one is chosen)
 # LOCALITY <- read_in_localities() |>
 #   filter(hscp2019name == HSCP) |>
-#   slice(1) |>
- #  pull(hscp_locality)
+ #  slice(1) |>
+#   pull(hscp_locality)
 
 ## Source the data manipulation script for services
  source("Services/2. Services data manipulation & table.R")
@@ -155,7 +155,6 @@ service_map_background <- get_stadiamap(
     max_long,
     max_lat
   ),
-  #maptype = "stamen_terrain_background"
   maptype =  "alidade_smooth"
 )
 
@@ -207,7 +206,7 @@ if (nrow(markers_gp) > 0) {
       size = 2,
       shape = 21,
       stroke = 0.5,
-      fill = "#EE8262"
+      fill = "#A01E25"
     )
 }
 if (nrow(markers_care_home) > 0) {
@@ -222,7 +221,7 @@ if (nrow(markers_care_home) > 0) {
       size = 2,
       shape = 22,
       stroke = 0.5,
-      fill = "#F5F5F5"
+      fill = "#FAA73F"
     )
 }
 if (nrow(markers_emergency_dep) > 0) {
@@ -237,7 +236,7 @@ if (nrow(markers_emergency_dep) > 0) {
       size = 2,
       shape = 23,
       stroke = 0.5,
-      fill = "#FFD700"
+      fill = "#3A9948"
     )
 }
 if (nrow(markers_miu) > 0) {
@@ -252,7 +251,7 @@ if (nrow(markers_miu) > 0) {
       size = 2,
       shape = 24,
       stroke = 0.5,
-      fill = "#28A197"
+      fill = "#5DA9DD"
     )
 }
 
@@ -392,10 +391,10 @@ service_map_2 <- ggmap(service_map_background) +
   ) +
   scale_fill_manual(
     values = c(
-      "GP Practice" = "#EE8262",
-      "Care Home" = "#F5F5F5",
-      "Emergency Department" = "#FFD700",
-      "Minor Injuries Unit" = "#28A197"
+      "GP Practice" = "#A01E25",
+      "Care Home" = "#FAA73F",
+      "Emergency Department" = "#3A9948",
+      "Minor Injuries Unit" = "#5DA9DD"
     )
   ) +
   scale_shape_manual(
@@ -406,7 +405,6 @@ service_map_2 <- ggmap(service_map_background) +
       "Minor Injuries Unit" = 24
     )
   )+
- # theme(legend.title = element_blank()) +
   labs(
     colour = "Service Type",
     fill   = "Service Type",
@@ -463,19 +461,6 @@ service_map <- cowplot::plot_grid(
   axis = "t",
   rel_widths = c(1.7, 1.0)
 )
-
-
-
-
-#values = c(
-#  "GP Practice" = "#C73918",
-#  "Care Home" = "#0078D4",
-##  "Emergency Department" = "#A285D1",
-#  "Minor Injuries Unit" = "#28A197"
-)
-
-# preview final service map
-# plot(service_map)
 
 # Housekeeping ----
 rm(
