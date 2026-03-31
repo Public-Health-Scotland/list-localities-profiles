@@ -119,12 +119,12 @@ hosp_lookup <- hosp_types %>%
 
 # MIUs
 markers_miu <- hosp_lookup %>%
-  filter(type == "Minor Injury Unit or Other") %>%
+  filter(type == "Type 3") |> #"Minor Injury Unit or Other") %>%
   filter(hscp2019name == HSCP)
 
 # EDs
 markers_emergency_dep <- hosp_lookup %>%
-  filter(type == "Emergency Department") %>%
+  filter(type == "Type 1") |> #"Emergency Department") %>%
   filter(hscp2019name == HSCP)
 
 Clacks_Royal <- filter(hosp_lookup, name == "Forth Valley Royal Hospital")

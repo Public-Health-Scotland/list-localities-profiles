@@ -16,11 +16,13 @@ lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality
 # Delete the full csv extract
 
 filt_and_save <- function(file_name) {
-  data <- read_csv(paste0(lp_path, ext_year, "/", file_name, ".csv"))
+  raw_data <- read_csv(paste0(lp_path, ext_year, "/", file_name, ".csv"))
 
-  write_rds(data, paste0(lp_path, ext_year, "/", file_name, ".RDS"))
+  write_rds(raw_data, paste0(lp_path, ext_year, "/", file_name, ".RDS"))
 
   file_delete(paste0(lp_path, ext_year, "/", file_name, ".csv"))
+
+  return(raw_data)
 }
 
 # Extract all file names from the ScotPHO folder
