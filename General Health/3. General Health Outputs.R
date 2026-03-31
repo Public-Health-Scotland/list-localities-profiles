@@ -514,7 +514,7 @@ adp_presc_time_trend <- scotpho_time_trend(
 
 
 ## Bar chart
-adp_presc_bar <- 
+adp_presc_bar <-
   scotpho_bar_chart(
     data = adp_presc,
     chart_title = paste0(
