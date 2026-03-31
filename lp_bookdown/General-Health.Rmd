@@ -22,6 +22,8 @@ if (is.na(avg_life_exp_latest_male)) {
 -   A cancer registration rate of **`r format_number_for_text(cancer_reg_rate_latest)`** registrations per 100,000 age-sex standardised population (compared to `r format_number_for_text(scot_cancer)` in Scotland), and an early death rate (\<75 years) from cancer of **`r format_number_for_text(early_deaths_cancer_rate_latest)`** per 100,000 age-sex standardised population (compared to `r format_number_for_text(scot_cancer_deaths)` in Scotland)^4^.
 -   **`r format_number_for_text(adp_presc_latest)`%** of the population being prescribed medication for anxiety, depression, or psychosis. This is a `r adp_presc_diff_scot` proportion than Scotland (`r format_number_for_text(scot_adp_presc)`%).
 
+\newpage
+
 ## Life Expectancy
 
 `r life_exp_text2`
@@ -61,13 +63,15 @@ Source: ScotPHO
 
 The following chart shows a trend of death rates among people aged 15 to 44 per 100,000 age-sex standardised population^4^ by area. In the most recent aggregate time period available (`r latest_period_deaths_15_44`), the mortality rate in `r LOCALITY` locality was **`r format_number_for_text(deaths_15_44_latest)`** deaths per 100,000 population.
 
-```{r, fig.width = 8.5, fig.height = 4.2, fig.cap = 'A line graph showing the ten-year time trend for the 3-year aggregate rate of deaths per 100,000 population for 15 to 44 year olds by locality, HSCP, health board and all Scotland'}
+```{r, fig.width = 8.5, fig.height = 3.8, fig.cap = 'A line graph showing the ten-year time trend for the 3-year aggregate rate of deaths per 100,000 population for 15 to 44 year olds by locality, HSCP, health board and all Scotland'}
 ftext(paste0("Figure ", figure_num, ": Deaths aged 15 to 44 years by geographical area and over time."), table_heading_style)
 
 deaths_15_44_time_trend
 
 figure_num <- figure_num + 1
 ```
+
+\newpage
 
 Figure `r figure_num` provides comparisons of deaths at ages 15 to 44 across all areas including other localities in `r HSCP` HSCP. In `r latest_period_deaths_15_44`, `r LOCALITY` had a `r deaths_15_44_diff_scot` rate than the rest of Scotland (`r format_number_for_text(deaths_15_44_latest)` compared to `r format_number_for_text(scot_deaths_15_44)` deaths per 100,000).
 
@@ -79,6 +83,8 @@ deaths_15_44_bar
 figure_num <- figure_num + 1
 ```
 
+\newpage
+
 ## Long Term Physical Health Conditions and Multi-morbidity
 
 The estimates in the following sections are based on an individual being hospitalised with a relevant condition *at any point* in the past. This methodology can lead to both undercounts and overcounts depending on the condition; see the footnotes for more details.^5^
@@ -88,6 +94,8 @@ In the financial year `r latest_year_ltc`, in `r LOCALITY` Locality, it is estim
 ```{r, fig.width = 9, fig.height = 3.5, fig.cap = 'Infographic split by age group showing the number of people out of ten that have at least one LTC. The age groups shown are under 65, 65-74, 75-84, and over 85.'}
 ltc_waffles
 ```
+
+\newpage
 
 The co-occurrence of two or more conditions, known as multi-morbidity, is broken down in Table `r table_num`, distinguishing between age groups. Overall, **`r format_number_for_text(ltc_multimorbidity_un65_perc)`**% of those under 65 have more than one LTC, compared to **`r format_number_for_text(ltc_multimorbidity_ov65_perc)`**% of those over 65.
 
@@ -109,7 +117,7 @@ table_num <- table_num + 1
 
 Below is a breakdown of the physical LTCs, for the financial year `r latest_year_ltc`. Figure `r figure_num` shows the prevalence of different LTCs in `r LOCALITY` locality, and Table `r table_num` illustrates the five most prevalent physical LTCs across all ages at the locality, partnership, and Scotland levels.
 
-```{r, fig.width = 7.5, fig.height = 5, fig.cap = "A graph showing the prevalence of physical long term conditions by percentage of population."}
+```{r, fig.width = 7.5, fig.height = 4, fig.cap = "A graph showing the prevalence of physical long term conditions by percentage of population."}
 ftext(paste0("Figure ", figure_num, ": The percentage of people with each physical LTC."), table_heading_style)
 
 ltc_types_plot
@@ -120,8 +128,8 @@ ftext("*COPD: Chronic Obstructive Pulmonary Disease", superscript_style)
 ```
 
 
-```{r, fig.width = 7.5, fig.height = 3.5}
-ftext(glue("Table {table_num}: Top five most common physical LTCs in, {LOCALITY} Locality as a percentage of the population for {latest_year_ltc}, compared to {HSCP} HSCP and Scotland."), table_heading_style)
+```{r, fig.width = 7.5, fig.height = 2.5}
+ftext(glue("Table {table_num}: Top five physical LTCs in, {LOCALITY} Locality as a percentage of the population for {latest_year_ltc}, compared to {HSCP} HSCP and Scotland."), table_heading_style)
 
 top5_ltc_table
 
@@ -166,6 +174,8 @@ flextable(disease_hosp_table, theme_fun = NULL) |>
 table_num <- table_num + 1
 ```
 
+\newpage
+
 ## Anxiety, Depression and Psychosis (ADP) prescriptions
 
 In `r latest_period_adp_presc`, **`r format_number_for_text(adp_presc_latest)`%** of people were prescribed medication for anxiety, depression or psychosis in `r LOCALITY` Locality. This is a **`r format_number_for_text(adp_presc_perc_change)`% `r adp_presc_changeword`** from the rate 10 years prior in `r prev_period_adp_presc` which was `r format_number_for_text(adp_presc_earliest)`%.
@@ -177,6 +187,8 @@ adp_presc_time_trend
 
 figure_num <- figure_num + 1
 ```
+
+\newpage
 
 In `r latest_period_adp_presc`, `r LOCALITY` had a `r adp_presc_diff_scot` proportion of the population being prescribed ADP medication compared to the rest of Scotland (`r format_number_for_text(adp_presc_latest)`% compared to `r format_number_for_text(scot_adp_presc)`%).
 
