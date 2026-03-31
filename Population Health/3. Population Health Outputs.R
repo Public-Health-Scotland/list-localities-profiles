@@ -38,7 +38,7 @@ pop_health_data_dir <- path(
 )
 
 pop_health_data_dir_LE <- path(
-  lp_path, 
+  lp_path,
   "General Health/DATA 2024"
 )
 
