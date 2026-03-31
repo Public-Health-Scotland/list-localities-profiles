@@ -23,7 +23,7 @@ library(officer)
 # LOCALITY <- "Barra"
 
 # Set year of data extracts for folder
-ext_year <- 2024
+ext_year <- 2025
 
 # Source in functions code
 #source("Master RMarkdown Document & Render Code/Global Script.R")
@@ -514,12 +514,12 @@ adp_presc_time_trend <- scotpho_time_trend(
 
 
 ## Bar chart
-adp_presc_bar <- adp_presc |>
+adp_presc_bar <- 
   scotpho_bar_chart(
-    data = .,
+    data = adp_presc,
     chart_title = paste0(
       "Anxiety, Depression and Psychosis Prescriptions, ",
-      max(.$period_short)
+      max(adp_presc$period_short)
     ),
     xaxis_title = "Population prescribed medication (%)"
   )
