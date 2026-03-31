@@ -15,11 +15,11 @@
 ## Select a locality based on the HSCP (for source code "2. Services Outputs" to run - it does not matter which one is chosen)
 # LOCALITY <- read_in_localities() |>
 #   filter(hscp2019name == HSCP) |>
- #  slice(1) |>
+#  slice(1) |>
 #   pull(hscp_locality)
 
 ## Source the data manipulation script for services
- source("Services/2. Services data manipulation & table.R")
+source("Services/2. Services data manipulation & table.R")
 
 # 1. Set up ----
 
@@ -155,7 +155,7 @@ service_map_background <- get_stadiamap(
     max_long,
     max_lat
   ),
-  maptype =  "alidade_smooth"
+  maptype = "alidade_smooth"
 )
 
 # preview map
@@ -175,15 +175,15 @@ service_map <- ggmap(service_map_background) +
     inherit.aes = FALSE
   ) +
   scale_linewidth(range = c(0.2, 1), guide = "none") +
-  labs(fill = "Locality")+
+  labs(fill = "Locality") +
   geom_sf(
     data = shp_hscp |> dplyr::filter(hscp_locality == LOCALITY),
-    fill = NA,                  #  keep original fill visible
+    fill = NA, #  keep original fill visible
     colour = "white", #E63946",         #  highlight colour
-    linewidth = 1.5,            #  strong border
+    linewidth = 1.5, #  strong border
     alpha = 0.3,
     inherit.aes = FALSE
-  )+
+  ) +
   # crisp border on top
   geom_sf(
     data = shp_hscp |> dplyr::filter(hscp_locality == LOCALITY),
@@ -256,8 +256,6 @@ if (nrow(markers_miu) > 0) {
 }
 
 
-
-
 # preview HSCP map with service markers added and localities outlined
 # plot(service_map)
 
@@ -295,8 +293,6 @@ service_map <- service_map +
   ) +
   labs(caption = "Source: Public Health Scotland") +
   theme(legend.position = "none")
- 
-
 
 
 # Create Map of Just the Locality Areas in order to take its legend (of locality colours) ----
@@ -312,26 +308,29 @@ service_map_1 <- ggmap(service_map_background) +
   geom_sf(
     data = shp_hscp,
     aes(
-      fill = hscp_local,       # fill color for localities
-      colour = highlight       # border color: "Selected" = purple
+      fill = hscp_local, # fill color for localities
+      colour = highlight # border color: "Selected" = purple
     ),
     linewidth = 0.8,
     alpha = 0.5,
     inherit.aes = FALSE
   ) +
-  scale_fill_manual(values = col_palette) +  # your fill palette
+  scale_fill_manual(values = col_palette) + # your fill palette
   scale_colour_manual(
     values = c(
-      "Selected" = "#3F085C",  # purple border for selected
-      "Other" = "white"         # white border for others
+      "Selected" = "#3F085C", # purple border for selected
+      "Other" = "white" # white border for others
     ),
-    guide = "none"             # remove separate color legend if desired
+    guide = "none" # remove separate color legend if desired
   ) +
   guides(
     fill = guide_legend(
       override.aes = list(
-        colour = ifelse(levels(factor(shp_hscp$hscp_local)) == LOCALITY,
-                        "#3F085C", "white"),
+        colour = ifelse(
+          levels(factor(shp_hscp$hscp_local)) == LOCALITY,
+          "#3F085C",
+          "white"
+        ),
         linewidth = 1
       )
     )
@@ -346,10 +345,10 @@ service_map_1 <- ggmap(service_map_background) +
     axis.title.x = element_blank(),
     legend.title = element_text(face = "bold")
   ) +
-  labs(caption = "Source: Public Health Scotland")+
+  labs(caption = "Source: Public Health Scotland") +
   theme(
     legend.title = element_text(size = 13, face = "bold"),
-    legend.text  = element_text(size = 11),
+    legend.text = element_text(size = 11),
     legend.background = element_rect(
       fill = "white",
       colour = "grey80",
@@ -404,15 +403,15 @@ service_map_2 <- ggmap(service_map_background) +
       "Emergency Department" = 23,
       "Minor Injuries Unit" = 24
     )
-  )+
+  ) +
   labs(
     colour = "Service Type",
-    fill   = "Service Type",
-    shape  = "Service Type"
+    fill = "Service Type",
+    shape = "Service Type"
   ) +
   theme(
     legend.title = element_text(face = "bold")
-  )+
+  ) +
   theme(
     axis.text.x = element_blank(),
     axis.text.y = element_blank(),
@@ -421,10 +420,10 @@ service_map_2 <- ggmap(service_map_background) +
     axis.title.y = element_blank(),
     axis.title.x = element_blank()
   ) +
-  labs(caption = "Source: Public Health Scotland")+
+  labs(caption = "Source: Public Health Scotland") +
   theme(
     legend.title = element_text(size = 13, face = "bold"),
-    legend.text  = element_text(size = 11),
+    legend.text = element_text(size = 11),
     legend.background = element_rect(
       fill = "white",
       colour = "grey80",
