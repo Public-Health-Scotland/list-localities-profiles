@@ -32,7 +32,7 @@ ext_year <- 2025
 #lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
 
 gen_health_data_dir <- path(lp_path, "General Health", glue("DATA {ext_year}"))
-
+gen_health_data_dir_LE <- path(lp_path, "General Health/DATA 2024")
 ### Geographical lookups and objects ----
 
 # Locality lookup
@@ -57,13 +57,13 @@ n_loc <- count_localities(lookup, HSCP)
 
 # Males
 life_exp_male <- read_parquet(path(
-  gen_health_data_dir,
+  gen_health_data_dir_LE,
   "scotpho_data_extract_life_exp_male.parquet"
 )) |>
   clean_scotpho_dat()
 # Females
 life_exp_fem <- read_parquet(path(
-  gen_health_data_dir,
+  gen_health_data_dir_LE,
   "scotpho_data_extract_life_exp_fem.parquet"
 )) |>
   clean_scotpho_dat()
@@ -1155,12 +1155,12 @@ other_locs_summary_table <- function(data, latest_year) {
 }
 
 hscp_scot_summary_table <- function(data, latest_year, area) {
-  type <- if_else(area == HSCP, "HSCP", "Scotland")
+  area_type <- if_else(area == HSCP, "HSCP", "Scotland")
   temp <- filter(
     data,
     year == latest_year,
     area_name == area,
-    area_type == type
+    area_type == area_type
   )
 
   round_half_up(temp[["measure"]], digits = 1)
