@@ -20,6 +20,8 @@
 
 -   **`r latest_ppa_loc$formatted_data[2]`** potentially preventable hospital admissions per 100,000 population, compared to `r scot_ppa$formatted_data[2]` in Scotland.
 
+\newpage
+
 ## Emergency Admissions
 
 Figure `r figure_num` presents the emergency admissions rate per 100,000 population in the `r LOCALITY` locality from `r min_year_ea` to `r max_year_ea`.
@@ -45,6 +47,8 @@ EAs_age_ts
 
 figure_num <- figure_num + 1
 ```
+
+\newpage
 
 ## Unscheduled Acute Bed Days
 
@@ -124,6 +128,8 @@ read_age_ts
 figure_num <- figure_num + 1
 ```
 
+\newpage
+
 ## Delayed Discharge Bed Days
 
 Figure `r figure_num` presents the number of delayed discharge bed days per 100,000 population aged over 65+ in the `r LOCALITY` locality from `r min_year_dd` to `r max_year_dd`.
@@ -138,6 +144,8 @@ DD_loc_ts
 figure_num <- figure_num + 1
 ```
 
+\newpage
+
 ## Emergency admissions from a fall
 
 Figure `r figure_num` presents the emergency admissions from falls rate per 100,000 population aged 65 and over in the `r LOCALITY` locality from `r min_year_falls` to `r max_year_falls`.
@@ -151,6 +159,8 @@ Falls_loc_ts
 
 figure_num <- figure_num + 1
 ```
+
+\newpage
 
 ## Potentially Preventable Admissions (PPAs)
 
@@ -191,9 +201,12 @@ psych_hosp_time_trend
 figure_num <- figure_num + 1
 ```
 
+\newpage
+
 ## Unscheduled Mental Health Specialty Bed Days
 
 Figure `r figure_num` presents the unscheduled mental health bed days rate per 100,000 population in the `r LOCALITY` locality from `r min_year_bd_mh_areas` to `r max_year_bd_mh_areas`.
+
 
 As presented in Figure `r figure_num`, the unscheduled mental health bed days rate per 100,000 population in the `r LOCALITY` locality for `r max_year_bd_mh_areas` is `r latest_bed_days_mh_loc1`, `r get_article(loc_rate_change_beds_mh)` `r loc_rate_change_beds_mh`% `r loc_word_change_beds_mh` since `r min_year_bd_mh_areas` and the `r HSCP` HSCP rate is `r hscp_bed_days_mh1`, `r get_article(hscp_rate_change_beds_mh)` `r hscp_rate_change_beds_mh`% `r hscp_word_change_beds_mh` since `r min_year_bd_mh_areas`. The `r HB` health board rate for `r max_year_bd_mh_areas` is `r hb_mh_beddays1`, `r get_article(hb_rate_change_mh)` `r hb_rate_change_mh`% `r word_change_hb_mh` since `r  min_year_bd_mh_areas` and the Scotland rate is `r scot_bed_days_mh1`, `r get_article(scot_rate_change_beds_mh)` `r scot_rate_change_beds_mh`% `r  scot_word_change_beds_mh` since `r min_year_bd_mh_areas`.
 
