@@ -591,7 +591,7 @@ pop_scot <- filter(
   hscp_locality == "Scotland Total",
   year == max(year)
 )
-
+# test
 scot_total_pop <- sum(pop_scot$total_pop) %>%
   formatC(format = "d", big.mark = ",")
 scot_gender_ratio <- paste0(
