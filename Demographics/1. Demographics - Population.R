@@ -584,7 +584,7 @@ scot_over65 <- pop_scot %>%
   pull(perc_over65)
 
 rm(pop_hscp, pop_scot)
-
+# test
 # Housekeeping ----
 # These objects are left over after the script is run
 # but don't appear to be used in any 'downstream' process:
