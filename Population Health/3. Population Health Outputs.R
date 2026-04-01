@@ -31,8 +31,14 @@ ext_year <- 2025
 # Set file path
 #lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
 
-pop_health_data_dir <- path(lp_path, "Population Health", glue("DATA {ext_year}"))
-pop_health_data_dir_LE <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/General Health/DATA 2024")
+pop_health_data_dir <- path(
+  lp_path,
+  "Population Health",
+  glue("DATA {ext_year}")
+)
+pop_health_data_dir_LE <- path(
+  "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/General Health/DATA 2024"
+)
 ### Geographical lookups and objects ----
 
 # Locality lookup
