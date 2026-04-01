@@ -133,7 +133,7 @@ housing_table <- make_summary_table(housing_values)
 housing_table
 ```
 \newline
-```{r general_health}
+```{r population_health}
 indicators <- c(
   "Male average life expectancy in years",
   "Female average life expectancy in years",
@@ -161,16 +161,16 @@ other_loc_values <- rbind(other_locs_life_exp_male, other_locs_life_exp_fem, oth
 hscp_values <- c(hscp_life_exp_male, hscp_life_exp_fem, hscp_deaths_15_44, hscp_ltc, hscp_cancer, hscp_adp)
 scot_values <- c(scot_life_exp_male, scot_life_exp_fem, scot_deaths_15_44, ltc_perc_scot, scot_cancer, scot_adp_presc)
 
-general_health_values <- tibble(
+population_health_values <- tibble(
   indicators, datatype, time, loc_values, other_loc_values,
   hscp_values, scot_values
 )
 
-colnames(general_health_values) <- c("General Health Indicators", headings)
+colnames(population_health_values) <- c("Population Health Indicators", headings)
 
-general_health_table <- make_summary_table(general_health_values)
+population_health_table <- make_summary_table(population_health_values)
 
-general_health_table
+population_health_table
 
 ftext(
   glue("*At HSCP and Scotland level, the time period is a 3-year aggregate ({latest_period_life_exp_otherareas})"), superscript_style

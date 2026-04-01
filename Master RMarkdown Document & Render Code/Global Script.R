@@ -797,9 +797,9 @@ create_testing_chapter <- function(chapters_oi, locality_oi, output_directory) {
     source("Services/3. Service HSCP map.R")
   }
 
-  if ("General-Health.Rmd" %in% chapters_oi) {
-    # General Health ----
-    source("General Health/3. General Health Outputs.R")
+  if ("Population-Health.Rmd" %in% chapters_oi) {
+    # Population Health ----
+    source("Population Health/3. Population Health Outputs.R")
   }
 
   if ("Lifestyle-Risk-Factors.Rmd" %in% chapters_oi) {

@@ -1,10 +1,10 @@
 ############################################################################################# .
 #                                                                                           #
-#                       LOCALITY PROFILES GENERAL HEALTH OUTPUTS CODE                       #
+#                       LOCALITY PROFILES POPULATION HEALTH OUTPUTS CODE                       #
 #                                                                                           #
 ############################################################################################# .
 
-## Code used to create infographics, charts, and figures for the General Health section of
+## Code used to create infographics, charts, and figures for the Population Health section of
 #  the locality profiles.
 
 ############# 1) PACKAGES, DIRECTORY, LOOKUPS, DATA IMPORT + CLEANING #############
@@ -31,8 +31,14 @@ ext_year <- 2025
 # Set file path
 #lp_path <- path("/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles")
 
-gen_health_data_dir <- path(lp_path, "General Health", glue("DATA {ext_year}"))
-gen_health_data_dir_LE <- path(lp_path, "General Health/DATA 2024")
+pop_health_data_dir <- path(
+  lp_path,
+  "Population Health",
+  glue("DATA {ext_year}")
+)
+pop_health_data_dir_LE <- path(
+  "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/General Health/DATA 2024"
+)
 ### Geographical lookups and objects ----
 
 # Locality lookup
@@ -57,13 +63,13 @@ n_loc <- count_localities(lookup, HSCP)
 
 # Males
 life_exp_male <- read_parquet(path(
-  gen_health_data_dir_LE,
+  pop_health_data_dir_LE,
   "scotpho_data_extract_life_exp_male.parquet"
 )) |>
   clean_scotpho_dat()
 # Females
 life_exp_fem <- read_parquet(path(
-  gen_health_data_dir_LE,
+  pop_health_data_dir_LE,
   "scotpho_data_extract_life_exp_fem.parquet"
 )) |>
   clean_scotpho_dat()
@@ -86,7 +92,7 @@ check_missing_data_scotpho(life_exp)
 
 ## Deaths aged 15-44
 deaths_15_44 <- read_parquet(path(
-  gen_health_data_dir,
+  pop_health_data_dir,
   "scotpho_data_extract_deaths_15_44.parquet"
 )) |>
   clean_scotpho_dat() |>
@@ -96,7 +102,7 @@ check_missing_data_scotpho(deaths_15_44)
 
 ## Cancer registrations
 cancer_reg <- read_parquet(path(
-  gen_health_data_dir,
+  pop_health_data_dir,
   "scotpho_data_extract_cancer_reg.parquet"
 )) |>
   clean_scotpho_dat() |>
@@ -106,7 +112,7 @@ check_missing_data_scotpho(cancer_reg)
 
 ## Early deaths cancer
 early_deaths_cancer <- read_parquet(path(
-  gen_health_data_dir,
+  pop_health_data_dir,
   "scotpho_data_extract_early_deaths_cancer.parquet"
 )) |>
   clean_scotpho_dat() |>
@@ -117,7 +123,7 @@ check_missing_data_scotpho(early_deaths_cancer)
 
 ## Asthma hospitalisations
 asthma_hosp <- read_parquet(path(
-  gen_health_data_dir,
+  pop_health_data_dir,
   "scotpho_data_extract_asthma_hosp.parquet"
 )) |>
   clean_scotpho_dat() |>
@@ -128,7 +134,7 @@ check_missing_data_scotpho(asthma_hosp)
 
 ## CHD hospitalisations
 chd_hosp <- read_parquet(path(
-  gen_health_data_dir,
+  pop_health_data_dir,
   "scotpho_data_extract_chd_hosp.parquet"
 )) |>
   clean_scotpho_dat() |>
@@ -138,7 +144,7 @@ check_missing_data_scotpho(chd_hosp)
 
 ## COPD hospitalisations
 copd_hosp <- read_parquet(path(
-  gen_health_data_dir,
+  pop_health_data_dir,
   "scotpho_data_extract_copd_hosp.parquet"
 )) |>
   clean_scotpho_dat() |>
@@ -148,7 +154,7 @@ check_missing_data_scotpho(copd_hosp)
 
 ## Anxiety/depression/psychosis prescriptions
 adp_presc <- read_parquet(path(
-  gen_health_data_dir,
+  pop_health_data_dir,
   "scotpho_data_extract_adp_presc.parquet"
 )) |>
   clean_scotpho_dat() |>
@@ -158,7 +164,7 @@ check_missing_data_scotpho(adp_presc)
 
 
 # Long-term conditions
-ltc <- read_parquet(path(gen_health_data_dir, "LTC_from_SLF.parquet")) |>
+ltc <- read_parquet(path(pop_health_data_dir, "LTC_from_SLF.parquet")) |>
   rename(
     "Arthritis" = "arth",
     "Asthma" = "asthma",
@@ -587,52 +593,52 @@ ltc_scot <- ltc |>
 # under 65
 ppl_bold_u65 <- readPNG(path(
   lp_path,
-  "General Health",
+  "Population Health",
   "infographics",
   "people bold under 65.png"
 ))
 ppl_faint_u65 <- readPNG(path(
   lp_path,
-  "General Health",
+  "Population Health",
   "infographics",
   "people faint under 65.png"
 ))
 # 65-74
 ppl_bold_6574 <- readPNG(path(
   lp_path,
-  "General Health",
+  "Population Health",
   "infographics",
   "people bold 65-74.png"
 ))
 ppl_faint_6574 <- readPNG(path(
   lp_path,
-  "General Health",
+  "Population Health",
   "infographics",
   "people faint 65-74.png"
 ))
 # 75-84
 ppl_bold_7584 <- readPNG(path(
   lp_path,
-  "General Health",
+  "Population Health",
   "infographics",
   "people bold 75-84.png"
 ))
 ppl_faint_7584 <- readPNG(path(
   lp_path,
-  "General Health",
+  "Population Health",
   "infographics",
   "people faint 75-84.png"
 ))
 # over 85
 ppl_bold_o85 <- readPNG(path(
   lp_path,
-  "General Health",
+  "Population Health",
   "infographics",
   "people bold over 85.png"
 ))
 ppl_faint_o85 <- readPNG(path(
   lp_path,
-  "General Health",
+  "Population Health",
   "infographics",
   "people faint over 85.png"
 ))
@@ -1304,7 +1310,7 @@ rm(
   create_infographic,
   disease_hosp,
   early_deaths_cancer_rate_earliest,
-  gen_health_data_dir,
+  pop_health_data_dir,
   hscp_scot_summary_table,
   latest_year_life_exp_loc,
   ltc_age_grouped,
