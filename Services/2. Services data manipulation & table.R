@@ -32,14 +32,6 @@ ext_year <- 2024
 # Locality lookup
 lookup <- read_in_localities(dz_level = TRUE)
 
-# Lookup without datazones
-lookup2 <- read_in_localities()
-
-## Determine HSCP
-
-# Get number of localities in HSCP
-n_loc <- count_localities(lookup2, HSCP)
-
 
 ###### 2. Read in services data ######
 
@@ -189,10 +181,10 @@ services_tibble <- tibble(
     "Other"
   ),
   Number = c(
-    sum(markers_gp[["hscp2019name"]] == HSCP),
-    sum(markers_emergency_dep[["hscp2019name"]] == HSCP),
-    sum(markers_miu[["hscp2019name"]] == HSCP),
-    sum(markers_care_home[["hscp2019name"]] == HSCP),
+    nrow(markers_gp),
+    nrow(markers_emergency_dep),
+    nrow(markers_miu),
+    nrow(markers_care_home),
     nrow(other_care_type)
   )
 )

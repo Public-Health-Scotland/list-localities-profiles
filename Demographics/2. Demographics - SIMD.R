@@ -23,7 +23,7 @@ library(sf)
 # Source in global functions/themes script
 # source("Master RMarkdown Document & Render Code/Global Script.R")
 
-## Final document will loop through a list of localities
+## Final document will loop through a list of HSCPs
 # Create placeholder for for loop
 # HSCP <- "Moray"
 
@@ -150,7 +150,7 @@ zones <- read_sf(path(
 # merge lookup and shapefile
 zones <- merge(zones, lookup_dz, by = "datazone2011")
 
-# subset for Locality
+# subset for HSCP
 zones <- subset(zones, hscp2019name == HSCP)
 
 # Get latitude and longitude co-ordinates for each datazone, find min and max.
@@ -166,7 +166,7 @@ zones_coord <-
     max_lat = max(lat)
   )
 
-# Get min and max longitude for locality
+# Get min and max longitude for HSCP
 min_long <- zones_coord$min_long
 max_long <- zones_coord$max_long
 min_lat <- zones_coord$min_lat
@@ -182,7 +182,7 @@ places <- read_csv(path(
 )) %>%
   rename(datazone2011 = DataZone) %>%
   filter(datazone2011 %in% zones$datazone2011) %>%
-  # extra filter to remove place names with coordinates outwith locality
+  # extra filter to remove place names with coordinates outwith HSCP
   filter(
     between(Longitude, min_long, max_long),
     between(Latitude, min_lat, max_lat)
@@ -463,9 +463,8 @@ simd_diff_overall <- simd_16_20_dom %>%
 lookup <- read_in_localities()
 
 ## Relevant lookups for creating the table objects
-loc <- as.character(filter(lookup, hscp2019name == HSCP)$hscp_locality)
 
-# Determine other localities based on LOCALITY object
+# Determine all localities within the HSCP
 other_locs <- lookup %>%
   select(hscp_locality, hscp2019name) %>%
   filter(hscp2019name == HSCP) %>%

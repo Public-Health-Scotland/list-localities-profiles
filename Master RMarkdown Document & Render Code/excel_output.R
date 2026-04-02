@@ -189,7 +189,7 @@ for (HSCP in hscp_list) {
       lp_path,
       "Master RMarkdown Document & Render Code/Output/background data/",
       HSCP,
-      " - Locality Profile data.xlsx"
+      " - HSCP Profile data.xlsx"
     ),
     overwrite = TRUE
   )

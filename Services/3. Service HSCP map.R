@@ -13,9 +13,6 @@
 # Source in functions code (for testing only)
 # source("Master RMarkdown Document & Render Code/Global Script.R")
 
-## Select a locality based on the HSCP (for source code "2. Services Outputs" to run - it does not matter which one is chosen)
-# LOCALITY <- read_in_localities() |> filter(hscp2019name == HSCP) |> slice(1) |> pull(hscp_locality)
-
 # Source the data manipulation script for services
 # source("Services/2. Services data manipulation & table.R")
 
@@ -39,7 +36,7 @@ shp <- st_transform(shp, 4326) |>
 
 shp <- shp |>
   mutate(hscp_locality = gsub("&", "and", hscp_local, fixed = TRUE)) |>
-  merge(lookup2, by = "hscp_locality")
+  merge(read_in_localities(), by = "hscp_locality")
 
 shp_hscp <- shp |>
   filter(hscp2019name == HSCP) |>
@@ -52,6 +49,8 @@ shp_hscp <- shp |>
 # 3.1 Palettes ----
 
 # Create colour palettes for different numbers of localities
+n_loc <- count_localities(read_in_localities(), HSCP)
+
 if (n_loc < 5) {
   col_palette <- c("#3F3685", "#9B4393", "#0078D4", "#83BB26")
 } else if (n_loc %in% c(5, 6)) {
@@ -431,7 +430,6 @@ rm(
   ext_year,
   hscp_loc,
   locality_map_id,
-  lookup2,
   max_lat,
   max_long,
   min_lat,

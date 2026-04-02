@@ -21,6 +21,11 @@ library(glue)
 library(fs)
 library(arrow)
 library(phsstyles)
+library(scales)
+library(flextable)
+library(officer)
+library(memoise)
+library(phsmethods)
 
 # Prefer dplyr functions if there's a conflict
 conflicted::conflict_prefer_all("dplyr", quiet = TRUE)
@@ -65,12 +70,15 @@ format_number_for_text <- function(x) {
 # 7.2 -> an
 # To be used for "a xx increase" which could be "an xx increase"
 get_article <- function(number) {
-  if (identical(number, numeric(0))) {
+  # Cast as a character, so we are sure of the type
+  number_chr <- as.character(number)
+
+  if (identical(number_chr, character(0))) {
     # If the number wasn't calculated we still need to deal with it.
     return("-")
   }
 
-  if (startsWith(number, "8") || startsWith(number, "18")) {
+  if (startsWith(number_chr, "8") || startsWith(number_chr, "18")) {
     return("an")
   } else {
     return("a")
@@ -150,7 +158,7 @@ theme_profiles <- function() {
 # default is F - datazones are not imported, there is one line per locality (125 rows)
 # if changed to dz_level = TRUE, this shows all the datazones in each locality (6976 rows)
 
-read_in_localities <- function(dz_level = FALSE) {
+read_in_localities_raw <- function(dz_level = FALSE) {
   data <- fs::dir_ls(
     path = "/conf/linkage/output/lookups/Unicode/Geography/HSCP Locality",
     regexp = "HSCP Localities_DZ11_Lookup_.+?\\.rds$"
@@ -181,6 +189,7 @@ read_in_localities <- function(dz_level = FALSE) {
 
   return(data)
 }
+read_in_localities <- memoise(read_in_localities_raw)
 
 count_localities <- function(locality_lookup, hscp_name) {
   return(sum(locality_lookup[["hscp2019name"]] == hscp_name))
@@ -191,7 +200,7 @@ count_localities <- function(locality_lookup, hscp_name) {
 # No arguments needed, just use read_in_latest_postcodes()
 # The function pulls the latest "Scottish_Postcode_Directory_year_version.rds"
 
-read_in_postcodes <- function() {
+read_in_postcodes_raw <- function() {
   data <- fs::dir_ls(
     path = "/conf/linkage/output/lookups/Unicode/Geography/Scottish Postcode Directory",
     regexp = "\\.parquet$"
@@ -211,26 +220,26 @@ read_in_postcodes <- function() {
 
   return(data)
 }
+read_in_postcodes <- memoise(read_in_postcodes_raw)
 
-
-## Function to read in latest population file by DZ ----
+## Function to read in the latest population file by DZ ----
 
 # No arguments needed, just use read_in_latest_dz_pops()
 # Function pulls the latest DZ populations DataZone2011_pop_est_2011_Xyear.rds
 # Then joins this with the localities lookup to match hscp_locality
 
-read_in_dz_pops <- function() {
+read_in_dz_pops_raw <- function() {
   fs::dir_ls(
     glue(
       "/conf/linkage/output/lookups/Unicode/",
       "Populations/Estimates/"
     ),
     regexp = glue("DataZone2011_pop_est_2011_.+?\\.rds$")
-  ) %>%
-    # Read in the most up to date lookup version
-    max() %>%
-    read_rds() %>%
-    clean_names() %>%
+  ) |>
+    # Read in the most up-to-date lookup version
+    max() |>
+    read_rds() |>
+    clean_names() |>
     select(
       -c(
         intzone2011,
@@ -248,47 +257,51 @@ read_in_dz_pops <- function() {
         hb2018,
         hb2014
       )
-    ) %>%
+    ) |>
     left_join(
       read_in_localities(dz_level = TRUE),
       by = join_by(datazone2011)
-    )
+    ) |>
+    mutate(year = as.integer(year))
 }
+read_in_dz_pops <- memoise(read_in_dz_pops_raw)
 
 read_in_dz_pops_proxy_year <- function() {
   read_in_dz_pops() |>
-    filter(year == "2022") |>
+    filter(year == 2022L) |>
     select(-year) |>
-    mutate(year = 2023)
+    mutate(year = 2023L)
 }
 
 ## Function to read in latest population projections ----
 
 # No arguments needed, just use read_in_pop_proj()
 # Function pulls the latest projections HSCP2019_pop_proj....rds
-# Then joins this with hscp lookup to match hscp names
+# Then joins this with the hscp lookup to match hscp names
 
-read_in_pop_proj <- function() {
+read_in_pop_proj_raw <- function() {
   proj <- fs::dir_ls(
     glue(
       "/conf/linkage/output/lookups/Unicode/",
       "Populations/Projections/"
     ),
     regexp = glue("HSCP2019_pop_proj_20.+?_.+?\\.rds$")
-  ) %>%
-    # Read in the most up to date lookup version
-    max() %>%
-    read_rds() %>%
-    clean_names() %>%
-    select(year, hscp2019, age, sex, sex_name, pop)
+  ) |>
+    # Read in the most up-to-date lookup version
+    max() |>
+    read_rds() |>
+    clean_names() |>
+    select(year, hscp2019, age, sex, sex_name, pop) |>
+    mutate(year = as.integer(year))
 
   # join with lookup so all hscp2019 names are the same
-  hscp_lkp <- read_in_localities() %>%
-    select(hscp2019, hscp2019name) %>%
+  hscp_lkp <- read_in_localities() |>
+    select(hscp2019, hscp2019name) |>
     distinct()
 
   left_join(proj, hscp_lkp, by = join_by(hscp2019))
 }
+read_in_pop_proj <- memoise(read_in_pop_proj_raw)
 
 #### Functions for ScotPHO data ####
 
@@ -298,16 +311,16 @@ read_in_pop_proj <- function() {
 # Removes unwanted areas like council area and IZ
 
 clean_scotpho_dat <- function(data) {
-  data %>%
-    filter(area_type != "Council area" & area_type != "Intermediate zone") %>%
-    mutate(area_name = gsub("&", "and", area_name, fixed = TRUE)) %>%
+  data |>
+    filter(area_type != "Council area" & area_type != "Intermediate zone") |>
+    mutate(area_name = gsub("&", "and", area_name, fixed = TRUE)) |>
     mutate(
       area_name = if_else(
         area_name == "Renfrewshire West",
         "West Renfrewshire",
         area_name
       )
-    ) %>%
+    ) |>
     mutate(
       area_type = if_else(area_type == "HSC partnership", "HSCP", area_type),
       area_type = if_else(area_type == "HSC locality", "Locality", area_type)
@@ -476,9 +489,9 @@ scotpho_time_trend_HSCP <- function(
 ## Bar chart function for ScotPHO data ----
 
 # Creates a horizontal bar chart comparing the last time period of data across
-# all localities in a partnership, the HSCP, HB, and Scotland
+# the HSCP, HB, and Scotland
 # Data must first be cleaned using clean_scotpho_dat function
-# Uses object "LOCALITY" and vector "other_locs" (other localities in HSCP) to filter
+# Uses object "HSCP" and vector "other_locs" (other localities in HSCP) to filter
 # these must be specified earlier in script
 
 # Arguments:
@@ -533,14 +546,14 @@ scotpho_bar_chart <- function(data, chart_title, xaxis_title) {
 
 
 scotpho_bar_chart_HSCP <- function(data, chart_title, xaxis_title) {
-  data_for_plot <- data %>%
-    filter(year == max(year)) %>%
+  data_for_plot <- data |>
+    filter(year == max(year)) |>
     filter(
       (area_name %in% c(other_locs$hscp_locality) & area_type == "Locality") |
         (area_name == HSCP & area_type == "HSCP") |
         area_name == HB |
         area_name == "Scotland"
-    ) %>%
+    ) |>
     mutate(
       text_highlight = area_name == HSCP,
       area_type = factor(
@@ -548,7 +561,7 @@ scotpho_bar_chart_HSCP <- function(data, chart_title, xaxis_title) {
         levels = c("Locality", "HSCP", "Health board", "Scotland")
       ),
       area_name = fct_reorder(as.factor(str_wrap(area_name, 28)), measure)
-    ) %>%
+    ) |>
     arrange(area_name)
 
   ggplot(data_for_plot) +
@@ -558,8 +571,7 @@ scotpho_bar_chart_HSCP <- function(data, chart_title, xaxis_title) {
     theme_profiles() +
     theme(
       axis.text.y = element_text(
-        colour = if_else(data_for_plot$text_highlight, "red", "black"),
-        face = if_else(data_for_plot$text_highlight, "bold", "plain")
+        colour = if_else(data_for_plot$text_highlight, "red", "black")
       )
     ) +
     labs(
@@ -578,12 +590,16 @@ scotpho_bar_chart_HSCP <- function(data, chart_title, xaxis_title) {
 
 ## Checking for missing data
 check_missing_data_scotpho <- function(data) {
-  data %>%
-    filter(area_type == "Locality") %>%
-    filter(year == max(year)) %>%
-    right_join(read_in_localities(), by = c("area_name" = "hscp_locality")) %>%
-    filter(is.na(indicator)) %>%
-    select(area_name, hscp2019name)
+  data |>
+    filter(area_type == "HSCP") |>
+    filter(year == max(year)) |>
+    right_join(
+      read_in_localities(),
+      by = c("area_name" = "hscp2019name"),
+      multiple = "any"
+    ) |>
+    filter(is.na(indicator)) |>
+    select(area_name)
 }
 
 
@@ -682,4 +698,195 @@ save_dataframes_to_excel <- function(dataframes, sheet_names, file_path) {
 
   # Save the workbook to a file
   openxlsx2::wb_save(wb, file = file_path, overwrite = TRUE)
+}
+
+
+# flextable function
+
+lp_flextable_theme <- function(ft) {
+  ft %>%
+    bold(part = "header") %>%
+    bg(bg = "#43358B", part = "header") %>%
+    color(color = "white", part = "header") %>%
+    height(height = 0.236, part = "body") %>%
+    hrule(rule = "atleast", part = "body") %>%
+    align(align = "center", part = "header") %>%
+    valign(valign = "center", part = "header") %>%
+    valign(valign = "top", part = "body") %>%
+    colformat_num(big.mark = "") %>%
+    fontsize(size = 10, part = "all") %>%
+    border(
+      border = fp_border_default(color = "#000000", width = 0.5),
+      part = "all"
+    )
+}
+
+add_cover_page <- function(
+  document_path,
+  cover_page_path,
+  main_title,
+  date = format(Sys.Date(), "%d/%m/%Y"),
+  subtitle = ""
+) {
+  # Load and update cover page
+  cover_page <- cover_page_path |>
+    officer::read_docx() |>
+    officer::body_replace_all_text("Publication title", main_title) |>
+    officer::body_replace_all_text("Subtitle", subtitle) |>
+    officer::body_replace_all_text("DD Month YYYY", date)
+
+  # Extract document name and folder
+  document_name <- fs::path_file(document_path)
+  document_folder <- fs::path_dir(document_path)
+
+  # Sanitize and apply custom replacements
+  esc_char_document_name <- document_name |>
+    fs::path_sanitize() |>
+    stringr::str_replace_all("[&\\- ]", "_")
+
+  # Build new path and rename original file
+  esc_char_document_path <- fs::path(document_folder, esc_char_document_name)
+  fs::file_move(document_path, esc_char_document_path)
+
+  # Convert document to XML for merging
+  xml_elt <- esc_char_document_path |>
+    officer::block_pour_docx() |>
+    officer::to_wml(add_ns = TRUE)
+
+  # Ensure XML references match sanitized path
+  if (stringr::str_detect(xml_elt, esc_char_document_path)) {
+    xml_elt <- stringr::str_replace_all(
+      xml_elt,
+      stringr::fixed(esc_char_document_path),
+      esc_char_document_path
+    )
+  }
+
+  # Merge cover page and report
+  cover_page |>
+    officer::cursor_end() |>
+    officer::body_add_break() |>
+    officer::body_add_xml(str = xml_elt) |>
+    officer::set_doc_properties(title = main_title) |>
+    print(esc_char_document_path)
+
+  # Restore original filename
+  fs::file_move(esc_char_document_path, document_path)
+}
+
+
+create_testing_chapter <- function(chapters_oi, hscp_oi, output_directory) {
+  output_dir <- output_directory
+
+  HSCP <- hscp_oi
+
+  lookup <- read_in_localities()
+
+  if ("Demographics.Rmd" %in% chapters_oi) {
+    # Demographics ----
+    source("Demographics/1. Demographics - Population.R")
+    source("Demographics/2. Demographics - SIMD.R")
+  }
+
+  if ("Housing.Rmd" %in% chapters_oi) {
+    # Housing ----
+    source("Households/Households Code.R")
+  }
+
+  if ("Services.Rmd" %in% chapters_oi) {
+    # Services ----
+    source("Services/2. Services data manipulation & table.R")
+    source("Services/3. Service HSCP map.R")
+  }
+
+  if ("General-Health.Rmd" %in% chapters_oi) {
+    # General Health ----
+    source("General Health/3. General Health Outputs.R")
+  }
+
+  if ("Lifestyle-Risk-Factors.Rmd" %in% chapters_oi) {
+    # Lifestyle & Risk Factors ----
+    source("Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
+  }
+
+  if ("Unscheduled-Care.Rmd" %in% chapters_oi) {
+    # Unscheduled Care ----
+    source("Unscheduled Care/2. Unscheduled Care outputs.R")
+  }
+
+  chapters_oi_name <- chapters_oi %>%
+    gsub(".Rmd", "", .) %>%
+    paste(collapse = " ")
+
+  # read _bookdown.yaml file
+  yaml_file <- yaml::read_yaml("lp_bookdown/_bookdown.yaml")
+
+  # change included chapters to relevant chapter(s) only + index.Rmd (sets formatting)
+  yaml_file$rmd_files <- c("index.Rmd", chapters_oi)
+
+  # write temporary yaml with relevant chapters to be used in rendering
+  yaml::write_yaml(yaml_file, path(tempdir(), "_practice_chapter_temp.yaml"))
+
+  output_doc_name <- glue(
+    "{LOCALITY} - Locality Profile {chapters_oi_name} Practice Chapter.docx"
+  )
+
+  # render test chapter
+  bookdown::render_book(
+    input = "lp_bookdown",
+    output_dir = output_dir,
+    new_session = FALSE,
+    output_file = output_doc_name,
+    output_format = "bookdown::word_document2",
+    config_file = path(tempdir(), "_practice_chapter_temp.yaml")
+  )
+
+  document_path <- path(output_dir, output_doc_name)
+
+  phstemplates::apply_sensitivity_label(
+    document_path,
+    "OFFICIAL_SENSITIVE_VMO"
+  )
+
+  return(document_path)
+}
+
+
+orient <- function(document_path) {
+  doc <- officer::read_docx(document_path) |>
+    officer::cursor_begin()
+
+  # Define sections: each with a start keyword and orientation
+  sections <- list(
+    list(keyword = "{{contents_anchor}}", orientation = "portrait"),
+    list(keyword = "{{summary_anchor}}", orientation = "landscape"),
+    list(keyword = "{{main_anchor}}", orientation = "portrait")
+  )
+
+  # Loop through sections and apply orientation
+  for (sec in sections) {
+    # Move cursor to the start of this section
+    doc <- officer::cursor_reach(doc, keyword = sec$keyword, fixed = TRUE)
+
+    # Apply section break + orientation
+    if (sec$orientation == "landscape") {
+      doc <- officer::body_end_section_landscape(doc)
+    } else {
+      doc <- officer::body_end_section_portrait(doc)
+    }
+
+    # Remove anchors
+    # Move cursor back to the anchor keyword
+    doc <- officer::cursor_reach(doc, keyword = sec$keyword, fixed = TRUE)
+
+    # remove anchors
+    doc <- officer::body_replace_all_text(
+      doc,
+      old_value = sec$keyword,
+      new_value = "",
+      fixed = TRUE
+    )
+  }
+
+  print(doc, target = document_path)
 }

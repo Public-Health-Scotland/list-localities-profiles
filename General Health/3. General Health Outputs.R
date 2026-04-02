@@ -546,7 +546,6 @@ adp_presc_diff_scot <- if_else(
 
 ############################ 3) SLF DATA (LTCs) ####################################
 
-# Keeping below in as we are still using locality outputs at the moment
 # Extract SLF adjusted populations
 slf_pops <- distinct(ltc, age_group, hscp_locality, hscp2019name, slf_adj_pop)
 
@@ -699,7 +698,7 @@ ltc_infographic <- ltc %>%
   summarise(people = sum(people)) %>%
   ungroup() %>%
   # the line above gives a summary table by age_group by hscp2019_name
-  # then the slf population by locality is added onto the table
+  # then the slf population by hscp is added onto the table
   # this can be tidied up longer term I guess
   left_join(slf_pop_loc, by = join_by(hscp2019name, age_group)) %>%
   # need a group by below that takes max of people and sum of slf_adj_pop
@@ -911,7 +910,7 @@ ltc_multimorbidity_ov65_perc <- sum(
 
 
 # ###### 3c Prevalence of LTC Types ######
-ltc_types <- ltc2 %>%
+ltc_types <- ltc_age_grouped %>%
   select(-hscp_locality, -total_ltc, -people) %>%
   filter(hscp2019name == HSCP) %>%
   group_by(hscp2019name, age_group) %>%
@@ -1069,7 +1068,7 @@ rm(
 ##### 3d Top LTCs Table #####
 
 # Most common LTC all round
-ltc_totals <- ltc2 %>%
+ltc_totals <- ltc_age_grouped %>%
   filter(total_ltc != 0) %>%
   select(-hscp_locality, -total_ltc, -age_group) %>%
   group_by(hscp2019name) %>%
@@ -1106,8 +1105,6 @@ ltc_colours <- ltc_scot |>
       )
     )
   )
-
-# Top 5 locality
 
 # Top 5 HSCP
 top5ltc_hscp <- ltc_totals %>%
@@ -1153,9 +1150,8 @@ top5_ltc_table <- bind_cols(
 ) |>
   flextable(cwidth = 2) |>
   lp_flextable_theme() |>
-  bg(j = 1, bg = top5ltc_loc$colours) |>
-  bg(j = 2, bg = top5ltc_hscp$colours) |>
-  bg(j = 3, bg = top5ltc_scot$colours) |>
+  bg(j = 1, bg = top5ltc_hscp$colours) |>
+  bg(j = 2, bg = top5ltc_scot$colours) |>
   font(fontname = "Arial", part = "all") |>
   color(color = "white", part = "body") |>
   bold(part = "header") |>

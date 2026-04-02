@@ -1,0 +1,9 @@
+bookdown::word_document2:
+  toc: yes
+  toc_depth: 1
+  number_sections: no
+  fig_caption: false
+  reference_docx: "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Master RMarkdown Document & Render Code/Locality_Profiles_Report_Template.docx"
+  header-includes:
+  - \usepackage{fancyvrb}
+  - \fvset{samepage=true}

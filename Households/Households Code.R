@@ -262,7 +262,7 @@ ctb_table <- ctb %>%
   )
 
 
-## Objects for locality
+## Objects for HSCP
 perc_houses_AC <- format_number_for_text(
   sum(
     house_dat2$council_tax_band_a,

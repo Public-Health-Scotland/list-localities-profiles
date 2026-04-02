@@ -1,18 +1,24 @@
-##### LOCALITY PROFILES MASTER DOC RENDER CODE #####
+library(knitr)
+library(bookdown)
+library(phstemplates)
 
-library(rmarkdown)
+rlang::check_installed(
+  pkg = "phstemplates",
+  reason = "v1.3.0 is needed to apply sensitivity labels",
+  version = "1.3.0",
+  action = \(pkg, ...) {
+    remotes::install_github(paste0("Public-Health-Scotland/", pkg))
+  }
+)
 
 rm(list = ls())
-
-# system unmask function so files have read-write permissions
-Sys.umask("006")
 
 # Source in functions code
 source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # Set file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
-output_dir <- path(lp_path, "Master RMarkdown Document & Render Code", "Output")
+output_dir <- path(lp_path, "Profiles Output")
 
 # Below creates locality list of all the localities
 lookup <- read_in_localities()
@@ -26,7 +32,7 @@ lookup <- read_in_localities()
 hscp_list <- unique(lookup$hscp2019name)
 
 # NOTE - This checks that it exactly matches the lookup
-stopifnot(hscp_list %in% unique(lookup[["hscp2019name"]]))
+stopifnot(all(hscp_list %in% unique(lookup[["hscp2019name"]])))
 
 # Loop over HSCP ----
 # 'looping' over one HSCP is fine.
@@ -66,18 +72,38 @@ for (HSCP in hscp_list) {
   # Appendices ----
   source("Master RMarkdown Document & Render Code/Tables for Appendix.R")
 
-  # Render main profile content ----
-  render(
-    input = "Master RMarkdown Document & Render Code/Locality_Profiles_Master_Markdown.Rmd",
-    output_file = glue("{HSCP} - HSCP Profile.docx"),
-    output_dir = output_dir
+  main_title <- glue("{HSCP} - HSCP Profile")
+  output_doc_name <- path_ext_set(main_title, "docx")
+
+  # Make sure your working directory is the project root
+  bookdown::render_book(
+    input = "lp_bookdown",
+    output_dir = output_dir,
+    output_file = output_doc_name,
+    new_session = FALSE,
+    output_format = "bookdown::word_document2",
+    config_file = "_bookdown.yaml"
   )
 
-  # Render the summary table(s) ----
-  render(
-    input = "Summary Table/Summary-Table-Markdown.Rmd",
-    output_file = glue("{HSCP} - Summary Table.docx"),
-    output_dir = path(output_dir, "Summary Tables")
+  document_path <- path(output_dir, output_doc_name)
+
+  orient(document_path)
+
+  cover_page_path <- path(
+    lp_path,
+    "templates",
+    "phs-mngtinfo-cover.docx"
+  )
+
+  add_cover_page(
+    document_path,
+    cover_page_path,
+    main_title
+  )
+
+  apply_sensitivity_label(
+    document_path,
+    "OFFICIAL_SENSITIVE_VMO"
   )
 
   # End of loop housekeeping ----

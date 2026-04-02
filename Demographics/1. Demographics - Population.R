@@ -20,11 +20,9 @@ library(reshape2)
 # Source in global functions/themes script
 # source("Master RMarkdown Document & Render Code/Global Script.R")
 
-## Final document will loop through a list of localities
+## Final document will loop through a list of HSCPs
 # Create placeholder for for loop
 # HSCP <- "Moray"
-# LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
-# LOCALITY <- "Ayr North and Former Coalfield Communities"
 
 ########################## SECTION 2: Data Imports ###############################
 
@@ -504,7 +502,7 @@ rm(
 
 ## Relevant lookups for creating the table objects
 
-# Determine other localities based on LOCALITY object
+# Determine all localities within the current HSCP
 other_locs <- lookup %>%
   select(hscp_locality, hscp2019name) %>%
   filter(hscp2019name == HSCP) |>

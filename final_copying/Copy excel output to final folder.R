@@ -30,18 +30,18 @@ hscp_list <- read_in_localities() |>
 
 # Create a dataframe with some details about the files
 profile_lookup <- tibble(
-  path = dir_ls(path = output_dir, glob = "* - Locality Profile data.xlsx$"),
+  path = dir_ls(path = output_dir, glob = "* - HSCP Profile data.xlsx$"),
   file_name = path_file(path),
   hscp = str_extract(
     string = file_name,
     # Regular expression, the brackets create a 'capture group'
-    pattern = "^([A-Z].+?) - Locality Profile data.xlsx$",
+    pattern = "^([A-Z].+?) - HSCP Profile data.xlsx$",
     # We only want 'group 1' i.e. the bit in the brackets
     group = 1
   )
 ) |>
   # Drop any rows which didn't match a hscp (usually temp files etc.)
-  semi_join(hscp_list, by = join_by(hscp == hscp2019name)) |>
+  drop_na(hscp) |>
   mutate(
     new_dir = path(final_dir, hscp),
     new_path = path(new_dir, file_name)

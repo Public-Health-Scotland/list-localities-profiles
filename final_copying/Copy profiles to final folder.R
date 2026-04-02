@@ -24,38 +24,24 @@ final_dir <- path(lp_path, "Final Profiles", str_glue("{year} Final Profiles"))
 # Source in functions code
 source("Master RMarkdown Document & Render Code/Global Script.R")
 
-# Get the HSCP <> Locality lookup
+# Get the HSCP list
 locality_lookup <- read_in_localities() |>
-  # Fix for one locality which seems to be renamed (probably due to the '/')
-  mutate(
-    hscp_locality = case_match(
-      hscp_locality,
-      "Dumbarton/Alexandria" ~ "Alexandria",
-      .default = hscp_locality
-    )
-  ) |>
-  distinct(hscp_locality, hscp2019name)
+  distinct(hscp2019name)
 
 # Create a dataframe with some details about the files
 profile_lookup <- tibble(
-  path = dir_ls(path = output_dir, glob = "* - Locality Profile.docx$"),
+  path = dir_ls(path = output_dir, glob = "* - HSCP Profile.docx$"),
   file_name = path_file(path),
-  locality = str_extract(
+  hscp2019name = str_extract(
     string = file_name,
     # Regular expression, the brackets create a 'capture group'
-    pattern = "^([A-Z].+?) - Locality Profile.docx$",
+    pattern = "^([A-Z].+?) - HSCP Profile.docx$",
     # We only want 'group 1' i.e. the bit in the brackets
     group = 1
   )
 ) |>
-  # Drop any rows which didn't match a locality (usually temp files etc.)
-  drop_na(locality) |>
-  # Join on the relevant HSCP using the Locality name
-  left_join(
-    locality_lookup,
-    by = join_by(locality == hscp_locality),
-    unmatched = "error"
-  ) |>
+  # Drop any rows which didn't match (usually temp files etc.)
+  drop_na(hscp2019name) |>
   # Add columns for the new directory (HSCP name) and the new path
   mutate(
     new_dir = path(final_dir, hscp2019name),
