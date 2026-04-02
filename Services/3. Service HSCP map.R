@@ -4,7 +4,7 @@
 # 0. Testing Set up ----
 
 ## Select HCSP (for testing only)
-# HSCP <- "Aberdeenshire"
+#HSCP <- "Highland"
 
 ## Set file path
 # lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
@@ -14,9 +14,9 @@
 
 ## Select a locality based on the HSCP (for source code "2. Services Outputs" to run - it does not matter which one is chosen)
 # LOCALITY <- read_in_localities() |>
-#   filter(hscp2019name == HSCP) |>
-#  slice(1) |>
-#   pull(hscp_locality)
+#  filter(hscp2019name == HSCP) |>
+# slice(1) |>
+#  pull(hscp_locality)
 
 ## Source the data manipulation script for services
 source("Services/2. Services data manipulation & table.R")
@@ -73,7 +73,8 @@ phs_accessible_colours <- c(
   "#3F085C",
   "#3E8ECC",
   "#3D3D3D",
-  "#A285D1"
+  "#A285D1",
+  "#A8CCE8"
 )
 
 colours_needed <- case_match(
@@ -81,7 +82,8 @@ colours_needed <- case_match(
   1:4 ~ 4,
   5:6 ~ 6,
   7 ~ 7,
-  8 ~ 8
+  8 ~ 8,
+  9 ~ 9
 )
 
 col_palette <- phs_accessible_colours[1:colours_needed]
