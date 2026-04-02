@@ -9,28 +9,27 @@
 # The map is created in script "3. Services HSCP Map" - this is so that it does not have to run
 # for every locality
 
-## Written by C.Puech
-## Created on 24/02/2020
-## Latest update August 2022 - rewrote parts of code for smoother process
-
 ###### 1. Set up ######
 
 # Change year to be the year in the data folder name
-ext_year <- 2024
+ext_year <- 2025
 
 ## Set Locality (for testing only)
 # HSCP <- 'Moray'
 
 ## Set file path
-# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+#lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 # Source in functions code
-# source("Master RMarkdown Document & Render Code/Global Script.R")
+#source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ### Geographical lookups and objects ----
 
 # Locality lookup
 lookup <- read_in_localities(dz_level = TRUE)
+
+# Get number of localities in HSCP
+n_loc <- count_localities(read_in_localities(), HSCP)
 
 
 ###### 2. Read in services data ######
@@ -114,12 +113,12 @@ hosp_lookup <- hosp_types %>%
 
 # MIUs
 markers_miu <- hosp_lookup %>%
-  filter(type == "Minor Injury Unit or Other") %>%
+  filter(type == "Type 3") |> #"Minor Injury Unit or Other") %>%
   filter(hscp2019name == HSCP)
 
 # EDs
 markers_emergency_dep <- hosp_lookup %>%
-  filter(type == "Emergency Department") %>%
+  filter(type == "Type 1") |> #"Emergency Department") %>%
   filter(hscp2019name == HSCP)
 
 Clacks_Royal <- filter(hosp_lookup, name == "Forth Valley Royal Hospital")

@@ -17,7 +17,7 @@
 # HSCP <- "Moray"
 
 # Set year of data extracts for folder
-ext_year <- 2024
+ext_year <- 2025
 
 # Set file path
 # lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"

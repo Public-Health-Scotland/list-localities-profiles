@@ -3,10 +3,10 @@ rmd_files:
   - index.Rmd
   - Summary-Table.Rmd
   - Notes-On-Profile.Rmd
-  - Demographics.Rmd
   - Services.Rmd
+  - Demographics.Rmd
   - Housing.Rmd
-  - General-Health.Rmd
+  - Population-Health.Rmd
   - Lifestyle-Risk-Factors.Rmd
   - Unscheduled-Care.Rmd
   - Appendix.Rmd

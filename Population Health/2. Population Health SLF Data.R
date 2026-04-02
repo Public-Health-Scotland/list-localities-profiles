@@ -1,15 +1,15 @@
-# LOCALITY PROFILES GENERAL HEALTH SLF DATA CODE
+# LOCALITY PROFILES POPULATION HEALTH SLF DATA CODE
 
 # Code used to extract long-term conditions data from Source Linkage Files
 
 # Set-up ----
 
 # Set year for data extracts folder for saving
-ext_year <- 2024
+ext_year <- 2025
 
 # Set financial year to use for SLFs (format ex: for FY 2021/2022 -> 202122)
 # Recommended to use previous year's data for more up to date figures + pop
-fy <- "2324"
+fy <- "2425"
 
 # Source in functions code
 source("Master RMarkdown Document & Render Code/Global Script.R")
@@ -22,7 +22,11 @@ lp_path <- path(
   "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles"
 )
 
-gen_health_data_dir <- path(lp_path, "General Health", glue("DATA {ext_year}"))
+pop_health_data_dir <- path(
+  lp_path,
+  "Population Health",
+  glue("DATA {ext_year}")
+)
 
 # Locality lookup ----
 lookup <- read_in_localities(dz_level = TRUE)
@@ -83,7 +87,7 @@ ltc_data <- slf |>
 # Save data as parquet ----
 write_parquet(
   ltc_data,
-  path(gen_health_data_dir, "LTC_from_SLF.parquet")
+  path(pop_health_data_dir, "LTC_from_SLF.parquet")
 )
 
 # Clean up the environment

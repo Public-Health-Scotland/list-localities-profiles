@@ -1,16 +1,12 @@
 ##################### LOCALITY PROFILES UNSCHEDULED CARE: OUTPUTS ######################.
 
-# Original author: Will Clayton
-# Updated Oct/Nov 2022 by Adam Rennie to use Global Script functions
-# Last edits Late Nov 22 by Luke Taylor and Cecilia Puech to tidy up script and change outputs
-
 ####################### SECTION 1: Packages, file paths, etc #########################
 
 ## Manually set year that the profiles are being run (year on data folder)
-ext_year <- 2024
+ext_year <- 2025
 
 # Set locality profiles file path
-# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+#lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 import_folder <- paste0(lp_path, "Unscheduled Care/DATA ", ext_year, "/")
 
 ### for testing run global script and locality placeholder below
@@ -19,12 +15,12 @@ import_folder <- paste0(lp_path, "Unscheduled Care/DATA ", ext_year, "/")
 library(scales)
 
 ## Functions
-# source("Master RMarkdown Document & Render Code/Global Script.R")
+#source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Define locality
 # HSCP <- 'Moray'
 
-max_fy <- "2023/24" # TODO Change this to be dynamic and move to general!
+max_fy <- "2024/25" # TODO Change this to be dynamic and move to general!
 
 ########################## SECTION 2: Lookups & Populations ###############################
 
@@ -48,10 +44,9 @@ n_loc <- count_localities(localities, HSCP)
 
 populations <- read_in_dz_pops()
 
-populations_proxy_year <- read_in_dz_pops_proxy_year()
+#populations_proxy_year <- read_in_dz_pops_proxy_year() - Removed due to updated SAPE - keep as placeholder for future?
 
-populations <- rbind(populations, populations_proxy_year)
-
+#populations <- rbind(populations, populations_proxy_year)
 
 # compute age bands
 populations$"Pop0_17" <- rowSums(subset(populations, select = age0:age17))
