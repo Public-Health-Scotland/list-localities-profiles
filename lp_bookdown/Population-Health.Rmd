@@ -44,7 +44,7 @@ Table `r table_num` provides the average life expectancy for men and women in di
 
 ```{r}
 ftext(
-  glue("Table {figure_num}: Average life expectancy in years for the latest time periods ({latest_period_life_exp_loc} aggregated years for the locality; {latest_period_life_exp_otherareas} aggregated years for other areas)."),
+  glue("Table {table_num}: Average life expectancy in years for the latest time periods ({latest_period_life_exp_loc} aggregated years for the locality; {latest_period_life_exp_otherareas} aggregated years for other areas)."),
   table_heading_style
 )
 
