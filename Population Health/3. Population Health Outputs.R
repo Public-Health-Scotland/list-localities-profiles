@@ -16,7 +16,7 @@ library(flextable)
 library(officer)
 
 # Determine locality (for testing only)
-#LOCALITY <- "Aberdeen Central"
+LOCALITY <- "Annandale and Eskdale"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
 # LOCALITY <- "Mid-Argyll, Kintyre and Islay"
 # LOCALITY <- "City of Dunfermline"
@@ -37,7 +37,7 @@ pop_health_data_dir <- path(
   glue("DATA {ext_year}")
 )
 pop_health_data_dir_LE <- path(
-  "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/General Health/DATA 2024"
+  "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/General Health/DATA 2025"
 )
 ### Geographical lookups and objects ----
 
