@@ -107,7 +107,7 @@ msg_mh_beddays_raw <- rbind(
 # _________________________________________________________________________
 
 msg_emergency_adm <- msg_emerg_adm_raw %>%
-  filter(area_treated == 'All' & simd_quintile == 'All') |>  
+  filter(area_treated == 'All' & simd_quintile == 'All') |>
   mutate(age_group = age_group_1(age_group)) %>%
   mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
   mutate(hscp_locality = gsub("&", "and", locality, fixed = TRUE)) %>%
@@ -122,7 +122,7 @@ msg_emergency_adm <- msg_emerg_adm_raw %>%
 # _________________________________________________________________________
 
 msg_bed_days <- msg_beddays_raw %>%
-  filter(area_treated == 'All' & simd_quintile == 'All') |>  
+  filter(area_treated == 'All' & simd_quintile == 'All') |>
   mutate(age_group = age_group_1(age_group)) %>%
   mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
   mutate(hscp_locality = gsub("&", "and", locality, fixed = TRUE)) %>%
@@ -137,7 +137,7 @@ msg_bed_days <- msg_beddays_raw %>%
 # _________________________________________________________________________
 
 msg_bed_days_mh <- msg_mh_beddays_raw %>%
-  filter(area_treated == 'All' & simd_quintile == 'All') |>  
+  filter(area_treated == 'All' & simd_quintile == 'All') |>
   mutate(age_group = age_group_1(age_group)) %>%
   mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
   mutate(hscp_locality = gsub("&", "and", locality, fixed = TRUE)) %>%
