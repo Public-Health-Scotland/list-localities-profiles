@@ -1,8 +1,5 @@
 ##################### LOCALITY PROFILES UNSCHEDULED CARE: DATA EXTRACTION ######################.
 
-# Original author: Will Clayton
-# Updated Oct/Nov 2022 by Adam Rennie to use Global Script functions
-# Last edits December 2022 by C Puech to improve data quality and process
 # All indicators for which MSG files are available now directly use MSG data
 
 ####################### SECTION 1: Packages, file paths, lookups, etc #########################
@@ -109,6 +106,7 @@ msg_mh_beddays_raw <- rbind(
 # _________________________________________________________________________
 
 msg_emergency_adm <- msg_emerg_adm_raw %>%
+  filter(area_treated == 'All' & simd_quintile == 'All') |>
   mutate(age_group = age_group_1(age_group)) %>%
   mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
   mutate(hscp_locality = gsub("&", "and", locality, fixed = TRUE)) %>%
@@ -119,11 +117,11 @@ msg_emergency_adm <- msg_emerg_adm_raw %>%
   summarise(admissions = sum(admissions)) %>%
   ungroup()
 
-
 # 2a. Unscheduled bed days ----
 # _________________________________________________________________________
 
 msg_bed_days <- msg_beddays_raw %>%
+  filter(area_treated == 'All' & simd_quintile == 'All') |>
   mutate(age_group = age_group_1(age_group)) %>%
   mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
   mutate(hscp_locality = gsub("&", "and", locality, fixed = TRUE)) %>%
@@ -133,12 +131,12 @@ msg_bed_days <- msg_beddays_raw %>%
   group_by(financial_year, hscp2019name, hscp_locality, age_group) %>%
   summarise(bed_days = sum(unplanned_beddays)) %>%
   ungroup()
-
 
 # 2b. Unscheduled bed days - Mental Health ----
 # _________________________________________________________________________
 
 msg_bed_days_mh <- msg_mh_beddays_raw %>%
+  filter(area_treated == 'All' & simd_quintile == 'All') |>
   mutate(age_group = age_group_1(age_group)) %>%
   mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
   mutate(hscp_locality = gsub("&", "and", locality, fixed = TRUE)) %>%
@@ -149,11 +147,11 @@ msg_bed_days_mh <- msg_mh_beddays_raw %>%
   summarise(bed_days = sum(unplanned_beddays)) %>%
   ungroup()
 
-
 # 3. A&E Attendances ----
 # _________________________________________________________________________
 
 msg_ae <- msg_ae_raw %>%
+  filter(area_treated == 'All' & simd_quintile == 'All') |>
   mutate(age_group = age_group_1(age_group)) %>%
   mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
   mutate(hscp_locality = gsub("&", "and", locality, fixed = TRUE)) %>%
@@ -209,7 +207,6 @@ write_parquet(msg_ae, paste0(exportfolder, "ae_attendances_msg.parquet"))
 
 # Delayed discharges
 write_parquet(msg_dd, paste0(exportfolder, "delayed_discharges_msg.parquet"))
-
 
 ############################# SECTION 3: SMR Data ###################################
 
