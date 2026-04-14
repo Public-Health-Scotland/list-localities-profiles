@@ -29,7 +29,7 @@ lookup <- read_in_localities()
 # For a larger test, use the below to produce profiles for HSCPs likely to cause issues.
 # source("Master RMarkdown Document & Render Code/find_hscp_outliers.R")
 # hscp_list <- outlier_hscps
-hscp_list <- "Falkirk"
+hscp_list <- "Aberdeen City"
 
 # NOTE - This checks that it exactly matches the lookup
 stopifnot(all(hscp_list %in% unique(lookup[["hscp2019name"]])))
@@ -67,8 +67,8 @@ for (HSCP in hscp_list) {
     source("Services/2. Services data manipulation & table.R")
     source("Services/3. Service HSCP map.R")
 
-    # General Health ----
-    source("General Health/3. General Health Outputs.R")
+    # Population Health ----
+    source("Population Health/3. Population Health Outputs.R")
 
     # Lifestyle & Risk Factors ----
     source("Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
