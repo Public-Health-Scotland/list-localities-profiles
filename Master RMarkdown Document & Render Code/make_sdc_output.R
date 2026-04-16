@@ -31,7 +31,7 @@ lookup <- read_in_localities()
 # By default, process all HSCPs.
 # To process specific HSCPs, replace `unique(lookup$hscp2019name)`,
 # with a vector of HSCP names e.g., `c("Angus", "West Lothian")`
-hscp_list <-  unique(lookup[["hscp2019name"]])
+hscp_list <- unique(lookup[["hscp2019name"]])
 
 # Check: Ensure specified HSCP list exactly matches HSCP names in the lookup
 stopifnot(all(hscp_list %in% unique(lookup[["hscp2019name"]])))
