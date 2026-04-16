@@ -93,9 +93,9 @@ for (HSCP in hscp_list) {
       output_format = "bookdown::word_document2",
       config_file = "_bookdown.yaml"
     )
-    
+
     # safe version for file paths
-    
+
     document_path <- path(output_dir, output_doc_name)
 
     orient(document_path)
