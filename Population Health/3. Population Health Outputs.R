@@ -1098,7 +1098,6 @@ rm(
   loc.ltc.table,
   hscp.ltc.table,
   top5ltc_loc,
-  top5ltc_hscp,
   top5ltc_scot
 )
 
