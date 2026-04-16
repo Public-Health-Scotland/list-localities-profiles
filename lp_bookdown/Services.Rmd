@@ -13,7 +13,7 @@ fpar(
 service_map
 ```
 
-```{r }
+```{r number-of-services-flextable}
 fpar(
   ftext(paste0("Table ", table_num, ": Number of each type of service in ", LOCALITY, " Locality"), table_heading_style),
   ftext("2", table_heading_superscript_style) # Superscript
