@@ -29,7 +29,7 @@ lookup <- read_in_localities()
 # For a larger test, use the below to produce profiles for HSCPs likely to cause issues.
 # source("Master RMarkdown Document & Render Code/find_hscp_outliers.R")
 # hscp_list <- outlier_hscps
-hscp_list <- "Aberdeen City"
+hscp_list <- "West Dunbartonshire"
 
 # NOTE - This checks that it exactly matches the lookup
 stopifnot(all(hscp_list %in% unique(lookup[["hscp2019name"]])))
@@ -80,7 +80,9 @@ for (HSCP in hscp_list) {
     source("Master RMarkdown Document & Render Code/Tables for Appendix.R")
 
     main_title <- glue("{LOCALITY} - Locality Profile")
-    output_doc_name <- path_ext_set(main_title, "docx")
+    safe_locality <- gsub("[/\\\\]", "-", LOCALITY)
+    doc_title <- glue(safe_locality, "- Locality Profile")
+    output_doc_name <- path_ext_set(doc_title, "docx")
 
     # Make sure your working directory is the project root
     bookdown::render_book(
@@ -91,7 +93,9 @@ for (HSCP in hscp_list) {
       output_format = "bookdown::word_document2",
       config_file = "_bookdown.yaml"
     )
-
+    
+    # safe version for file paths
+    
     document_path <- path(output_dir, output_doc_name)
 
     orient(document_path)
