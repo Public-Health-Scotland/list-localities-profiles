@@ -1,5 +1,3 @@
-\newpage
-
 # Housing
 
 ## Summary
@@ -24,6 +22,8 @@ Of the total number of dwellings in `r max_year_housing`, `r perc_single_discoun
 
 There were `r n_second_homes` dwellings classed as a second home in `r max_year_housing`, these dwellings made up `r perc_second_homes`% of the households in `r LOCALITY`.
 
+\newpage
+
 ```{r }
 ftext(paste0("Table ", table_num, ": Breakdown of dwelling types by year for ", LOCALITY, " locality."), table_heading_style)
 
@@ -39,6 +39,8 @@ table_num <- table_num + 1
 ```
 
 Source: Scottish Assessors' Association (via NRS)
+
+\newpage
 
 The proportion of households within each council tax band are displayed in the chart below, figures are shown in Table `r table_num`.
 

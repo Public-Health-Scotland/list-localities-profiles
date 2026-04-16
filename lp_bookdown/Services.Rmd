@@ -9,13 +9,9 @@ fpar(
 )
 ```
 
-
-```{r }
-print(service_map)
-
-figure_num <- figure_num + 1
+```{r service_map, fig.width=8, fig.height=6, dpi=300}
+service_map
 ```
-
 
 ```{r }
 fpar(

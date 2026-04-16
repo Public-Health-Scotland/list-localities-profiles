@@ -1,9 +1,9 @@
-# Save the GH ScotPHO data
+# Save thePGH ScotPHO data
 # Get the data from https://scotland.shinyapps.io/ScotPHO_profiles_tool/
 # Choose Scotland, Council Area, Health Board, HSC Partnership, HSC Locality and Intermediate Zone
 # Choose the indicators listed below (in the case_match)
 # Download the data as a parquet (file name should be ScotPHO_datatab_extract_***.parquet)
-# Put this file in the 'new' data folder e.g. 'General Health/DATA 20XX'
+# Put this file in the 'new' data folder e.g. 'Population Health/DATA 20XX'
 
 library(fs)
 library(glue)
@@ -19,13 +19,17 @@ ext_year <- 2025
 lp_path <- path(
   "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles"
 )
-gen_health_data_dir <- path(lp_path, "General Health", glue("DATA {ext_year}"))
+pop_health_data_dir <- path(
+  lp_path,
+  "Population Health",
+  glue("DATA {ext_year}")
+)
 
 # Error if the directory doesn't exist
-stopifnot(dir_exists(gen_health_data_dir))
+stopifnot(dir_exists(pop_health_data_dir))
 
 data_extract_file <- dir_ls(
-  gen_health_data_dir,
+  pop_health_data_dir,
   glob = "*ScotPHO_datatab_extract_*"
 )
 
@@ -69,7 +73,7 @@ read_parquet(data_extract_file) |>
     \(indicator, data, file_name) {
       write_parquet(
         data,
-        path(gen_health_data_dir, file_name),
+        path(pop_health_data_dir, file_name),
         compression = "zstd"
       )
     },

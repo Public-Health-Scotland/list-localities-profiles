@@ -525,7 +525,7 @@ HSCP <- as.character(filter(lookup, hscp_locality == LOCALITY)$hscp2019name)
 # Determine other localities based on LOCALITY object
 other_locs <- lookup %>%
   select(hscp_locality, hscp2019name) %>%
-  filter(hscp2019name == HSCP & hscp_locality != LOCALITY) %>%
+  filter(hscp2019name == HSCP, hscp_locality != LOCALITY) %>%
   arrange(hscp_locality)
 
 # Find number of locs per partnership
@@ -565,8 +565,7 @@ other_locs_gender_ratio <- pops %>%
   inner_join(other_locs, by = "hscp_locality") %>%
   select(hscp_locality, sex, total_pop) %>%
   pivot_wider(names_from = sex, values_from = total_pop) %>%
-  mutate(ratio = round_half_up(`F` / `M`, 2)) %>%
-  mutate(ratio = paste0("1:", ratio)) %>%
+  mutate(ratio = round_half_up(`F` / `M`, 2), ratio = paste0("1:", ratio)) %>%
   arrange(hscp_locality) %>%
   select(hscp_locality, ratio) %>%
   pivot_wider(names_from = hscp_locality, values_from = ratio)

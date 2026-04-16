@@ -1,4 +1,4 @@
-# LOCALITY PROFILES GENERAL HEALTH SLF DATA CODE
+# LOCALITY PROFILES POPULATION HEALTH SLF DATA CODE
 
 # Code used to extract long-term conditions data from Source Linkage Files
 
@@ -22,7 +22,11 @@ lp_path <- path(
   "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles"
 )
 
-gen_health_data_dir <- path(lp_path, "General Health", glue("DATA {ext_year}"))
+pop_health_data_dir <- path(
+  lp_path,
+  "Population Health",
+  glue("DATA {ext_year}")
+)
 
 # Locality lookup ----
 lookup <- read_in_localities(dz_level = TRUE)
@@ -83,7 +87,7 @@ ltc_data <- slf |>
 # Save data as parquet ----
 write_parquet(
   ltc_data,
-  path(gen_health_data_dir, "LTC_from_SLF.parquet")
+  path(pop_health_data_dir, "LTC_from_SLF.parquet")
 )
 
 # Clean up the environment
