@@ -4,7 +4,7 @@ library(tidyr)
 library(stringr)
 
 # Update the year as needed. The directory will be named '{year} Final Profiles'
-year <- "2025-April"
+year <- "2026-April"
 
 # Set top level file path
 lp_path <- path(
