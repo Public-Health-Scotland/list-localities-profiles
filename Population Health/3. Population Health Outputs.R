@@ -16,7 +16,7 @@ library(flextable)
 library(officer)
 
 # Determine locality (for testing only)
-LOCALITY <- "Annandale and Eskdale"
+# LOCALITY <- "Aberdeen Central"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
 # LOCALITY <- "Mid-Argyll, Kintyre and Islay"
 # LOCALITY <- "City of Dunfermline"
