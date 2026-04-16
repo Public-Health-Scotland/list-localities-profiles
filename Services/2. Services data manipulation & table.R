@@ -28,6 +28,17 @@ ext_year <- 2025
 # Locality lookup
 lookup <- read_in_localities(dz_level = TRUE)
 
+# Lookup without datazones
+lookup2 <- read_in_localities()
+
+## Determine HSCP
+#HSCP <- as.character(filter(lookup2, hscp_locality == LOCALITY)$hscp2019name)
+
+# Get number of localities in HSCP
+n_loc <- count_localities(lookup2, HSCP)
+
+
+
 # Get number of localities in HSCP
 n_loc <- count_localities(read_in_localities(), HSCP)
 
