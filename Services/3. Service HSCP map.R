@@ -4,10 +4,10 @@
 # 0. Testing Set up ----
 
 ## Select HCSP (for testing only)
-# HSCP <- "Aberdeenshire"
+#HSCP <- "Aberdeenshire"
 
 ## Set file path
-# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+#lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 ## Source in functions code (for testing only)
 #source("Master RMarkdown Document & Render Code/Global Script.R")
@@ -44,7 +44,7 @@ shp_hscp <- read_sf(path(
   mutate(
     hscp_locality = str_wrap(gsub("&", "and", hscp_local, fixed = TRUE), 24),
     hscp_local = str_wrap(hscp_local, 24),
-    border_thickness = 0.2
+    border_thickness = 0.1
   )
 
 # 3. Map Code ----
@@ -73,7 +73,8 @@ phs_accessible_colours <- c(
   "#3F085C",
   "#3E8ECC",
   "#3D3D3D",
-  "#A285D1"
+  "#A285D1",
+  "#A8CCE8"
 )
 
 colours_needed <- case_match(
@@ -81,7 +82,8 @@ colours_needed <- case_match(
   1:4 ~ 4,
   5:6 ~ 6,
   7 ~ 7,
-  8 ~ 8
+  8 ~ 8,
+  9 ~ 9
 )
 
 col_palette <- phs_accessible_colours[1:colours_needed]
@@ -166,16 +168,15 @@ service_map_background <- get_stadiamap(
 service_map <- ggmap(service_map_background) +
   geom_sf(
     data = shp_hscp,
-    mapping = aes(
-      fill = hscp_local,
-      linewidth = border_thickness
-    ),
+    aes(fill = hscp_local),
     colour = "white",
+    linewidth = 0.3,  
     alpha = 0.4,
     inherit.aes = FALSE
-  ) +
-  scale_linewidth(range = c(0.2, 1), guide = "none") +
+  )+
   labs(fill = "Locality")
+
+
 
 # check if services markers exist for locality
 if (nrow(markers_gp) > 0) {
