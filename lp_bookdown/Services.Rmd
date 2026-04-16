@@ -8,10 +8,15 @@ fpar(
   ftext("2", table_heading_superscript_style) # Superscript
 )
 
-print(service_map)
+```
+
+
+```{r service_map, fig.width=8, fig.height=6, dpi=300}
+service_map
 
 figure_num <- figure_num + 1
 ```
+
 
 ```{r }
 fpar(
