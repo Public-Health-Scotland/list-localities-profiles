@@ -830,7 +830,7 @@ create_testing_chapter <- function(chapters_oi, hscp_oi, output_directory) {
   yaml::write_yaml(yaml_file, path(tempdir(), "_practice_chapter_temp.yaml"))
 
   output_doc_name <- glue(
-    "{LOCALITY} - Locality Profile {chapters_oi_name} Practice Chapter.docx"
+    "{HSCP} - HSCP Profile {chapters_oi_name} Practice Chapter.docx"
   )
 
   # render test chapter
