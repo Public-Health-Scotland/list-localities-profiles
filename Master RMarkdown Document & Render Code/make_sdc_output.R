@@ -135,9 +135,9 @@ for (HSCP in hscp_list) {
   rm(list = setdiff(ls(), loop_env))
   gc() # Run garbage collection to further free up memory
 
-  # **General Health Data Processing** ----
+  # **Population Health Data Processing** ----
   # Extract and filter general health data for the current locality
-  source("General Health/3. General Health Outputs.R")
+  source("Population Health/3. Population Health Outputs.R")
 
   stopifnot(
     exists("ltc_multimorbidity"),
