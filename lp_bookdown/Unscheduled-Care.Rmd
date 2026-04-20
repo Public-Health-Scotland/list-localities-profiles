@@ -220,9 +220,9 @@ figure_num <- figure_num + 1
 
 Figure `r figure_num` presents the unscheduled mental health bed days rate per 100,000 in the `r LOCALITY` locality from `r min_year_bd_mh_age` to `r max_year_bd_mh_age` by age group.
 
-As presented in Figure `r figure_num`, the highest unscheduled mental health bed days rate for the `r LOCALITY` locality in `r max_year_bd_mh_age` is `r latest_bd_mh_max_age1` per 100,000 population for the `r age_group_max_mh` age group with a percentage `r max_word_change_beds_mh` of `r max_rate_change_beds_mh`% since `r min_year_bd_mh_age`. The lowest unscheduled mental health bed days rate for the `r LOCALITY` locality in `r max_year_bd_mh_age` is `r latest_bd_mh_min_age1` per 100,000 population for the `r age_group_min_mh` age group with a percentage `r min_word_change_beds_mh` of `r min_rate_change_beds_mh`% since `r min_year_bd_mh_age1`.
+As presented in Figure `r figure_num`, the highest unscheduled mental health bed days rate for the `r LOCALITY` locality in `r max_year_bd_mh_age` is `r latest_bd_mh_max_age1` per 100,000 population for the `r age_group_max_mh` age group with a percentage `r max_word_change_beds_mh` of `r max_rate_change_beds_mh`% since `r min_year_bd_mh_age`. The lowest unscheduled mental health bed days rate, among groups with recorded values, for the `r LOCALITY` locality in `r max_year_bd_mh_age` is `r latest_bd_mh_min_age1` per 100,000 population for the `r age_group_min_mh` age group with a percentage `r min_word_change_beds_mh` of `r min_rate_change_beds_mh`% since `r min_year_bd_mh_age1`.
 
-```{r fig.width = 8.5, fig.height = 4.5, warning = FALSE, fig.cap = "A line graph showing six-year time trends for uncscheduled mental health specialty bed days per 100,000 population split by geographical area."}
+```{r fig.width = 8.5, fig.height = 4.5, warning = FALSE, fig.cap = "A line graph showing six-year time trends for unscheduled mental health specialty bed days per 100,000 population split by geographical area."}
 ftext(paste0("Figure ", figure_num, ": Unscheduled mental health specialty bed days by age group"), table_heading_style)
 
 BDMH_age_ts
