@@ -100,7 +100,7 @@ ltc_waffles
 The co-occurrence of two or more conditions, known as multi-morbidity, is broken down in Table `r table_num`, distinguishing between age groups. Overall, **`r format_number_for_text(ltc_multimorbidity_un65_perc)`**% of those under 65 have more than one LTC, compared to **`r format_number_for_text(ltc_multimorbidity_ov65_perc)`**% of those over 65.
 
 ```{r ltc_multimorbidity_table}
-ftext(paste0("Table ", table_num, ": Multi-morbidity of physical LTCs by age group in", latest_year_ltc), table_heading_style)
+ftext(glue("Table {table_num}: Multi-morbidity of physical LTCs by age group in {latest_year_ltc}"), table_heading_style)
 
 flextable(ltc_multimorbidity_table, theme_fun = NULL) |>
   lp_flextable_theme() |>

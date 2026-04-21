@@ -44,7 +44,7 @@ HB <- as.character(filter(lookup, hscp_locality == LOCALITY)$hb2019name)
 # Determine other localities based on LOCALITY object
 other_locs <- lookup %>%
   select(hscp_locality, hscp2019name) %>%
-  filter(hscp2019name == HSCP & hscp_locality != LOCALITY) %>%
+  filter(hscp2019name == HSCP, hscp_locality != LOCALITY) %>%
   arrange(hscp_locality)
 
 # Find number of locs per partnership
@@ -495,8 +495,8 @@ other_locs_bowel_screening <- other_locs_summary_table(
 hscp_drug_hosp <- round_half_up(
   filter(
     drug_hosp,
-    year == max(year) &
-      (area_name == HSCP & area_type == "HSCP")
+    year == max(year),
+    (area_name == HSCP & area_type == "HSCP")
   )$measure,
   1
 )
@@ -504,8 +504,8 @@ hscp_drug_hosp <- round_half_up(
 hscp_alcohol_hosp <- round_half_up(
   filter(
     alcohol_hosp,
-    year == max(year) &
-      (area_name == HSCP & area_type == "HSCP")
+    year == max(year),
+    (area_name == HSCP & area_type == "HSCP")
   )$measure,
   1
 )
@@ -513,8 +513,8 @@ hscp_alcohol_hosp <- round_half_up(
 hscp_alcohol_deaths <- round_half_up(
   filter(
     alcohol_deaths,
-    year == max(year) &
-      (area_name == HSCP & area_type == "HSCP")
+    year == max(year),
+    (area_name == HSCP & area_type == "HSCP")
   )$measure,
   1
 )
@@ -522,8 +522,8 @@ hscp_alcohol_deaths <- round_half_up(
 hscp_bowel_screening <- round_half_up(
   filter(
     bowel_screening,
-    year == max(year) &
-      (area_name == HSCP & area_type == "HSCP")
+    year == max(year),
+    (area_name == HSCP & area_type == "HSCP")
   )$measure,
   1
 )

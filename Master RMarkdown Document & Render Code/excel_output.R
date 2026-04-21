@@ -55,7 +55,7 @@ for (HSCP in hscp_list) {
     source("Unscheduled Care/2. Unscheduled Care outputs.R")
 
     # general health
-    source("General Health/3. General Health Outputs.R")
+    source("Population Health/3. Population Health Outputs.R")
 
     # housing
     source("Households/Households Code.R")
