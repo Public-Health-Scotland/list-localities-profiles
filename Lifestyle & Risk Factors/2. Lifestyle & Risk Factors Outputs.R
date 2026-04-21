@@ -118,7 +118,7 @@ max_year_drug_hosp <- drug_hosp %>%
 min_year_drug_hosp <- drug_hosp %>%
   pull(year) %>%
   min() %>%
-  max(.,max_year_drug_hosp-trend_years)
+  max(., max_year_drug_hosp - trend_years)
 
 latest_period_drug_hosp <- drug_hosp %>%
   filter(year == max_year_drug_hosp) %>%
@@ -206,7 +206,7 @@ max_year_alcohol_hosp <- alcohol_hosp %>%
 min_year_alcohol_hosp <- alcohol_hosp %>%
   pull(year) %>%
   min() %>%
-  max(.,max_year_alcohol_hosp-trend_years)
+  max(., max_year_alcohol_hosp - trend_years)
 
 latest_period_alcohol_hosp <- alcohol_hosp %>%
   filter(year == max_year_alcohol_hosp) %>%
@@ -289,7 +289,7 @@ max_year_alcohol_deaths <- alcohol_deaths %>%
 min_year_alcohol_deaths <- alcohol_deaths %>%
   pull(year) %>%
   min() %>%
-  max(.,max_year_alcohol_deaths-trend_years)
+  max(., max_year_alcohol_deaths - trend_years)
 
 latest_period_alcohol_deaths <- alcohol_deaths %>%
   filter(year == max_year_alcohol_deaths) %>%
@@ -374,7 +374,7 @@ max_year_bowel_screening <- bowel_screening %>%
 min_year_bowel_screening <- bowel_screening %>%
   pull(year) %>%
   min() %>%
-  max(.,max_year_bowel_screening-trend_years)
+  max(., max_year_bowel_screening - trend_years)
 
 latest_period_bowel_screening <- bowel_screening %>%
   filter(year == max_year_bowel_screening) %>%
