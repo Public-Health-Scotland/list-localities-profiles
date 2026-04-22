@@ -79,10 +79,9 @@ for (HSCP in hscp_list) {
     # Appendices ----
     source("Master RMarkdown Document & Render Code/Tables for Appendix.R")
 
-    main_title <- glue("{LOCALITY} - Locality Profile")
     safe_locality <- gsub("[/\\\\]", "-", LOCALITY)
-    doc_title <- glue(safe_locality, "- Locality Profile")
-    output_doc_name <- path_ext_set(doc_title, "docx")
+    main_title <- glue(safe_locality, " - Locality Profile")
+    output_doc_name <- path_ext_set(main_title, "docx")
 
     # Make sure your working directory is the project root
     bookdown::render_book(
