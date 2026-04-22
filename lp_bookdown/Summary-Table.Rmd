@@ -35,7 +35,6 @@ headings <- c(
 
 ```{r summary_table_func, include=FALSE}
 make_summary_table <- function(data) {
-
   info_cols <- 1:4
   loc_col <- 5
   other_loc_cols <- 6:(ncol(data) - 2)
@@ -49,18 +48,15 @@ make_summary_table <- function(data) {
 
   ft <- data |>
     flextable() |>
-
     # Merge Section column
     merge_v(j = "Section") |>
     valign(j = "Section", valign = "top") |>
-
     # Header styling
     font(part = "header", fontname = "Arial") |>
     fontsize(part = "header", size = 10) |>
     bold(part = "header") |>
     color(part = "header", color = "white") |>
     bg(part = "header", bg = phs_colours("phs-purple")) |>
-
     # Body styling
     bold(j = 1:2, part = "body") |>
     font(part = "body", fontname = "Arial") |>
@@ -70,7 +66,6 @@ make_summary_table <- function(data) {
     bg(j = other_loc_cols, part = "body", bg = phs_colours("phs-magenta-30")) |>
     bg(j = hscp_col, part = "body", bg = phs_colours("phs-blue-30")) |>
     bg(j = scot_col, part = "body", bg = phs_colours("phs-green-30")) |>
-
     # Base borders
     border(border = fp_border(color = "white", width = 1), part = "body")
 
@@ -116,9 +111,7 @@ demographic_values <- tibble(
   scot_values
 )
 
-colnames(demographic_values) <- c("Section", "Indicator", "Data Type", "Time Period", headings[-c(1,2)])
-
-
+colnames(demographic_values) <- c("Section", "Indicator", "Data Type", "Time Period", headings[-c(1, 2)])
 ```
 
 ```{r housing}
@@ -150,8 +143,7 @@ housing_values <- tibble(
   scot_values
 )
 
-colnames(housing_values) <- c("Section", "Indicator", "Data Type", "Time Period", headings[-c(1,2)])
-
+colnames(housing_values) <- c("Section", "Indicator", "Data Type", "Time Period", headings[-c(1, 2)])
 ```
 
 ```{r population_health}
@@ -193,10 +185,7 @@ population_health_values <- tibble(
   scot_values
 ) |> mutate(across(everything(), as.character))
 
-colnames(population_health_values) <- c("Section", "Indicator", "Data Type", "Time Period", headings[-c(1,2)])
-
-
-
+colnames(population_health_values) <- c("Section", "Indicator", "Data Type", "Time Period", headings[-c(1, 2)])
 ```
 
 ```{r lifestyle_risk_factors}
@@ -233,9 +222,7 @@ lifestyle_values <- tibble(
   scot_values
 ) |> mutate(across(everything(), as.character))
 
-colnames(lifestyle_values) <- c("Section", "Indicator", "Data Type", "Time Period", headings[-c(1,2)])
-
-
+colnames(lifestyle_values) <- c("Section", "Indicator", "Data Type", "Time Period", headings[-c(1, 2)])
 ```
 
 ```{r hospital_community_care}
@@ -273,11 +260,9 @@ usc_values <- tibble(
   other_loc_values,
   hscp_values,
   scot_values
-) 
+)
 
-colnames(usc_values) <- c("Section", "Indicator", "Data Type", "Time Period", headings[-c(1,2)])
-
-
+colnames(usc_values) <- c("Section", "Indicator", "Data Type", "Time Period", headings[-c(1, 2)])
 ```
 
 ```{r hospital_mental_health}
@@ -325,18 +310,17 @@ usc_mh_values <- tibble(
   other_loc_values,
   hscp_values,
   scot_values
-) 
+)
 
-colnames(usc_mh_values) <- c("Section", "Indicator", "Data Type", "Time Period", headings[-c(1,2)])
-
+colnames(usc_mh_values) <- c("Section", "Indicator", "Data Type", "Time Period", headings[-c(1, 2)])
 ```
 
 ```{r table}
-
 summary_all1 <- bind_rows(
   demographic_values,
   housing_values,
-  population_health_values)
+  population_health_values
+)
 
 summary_all1 <- summary_all1 |>
   group_by(Section) |>
@@ -349,14 +333,11 @@ summary_table1
 ftext(
   glue("*at HSCP and Scotland level, the time period is a 3-year aggregate ({latest_period_life_exp_otherareas})"), superscript_style
 )
-
 ```
 
 \newline
 
 ```{r table2}
-
-
 summary_all2 <- bind_rows(
   lifestyle_values,
   usc_values,
@@ -370,8 +351,6 @@ summary_all2 <- summary_all2 |>
 summary_table2 <- make_summary_table(summary_all2)
 
 summary_table2
-
-
 ```
 
 
