@@ -33,17 +33,8 @@ shapefiles_dir <- path(lookups_dir, "Geography", "Shapefiles")
 
 # 2. Read in locality shape files ----
 
-shp_hscp <- read_sf(path(
-  shapefiles_dir,
-  "HSCP Locality (Datazone2011 Base)",
-  "HSCP_Locality.shp"
-)) |>
-  st_transform(4326) |>
-  select(hscp_local, HSCP_name, geometry) |>
-  filter(HSCP_name == HSCP) |>
+shp_hscp <- read_in_hscp_locality_shapes(HSCP) |>
   mutate(
-    hscp_locality = str_wrap(gsub("&", "and", hscp_local, fixed = TRUE), 24),
-    hscp_local = str_wrap(hscp_local, 24),
     border_thickness = if_else(hscp_locality == LOCALITY, 0.2, 0.1)
   )
 
