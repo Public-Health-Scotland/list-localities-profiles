@@ -92,15 +92,13 @@ rm(colours_needed, n_loc, phs_accessible_colours)
 
 # 3.2 Locality shapes ----
 # Get latitude and longitude coordinates for each data locality, find min and max.
-zones_coord <- shp_hscp |>
-  st_coordinates() |>
-  as_tibble()
+zones_coord <- st_bbox(shp_hscp)
 
 # Get min and max longitude for locality, add a 0.01 extra to add a border to map.
-min_long <- min(zones_coord$X) - 0.01
-max_long <- max(zones_coord$X) + 0.01
-min_lat <- min(zones_coord$Y) - 0.01
-max_lat <- max(zones_coord$Y) + 0.01
+min_long <- unname(zones_coord["xmin"] - 0.01)
+max_long <- unname(zones_coord["xmax"] + 0.01)
+min_lat <- unname(zones_coord["ymin"] - 0.01)
+max_lat <- unname(zones_coord["ymax"] + 0.01)
 
 rm(zones_coord)
 
