@@ -20,6 +20,15 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 output_dir <- path(lp_path, "Profiles Output")
 
+cover_page_path <- path(
+  lp_path,
+  "templates",
+  "phs-mngtinfo-cover.docx"
+)
+
+tmp_cover_page_path <- file_temp(ext = ".docx")
+file_copy(cover_page_path, tmp_cover_page_path)
+
 # Below creates locality list of all the localities in a chosen HSCP
 lookup <- read_in_localities()
 
@@ -84,39 +93,43 @@ for (HSCP in hscp_list) {
     doc_title <- glue(safe_locality, "- Locality Profile")
     output_doc_name <- path_ext_set(doc_title, "docx")
 
+    final_document_path <- path(output_dir, output_doc_name)
+    tmp_document_path <- file_temp(ext = ".docx")
+
     # Make sure your working directory is the project root
     bookdown::render_book(
       input = "lp_bookdown",
-      output_dir = output_dir,
-      output_file = output_doc_name,
+      output_dir = path_dir(tmp_document_path),
+      output_file = path_file(tmp_document_path),
       new_session = FALSE,
       output_format = "bookdown::word_document2",
       config_file = "_bookdown.yaml"
     )
 
-    # safe version for file paths
 
-    document_path <- path(output_dir, output_doc_name)
 
-    orient(document_path)
+    orient(tmp_document_path)
 
-    cover_page_path <- path(
-      lp_path,
-      "templates",
-      "phs-mngtinfo-cover.docx"
-    )
 
     add_cover_page(
-      document_path,
-      cover_page_path,
+      tmp_document_path,
+      tmp_cover_page_path,
       main_title
     )
 
     apply_sensitivity_label(
-      document_path,
+      tmp_document_path,
       "OFFICIAL_SENSITIVE_VMO"
     )
 
+    if (file_exists(final_document_path)) {
+      file_delete(final_document_path)
+    }
+
+    file_move(
+      tmp_document_path,
+      final_document_path
+    )
     # End of loop housekeeping ----
     # Clean up the environment by restoring it to the 'pre-loop' state.
     rm(list = setdiff(ls(), loop_env))
