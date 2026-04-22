@@ -19,7 +19,7 @@
 #  pull(hscp_locality)
 
 ## Source the data manipulation script for services
-source("Services/2. Services data manipulation & table.R")
+# source("Services/2. Services data manipulation & table.R")
 
 # 1. Set up ----
 
