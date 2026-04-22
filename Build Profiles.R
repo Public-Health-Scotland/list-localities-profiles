@@ -120,9 +120,7 @@ for (HSCP in hscp_list) {
       config_file = "_bookdown.yaml"
     )
 
-
     orient(tmp_document_path)
-
 
     add_cover_page(
       tmp_document_path,
