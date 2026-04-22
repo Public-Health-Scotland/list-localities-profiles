@@ -35,30 +35,34 @@ headings <- c(
 
 ```{r summary_table_func, include=FALSE}
 make_summary_table <- function(data) {
-  info_cols <- 1:3
-  loc_col <- 4
-  other_loc_cols <- 5:(ncol(data) - 2)
+
+  info_cols <- 1:4
+  loc_col <- 5
+  other_loc_cols <- 6:(ncol(data) - 2)
   hscp_col <- ncol(data) - 1
   scot_col <- ncol(data)
 
-  data |>
-    mutate(
-      # Remove odd spaces in numbers
-      across(all_of(c(loc_col, other_loc_cols, hscp_col, scot_col)), str_squish),
-      # Make any missing values a dash
-      across(all_of(c(loc_col, other_loc_cols, hscp_col, scot_col)), \(figure_num) na_if(figure_num, "NA")),
-      across(all_of(c(loc_col, other_loc_cols, hscp_col, scot_col)), \(figure_num) replace_na(figure_num, "-"))
-    ) |>
+  # Identify section boundaries
+  section_starts <- which(!duplicated(data$Section))
+  section_ends <- c(section_starts[-1] - 1, nrow(data))
+
+
+  ft <- data |>
     flextable() |>
-    # Header
+
+    # Merge Section column
+    merge_v(j = "Section") |>
+    valign(j = "Section", valign = "top") |>
+
+    # Header styling
     font(part = "header", fontname = "Arial") |>
     fontsize(part = "header", size = 10) |>
     bold(part = "header") |>
     color(part = "header", color = "white") |>
     bg(part = "header", bg = phs_colours("phs-purple")) |>
-    # Indicators column (col 1)
-    bold(j = 1, part = "body") |>
-    # Main content
+
+    # Body styling
+    bold(j = 1:2, part = "body") |>
     font(part = "body", fontname = "Arial") |>
     fontsize(part = "body", size = 10) |>
     bg(j = info_cols, part = "body", bg = phs_colours("phs-graphite-30")) |>
@@ -66,8 +70,19 @@ make_summary_table <- function(data) {
     bg(j = other_loc_cols, part = "body", bg = phs_colours("phs-magenta-30")) |>
     bg(j = hscp_col, part = "body", bg = phs_colours("phs-blue-30")) |>
     bg(j = scot_col, part = "body", bg = phs_colours("phs-green-30")) |>
-    border(border = fp_border(color = "white", width = 1), part = "body") |>
-    set_table_properties(layout = "autofit")
+
+    # Base borders
+    border(border = fp_border(color = "white", width = 1), part = "body")
+
+  # Add soft grey divider (except first section)
+  ft <- hline(
+    ft,
+    i = section_ends,
+    border = fp_border(color = "#BFBFBF", width = 2),
+    part = "body"
+  )
+
+  ft |> set_table_properties(layout = "autofit")
 }
 ```
 
@@ -91,17 +106,21 @@ hscp_values <- c(hscp_total_pop, hscp_gender_ratio, hscp_over65, hscp_simd_top, 
 scot_values <- c(scot_total_pop, scot_gender_ratio, scot_over65, 20, 20)
 
 demographic_values <- tibble(
-  indicators, datatype, time, loc_values, other_loc_values,
-  hscp_values, scot_values
+  Section = "Demographics",
+  Indicator = indicators,
+  Datatype = datatype,
+  Time = time,
+  loc_values,
+  other_loc_values,
+  hscp_values,
+  scot_values
 )
 
-colnames(demographic_values) <- c("Demographic Indicators", headings)
+colnames(demographic_values) <- c("Section", "Indicator", "Data Type", "Time Period", headings[-c(1,2)])
 
-demographics_table <- make_summary_table(demographic_values)
 
-demographics_table
 ```
-\newline
+
 ```{r housing}
 indicators <- c(
   "Total number of households",
@@ -120,19 +139,21 @@ other_loc_values <- rbind(other_locs_n_houses, other_locs_perc_discount, other_l
 hscp_values <- c(hscp_n_houses, hscp_perc_discount, hscp_perc_housesAC, hscp_perc_housesFH)
 scot_values <- c(scot_n_houses, scot_perc_discount, scot_perc_housesAC, scot_perc_housesFH)
 
-
 housing_values <- tibble(
-  indicators, datatype, time, loc_values, other_loc_values,
-  hscp_values, scot_values
+  Section = "Housing",
+  Indicator = indicators,
+  Datatype = datatype,
+  Time = time,
+  loc_values,
+  other_loc_values,
+  hscp_values,
+  scot_values
 )
 
-colnames(housing_values) <- c("Housing Indicators", headings)
+colnames(housing_values) <- c("Section", "Indicator", "Data Type", "Time Period", headings[-c(1,2)])
 
-housing_table <- make_summary_table(housing_values)
-
-housing_table
 ```
-\newline
+
 ```{r population_health}
 indicators <- c(
   "Male average life expectancy in years",
@@ -162,21 +183,22 @@ hscp_values <- c(hscp_life_exp_male, hscp_life_exp_fem, hscp_deaths_15_44, hscp_
 scot_values <- c(scot_life_exp_male, scot_life_exp_fem, scot_deaths_15_44, ltc_perc_scot, scot_cancer, scot_adp_presc)
 
 population_health_values <- tibble(
-  indicators, datatype, time, loc_values, other_loc_values,
-  hscp_values, scot_values
-)
+  Section = "Population Health",
+  Indicator = indicators,
+  Datatype = datatype,
+  Time = time,
+  loc_values,
+  other_loc_values,
+  hscp_values,
+  scot_values
+) |> mutate(across(everything(), as.character))
 
-colnames(population_health_values) <- c("Population Health Indicators", headings)
+colnames(population_health_values) <- c("Section", "Indicator", "Data Type", "Time Period", headings[-c(1,2)])
 
-population_health_table <- make_summary_table(population_health_values)
 
-population_health_table
 
-ftext(
-  glue("*At HSCP and Scotland level, the time period is a 3-year aggregate ({latest_period_life_exp_otherareas})"), superscript_style
-)
 ```
-\newline
+
 ```{r lifestyle_risk_factors}
 indicators <- c(
   "Alcohol-related hospital admissions per 100,000",
@@ -200,19 +222,22 @@ other_loc_values <- rbind(other_locs_alcohol_hosp, other_locs_alcohol_deaths, ot
 hscp_values <- c(hscp_alcohol_hosp, hscp_alcohol_deaths, hscp_drug_hosp, hscp_bowel_screening)
 scot_values <- c(scot_alcohol_hosp, scot_alcohol_deaths, scot_drug_hosp, scot_bowel_screening)
 
-
 lifestyle_values <- tibble(
-  indicators, datatype, time, loc_values, other_loc_values,
-  hscp_values, scot_values
-)
+  Section = "Lifestyle and Risk Factors",
+  Indicator = indicators,
+  Datatype = datatype,
+  Time = time,
+  loc_values,
+  other_loc_values,
+  hscp_values,
+  scot_values
+) |> mutate(across(everything(), as.character))
 
-colnames(lifestyle_values) <- c("Lifestyle & Risk Factors Indicators", headings)
+colnames(lifestyle_values) <- c("Section", "Indicator", "Data Type", "Time Period", headings[-c(1,2)])
 
-lifestyle_table <- make_summary_table(lifestyle_values)
 
-lifestyle_table
 ```
-\newline
+
 ```{r hospital_community_care}
 indicators <- c(
   "Emergency admissions per 100,000",
@@ -240,17 +265,21 @@ scot_values <- format(
 )
 
 usc_values <- tibble(
-  indicators, datatype, time, loc_values, other_loc_values,
-  hscp_values, scot_values
-)
+  Section = "Hospital & Community Care",
+  Indicator = indicators,
+  Datatype = datatype,
+  Time = time,
+  loc_values,
+  other_loc_values,
+  hscp_values,
+  scot_values
+) 
 
-colnames(usc_values) <- c("Hospital & Community Care Indicators", headings)
+colnames(usc_values) <- c("Section", "Indicator", "Data Type", "Time Period", headings[-c(1,2)])
 
-usc_table <- make_summary_table(usc_values)
 
-usc_table
 ```
-\newline
+
 ```{r hospital_mental_health}
 indicators <- c(
   "Psychiatric patient hospitalisations per 100,000",
@@ -286,9 +315,65 @@ usc_mh_values <- tibble(
 
 colnames(usc_mh_values) <- c("Hospital Care (Mental Health) Indicators", headings)
 
-usc_mh_table <- make_summary_table(usc_mh_values)
 
-usc_mh_table
+usc_mh_values <- tibble(
+  Section = "Hospital (Mental Health) Care",
+  Indicator = indicators,
+  Datatype = datatype,
+  Time = time,
+  loc_values,
+  other_loc_values,
+  hscp_values,
+  scot_values
+) 
+
+colnames(usc_mh_values) <- c("Section", "Indicator", "Data Type", "Time Period", headings[-c(1,2)])
+
 ```
+
+```{r table}
+
+summary_all1 <- bind_rows(
+  demographic_values,
+  housing_values,
+  population_health_values)
+
+summary_all1 <- summary_all1 |>
+  group_by(Section) |>
+  ungroup()
+
+summary_table1 <- make_summary_table(summary_all1)
+
+summary_table1
+
+ftext(
+  glue("*at HSCP and Scotland level, the time period is a 3-year aggregate ({latest_period_life_exp_otherareas})"), superscript_style
+)
+
+```
+
+\newline
+
+```{r table2}
+
+
+summary_all2 <- bind_rows(
+  lifestyle_values,
+  usc_values,
+  usc_mh_values
+)
+
+summary_all2 <- summary_all2 |>
+  group_by(Section) |>
+  ungroup()
+
+summary_table2 <- make_summary_table(summary_all2)
+
+summary_table2
+
+
+```
+
+
 
 {{summary_anchor}}
