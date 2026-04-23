@@ -305,6 +305,40 @@ read_in_pop_proj_raw <- function() {
 }
 read_in_pop_proj <- memoise(read_in_pop_proj_raw)
 
+## Function to read and prepare HSCP locality shapefile ----
+# Argument HSCP: Name of the HSCP, e.g. "Highland"
+# Returns locality polygons for that HSCP in EPSG:4326 with wrapped names
+read_in_all_hscp_locality_shapes_raw <- function() {
+  lookups_dir <- fs::path("/conf/linkage/output/lookups/Unicode")
+  shapefiles_dir <- fs::path(lookups_dir, "Geography", "Shapefiles")
+
+  sf::read_sf(fs::path(
+    shapefiles_dir,
+    "HSCP Locality (Datazone2011 Base)",
+    "HSCP_Locality.shp"
+  )) |>
+    sf::st_transform(4326) |>
+    dplyr::select(hscp_local, HSCP_name, geometry) |>
+    dplyr::mutate(
+      hscp_locality = stringr::str_wrap(
+        gsub("&", "and", hscp_local, fixed = TRUE),
+        24
+      ),
+      hscp_local = stringr::str_wrap(hscp_local, 24)
+    )
+}
+read_in_all_hscp_locality_shapes <- memoise::memoise(
+  read_in_all_hscp_locality_shapes_raw
+)
+
+read_in_hscp_locality_shapes_raw <- function(HSCP) {
+  read_in_all_hscp_locality_shapes() |>
+    dplyr::filter(HSCP_name == HSCP)
+}
+read_in_hscp_locality_shapes <- memoise::memoise(
+  read_in_hscp_locality_shapes_raw
+)
+
 #### Functions for ScotPHO data ####
 
 ## ScotPHO data cleaning function ----
