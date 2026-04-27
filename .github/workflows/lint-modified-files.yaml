@@ -24,7 +24,7 @@ jobs:
           DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends git
           
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Remove the .Rprofile (if present)
         run: if [ -f .Rprofile ]; then rm .Rprofile; fi
