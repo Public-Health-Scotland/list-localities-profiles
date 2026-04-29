@@ -958,7 +958,7 @@ title <- ggdraw() +
   draw_label(
     str_wrap(
       glue(
-        "Prevalence estimates for {latest_year_ltc} of Physical Long-Term Conditions in the {LOCALITY} Locality"
+        "Percentage estimates for {latest_year_ltc} of Physical Long-Term Conditions in the {LOCALITY} Locality"
       ),
       width = 65
     ),
