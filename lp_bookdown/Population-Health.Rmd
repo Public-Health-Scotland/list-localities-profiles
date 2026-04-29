@@ -111,11 +111,11 @@ table_num <- table_num + 1
 
 **Most common physical Long Term Conditions (LTCs)**
 
--   Figure `r figure_num` shows the LTC prevalence estimates for `r LOCALITY` Locality in the financial year `r latest_year_ltc` across all ages.
+-   Figure `r figure_num` shows the LTC estimates for `r LOCALITY` Locality in the financial year `r latest_year_ltc` across all ages. This is based on whether someone has ever had a hospital admission for this condition.
 
--   Table `r table_num` orders the prevalence estimates to show the five most common physical LTCs across all ages at the Locality, Partnership, and Scotland levels.
+-   Table `r table_num` orders the LTC estimates to show the five most common physical LTCs across all ages at the Locality, Partnership, and Scotland levels.
 
-Below is a breakdown of the physical LTCs, for the financial year `r latest_year_ltc`. Figure `r figure_num` shows the prevalence of different LTCs in `r LOCALITY` locality, and Table `r table_num` illustrates the five most prevalent physical LTCs across all ages at the locality, partnership, and Scotland levels.
+Below is a breakdown of estimated physical LTCs, for the financial year `r latest_year_ltc`. Figure `r figure_num` shows the estimated percentage of different LTCs in `r LOCALITY` locality, and Table `r table_num` illustrates the five most common physical LTCs across all ages at the locality, partnership, and Scotland levels.
 
 ```{r, fig.width = 7.5, fig.height = 4, fig.cap = "A graph showing the prevalence of physical long term conditions by percentage of population."}
 ftext(paste0("Figure ", figure_num, ": The percentage of people with each physical LTC."), table_heading_style)
