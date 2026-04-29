@@ -7,7 +7,6 @@ fpar(
   ftext(paste0("Figure ", figure_num, ": Map of services by locality in ", HSCP, " HSCP"), table_heading_style),
   ftext("2", table_heading_superscript_style) # Superscript
 )
-
 ```
 
 ```{r service_map, fig.width=8, fig.height=6, dpi=300}
