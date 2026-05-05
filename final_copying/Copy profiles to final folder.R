@@ -30,7 +30,7 @@ locality_lookup <- read_in_localities() |>
   mutate(
     hscp_locality = case_match(
       hscp_locality,
-      "Dumbarton/Alexandria" ~ "Alexandria",
+      "Dumbarton/Alexandria" ~ "Dumbarton-Alexandria",
       .default = hscp_locality
     )
   ) |>
