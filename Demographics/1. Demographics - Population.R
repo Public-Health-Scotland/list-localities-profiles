@@ -1,16 +1,8 @@
 ##################### LOCALITY PROFILES DEMOGRAPHICS: POPULATION ######################.
 
-### First Created: 08/08/2019
-### Original Author: Aidan Morrison
-
-### Written for: RStudio Server Pro, R Version 3.6.1
 
 ### Description: The purpose of this code is to produce outputs on population to be
 ###              used for LIST locality profiles produced in RMarkdown.
-
-### Revised Oct/Nov 2022 by Craig Fraser and Luke Taylor for smoother process, ex:
-
-# Incorporated lookup functions so less dependent on static files
 
 ####################### SECTION 1: Packages, file paths, etc #########################
 
@@ -18,11 +10,11 @@
 library(reshape2)
 
 # Source in global functions/themes script
-# source("Master RMarkdown Document & Render Code/Global Script.R")
+#source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Final document will loop through a list of localities
 # Create placeholder for for loop
-# LOCALITY <- "Inverness"
+#LOCALITY <- "Inverness"
 # LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
 # LOCALITY <- "Ayr North and Former Coalfield Communities"
 
@@ -296,8 +288,8 @@ hscp_pop_proj_weight <- hscp_pop_proj %>%
       age > 84 ~ "Pop85Plus"
     )
   ) %>%
-  # projection until 2028
-  filter(year %in% pop_max_year:2028) %>%
+  # projection until 2033 for 10 year projection trend 
+  filter(year %in% pop_max_year:2033) %>%
   # aggregate to age groups
   group_by(year, hscp2019, hscp2019name, sex, age_group) %>%
   summarise(pop = sum(pop)) %>%
@@ -452,7 +444,7 @@ pop_graph_text <- ifelse(
 
 ## Pop projection
 pop_proj_change <- 100 *
-  abs(pop_proj_dat[1, 2] - pop_proj_dat[6, 2]) /
+  abs(pop_proj_dat[1, 2] - pop_proj_dat[10, 2]) /
   pop_proj_dat[1, 2]
 pop_proj_change <- round_half_up(pop_proj_change, 1) %>% as.character()
 
@@ -461,10 +453,10 @@ pop_proj_text <- paste(
   LOCALITY,
   "is estimated to",
   ifelse(
-    pop_proj_dat[1, 2] < pop_proj_dat[6, 2],
+    pop_proj_dat[1, 2] < pop_proj_dat[10, 2],
     paste0("increase by ", pop_proj_change, "%"),
     ifelse(
-      pop_proj_dat[1, 2] == pop_proj_dat[6, 2],
+      pop_proj_dat[1, 2] == pop_proj_dat[10, 2],
       "remain the same",
       paste0("decrease by ", pop_proj_change, "%")
     )
@@ -472,7 +464,7 @@ pop_proj_text <- paste(
   "from ",
   pop_proj_dat[1, 1],
   " to ",
-  pop_proj_dat[6, 1]
+  pop_proj_dat[10, 1]
 )
 
 
