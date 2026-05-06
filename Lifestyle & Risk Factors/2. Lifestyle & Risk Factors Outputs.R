@@ -422,9 +422,9 @@ bowel_screening_earliest <- filter(
 )$measure
 
 bowel_screening_change <- abs(
-  (bowel_screening_latest - bowel_screening_earliest)# /
-   #bowel_screening_earliest *
-    #100
+  (bowel_screening_latest - bowel_screening_earliest) # /
+  #bowel_screening_earliest *
+  #100
 )
 bowel_screening_change_word <- if_else(
   bowel_screening_latest > bowel_screening_earliest,
