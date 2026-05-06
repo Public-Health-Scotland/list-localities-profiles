@@ -1,6 +1,5 @@
 ##################### LOCALITY PROFILES DEMOGRAPHICS: POPULATION ######################.
 
-
 ### Description: The purpose of this code is to produce outputs on population to be
 ###              used for LIST locality profiles produced in RMarkdown.
 
@@ -288,7 +287,7 @@ hscp_pop_proj_weight <- hscp_pop_proj %>%
       age > 84 ~ "Pop85Plus"
     )
   ) %>%
-  # projection until 2033 for 10 year projection trend 
+  # projection until 2033 for 10 year projection trend
   filter(year %in% pop_max_year:2033) %>%
   # aggregate to age groups
   group_by(year, hscp2019, hscp2019name, sex, age_group) %>%
