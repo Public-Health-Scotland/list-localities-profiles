@@ -9,7 +9,7 @@ library(tidyr)
 library(stringr)
 
 # Update the year as needed. The directory will be named '{year} Final Profiles'
-year <- "2025-April"
+year <- "2026-April"
 
 # Set top level file path
 lp_path <- path(
@@ -17,9 +17,9 @@ lp_path <- path(
 )
 
 # Set paths for the existing / new locations of the profiles
-output_dir <- path(lp_path, "Master RMarkdown Document & Render Code", "Output")
+output_dir <- path(lp_path, "Profiles Output Apr26")
 # The directory will be created automatically.
-final_dir <- path(lp_path, "Final Profiles", str_glue("{year} Final Profiles"))
+final_dir <- path(lp_path, "Final Profiles", str_glue("{year} Final Profiles [update]"))
 
 # Source in functions code
 source("Master RMarkdown Document & Render Code/Global Script.R")
@@ -71,3 +71,6 @@ file_copy(
   path = pull(profile_lookup, path),
   new_path = pull(profile_lookup, new_path)
 )
+
+system("chgrp LIST_analytics '/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/Final Profiles/2026-April Final Profiles [update]/East Dunbartonshire' -R")
+
