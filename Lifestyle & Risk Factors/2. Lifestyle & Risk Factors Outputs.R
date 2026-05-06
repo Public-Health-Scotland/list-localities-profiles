@@ -7,10 +7,6 @@
 ## Code used to create infographics, charts, and figures for the Lifestyle & Risk factors
 #  section of the locality profiles.
 
-## Original script Lucy Dewhurst
-## Original date 10/01/2020
-## October 2022 rewrote parts for smoother process (edits by C.Puech)
-
 ############# 1) PACKAGES, DIRECTORY, LOOKUPS, DATA IMPORT + CLEANING #############
 
 # Determine locality (for testing only)
@@ -426,14 +422,14 @@ bowel_screening_earliest <- filter(
 )$measure
 
 bowel_screening_change <- abs(
-  (bowel_screening_latest - bowel_screening_earliest) /
-    bowel_screening_earliest *
-    100
+  (bowel_screening_latest - bowel_screening_earliest)# /
+   #bowel_screening_earliest *
+    #100
 )
 bowel_screening_change_word <- if_else(
   bowel_screening_latest > bowel_screening_earliest,
-  "increase",
-  "decrease"
+  "percentage point increase",
+  "percentage point decrease"
 )
 
 
