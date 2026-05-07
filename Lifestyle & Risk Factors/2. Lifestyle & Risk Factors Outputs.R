@@ -20,10 +20,10 @@
 ext_year <- 2025
 
 # Set file path
-# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+#lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 # Source in functions code
-# source("Master RMarkdown Document & Render Code/Global Script.R")
+#source("Master RMarkdown Document & Render Code/Global Script.R")
 
 # ScotPHO time trend will only be latest 10 years
 trend_years <- 10
@@ -95,7 +95,7 @@ bowel_screening <- readRDS(paste0(
   "/scotpho_data_extract_bowel_screening.RDS"
 )) %>%
   clean_scotpho_dat() %>%
-  mutate(period_short = gsub("to", "-", substr(period, 1, 12), fixed = TRUE))
+  mutate(period_short = gsub("to", "-", substr(period, 1, 11), fixed = TRUE))
 
 check_missing_data_scotpho(bowel_screening)
 
