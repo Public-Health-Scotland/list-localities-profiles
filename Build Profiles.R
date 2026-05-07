@@ -29,7 +29,7 @@ lookup <- read_in_localities()
 # For a larger test, use the below to produce profiles for HSCPs likely to cause issues.
 # source("Master RMarkdown Document & Render Code/find_hscp_outliers.R")
 # hscp_list <- outlier_hscps
-hscp_list <- "West Dunbartonshire"
+hscp_list <- unique(lookup$hscp2019name)
 
 # NOTE - This checks that it exactly matches the lookup
 stopifnot(all(hscp_list %in% unique(lookup[["hscp2019name"]])))
@@ -57,6 +57,15 @@ file_copy(cover_page_path, tmp_cover_page_path, overwrite = TRUE)
 
 local_lp_bookdown <- file_temp(pattern = "lp_bookdown-")
 dir_copy("lp_bookdown", local_lp_bookdown)
+
+
+library(httr)
+
+old_cfg <- httr::set_config(
+  httr::config(connecttimeout = 15, timeout = 90)
+)
+on.exit(httr::set_config(old_cfg, override = TRUE), add = TRUE)
+
 
 # Loop over HSCP ----
 # 'looping' over one HSCP is fine.
