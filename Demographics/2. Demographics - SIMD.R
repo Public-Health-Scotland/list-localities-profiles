@@ -4,8 +4,6 @@
 
 ## Libraries
 library(reshape2)
-library(ggrepel)
-library(sf)
 
 # Source in global functions/themes script
 # source("Master RMarkdown Document & Render Code/Global Script.R")
