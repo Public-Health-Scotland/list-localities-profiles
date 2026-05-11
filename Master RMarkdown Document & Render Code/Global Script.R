@@ -151,6 +151,45 @@ theme_profiles <- function() {
   )
 }
 
+# Map background
+get_basemap_raw <- function(
+  min_long,
+  min_lat,
+  max_long,
+  max_lat
+) {
+  stadia_maps_key <- readr::read_lines(
+    path(lp_path, "Services", "stadia_maps_api_key"),
+    n_max = 1L
+  )
+
+  ggmap::register_stadiamaps(
+    key = stadia_maps_key
+  )
+
+  area <- c(
+    left = min_long,
+    bottom = min_lat,
+    right = max_long,
+    top = max_lat
+  )
+
+  ggmap::get_stadiamap(
+    bbox = area,
+    maptype = "alidade_smooth"
+  )
+}
+
+get_basemap <- memoise::memoise(
+  get_basemap_raw,
+  cache = cachem::cache_disk(
+    dir = fs::path(lp_path, "cache", "basemaps"),
+    max_size = 0.5 * 1024^3, # 0.5 GB
+    max_age = 365 * 24 * 60 * 60, # 1 year
+    evict = "lru"
+  )
+)
+
 #### Lookup #### ----
 
 ## Import the latest locality lookup from cl-out ----
