@@ -23,11 +23,6 @@ source("Services/2. Services data manipulation & table.R")
 
 # 1. Set up ----
 
-## Load packages
-library(sf)
-library(ggrepel)
-library(ggmap)
-
 lookups_dir <- path("/conf/linkage/output/lookups/Unicode")
 shapefiles_dir <- path(lookups_dir, "Geography", "Shapefiles")
 
