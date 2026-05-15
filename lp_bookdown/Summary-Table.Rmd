@@ -226,20 +226,18 @@ colnames(lifestyle_values) <- c("Section", "Indicator", "Data Type", "Time Perio
 ```
 
 ```{r hospital_community_care}
-
 usc_values <- tibble(
   Section = "Hospital & Community Care",
   Indicator = c(
-  "Emergency admissions per 100,000",
-  "Unscheduled bed days per 100,000",
-  "A&E attendances per 100,000",
-  "Delayed discharges (65+) per 100,000",
-  "Potentially Preventable Admissions per 100,000"
+    "Emergency admissions per 100,000",
+    "Unscheduled bed days per 100,000",
+    "A&E attendances per 100,000",
+    "Delayed discharges (65+) per 100,000",
+    "Potentially Preventable Admissions per 100,000"
   ),
   Datatype = c("rate", "rate", "rate", "rate", "rate"),
 ) %>%
   bind_cols(
-    
     bind_rows(
       format_for_summary_table(emergency_adm_outputs$current_all_areas),
       format_for_summary_table(bed_days_outputs$current_all_areas),
@@ -247,31 +245,25 @@ usc_values <- tibble(
       format_for_summary_table(delayed_discharges_outputs$current_all_areas),
       format_for_summary_table(ppa_outputs$current_all_areas)
     )
-    
   )
 
 colnames(usc_values) <- c("Section", "Indicator", headings)
-
 ```
 
 ```{r hospital_mental_health}
-
-
 usc_mh_values <- tibble(
   Section = "Hospital (Mental Health) Care",
   Indicator = c(
-  "Psychiatric patient hospitalisations per 100,000",
-  "Unscheduled bed days per 100,000"
+    "Psychiatric patient hospitalisations per 100,000",
+    "Unscheduled bed days per 100,000"
   ),
   Datatype = c("rate", "rate")
 ) %>%
   bind_cols(
-    
     bind_rows(
       scotpho_format_for_summary_table(psych_hosp_outputs$current_all_areas),
       format_for_summary_table(bed_days_mh_outputs$current_all_areas)
     )
-    
   )
 
 colnames(usc_mh_values) <- c("Section", "Indicator", headings)
