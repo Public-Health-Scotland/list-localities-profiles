@@ -778,37 +778,64 @@ create_testing_chapter <- function(chapters_oi, locality_oi, output_directory) {
 
   lookup <- read_in_localities()
 
-  if ("Demographics.Rmd" %in% chapters_oi) {
+  if ("Summary-Table.Rmd" %in% chapters_oi){
+    
     # Demographics ----
     source("Demographics/1. Demographics - Population.R")
     source("Demographics/2. Demographics - SIMD.R")
-  }
-
-  if ("Housing.Rmd" %in% chapters_oi) {
+    
     # Housing ----
     source("Households/Households Code.R")
-  }
-
-  if ("Services.Rmd" %in% chapters_oi) {
+    
     # Services ----
     source("Services/2. Services data manipulation & table.R")
     source("Services/3. Service HSCP map.R")
-  }
-
-  if ("Population-Health.Rmd" %in% chapters_oi) {
+    
     # Population Health ----
     source("Population Health/3. Population Health Outputs.R")
-  }
-
-  if ("Lifestyle-Risk-Factors.Rmd" %in% chapters_oi) {
+    
     # Lifestyle & Risk Factors ----
     source("Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
-  }
-
-  if ("Unscheduled-Care.Rmd" %in% chapters_oi) {
+    
     # Unscheduled Care ----
     source("Unscheduled Care/2. Unscheduled Care outputs.R")
+    
+  } else{
+    
+    if ("Demographics.Rmd" %in% chapters_oi) {
+      # Demographics ----
+      source("Demographics/1. Demographics - Population.R")
+      source("Demographics/2. Demographics - SIMD.R")
+    }
+    
+    if ("Housing.Rmd" %in% chapters_oi) {
+      # Housing ----
+      source("Households/Households Code.R")
+    }
+    
+    if ("Services.Rmd" %in% chapters_oi) {
+      # Services ----
+      source("Services/2. Services data manipulation & table.R")
+      source("Services/3. Service HSCP map.R")
+    }
+    
+    if ("Population-Health.Rmd" %in% chapters_oi) {
+      # Population Health ----
+      source("Population Health/3. Population Health Outputs.R")
+    }
+    
+    if ("Lifestyle-Risk-Factors.Rmd" %in% chapters_oi) {
+      # Lifestyle & Risk Factors ----
+      source("Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R")
+    }
+    
+    if ("Unscheduled-Care.Rmd" %in% chapters_oi) {
+      # Unscheduled Care ----
+      source("Unscheduled Care/2. Unscheduled Care outputs.R")
+    }
+    
   }
+  
 
   chapters_oi_name <- chapters_oi %>%
     gsub(".Rmd", "", .) %>%
