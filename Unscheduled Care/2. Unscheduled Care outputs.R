@@ -426,7 +426,7 @@ unscheduled_care_charts_and_text <- function(
       measure = "rate",
       plot_title = paste(indicator_name, "per 100,000 over time by residence"),
       yaxis_title = paste(indicator_name, "rate\n per 100,000 population"),
-      source = source
+      source = paste("Source:",source)
     )
 
   percentage_change_areas <- indicator_areas %>%
@@ -687,7 +687,7 @@ unscheduled_care_charts_and_text <- function(
         LOCALITY
       ),
       yaxis_title = paste(indicator_name, "rate\n per 100,000 population"),
-      source = source
+      source = paste("Source:",source)
     )
 
   percentage_change_age <- indicator_age %>%
@@ -1066,7 +1066,7 @@ emergency_adm_outputs <- unscheduled_care_charts_and_text(
   "Emergency Admissions",
   100000,
   "population",
-  "Source: PHS SMR01",
+  "PHS SMR01",
   populations_filtered_area,
   populations_filtered_age,
   LOCALITY,
@@ -1113,7 +1113,7 @@ bed_days_outputs <- unscheduled_care_charts_and_text(
   "Unscheduled Bed Days",
   100000,
   "population",
-  "Source: PHS SMR01",
+  "PHS SMR01",
   populations_filtered_area,
   populations_filtered_age,
   LOCALITY,
@@ -1162,7 +1162,7 @@ bed_days_mh_outputs <- unscheduled_care_charts_and_text(
   "Unscheduled Mental Health Bed Days",
   100000,
   "population",
-  "Source: PHS SMR01",
+  "PHS SMR04",
   populations_filtered_area,
   populations_filtered_age,
   LOCALITY,
@@ -1212,7 +1212,7 @@ ae_attendances_outputs <- unscheduled_care_charts_and_text(
   "A & E Attendances",
   100000,
   "population",
-  "Source: PHS SMR01",
+  "PHS A&E Datamart",
   populations_filtered_area,
   populations_filtered_age,
   LOCALITY,
@@ -1273,7 +1273,7 @@ delayed_discharges_outputs <- unscheduled_care_charts_and_text(
   "Delayed Discharge Bed Days",
   100000,
   "population aged over 65+",
-  "Source: PHS Delayed Discharges",
+  "PHS Delayed Discharges",
   populations_filtered_area,
   populations_filtered_age,
   LOCALITY,
@@ -1321,7 +1321,7 @@ falls_outputs <- unscheduled_care_charts_and_text(
   "Emergency Admissions From Falls",
   100000,
   "population aged over 65+",
-  "Source: PHS Delayed Discharges",
+  "PHS SMR01",
   populations_filtered_area,
   populations_filtered_age,
   LOCALITY,
@@ -1376,7 +1376,7 @@ readmissions_outputs <- unscheduled_care_charts_and_text(
   "Readmissions (28 days) ",
   1000,
   "discharges",
-  "Source: PHS Delayed Discharges",
+  "PHS SMR01",
   populations_filtered_area,
   populations_filtered_age,
   LOCALITY,
@@ -1421,7 +1421,7 @@ ppa_outputs <- unscheduled_care_charts_and_text(
   "Potentially Preventable Admissions (PPA)",
   100000,
   "population",
-  "Source: PHS Delayed Discharges",
+  "PHS SMR01",
   populations_filtered_area,
   populations_filtered_age,
   LOCALITY,
