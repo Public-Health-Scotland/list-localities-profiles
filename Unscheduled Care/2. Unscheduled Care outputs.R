@@ -426,7 +426,7 @@ unscheduled_care_charts_and_text <- function(
       measure = "rate",
       plot_title = paste(indicator_name, "per 100,000 over time by residence"),
       yaxis_title = paste(indicator_name, "rate\n per 100,000 population"),
-      source = paste("Source:",source)
+      source = paste("Source:", source)
     )
 
   percentage_change_areas <- indicator_areas %>%
@@ -687,7 +687,7 @@ unscheduled_care_charts_and_text <- function(
         LOCALITY
       ),
       yaxis_title = paste(indicator_name, "rate\n per 100,000 population"),
-      source = paste("Source:",source)
+      source = paste("Source:", source)
     )
 
   percentage_change_age <- indicator_age %>%
