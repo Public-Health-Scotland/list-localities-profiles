@@ -145,7 +145,11 @@ service_map_background <- get_basemap(
   min_long,
   min_lat,
   max_long,
-  max_lat
+  max_lat,
+  stadia_maps_key = readr::read_lines(
+    path(lp_path, "Services", "stadia_maps_api_key"),
+    n_max = 1L
+  )
 )
 
 # preview map
