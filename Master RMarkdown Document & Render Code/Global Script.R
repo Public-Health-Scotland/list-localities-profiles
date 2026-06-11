@@ -33,6 +33,8 @@ library(phsmethods)
 # Prefer dplyr functions if there's a conflict
 conflicted::conflict_prefer_all("dplyr", quiet = TRUE)
 
+lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+
 #### Colours & Formatting #### ----
 
 ## PHS colour palette from phsstyles
