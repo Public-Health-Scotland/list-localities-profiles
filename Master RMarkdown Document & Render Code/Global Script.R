@@ -832,6 +832,9 @@ create_testing_chapter <- function(chapters_oi, locality_oi, output_directory) {
     }
   }
 
+  # Appendices ----
+  source("Master RMarkdown Document & Render Code/Tables for Appendix.R")
+
   chapters_oi_name <- chapters_oi %>%
     gsub(".Rmd", "", .) %>%
     paste(collapse = " ")
@@ -840,7 +843,7 @@ create_testing_chapter <- function(chapters_oi, locality_oi, output_directory) {
   yaml_file <- yaml::read_yaml("lp_bookdown/_bookdown.yaml")
 
   # change included chapters to relevant chapter(s) only + index.Rmd (sets formatting)
-  yaml_file$rmd_files <- c("index.Rmd", chapters_oi)
+  yaml_file$rmd_files <- unique(c("index.Rmd", chapters_oi, "Appendix.Rmd"))
 
   # write temporary yaml with relevant chapters to be used in rendering
   yaml::write_yaml(yaml_file, path(tempdir(), "_practice_chapter_temp.yaml"))
@@ -853,8 +856,8 @@ create_testing_chapter <- function(chapters_oi, locality_oi, output_directory) {
   bookdown::render_book(
     input = "lp_bookdown",
     output_dir = output_dir,
-    new_session = FALSE,
     output_file = output_doc_name,
+    new_session = FALSE,
     output_format = "bookdown::word_document2",
     config_file = path(tempdir(), "_practice_chapter_temp.yaml")
   )
@@ -865,6 +868,9 @@ create_testing_chapter <- function(chapters_oi, locality_oi, output_directory) {
     document_path,
     "OFFICIAL_SENSITIVE_VMO"
   )
+  if ("Summary-Table.Rmd" %in% chapters_oi) {
+    orient(document_path)
+  }
 
   return(document_path)
 }
