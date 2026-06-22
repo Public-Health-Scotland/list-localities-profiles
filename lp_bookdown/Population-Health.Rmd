@@ -111,11 +111,11 @@ table_num <- table_num + 1
 
 **Most common physical Long Term Conditions (LTCs)**
 
--   Figure `r figure_num` shows the LTC prevalence estimates for `r LOCALITY` Locality in the financial year `r latest_year_ltc` across all ages.
+-   Figure `r figure_num` shows the LTC estimates for `r LOCALITY` Locality in the financial year `r latest_year_ltc` across all ages. This is based on whether someone has ever had a hospital admission for this condition.
 
--   Table `r table_num` orders the prevalence estimates to show the five most common physical LTCs across all ages at the Locality, Partnership, and Scotland levels.
+-   Table `r table_num` orders the LTC estimates to show the five most common physical LTCs across all ages at the Locality, Partnership, and Scotland levels.
 
-Below is a breakdown of the physical LTCs, for the financial year `r latest_year_ltc`. Figure `r figure_num` shows the prevalence of different LTCs in `r LOCALITY` locality, and Table `r table_num` illustrates the five most prevalent physical LTCs across all ages at the locality, partnership, and Scotland levels.
+Below is a breakdown of estimated physical LTCs, for the financial year `r latest_year_ltc`. Figure `r figure_num` shows the estimated percentage of different LTCs in `r LOCALITY` locality, and Table `r table_num` illustrates the five most common physical LTCs across all ages at the locality, partnership, and Scotland levels.
 
 ```{r, fig.width = 7.5, fig.height = 4, fig.cap = "A graph showing the prevalence of physical long term conditions by percentage of population."}
 ftext(paste0("Figure ", figure_num, ": The percentage of people with each physical LTC."), table_heading_style)
@@ -178,7 +178,7 @@ table_num <- table_num + 1
 
 ## Anxiety, Depression and Psychosis (ADP) prescriptions
 
-In `r latest_period_adp_presc`, **`r format_number_for_text(adp_presc_latest)`%** of people were prescribed medication for anxiety, depression or psychosis in `r LOCALITY` Locality. This is a **`r format_number_for_text(adp_presc_perc_change)`% `r adp_presc_changeword`** from the rate 10 years prior in `r prev_period_adp_presc` which was `r format_number_for_text(adp_presc_earliest)`%.
+In `r latest_period_adp_presc`, **`r format_number_for_text(adp_presc_latest)`%** of people were prescribed medication for anxiety, depression or psychosis in `r LOCALITY` Locality. This is a **`r format_number_for_text(adp_presc_perc_change)` `r adp_presc_changeword`** from the rate 10 years prior in `r prev_period_adp_presc` which was `r format_number_for_text(adp_presc_earliest)`%.
 
 ```{r, fig.width = 8.5, fig.height = 3.8, fig.cap = "A line graph showing 10-year time trends for anxiety, depression and psychosis prescriptions by percentage of population for Locality, HSCP, Health Board and all Scotland."}
 ftext(paste0("Figure ", figure_num, ": Anxiety, depression and psychosis prescriptions over time and by geographical area."), table_heading_style)

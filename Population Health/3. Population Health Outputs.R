@@ -542,12 +542,12 @@ adp_presc_earliest <- filter(
 )$measure
 
 adp_presc_perc_change <- abs(
-  (adp_presc_latest - adp_presc_earliest) * 100 / adp_presc_earliest
+  (adp_presc_latest - adp_presc_earliest) #* 100 / adp_presc_earliest
 )
 adp_presc_changeword <- if_else(
   adp_presc_latest > adp_presc_earliest,
-  "increase",
-  "decrease"
+  "percentage point increase",
+  "percentage point decrease"
 )
 
 scot_adp_presc <- filter(
@@ -958,7 +958,7 @@ title <- ggdraw() +
   draw_label(
     str_wrap(
       glue(
-        "Prevalence estimates for {latest_year_ltc} of Physical Long-Term Conditions in the {LOCALITY} Locality"
+        "Percentage estimates for {latest_year_ltc} of Physical Long-Term Conditions in the {LOCALITY} Locality"
       ),
       width = 65
     ),

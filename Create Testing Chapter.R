@@ -13,6 +13,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 # More than 1 can be entered at a time (c() format)
 
 chapter_oi <- c("Demographics.Rmd")
+stopifnot(chapter_oi %in% path_file(dir_ls("lp_bookdown")))
 LOCALITY <- "Falkirk West"
 
 # Output Directory
