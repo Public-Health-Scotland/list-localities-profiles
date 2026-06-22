@@ -72,16 +72,14 @@ format_number_for_text <- function(x) {
 get_article <- function(number) {
   number_chr <- as.character(number)
 
-  case_when(
+  article <- case_when(
     identical(number_chr, character(0)) ~ "-",
-
     startsWith(number_chr, "8") ~ "an",
-
     startsWith(number_chr, "18") ~ "an",
-
     TRUE ~ "a"
-  ) %>%
-    return()
+  )
+  
+  return(article)
 }
 
 ## Theme for charts ----
