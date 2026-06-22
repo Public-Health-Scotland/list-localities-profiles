@@ -918,7 +918,7 @@ format_for_summary_table <- function(data) {
       location = case_when(
         level == "Locality" ~ paste(location, "Locality"),
         level == "HSCP" ~ paste(location, "HSCP"),
-        level == "Scotland" ~ "Scotland",
+        level == "Scotland" ~ "Scotland"
       )
     ) %>%
     mutate(rate = format(rate, big.mark = ",", scientific = FALSE)) %>%
@@ -934,7 +934,7 @@ scotpho_format_for_summary_table <- function(data) {
       area_name = case_when(
         area_type == "Locality" ~ paste(area_name, "Locality"),
         area_type == "HSCP" ~ paste(area_name, "HSCP"),
-        area_type == "Scotland" ~ "Scotland",
+        area_type == "Scotland" ~ "Scotland"
       )
     ) %>%
     mutate(
