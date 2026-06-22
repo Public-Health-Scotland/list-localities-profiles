@@ -78,7 +78,7 @@ get_article <- function(number) {
     startsWith(number_chr, "18") ~ "an",
     TRUE ~ "a"
   )
-  
+
   return(article)
 }
 
