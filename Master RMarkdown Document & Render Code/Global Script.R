@@ -13,6 +13,9 @@ library(dplyr)
 library(readr)
 library(tidyr)
 library(ggplot2)
+library(ggrepel)
+library(ggmap)
+library(sf)
 library(stringr)
 library(forcats)
 library(purrr)
@@ -29,6 +32,8 @@ library(phsmethods)
 
 # Prefer dplyr functions if there's a conflict
 conflicted::conflict_prefer_all("dplyr", quiet = TRUE)
+
+lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 #### Colours & Formatting #### ----
 
@@ -150,6 +155,41 @@ theme_profiles <- function() {
     panel.background = ggplot2::element_blank()
   )
 }
+
+# Map background
+get_basemap_raw <- function(
+  min_long,
+  min_lat,
+  max_long,
+  max_lat,
+  stadia_maps_key
+) {
+  ggmap::register_stadiamaps(
+    key = stadia_maps_key
+  )
+
+  area <- c(
+    left = min_long,
+    bottom = min_lat,
+    right = max_long,
+    top = max_lat
+  )
+
+  ggmap::get_stadiamap(
+    bbox = area,
+    maptype = "alidade_smooth"
+  )
+}
+
+get_basemap <- memoise::memoise(
+  get_basemap_raw,
+  cache = cachem::cache_disk(
+    dir = fs::path(lp_path, "cache", "basemaps"),
+    max_size = 0.5 * 1024^3, # 0.5 GB
+    max_age = 365 * 24 * 60 * 60, # 1 year
+    evict = "lru"
+  )
+)
 
 #### Lookup #### ----
 

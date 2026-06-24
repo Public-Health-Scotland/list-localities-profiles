@@ -4,29 +4,24 @@
 # 0. Testing Set up ----
 
 ## Select HCSP (for testing only)
-#HSCP <- "Highland"
+# HSCP <- "Highland"
 
 ## Set file path
 # lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 
 ## Source in functions code (for testing only)
-#source("Master RMarkdown Document & Render Code/Global Script.R")
+# source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Select a locality based on the HSCP (for source code "2. Services Outputs" to run - it does not matter which one is chosen)
 # LOCALITY <- read_in_localities() |>
-#  filter(hscp2019name == HSCP) |>
-# slice(1) |>
-#  pull(hscp_locality)
+#   filter(hscp2019name == HSCP) |>
+#   slice(1) |>
+#   pull(hscp_locality)
 
 ## Source the data manipulation script for services
 source("Services/2. Services data manipulation & table.R")
 
 # 1. Set up ----
-
-## Load packages
-library(sf)
-library(ggrepel)
-library(ggmap)
 
 lookups_dir <- path("/conf/linkage/output/lookups/Unicode")
 shapefiles_dir <- path(lookups_dir, "Geography", "Shapefiles")
@@ -145,19 +140,16 @@ places <- read_csv(path(
   )
 
 # 3.3 Background map ----
-# Download map background from stadia maps, using API key
-register_stadiamaps(
-  key = read_lines(path(lp_path, "Services", "stadia_maps_api_key"))
-)
-# filter for max and min long/lat
-service_map_background <- get_stadiamap(
-  bbox = c(
-    min_long,
-    min_lat,
-    max_long,
-    max_lat
-  ),
-  maptype = "alidade_smooth"
+
+service_map_background <- get_basemap(
+  min_long,
+  min_lat,
+  max_long,
+  max_lat,
+  stadia_maps_key = readr::read_lines(
+    path(lp_path, "Services", "stadia_maps_api_key"),
+    n_max = 1L
+  )
 )
 
 # preview map
