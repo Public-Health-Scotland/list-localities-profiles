@@ -18,8 +18,9 @@
 # slice(1) |>
 #  pull(hscp_locality)
 
-## Source the data manipulation script for services
-source("Services/2. Services data manipulation & table.R")
+# Source the data manipulation scripts for services
+# source("Services/2a. hscp_services_data_manipulation.R")
+# source("Services/2b. locality_services_table.R")
 
 # 1. Set up ----
 
@@ -483,4 +484,23 @@ rm(
   shp_hscp
 )
 
+# Housekeeping ----
+# These objects are left over after the script is run
+# but don't appear to be used in any 'downstream' process:
+# Main markdown, Summary Table, Excel data tables, SDC output.
+# TODO: Investigate if these can be removed earlier or not created at all.
+rm(
+  all_markers,
+  api_key,
+  col_palette,
+  ext_year,
+  hscp_loc,
+  locality_map_id,
+  lookup2,
+  max_lat,
+  max_long,
+  min_lat,
+  min_long,
+  places
+)
 gc()
