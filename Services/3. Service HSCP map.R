@@ -19,7 +19,7 @@
 #  pull(hscp_locality)
 
 ## Source the data manipulation script for services
-source("Services/2. Services data manipulation & table.R")
+# source("Services/2. Services data manipulation & table.R")
 
 # 1. Set up ----
 
@@ -33,17 +33,8 @@ shapefiles_dir <- path(lookups_dir, "Geography", "Shapefiles")
 
 # 2. Read in locality shape files ----
 
-shp_hscp <- read_sf(path(
-  shapefiles_dir,
-  "HSCP Locality (Datazone2011 Base)",
-  "HSCP_Locality.shp"
-)) |>
-  st_transform(4326) |>
-  select(hscp_local, HSCP_name, geometry) |>
-  filter(HSCP_name == HSCP) |>
+shp_hscp <- read_in_hscp_locality_shapes(HSCP) |>
   mutate(
-    hscp_locality = str_wrap(gsub("&", "and", hscp_local, fixed = TRUE), 24),
-    hscp_local = str_wrap(hscp_local, 24),
     border_thickness = if_else(hscp_locality == LOCALITY, 0.2, 0.1)
   )
 
@@ -92,15 +83,13 @@ rm(colours_needed, n_loc, phs_accessible_colours)
 
 # 3.2 Locality shapes ----
 # Get latitude and longitude coordinates for each data locality, find min and max.
-zones_coord <- shp_hscp |>
-  st_coordinates() |>
-  as_tibble()
+zones_coord <- st_bbox(shp_hscp)
 
 # Get min and max longitude for locality, add a 0.01 extra to add a border to map.
-min_long <- min(zones_coord$X) - 0.01
-max_long <- max(zones_coord$X) + 0.01
-min_lat <- min(zones_coord$Y) - 0.01
-max_lat <- max(zones_coord$Y) + 0.01
+min_long <- unname(zones_coord["xmin"] - 0.01)
+max_long <- unname(zones_coord["xmax"] + 0.01)
+min_lat <- unname(zones_coord["ymin"] - 0.01)
+max_lat <- unname(zones_coord["ymax"] + 0.01)
 
 rm(zones_coord)
 
