@@ -95,7 +95,7 @@ jobs:
 
       - name: Cache styler results
         if: steps.changed_rmd.outputs.rmd_changed == 'true'
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ steps.styler-location.outputs.location }}
           key: ${{ runner.os }}-styler-${{ hashFiles('**/*.Rmd', '**/*.R') }}
