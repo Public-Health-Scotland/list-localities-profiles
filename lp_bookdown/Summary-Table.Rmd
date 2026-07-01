@@ -226,93 +226,47 @@ colnames(lifestyle_values) <- c("Section", "Indicator", "Data Type", "Time Perio
 ```
 
 ```{r hospital_community_care}
-indicators <- c(
-  "Emergency admissions per 100,000",
-  "Unscheduled bed days per 100,000",
-  "A&E attendances per 100,000",
-  "Delayed discharges (65+) per 100,000",
-  "Potentially Preventable Admissions per 100,000"
-)
-datatype <- c("rate", "rate", "rate", "rate", "rate")
-time <- c(max_fy, max_fy, max_fy, max_fy, max_fy)
-
-# Values
-loc_values <- format(
-  c(latest_emergency_adm_loc1, latest_bed_days_loc1, latest_ae_att_loc1, latest_dd_loc1, latest_ppa_loc1),
-  big.mark = ","
-)
-other_loc_values <- bind_rows(other_loc_emergency_adm, other_loc_bed_days, other_loc_ae_att, other_loc_dd, other_loc_ppa)
-hscp_values <- format(
-  c(hscp_emergency_adm$data, hscp_bed_days$data, hscp_ae_att$data, hscp_dd$data, filter(hscp_ppa, year == max(year))$data),
-  big.mark = ","
-)
-scot_values <- format(
-  c(scot_emergency_adm$data, scot_bed_days$data, scot_ae_att$data, scot_dd$data, filter(scot_ppa, year == max(year))$data),
-  big.mark = ","
-)
-
 usc_values <- tibble(
   Section = "Hospital & Community Care",
-  Indicator = indicators,
-  Datatype = datatype,
-  Time = time,
-  loc_values,
-  other_loc_values,
-  hscp_values,
-  scot_values
-)
+  Indicator = c(
+    "Emergency admissions per 100,000",
+    "Unscheduled bed days per 100,000",
+    "A&E attendances per 100,000",
+    "Delayed discharges (65+) per 100,000",
+    "Potentially Preventable Admissions per 100,000"
+  ),
+  Datatype = c("rate", "rate", "rate", "rate", "rate"),
+) %>%
+  bind_cols(
+    bind_rows(
+      format_for_summary_table(emergency_adm_outputs$current_all_areas),
+      format_for_summary_table(bed_days_outputs$current_all_areas),
+      format_for_summary_table(ae_attendances_outputs$current_all_areas),
+      format_for_summary_table(delayed_discharges_outputs$current_all_areas),
+      format_for_summary_table(ppa_outputs$current_all_areas)
+    )
+  )
 
-colnames(usc_values) <- c("Section", "Indicator", "Data Type", "Time Period", headings[-c(1, 2)])
+colnames(usc_values) <- c("Section", "Indicator", headings)
 ```
 
 ```{r hospital_mental_health}
-indicators <- c(
-  "Psychiatric patient hospitalisations per 100,000",
-  "Unscheduled bed days per 100,000"
-)
-datatype <- c("rate", "rate")
-time <- c(str_wrap(latest_period_psych_hosp, 9), max_fy)
-
-# Values
-loc_values <- c(
-  format(psych_hosp_latest, big.mark = ","),
-  format(
-    ifelse(is_empty(latest_bed_days_mh_loc1), NA_real_, latest_bed_days_mh_loc1),
-    big.mark = ","
-  )
-)
-
-other_loc_values <- bind_rows(other_locs_psych_hosp, other_loc_bed_days_mh)
-hscp_values <- c(
-  format(filter(hscp_psych_hosp, year == max(year))$measure, big.mark = ","),
-  format(hscp_bed_days_mh$data, big.mark = ",")
-)
-scot_values <- c(
-  format(filter(scot_psych_hosp, year == max(year))$measure, big.mark = ","),
-  format(scot_bed_days_mh$data, big.mark = ",")
-)
-
-
-usc_mh_values <- tibble(
-  indicators, datatype, time, loc_values, other_loc_values,
-  hscp_values, scot_values
-)
-
-colnames(usc_mh_values) <- c("Hospital Care (Mental Health) Indicators", headings)
-
-
 usc_mh_values <- tibble(
   Section = "Hospital (Mental Health) Care",
-  Indicator = indicators,
-  Datatype = datatype,
-  Time = time,
-  loc_values,
-  other_loc_values,
-  hscp_values,
-  scot_values
-)
+  Indicator = c(
+    "Psychiatric patient hospitalisations per 100,000",
+    "Unscheduled bed days per 100,000"
+  ),
+  Datatype = c("rate", "rate")
+) %>%
+  bind_cols(
+    bind_rows(
+      scotpho_format_for_summary_table(psych_hosp_outputs$current_all_areas),
+      format_for_summary_table(bed_days_mh_outputs$current_all_areas)
+    )
+  )
 
-colnames(usc_mh_values) <- c("Section", "Indicator", "Data Type", "Time Period", headings[-c(1, 2)])
+colnames(usc_mh_values) <- c("Section", "Indicator", headings)
 ```
 
 ```{r table}

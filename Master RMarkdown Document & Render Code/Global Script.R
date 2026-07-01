@@ -70,19 +70,16 @@ format_number_for_text <- function(x) {
 # 7.2 -> an
 # To be used for "a xx increase" which could be "an xx increase"
 get_article <- function(number) {
-  # Cast as a character, so we are sure of the type
   number_chr <- as.character(number)
 
-  if (identical(number_chr, character(0))) {
-    # If the number wasn't calculated we still need to deal with it.
-    return("-")
-  }
+  article <- case_when(
+    identical(number_chr, character(0)) ~ "-",
+    startsWith(number_chr, "8") ~ "an",
+    startsWith(number_chr, "18") ~ "an",
+    TRUE ~ "a"
+  )
 
-  if (startsWith(number_chr, "8") || startsWith(number_chr, "18")) {
-    return("an")
-  } else {
-    return("a")
-  }
+  return(article)
 }
 
 ## Theme for charts ----
@@ -909,4 +906,40 @@ orient <- function(document_path) {
   }
 
   print(doc, target = document_path)
+}
+
+
+format_for_summary_table <- function(data) {
+  data %>%
+    filter(level != "HB") %>%
+    mutate(
+      location = case_when(
+        level == "Locality" ~ paste(location, "Locality"),
+        level == "HSCP" ~ paste(location, "HSCP"),
+        level == "Scotland" ~ "Scotland"
+      )
+    ) %>%
+    mutate(rate = format(rate, big.mark = ",", scientific = FALSE)) %>%
+    dplyr::select(`Time Period` = financial_year, location, rate) %>%
+    pivot_wider(names_from = location, values_from = rate)
+}
+
+
+scotpho_format_for_summary_table <- function(data) {
+  data %>%
+    filter(area_type != "Health board") %>%
+    mutate(
+      area_name = case_when(
+        area_type == "Locality" ~ paste(area_name, "Locality"),
+        area_type == "HSCP" ~ paste(area_name, "HSCP"),
+        area_type == "Scotland" ~ "Scotland"
+      )
+    ) %>%
+    mutate(
+      period = gsub(" financial years; 3-year aggregates", "", period),
+      period = gsub(" to ", " - ", period)
+    ) %>%
+    mutate(measure = format(measure, big.mark = ",", scientific = FALSE)) %>%
+    dplyr::select(`Time Period` = period, area_name, measure) %>%
+    pivot_wider(names_from = area_name, values_from = measure)
 }
