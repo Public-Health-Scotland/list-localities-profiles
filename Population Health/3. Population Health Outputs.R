@@ -92,7 +92,7 @@ deaths_15_44 <- read_parquet(path(
   "scotpho_data_extract_deaths_15_44.parquet"
 )) |>
   clean_scotpho_dat() |>
-  mutate(period_short = gsub("to", "-", substr(period, 1, 12), fixed = TRUE))
+  mutate(period_short = gsub("to", "-", substr(period, 1, 11), fixed = TRUE))
 
 check_missing_data_scotpho(deaths_15_44)
 
