@@ -22,7 +22,7 @@ Of the total number of dwellings in `r max_year_housing`, `r perc_single_discoun
 
 There were `r n_second_homes` dwellings classed as a second home in `r max_year_housing`, these dwellings made up `r perc_second_homes`% of the households in `r LOCALITY`.
 
-\newpage
+
 
 ```{r }
 ftext(paste0("Table ", table_num, ": Breakdown of dwelling types by year for ", LOCALITY, " locality."), table_heading_style)
