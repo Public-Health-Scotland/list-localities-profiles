@@ -109,30 +109,25 @@ aggregate_area_data <- function(data, measure) {
 }
 
 
-get_associated_areas <- function(localities_lookup,LOCALITY){
-  
+get_associated_areas <- function(localities_lookup, LOCALITY) {
   associated_localities <- localities_lookup %>%
     mutate(desired_locality = hscp_locality == LOCALITY) %>%
-    group_by(hb2019name, hb2019,hscp2019name, hscp2019) %>%
+    group_by(hb2019name, hb2019, hscp2019name, hscp2019) %>%
     mutate(same_HSCP = as.logical(max(desired_locality))) %>%
     ungroup() %>%
-    filter(same_HSCP) 
-  
+    filter(same_HSCP)
+
   other_locs <- associated_localities %>%
     filter(!desired_locality & same_HSCP) %>%
     pull(hscp_locality) %>%
     sort()
-  
+
   return(list(
-    
     other_locs = other_locs,
     HSCP = unique(associated_localities$hscp2019name),
     HB = unique(associated_localities$hb2019name)
-    
   ))
-  
 }
-
 
 
 ## 1. Lookups ----
@@ -351,20 +346,16 @@ unscheduled_care_charts_and_text <- function(
   LOCALITY,
   locality_lookup
 ) {
-  
-  # 1. Get Associated Areas 
-  
-  get_associated_areas_output <- get_associated_areas(locality_lookup,LOCALITY)
-  
+  # 1. Get Associated Areas
+
+  get_associated_areas_output <- get_associated_areas(locality_lookup, LOCALITY)
+
   other_locs <- get_associated_areas_output$other_locs
-  
+
   HSCP <- get_associated_areas_output$HSCP
-  
+
   HB <- get_associated_areas_output$HB
-  
-  
-  
-  
+
   min_fin_year <- dataset %>%
     filter(year == min(year)) %>%
     pull(financial_year) %>%
@@ -1078,7 +1069,6 @@ emergency_adm_outputs <- unscheduled_care_charts_and_text(
   populations_filtered_age,
   LOCALITY,
   localities
-  
 )
 
 
