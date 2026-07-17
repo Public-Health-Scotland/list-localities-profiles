@@ -1037,17 +1037,6 @@ emergency_adm <- read_parquet(paste0(
 )) %>%
   mutate(level = "Locality") %>%
   filter(financial_year <= max_fy) %>%
-  left_join(
-    populations_filtered,
-    by = c(
-      "financial_year",
-      "hscp2019name",
-      "hscp_locality",
-      "age_group",
-      "level"
-    )
-  ) %>%
-  mutate(rate = round_half_up(admissions / pop * 100000)) %>%
   dplyr::select(
     financial_year,
     year,
@@ -1056,8 +1045,6 @@ emergency_adm <- read_parquet(paste0(
     hscp_locality,
     age_group,
     adm = admissions,
-    pop,
-    rate,
     level
   )
 
@@ -1084,17 +1071,6 @@ emergency_adm_outputs <- unscheduled_care_charts_and_text(
 bed_days <- read_parquet(paste0(import_folder, "bed_days_msg.parquet")) %>%
   filter(financial_year <= max_fy) %>%
   mutate(level = "Locality") %>%
-  left_join(
-    populations_filtered,
-    by = c(
-      "financial_year",
-      "hscp2019name",
-      "hscp_locality",
-      "age_group",
-      "level"
-    )
-  ) %>%
-  mutate(rate = round_half_up(bed_days / pop * 100000)) %>%
   dplyr::select(
     financial_year,
     year,
@@ -1103,8 +1079,6 @@ bed_days <- read_parquet(paste0(import_folder, "bed_days_msg.parquet")) %>%
     hscp_locality,
     age_group,
     bd = bed_days,
-    pop,
-    rate,
     level
   )
 
@@ -1133,17 +1107,6 @@ bed_days_mh <- read_parquet(paste0(
 )) %>%
   mutate(level = "Locality") %>%
   filter(financial_year <= max_fy) %>%
-  left_join(
-    populations_filtered,
-    by = c(
-      "financial_year",
-      "hscp2019name",
-      "hscp_locality",
-      "age_group",
-      "level"
-    )
-  ) %>%
-  mutate(rate = round_half_up(bed_days / pop * 100000)) %>%
   dplyr::select(
     financial_year,
     year,
@@ -1152,8 +1115,6 @@ bed_days_mh <- read_parquet(paste0(
     hscp_locality,
     age_group,
     bd = bed_days,
-    pop,
-    rate,
     level
   )
 
@@ -1184,17 +1145,6 @@ ae_attendances <- read_parquet(paste0(
   filter(age_group != "NA") %>%
   mutate(level = "Locality") %>%
   filter(financial_year <= max_fy) %>%
-  left_join(
-    populations_filtered,
-    by = c(
-      "financial_year",
-      "hscp2019name",
-      "hscp_locality",
-      "age_group",
-      "level"
-    )
-  ) %>%
-  mutate(rate = round_half_up(attendances / pop * 100000)) %>%
   dplyr::select(
     financial_year,
     year,
@@ -1203,8 +1153,6 @@ ae_attendances <- read_parquet(paste0(
     hscp_locality,
     age_group,
     att = attendances,
-    pop,
-    rate,
     level
   )
 
@@ -1240,32 +1188,17 @@ delayed_disch <- read_parquet(paste0(
   ) %>%
   ungroup() %>%
   mutate(level = "Locality") %>%
-  left_join(
-    populations_filtered,
-    by = c(
-      "financial_year",
-      "hscp2019name",
-      "hscp_locality",
-      "age_group",
-      "level"
-    )
-  ) %>%
   filter(!is.na(year)) %>%
-  mutate(dd_bd_rate = round_half_up(dd_bed_days / pop * 100000)) %>%
-  mutate(dd_ppl_rate = round_half_up(dd_people / pop * 100000)) %>%
   dplyr::select(
     financial_year,
     year,
     hb2019name,
     hscp2019name,
     hscp_locality,
-    level,
     age_group,
     dd_ppl = dd_people,
     dd_bd = dd_bed_days,
-    dd_bd_rate,
-    dd_ppl_rate,
-    pop
+    level
   )
 
 
@@ -1291,29 +1224,18 @@ falls <- read_parquet(paste0(import_folder, "falls_smr.parquet")) %>%
   filter(financial_year <= max_fy) %>%
   filter(age_group %in% c("65 - 74", "75+")) %>%
   mutate(level = "Locality") %>%
-  left_join(
-    populations_filtered,
-    by = c(
-      "financial_year",
-      "hscp2019name",
-      "hscp_locality",
-      "age_group",
-      "level"
-    )
-  ) %>%
   filter(!is.na(year)) %>%
-  mutate(adm_rate = round_half_up(admissions / pop * 100000)) %>%
   dplyr::select(
     financial_year,
     year,
     hb2019name,
     hscp2019name,
     hscp_locality,
-    level,
     age_group,
     adm = admissions,
     adm_rate,
-    pop
+    pop,
+    level
   )
 
 
@@ -1342,34 +1264,17 @@ readmissions <- read_parquet(paste0(
 )) %>%
   filter(financial_year <= max_fy) %>%
   mutate(level = "Locality") %>%
-  left_join(
-    populations_filtered,
-    by = c(
-      "financial_year",
-      "hscp2019name",
-      "hscp_locality",
-      "age_group",
-      "level"
-    )
-  ) %>%
   filter(!is.na(year)) %>%
-  mutate(
-    dd_rate = round_half_up(discharges / pop * 100000),
-    read_28_rate = round_half_up(read_28 / pop * 100000)
-  ) %>%
   dplyr::select(
     financial_year,
     year,
     hb2019name,
     hscp2019name,
     hscp_locality,
-    level,
     age_group,
     dd = discharges,
     read_28,
-    dd_rate,
-    read_28_rate,
-    pop
+    level
   )
 
 readmissions_outputs <- unscheduled_care_charts_and_text(
@@ -1393,16 +1298,6 @@ readmissions_outputs <- unscheduled_care_charts_and_text(
 ppa <- read_parquet(paste0(import_folder, "ppa_smr.parquet")) %>%
   filter(financial_year <= max_fy) %>%
   mutate(level = "Locality") %>%
-  left_join(
-    populations_filtered,
-    by = c(
-      "financial_year",
-      "hscp2019name",
-      "hscp_locality",
-      "age_group",
-      "level"
-    )
-  ) %>%
   mutate(adm_rate = round_half_up(admissions / pop * 100000)) %>%
   dplyr::select(
     financial_year,
@@ -1410,11 +1305,9 @@ ppa <- read_parquet(paste0(import_folder, "ppa_smr.parquet")) %>%
     hb2019name,
     hscp2019name,
     hscp_locality,
-    level,
     age_group,
     adm = admissions,
-    adm_rate,
-    pop
+    level
   )
 
 ppa_outputs <- unscheduled_care_charts_and_text(
