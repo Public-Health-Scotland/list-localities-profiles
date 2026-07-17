@@ -152,20 +152,45 @@ populations$"Pop0_17" <- rowSums(subset(populations, select = age0:age17))
 populations$"Pop18_44" <- rowSums(subset(populations, select = age18:age44))
 populations$"Pop45_64" <- rowSums(subset(populations, select = age45:age64))
 populations$"Pop65_74" <- rowSums(subset(populations, select = age65:age74))
-populations$"Pop75Plus" <- rowSums(subset(populations,select = age75:age90plus))
-populations$"Pop65Plus" <- rowSums(subset(populations,select = age65:age90plus))
+populations$"Pop75Plus" <- rowSums(subset(
+  populations,
+  select = age75:age90plus
+))
+populations$"Pop65Plus" <- rowSums(subset(
+  populations,
+  select = age65:age90plus
+))
 
 
 populations_filtered <- populations %>%
   mutate(financial_year = paste0(year, "/", substr(year + 1, 3, 4))) %>%
   dplyr::select(
-    year, financial_year,
-    hb2019name, hscp2019name, hscp_locality, datazone2011, datazone2011name,
+    year,
+    financial_year,
+    hb2019name,
+    hscp2019name,
+    hscp_locality,
+    datazone2011,
+    datazone2011name,
     sex,
-    Pop0_17, Pop18_44, Pop45_64, Pop65_74, Pop75Plus, Pop65Plus, total_pop
+    Pop0_17,
+    Pop18_44,
+    Pop45_64,
+    Pop65_74,
+    Pop75Plus,
+    Pop65Plus,
+    total_pop
   ) %>%
   pivot_longer(
-    cols = c("Pop0_17", "Pop18_44", "Pop45_64", "Pop65_74", "Pop75Plus", "Pop65Plus", "total_pop"),
+    cols = c(
+      "Pop0_17",
+      "Pop18_44",
+      "Pop45_64",
+      "Pop65_74",
+      "Pop75Plus",
+      "Pop65Plus",
+      "total_pop"
+    ),
     names_to = "age_group",
     values_to = "pop"
   ) %>%
