@@ -346,11 +346,11 @@ unscheduled_care_charts_and_text <- function(
   HB <- get_associated_areas_output$HB
 
   # 2. Get Population By Age And Area ----
-  
+
   populations_filtered_area <- populations_filtered %>%
     filter(age_group == "Total") %>%
     dplyr::select(-age_group)
-  
+
   populations_filtered_age <- populations_filtered %>%
     filter(level == "Locality") %>%
     summarise(
@@ -364,7 +364,7 @@ unscheduled_care_charts_and_text <- function(
         "age_group"
       )
     )
-  
+
   min_fin_year <- dataset %>%
     filter(year == min(year)) %>%
     pull(financial_year) %>%
