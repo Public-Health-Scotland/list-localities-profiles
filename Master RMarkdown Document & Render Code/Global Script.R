@@ -26,6 +26,7 @@ library(flextable)
 library(officer)
 library(memoise)
 library(phsmethods)
+library(xfun)
 
 # Prefer dplyr functions if there's a conflict
 conflicted::conflict_prefer_all("dplyr", quiet = TRUE)
@@ -68,18 +69,29 @@ format_number_for_text <- function(x) {
 # 81.2 -> an
 # 18 -> an
 # 7.2 -> an
+# 12 -> a
+# 100 -> a
+
 # To be used for "a xx increase" which could be "an xx increase"
+
 get_article <- function(number) {
+  
   number_chr <- as.character(number)
-
-  article <- case_when(
+  
+  number_in_words <- xfun::n2w(number)
+  
+  case_when(
+    
     identical(number_chr, character(0)) ~ "-",
-    startsWith(number_chr, "8") ~ "an",
-    startsWith(number_chr, "18") ~ "an",
+    
+    startsWith(number_in_words,"one ") ~ "a",
+    
+    substr(number_in_words,1,1) %in% c("a","e","i","o","u") ~ "an", 
+    
     TRUE ~ "a"
-  )
-
-  return(article)
+    
+  ) %>%
+    return()
 }
 
 ## Theme for charts ----
