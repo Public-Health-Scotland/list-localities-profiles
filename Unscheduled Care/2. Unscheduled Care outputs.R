@@ -146,19 +146,44 @@ populations$"Pop0_17" <- rowSums(subset(populations, select = age0:age17))
 populations$"Pop18_44" <- rowSums(subset(populations, select = age18:age44))
 populations$"Pop45_64" <- rowSums(subset(populations, select = age45:age64))
 populations$"Pop65_74" <- rowSums(subset(populations, select = age65:age74))
-populations$"Pop75Plus" <- rowSums(subset(populations,select = age75:age90plus))
-populations$"Pop65Plus" <- rowSums(subset(populations, select = age65:age90plus))
+populations$"Pop75Plus" <- rowSums(subset(
+  populations,
+  select = age75:age90plus
+))
+populations$"Pop65Plus" <- rowSums(subset(
+  populations,
+  select = age65:age90plus
+))
 
 populations_filtered <- populations %>%
   mutate(financial_year = paste0(year, "/", substr(year + 1, 3, 4))) %>%
   dplyr::select(
-    year, financial_year,
-    hb2019name, hscp2019name, hscp_locality, datazone2011, datazone2011name,
+    year,
+    financial_year,
+    hb2019name,
+    hscp2019name,
+    hscp_locality,
+    datazone2011,
+    datazone2011name,
     sex,
-    Pop0_17, Pop18_44, Pop45_64, Pop65_74, Pop75Plus, Pop65Plus, total_pop
+    Pop0_17,
+    Pop18_44,
+    Pop45_64,
+    Pop65_74,
+    Pop75Plus,
+    Pop65Plus,
+    total_pop
   ) %>%
   pivot_longer(
-    cols = c( "Pop0_17", "Pop18_44", "Pop45_64", "Pop65_74", "Pop75Plus", "Pop65Plus", "total_pop"),
+    cols = c(
+      "Pop0_17",
+      "Pop18_44",
+      "Pop45_64",
+      "Pop65_74",
+      "Pop75Plus",
+      "Pop65Plus",
+      "total_pop"
+    ),
     names_to = "age_group",
     values_to = "pop"
   ) %>%
@@ -329,7 +354,7 @@ unscheduled_care_charts_and_text <- function(
     )
 
   # 3. Get Maximum and Minimum Financial Year In Data ----
-  
+
   min_fin_year <- dataset %>%
     filter(year == min(year)) %>%
     pull(financial_year) %>%
@@ -341,22 +366,36 @@ unscheduled_care_charts_and_text <- function(
     unique()
 
   # 4. Get Intro Paragraph For Area Charts ----
-  
-  intro_paragraph_area <- paste0("presents the ", str_to_lower(indicator_name), " rate per ",
-    paste0(format(denominator_number, big.mark = ",", scientific = FALSE), " "), paste0(denominator_name, " "),
-    "in the ", LOCALITY, " locality from ", min_fin_year, " to ", max_fin_year, "." )
+
+  intro_paragraph_area <- paste0(
+    "presents the ",
+    str_to_lower(indicator_name),
+    " rate per ",
+    paste0(format(denominator_number, big.mark = ",", scientific = FALSE), " "),
+    paste0(denominator_name, " "),
+    "in the ",
+    LOCALITY,
+    " locality from ",
+    min_fin_year,
+    " to ",
+    max_fin_year,
+    "."
+  )
 
   intro_paragraph_area <- gsub("a & e", "A & E", intro_paragraph_area)
 
   # 5. Get Data Related To Indicator At Area Level ----
-  
+
   indicator_areas <- dataset %>%
     aggregate_area_data({{ indicator_column }}) %>%
     summarise(
       {{ indicator_column }} := sum({{ indicator_column }}),
       .by = c(
-        "year", "financial_year",
-        "hb2019name", "hscp2019name", "hscp_locality",
+        "year",
+        "financial_year",
+        "hb2019name",
+        "hscp2019name",
+        "hscp_locality",
         "location",
         "level"
       )
@@ -364,24 +403,33 @@ unscheduled_care_charts_and_text <- function(
     left_join(
       populations_area,
       by = c(
-        "year", "financial_year",
-        "hb2019name", "hscp2019name", "hscp_locality",
+        "year",
+        "financial_year",
+        "hb2019name",
+        "hscp2019name",
+        "hscp_locality",
         "location",
         "level"
       )
     ) %>%
-    mutate(rate = round_half_up(denominator_number * ({{ indicator_column }} / pop))) %>%
+    mutate(
+      rate = round_half_up(denominator_number * ({{ indicator_column }} / pop))
+    ) %>%
     dplyr::select(
-      financial_year, year,
-      hb2019name, hscp2019name,  hscp_locality,
+      financial_year,
+      year,
+      hb2019name,
+      hscp2019name,
+      hscp_locality,
       location,
       level,
       {{ indicator_column }},
-      pop, rate
+      pop,
+      rate
     )
 
   # 6. Create Time Series Chart For Indicator At Area Level ----
-  
+
   indicator_loc_ts <- indicator_areas %>%
     filter(
       level == "Locality" &
@@ -525,7 +573,7 @@ unscheduled_care_charts_and_text <- function(
   }
 
   # 8. Pull Indicator Rate For Locality And Scotland ----
-  
+
   current_locality_rate_area <- indicator_areas %>%
     filter(financial_year == max_fin_year) %>%
     filter(level == "Locality" & hscp_locality == LOCALITY) %>%
@@ -550,39 +598,59 @@ unscheduled_care_charts_and_text <- function(
     filter(financial_year == max_fin_year)
 
   # 10. Get Intro Paragraph For Age Charts ----
-  
-  intro_paragraph_age <- paste0("presents the ",str_to_lower(indicator_name)," rate per ",
-    format(denominator_number, big.mark = ",", scientific = FALSE), " ", paste0(denominator_name, " "),
-    "in the ", LOCALITY, " locality from ", min_fin_year, " to ", max_fin_year, " by age group."
+
+  intro_paragraph_age <- paste0(
+    "presents the ",
+    str_to_lower(indicator_name),
+    " rate per ",
+    format(denominator_number, big.mark = ",", scientific = FALSE),
+    " ",
+    paste0(denominator_name, " "),
+    "in the ",
+    LOCALITY,
+    " locality from ",
+    min_fin_year,
+    " to ",
+    max_fin_year,
+    " by age group."
   )
 
   intro_paragraph_age <- gsub("a & e", "A & E", intro_paragraph_age)
 
   # 11. Create Time Series Chart For Indicator At Area Level ----
-  
+
   indicator_age <- dataset %>%
     filter(hscp_locality == LOCALITY & level == "Locality") %>%
     dplyr::select(-pop, -contains("rate")) %>%
     left_join(
       populations_age,
       by = c(
-        "year", "financial_year",
-        "hb2019name", "hscp2019name", "hscp_locality",
+        "year",
+        "financial_year",
+        "hb2019name",
+        "hscp2019name",
+        "hscp_locality",
         "age_group"
       )
     ) %>%
-    mutate(rate = round_half_up(denominator_number * ({{ indicator_column }} / pop))) %>%
+    mutate(
+      rate = round_half_up(denominator_number * ({{ indicator_column }} / pop))
+    ) %>%
     dplyr::select(
-      financial_year, year,
-      hb2019name, hscp2019name, hscp_locality,
+      financial_year,
+      year,
+      hb2019name,
+      hscp2019name,
+      hscp_locality,
       age_group,
       level,
       {{ indicator_column }},
-      pop, rate
+      pop,
+      rate
     )
 
   # 12. Get Data Related To Indicator At Under and Over 65s For PPA Data ----
-  
+
   if (indicator_name == "Potentially Preventable Admissions (PPA)") {
     ppa_agebanded <- indicator_age %>%
       mutate(
@@ -632,7 +700,7 @@ unscheduled_care_charts_and_text <- function(
   }
 
   # 14. Get Data Related To Indicator At Under and Over 65s For PPA Data ----
-  
+
   indicator_age_ts <- indicator_age %>%
     age_group_trend_usc(
       measure = "rate",
