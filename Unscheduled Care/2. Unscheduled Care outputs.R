@@ -109,28 +109,35 @@ aggregate_area_data <- function(data, measure) {
 }
 
 
+get_associated_areas <- function(localities_lookup,LOCALITY){
+  
+  associated_localities <- localities_lookup %>%
+    mutate(desired_locality = hscp_locality == LOCALITY) %>%
+    group_by(hb2019name, hb2019,hscp2019name, hscp2019) %>%
+    mutate(same_HSCP = as.logical(max(desired_locality))) %>%
+    ungroup() %>%
+    filter(same_HSCP) 
+  
+  other_locs <- associated_localities %>%
+    filter(!desired_locality & same_HSCP) %>%
+    pull(hscp_locality) %>%
+    sort()
+  
+  return(list(
+    
+    other_locs = other_locs,
+    HSCP = unique(associated_localities$hscp2019name),
+    HB = unique(associated_localities$hb2019name)
+    
+  ))
+  
+}
+
+
+
 ## 1. Lookups ----
 
 localities <- read_in_localities()
-
-locality_info <- localities %>%
-  filter(hscp_locality == LOCALITY)
-
-HSCP <- locality_info %>%
-  pull(hscp2019name)
-
-HB <- locality_info %>%
-  pull(hb2019name)
-
-
-# Determine other localities based on LOCALITY object
-
-other_locs <- localities %>%
-  filter(hscp2019name == HSCP, hscp_locality != LOCALITY) %>%
-  distinct(hscp_locality, hscp2019name)
-
-# Find number of locs per partnership
-n_loc <- count_localities(localities, HSCP)
 
 
 ## 2. Populations (for rates) ----
@@ -342,10 +349,22 @@ unscheduled_care_charts_and_text <- function(
   populations_area,
   populations_age,
   LOCALITY,
-  other_locs,
-  HSCP,
-  HB
+  locality_lookup
 ) {
+  
+  # 1. Get Associated Areas 
+  
+  get_associated_areas_output <- get_associated_areas(locality_lookup,LOCALITY)
+  
+  other_locs <- get_associated_areas_output$other_locs
+  
+  HSCP <- get_associated_areas_output$HSCP
+  
+  HB <- get_associated_areas_output$HB
+  
+  
+  
+  
   min_fin_year <- dataset %>%
     filter(year == min(year)) %>%
     pull(financial_year) %>%
@@ -826,9 +845,7 @@ scotpho_unscheduled_care_charts_and_text <- function(
   xaxis_title,
   yaxis_title,
   LOCALITY,
-  other_locs,
-  HSCP,
-  HB
+  locality_lookup
 ) {
   min_period <- dataset %>%
     filter(year == max(min(year), max(year) - 10)) %>%
@@ -1026,6 +1043,7 @@ scotpho_unscheduled_care_charts_and_text <- function(
   )
 }
 
+
 # 1. Emergency Admissions ----
 # _________________________________________________________________________
 
@@ -1059,9 +1077,8 @@ emergency_adm_outputs <- unscheduled_care_charts_and_text(
   populations_filtered_area,
   populations_filtered_age,
   LOCALITY,
-  other_locs$hscp_locality,
-  HSCP,
-  HB
+  localities
+  
 )
 
 
@@ -1093,9 +1110,7 @@ bed_days_outputs <- unscheduled_care_charts_and_text(
   populations_filtered_area,
   populations_filtered_age,
   LOCALITY,
-  other_locs$hscp_locality,
-  HSCP,
-  HB
+  localities
 )
 
 # 2b. Unscheduled bed days - Mental Health ----
@@ -1129,9 +1144,7 @@ bed_days_mh_outputs <- unscheduled_care_charts_and_text(
   populations_filtered_area,
   populations_filtered_age,
   LOCALITY,
-  other_locs$hscp_locality,
-  HSCP,
-  HB
+  localities
 )
 
 
@@ -1166,9 +1179,7 @@ ae_attendances_outputs <- unscheduled_care_charts_and_text(
   populations_filtered_area,
   populations_filtered_age,
   LOCALITY,
-  other_locs$hscp_locality,
-  HSCP,
-  HB
+  localities
 )
 
 
@@ -1212,9 +1223,7 @@ delayed_discharges_outputs <- unscheduled_care_charts_and_text(
   populations_filtered_area,
   populations_filtered_age,
   LOCALITY,
-  other_locs$hscp_locality,
-  HSCP,
-  HB
+  localities
 )
 
 # 5. Fall Admissions ----
@@ -1233,8 +1242,6 @@ falls <- read_parquet(paste0(import_folder, "falls_smr.parquet")) %>%
     hscp_locality,
     age_group,
     adm = admissions,
-    adm_rate,
-    pop,
     level
   )
 
@@ -1249,9 +1256,7 @@ falls_outputs <- unscheduled_care_charts_and_text(
   populations_filtered_area,
   populations_filtered_age,
   LOCALITY,
-  other_locs$hscp_locality,
-  HSCP,
-  HB
+  localities
 )
 
 
@@ -1287,9 +1292,7 @@ readmissions_outputs <- unscheduled_care_charts_and_text(
   populations_filtered_area,
   populations_filtered_age,
   LOCALITY,
-  other_locs$hscp_locality,
-  HSCP,
-  HB
+  localities
 )
 
 # 7. Potentially Preventable Admissions ----
@@ -1298,7 +1301,6 @@ readmissions_outputs <- unscheduled_care_charts_and_text(
 ppa <- read_parquet(paste0(import_folder, "ppa_smr.parquet")) %>%
   filter(financial_year <= max_fy) %>%
   mutate(level = "Locality") %>%
-  mutate(adm_rate = round_half_up(admissions / pop * 100000)) %>%
   dplyr::select(
     financial_year,
     year,
@@ -1320,9 +1322,7 @@ ppa_outputs <- unscheduled_care_charts_and_text(
   populations_filtered_area,
   populations_filtered_age,
   LOCALITY,
-  other_locs$hscp_locality,
-  HSCP,
-  HB
+  localities
 )
 
 
@@ -1347,8 +1347,5 @@ psych_hosp_outputs <- scotpho_unscheduled_care_charts_and_text(
   "Financial Year Groups (3-year aggregates)",
   "Psychiatric Patient Hospitalisations\n(Standardised Rates Per 100,000)",
   LOCALITY,
-  other_locs$hscp_locality,
-  HSCP,
-  HB,
-  TRUE
+  localities
 )
