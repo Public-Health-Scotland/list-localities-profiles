@@ -26,7 +26,6 @@ library(flextable)
 library(officer)
 library(memoise)
 library(phsmethods)
-library(xfun)
 
 # Prefer dplyr functions if there's a conflict
 conflicted::conflict_prefer_all("dplyr", quiet = TRUE)
