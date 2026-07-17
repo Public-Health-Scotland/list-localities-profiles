@@ -212,25 +212,6 @@ populations_filtered <- populations %>%
   ) %>%
   aggregate_area_data(pop)
 
-populations_filtered_area <- populations_filtered %>%
-  filter(age_group == "Total") %>%
-  dplyr::select(-age_group)
-
-populations_filtered_age <- populations_filtered %>%
-  filter(level == "Locality") %>%
-  summarise(
-    pop = sum(pop),
-    .by = c(
-      "year",
-      "financial_year",
-      "hb2019name",
-      "hscp2019name",
-      "hscp_locality",
-      "age_group"
-    )
-  )
-
-
 ########################## SECTION 3: Functions ###############################
 
 # Functions for creating time trends
@@ -350,8 +331,7 @@ unscheduled_care_charts_and_text <- function(
   denominator_number,
   denominator_name,
   source,
-  populations_area,
-  populations_age,
+  populations_filtered,
   LOCALITY,
   locality_lookup
 ) {
@@ -365,6 +345,26 @@ unscheduled_care_charts_and_text <- function(
 
   HB <- get_associated_areas_output$HB
 
+  # 2. Get Population By Age And Area ----
+  
+  populations_filtered_area <- populations_filtered %>%
+    filter(age_group == "Total") %>%
+    dplyr::select(-age_group)
+  
+  populations_filtered_age <- populations_filtered %>%
+    filter(level == "Locality") %>%
+    summarise(
+      pop = sum(pop),
+      .by = c(
+        "year",
+        "financial_year",
+        "hb2019name",
+        "hscp2019name",
+        "hscp_locality",
+        "age_group"
+      )
+    )
+  
   min_fin_year <- dataset %>%
     filter(year == min(year)) %>%
     pull(financial_year) %>%
@@ -1075,8 +1075,7 @@ emergency_adm_outputs <- unscheduled_care_charts_and_text(
   100000,
   "population",
   "PHS SMR01",
-  populations_filtered_area,
-  populations_filtered_age,
+  populations_filtered,
   LOCALITY,
   localities
 )
@@ -1108,8 +1107,7 @@ bed_days_outputs <- unscheduled_care_charts_and_text(
   100000,
   "population",
   "PHS SMR01",
-  populations_filtered_area,
-  populations_filtered_age,
+  populations_filtered,
   LOCALITY,
   localities
 )
@@ -1143,8 +1141,7 @@ bed_days_mh_outputs <- unscheduled_care_charts_and_text(
   100000,
   "population",
   "PHS SMR04",
-  populations_filtered_area,
-  populations_filtered_age,
+  populations_filtered,
   LOCALITY,
   localities
 )
@@ -1179,8 +1176,7 @@ ae_attendances_outputs <- unscheduled_care_charts_and_text(
   100000,
   "population",
   "PHS A&E Datamart",
-  populations_filtered_area,
-  populations_filtered_age,
+  populations_filtered,
   LOCALITY,
   localities
 )
@@ -1224,8 +1220,7 @@ delayed_discharges_outputs <- unscheduled_care_charts_and_text(
   100000,
   "population aged over 65+",
   "PHS Delayed Discharges",
-  populations_filtered_area,
-  populations_filtered_age,
+  populations_filtered,
   LOCALITY,
   localities
 )
@@ -1258,8 +1253,7 @@ falls_outputs <- unscheduled_care_charts_and_text(
   100000,
   "population aged over 65+",
   "PHS SMR01",
-  populations_filtered_area,
-  populations_filtered_age,
+  populations_filtered,
   LOCALITY,
   localities
 )
@@ -1295,8 +1289,7 @@ readmissions_outputs <- unscheduled_care_charts_and_text(
   1000,
   "discharges",
   "PHS SMR01",
-  populations_filtered_area,
-  populations_filtered_age,
+  populations_filtered,
   LOCALITY,
   localities
 )
@@ -1326,8 +1319,7 @@ ppa_outputs <- unscheduled_care_charts_and_text(
   100000,
   "population",
   "PHS SMR01",
-  populations_filtered_area,
-  populations_filtered_age,
+  populations_filtered,
   LOCALITY,
   localities
 )
