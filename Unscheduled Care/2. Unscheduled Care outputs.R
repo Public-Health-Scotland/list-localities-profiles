@@ -130,6 +130,18 @@ get_associated_areas <- function(localities_lookup, LOCALITY) {
 }
 
 
+
+get_yr_from_fy <- function(vector){
+  
+  vector %>%
+    str_split(.,"/") %>%
+    lapply(.,first) %>%
+    unlist() %>%
+    as.numeric() 
+  
+}
+
+
 ## 1. Lookups ----
 
 localities <- read_in_localities()
@@ -1046,6 +1058,7 @@ emergency_adm <- read_parquet(paste0(
 )) %>%
   mutate(level = "Locality") %>%
   filter(financial_year <= max_fy) %>%
+  mutate(year=get_yr_from_fy(financial_year)) %>%
   dplyr::select(
     financial_year,
     year,
@@ -1078,6 +1091,7 @@ emergency_adm_outputs <- unscheduled_care_charts_and_text(
 bed_days <- read_parquet(paste0(import_folder, "bed_days_msg.parquet")) %>%
   filter(financial_year <= max_fy) %>%
   mutate(level = "Locality") %>%
+  mutate(year=get_yr_from_fy(financial_year)) %>%
   dplyr::select(
     financial_year,
     year,
@@ -1112,6 +1126,7 @@ bed_days_mh <- read_parquet(paste0(
 )) %>%
   mutate(level = "Locality") %>%
   filter(financial_year <= max_fy) %>%
+  mutate(year=get_yr_from_fy(financial_year)) %>%
   dplyr::select(
     financial_year,
     year,
@@ -1148,6 +1163,7 @@ ae_attendances <- read_parquet(paste0(
   filter(age_group != "NA") %>%
   mutate(level = "Locality") %>%
   filter(financial_year <= max_fy) %>%
+  mutate(year=get_yr_from_fy(financial_year)) %>%
   dplyr::select(
     financial_year,
     year,
@@ -1190,6 +1206,7 @@ delayed_disch <- read_parquet(paste0(
   ungroup() %>%
   mutate(level = "Locality") %>%
   filter(!is.na(year)) %>%
+  mutate(year=get_yr_from_fy(financial_year)) %>%
   dplyr::select(
     financial_year,
     year,
@@ -1224,6 +1241,7 @@ falls <- read_parquet(paste0(import_folder, "falls_smr.parquet")) %>%
   filter(age_group %in% c("65 - 74", "75+")) %>%
   mutate(level = "Locality") %>%
   filter(!is.na(year)) %>%
+  mutate(year=get_yr_from_fy(financial_year)) %>%
   dplyr::select(
     financial_year,
     year,
@@ -1260,6 +1278,7 @@ readmissions <- read_parquet(paste0(
   filter(financial_year <= max_fy) %>%
   mutate(level = "Locality") %>%
   filter(!is.na(year)) %>%
+  mutate(year=get_yr_from_fy(financial_year)) %>%
   dplyr::select(
     financial_year,
     year,
@@ -1291,6 +1310,7 @@ readmissions_outputs <- unscheduled_care_charts_and_text(
 ppa <- read_parquet(paste0(import_folder, "ppa_smr.parquet")) %>%
   filter(financial_year <= max_fy) %>%
   mutate(level = "Locality") %>%
+  mutate(year=get_yr_from_fy(financial_year)) %>%
   dplyr::select(
     financial_year,
     year,
