@@ -167,7 +167,7 @@ figure_num <- figure_num + 1
 
 Information on the conditions included in Potentially Preventable Admissions (PPA)s is available in Appendix 3. In `r ppa_outputs$max_fin_year`, **`r ppa_outputs$over_65_perc`%** of PPAs in `r LOCALITY` were amongst those aged 65 and over, and **`r ppa_outputs$under_65_perc`%** were amongst those aged under 65.
 
-Figure `r figure_num` presents the PPA rate per 100,000 population in the `r LOCALITY` locality from `r ppa_outputs$min_fin_yea` to `r ppa_outputs$max_fin_yea`. `r ppa_outputs$area_text`
+Figure `r figure_num` presents the PPA rate per 100,000 population in the `r LOCALITY` locality from `r ppa_outputs$min_fin_year` to `r ppa_outputs$max_fin_year`. `r ppa_outputs$area_text`
 
 ```{r fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing seven-year time trends for potentially preventable admissions per 100,000 population split by geographical area."}
 ftext(paste0("Figure ", figure_num, ": Potentially Preventable Admissions (PPAs) by geographical area"), table_heading_style)
