@@ -344,8 +344,7 @@ unscheduled_care_charts_and_text <- function(
   LOCALITY,
   other_locs,
   HSCP,
-  HB,
-  sdc_applied
+  HB
 ) {
   min_fin_year <- dataset %>%
     filter(year == min(year)) %>%
@@ -829,8 +828,7 @@ scotpho_unscheduled_care_charts_and_text <- function(
   LOCALITY,
   other_locs,
   HSCP,
-  HB,
-  sdc_applied
+  HB
 ) {
   min_period <- dataset %>%
     filter(year == max(min(year), max(year) - 10)) %>%
