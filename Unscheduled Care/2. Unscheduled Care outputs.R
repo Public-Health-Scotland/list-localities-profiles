@@ -35,77 +35,67 @@ max_year <- 2024
 
 ########################## SECTION 2: Lookups & Populations ###############################
 
+
 aggregate_area_data <- function(data, measure) {
+  
   data %>%
-
-    # Group Up To Locality Level + Combine Sexes ----
-
+    
     summarise(
       {{ measure }} := sum({{ measure }}),
       .by = c(
-        "year",
-        "financial_year",
-        "hb2019name",
-        "hscp2019name",
-        "hscp_locality",
+        "year", "financial_year",
+        "hb2019name", "hscp2019name", "hscp_locality",
         "age_group"
       )
     ) %>%
     mutate(location = hscp_locality) %>%
     mutate(level = "Locality") %>%
-
+    
     bind_rows(
       summarise(
         filter(., level == "Locality"),
         {{ measure }} := sum({{ measure }}),
         .by = c(
-          "year",
-          "financial_year",
-          "hb2019name",
-          "hscp2019name",
+          "year", "financial_year",
+          "hb2019name", "hscp2019name",
           "age_group"
         )
       ) %>%
         mutate(location = hscp2019name) %>%
         mutate(level = "HSCP")
     ) %>%
-
+    
     bind_rows(
       summarise(
         filter(., level == "Locality"),
         {{ measure }} := sum({{ measure }}),
-        .by = c("year", "financial_year", "hb2019name", "age_group")
+        .by = c("year", "financial_year", 
+                "hb2019name", 
+                "age_group")
       ) %>%
         mutate(location = hb2019name) %>%
         mutate(level = "HB")
     ) %>%
-
+    
     bind_rows(
       summarise(
         filter(., level == "Locality"),
         {{ measure }} := sum({{ measure }}),
-        .by = c("year", "financial_year", "age_group")
+        .by = c("year", "financial_year", 
+                "age_group")
       ) %>%
         mutate(location = "Scotland") %>%
         mutate(level = "Scotland")
     ) %>%
     dplyr::select(
-      year,
-      financial_year,
-      hb2019name,
-      hscp2019name,
-      hscp_locality,
+      year, financial_year,
+      hb2019name, hscp2019name, hscp_locality,
       age_group,
       location,
       level,
       {{ measure }}
     ) %>%
-    mutate(
-      level = factor(
-        level,
-        levels = c("Locality", "HSCP", "HB", "Scotland")
-      )
-    )
+    mutate(level = factor(level, levels = c("Locality", "HSCP", "HB", "Scotland")))
 }
 
 
