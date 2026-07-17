@@ -245,6 +245,20 @@ usc_values <- tibble(
       format_for_summary_table(delayed_discharges_outputs$current_all_areas),
       format_for_summary_table(ppa_outputs$current_all_areas)
     )
+  ) %>%
+  
+  dplyr::select(
+    
+    Section,
+    Indicator,
+    Datatype,
+    `Time Period`,
+    all_of(
+      c(paste(LOCALITY,"Locality"),
+        paste(other_locs$hscp_locality,"Locality"),
+        paste(HSCP,"HSCP"),
+        "Scotland")
+    )
   )
 
 colnames(usc_values) <- c("Section", "Indicator", headings)
@@ -261,8 +275,23 @@ usc_mh_values <- tibble(
 ) %>%
   bind_cols(
     bind_rows(
-      scotpho_format_for_summary_table(psych_hosp_outputs$current_all_areas),
-      format_for_summary_table(bed_days_mh_outputs$current_all_areas)
+      format_for_summary_table(bed_days_mh_outputs$current_all_areas),
+      scotpho_format_for_summary_table(psych_hosp_outputs$current_all_areas)
+      
+    )
+  ) %>%
+  
+  dplyr::select(
+    
+    Section,
+    Indicator,
+    Datatype,
+    `Time Period`,
+    all_of(
+      c(paste(LOCALITY,"Locality"),
+        paste(other_locs$hscp_locality,"Locality"),
+        paste(HSCP,"HSCP"),
+        "Scotland")
     )
   )
 
