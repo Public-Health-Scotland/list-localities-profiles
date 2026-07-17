@@ -815,26 +815,53 @@ scotpho_unscheduled_care_charts_and_text <- function(
   LOCALITY,
   locality_lookup
 ) {
+  
+  # 1. Get HB, HSCP and Other Localities In Same HSCP From Locality Lookup For Requested Locality ----
+  
+  get_associated_areas_output <- get_associated_areas(locality_lookup,LOCALITY)
+  
+  other_locs <- get_associated_areas_output$other_locs
+  
+  HSCP <- get_associated_areas_output$HSCP
+  
+  HB <- get_associated_areas_output$HB
+  
+  # 2. Pull Minimum And Maximum Period In Data ----
+  
   min_period <- dataset %>%
-    filter(year == max(min(year), max(year) - 10)) %>%
+    filter(year == max(min(year), max(year) - 10)) %>% # Minimum for charts is 10 years before max date
     pull(period) %>%
     unique()
-
+  
   max_period <- dataset %>%
     filter(year == max(year)) %>%
     pull(period) %>%
     unique()
-
+  
   min_period_for_text <- min_period %>%
     gsub(" financial years; 3-year aggregates", "", .) %>%
     gsub("to", "-", .)
-
+  
   max_period_for_text <- max_period %>%
     gsub(" financial years; 3-year aggregates", "", .) %>%
     gsub("to", "-", .)
-
+  
+  # 3. Plot Indicator Over Time ----
+  
+  indicator_time_trend <- dataset %>%
+    scotpho_time_trend(
+      data = .,
+      chart_title = paste(indicator_name, "Time Trend"),
+      xaxis_title = xaxis_title,
+      yaxis_title = yaxis_title,
+      string_wrap = 10,
+      rotate_xaxis = TRUE
+    )
+  
+  # 4. Write sentence which gives indicator intro ----
+  
   aggregate_3_year_indicator <- grepl("3-year aggregates", max_period)
-
+  
   indicator_intro <- paste0(
     "the ",
     str_to_lower(indicator_name),
@@ -854,18 +881,9 @@ scotpho_unscheduled_care_charts_and_text <- function(
     max_period_for_text,
     "."
   )
-
-  ## Time trend
-  indicator_time_trend <- dataset %>%
-    scotpho_time_trend(
-      data = .,
-      chart_title = paste(indicator_name, "Time Trend"),
-      xaxis_title = xaxis_title,
-      yaxis_title = yaxis_title,
-      string_wrap = 10,
-      rotate_xaxis = TRUE
-    )
-
+  
+  # 5. ----
+  
   percentage_change_data <- dataset %>%
     filter(area_name %in% c("Scotland", HB, HSCP, LOCALITY)) %>%
     filter(period %in% c(min_period, max_period)) %>%
@@ -874,119 +892,79 @@ scotpho_unscheduled_care_charts_and_text <- function(
     mutate(rate_change = !!sym(max_period) - !!sym(min_period)) %>%
     mutate(perc_change = 100 * (abs(rate_change) / !!sym(min_period))) %>%
     mutate(perc_change = round_half_up(perc_change, digits = 1)) %>%
-
+    
     mutate(
-      text = case_when(
-        area_type == "Locality" ~ paste0(
-          "the ",
-          case_when(
-            aggregate_3_year_indicator ~ "3-year aggregate ",
-            TRUE ~ ""
-          ),
-          str_to_lower(indicator_name),
-          " rate per ",
-          paste0(
-            format(denominator_number, big.mark = ",", scientific = FALSE),
-            " "
-          ),
-          paste0(denominator_name, " "),
-          "in the ",
-          area_name,
-          " ",
-          area_type,
-          " for ",
-          max_period_for_text,
-          " is ",
-          format(!!sym(max_period), big.mark = ","),
-          ", ",
-          get_article(perc_change),
-          " ",
-          perc_change,
-          "% ",
-          word_change_calc(!!sym(max_period), !!sym(min_period)),
-          " since ",
-          min_period_for_text
+      text = paste0(
+        
+        "the ",
+        
+        if_else(area_type == "Locality",
+                
+                paste0(
+                  
+                  if_else(aggregate_3_year_indicator,"3-year aggregate ",""),
+                  
+                  str_to_lower(indicator_name),
+                  
+                  " rate per ",
+                  
+                  format(denominator_number, big.mark = ",", scientific = FALSE),
+                  
+                  " population in the ",
+                  
+                  area_name,
+                  
+                  " ",
+                  
+                  area_type,
+                  
+                  " for ",
+                  
+                  max_period_for_text
+                  
+                ),
+                
+                paste0(
+                  
+                  
+                  if_else(area_type == "Health board","The ","the "),
+                  
+                  if_else(area_type == "Scotland",area_name,paste0(area_name," ",area_type)),
+                  
+                  " ",
+                  
+                  if_else(aggregate_3_year_indicator,"3-year aggregate ",""),
+                  
+                  " rate ",
+                )
+                
         ),
-
-        area_type %in% c("HSCP") ~ paste0(
-          "the ",
-          area_name,
-          " ",
-          area_type,
-          " rate is ",
-          format(!!sym(max_period), big.mark = ","),
-          ", ",
-          get_article(perc_change),
-          " ",
-          perc_change,
-          "% ",
-          word_change_calc(!!sym(max_period), !!sym(min_period)),
-          " since ",
-          min_period_for_text
-        ),
-
-        area_type %in% c("Health board") ~ paste0(
-          "For the ",
-          area_name,
-          " ",
-          area_type,
-          " the 3-year aggregate rate for ",
-          max_period_for_text,
-          " is ",
-          format(!!sym(max_period), big.mark = ","),
-          ", ",
-          get_article(perc_change),
-          " ",
-          perc_change,
-          "% ",
-          word_change_calc(!!sym(max_period), !!sym(min_period)),
-          " since ",
-          min_period_for_text
-        ),
-
-        area_type == "Scotland" ~ paste0(
-          "the ",
-          area_name,
-          " ",
-          case_when(
-            aggregate_3_year_indicator ~ "3-year aggregate ",
-            TRUE ~ ""
-          ),
-          "rate is ",
-          format(!!sym(max_period), big.mark = ","),
-          ", ",
-          get_article(perc_change),
-          " ",
-          perc_change,
-          "% ",
-          word_change_calc(!!sym(max_period), !!sym(min_period)),
-          " since ",
-          min_period_for_text
-        )
+        
+        " is ",
+        
+        format(!!sym(max_period), big.mark = ","),
+        
+        ", ",
+        
+        get_article(perc_change),
+        
+        " ",
+        
+        perc_change,
+        
+        "% ",
+        
+        word_change_calc(!!sym(max_period), !!sym(min_period)),
+        
+        " since ",
+        
+        min_period_for_text
+        
       )
+      
     )
-
-  current_locality_rate_area <- dataset %>%
-    filter(period == max_period) %>%
-    filter(area_type == "Locality" & area_name == LOCALITY) %>%
-    pull(measure)
-
-  current_scotland_rate_area <- dataset %>%
-    filter(period == max_period) %>%
-    filter(area_type == "Scotland") %>%
-    pull(measure)
-
-  current_all_areas <- dataset %>%
-    filter(
-      area_type == "Locality" &
-        area_name == LOCALITY |
-        area_type == "Locality" & area_name %in% other_locs |
-        area_type == "HSCP" & area_name == HSCP |
-        area_type == "Health board" & area_name == HB |
-        area_type == "Scotland"
-    ) %>%
-    filter(period == max_period)
-
+  
+  
   indicator_paragraph <- paste0(
     filter(percentage_change_data, area_type == "Locality")$text,
     " and ",
@@ -997,17 +975,47 @@ scotpho_unscheduled_care_charts_and_text <- function(
     filter(percentage_change_data, area_type == "Scotland")$text,
     "."
   )
-
+  
+  
+  # 6. ----
+  
+  current_locality_rate_area <- dataset %>%
+    filter(period == max_period) %>%
+    filter(area_type == "Locality" & area_name == LOCALITY) %>%
+    pull(measure)
+  
+  current_scotland_rate_area <- dataset %>%
+    filter(period == max_period) %>%
+    filter(area_type == "Scotland") %>%
+    pull(measure)
+  
+  current_all_areas <- dataset %>%
+    filter(period == max_period) %>%
+    filter(
+      area_type == "Locality" & area_name == LOCALITY |
+        area_type == "Locality" & area_name %in% other_locs |
+        area_type == "HSCP" & area_name == HSCP |
+        area_type == "Health board" & area_name == HB |
+        area_type == "Scotland"
+    ) 
+  
+  
+  # 7. Return outputs in a list ----
+  
   return(
+    
     list(
+      
       current_locality_rate_area = current_locality_rate_area,
       current_scotland_rate_area = current_scotland_rate_area,
       current_all_areas = current_all_areas,
-
+      
       intro_paragraph = indicator_intro,
       indicator_ts = indicator_time_trend,
       indicator_paragraph = indicator_paragraph
+      
     )
+    
   )
 }
 
