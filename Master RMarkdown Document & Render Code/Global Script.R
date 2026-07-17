@@ -75,21 +75,18 @@ format_number_for_text <- function(x) {
 # To be used for "a xx increase" which could be "an xx increase"
 
 get_article <- function(number) {
-  
   number_chr <- as.character(number)
-  
+
   number_in_words <- xfun::n2w(number)
-  
+
   case_when(
-    
     identical(number_chr, character(0)) ~ "-",
-    
-    startsWith(number_in_words,"one ") ~ "a",
-    
-    substr(number_in_words,1,1) %in% c("a","e","i","o","u") ~ "an", 
-    
+
+    startsWith(number_in_words, "one ") ~ "a",
+
+    substr(number_in_words, 1, 1) %in% c("a", "e", "i", "o", "u") ~ "an",
+
     TRUE ~ "a"
-    
   ) %>%
     return()
 }
