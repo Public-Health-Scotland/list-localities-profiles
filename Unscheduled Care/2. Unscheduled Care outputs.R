@@ -400,7 +400,9 @@ unscheduled_care_charts_and_text <- function(
         "level"
       )
     ) %>%
-    mutate(rate = round_half_up(denominator_number * ({{ indicator_column }} / pop))) %>%
+    mutate(
+      rate = round_half_up(denominator_number * ({{ indicator_column }} / pop))
+    ) %>%
     dplyr::select(
       financial_year,
       year,
@@ -616,7 +618,9 @@ unscheduled_care_charts_and_text <- function(
         "age_group"
       )
     ) %>%
-    mutate(rate = round_half_up(denominator_number * ({{ indicator_column }} / pop))) %>%
+    mutate(
+      rate = round_half_up(denominator_number * ({{ indicator_column }} / pop))
+    ) %>%
     dplyr::select(
       financial_year,
       year,
