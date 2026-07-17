@@ -323,7 +323,8 @@ unscheduled_care_charts_and_text <- function(
   LOCALITY,
   locality_lookup
 ) {
-  # 1. Get Associated Areas
+  
+  # 1. Get Associated Areas ----
 
   get_associated_areas_output <- get_associated_areas(locality_lookup, LOCALITY)
 
@@ -445,6 +446,8 @@ unscheduled_care_charts_and_text <- function(
       source = paste("Source:", source)
     )
 
+  # 7. Get Paragraph To Go Before Time Series Chart Detailing Percentage Changes ----
+  
   percentage_change_areas <- indicator_areas %>%
     filter(financial_year %in% c(min_fin_year, max_fin_year)) %>%
     dplyr::select(
@@ -454,6 +457,7 @@ unscheduled_care_charts_and_text <- function(
       hscp_locality,
       location,
       level,
+      pop,
       rate
     ) %>%
     pivot_wider(names_from = financial_year, values_from = rate) %>%
@@ -461,89 +465,57 @@ unscheduled_care_charts_and_text <- function(
     mutate(perc_change = 100 * (abs(rate_change) / !!sym(min_fin_year))) %>%
     mutate(perc_change = round_half_up(perc_change, digits = 1)) %>%
     filter(
-      level == "Locality" &
-        location %in% c(LOCALITY, other_locs) |
+      level == "Locality" & location == LOCALITY |
         level == "HSCP" & location == HSCP |
         level == "HB" & location == HB |
         level == "Scotland"
     ) %>%
-
+    
     mutate(
-      text = case_when(
-        level == "Locality" ~ paste0(
-          "the ",
-          str_to_lower(indicator_name),
-          " rate ",
-          if_else(
-            denominator_number != 100000 | denominator_name != "population",
-            paste0(
-              "per ",
-              format(denominator_number, big.mark = ",", scientific = FALSE),
-              " "
-            ),
-            ""
-          ),
-          if_else(
-            denominator_number != 100000 | denominator_name != "population",
-            paste0(denominator_name, " "),
-            ""
-          ),
-          "in the ",
-          location,
-          " ",
-          level,
-          " for ",
-          max_fin_year,
-          " is ",
-          format(!!sym(max_fin_year), big.mark = ","),
-          ", ",
-          get_article(perc_change),
-          " ",
-          perc_change,
-          "% ",
-          word_change_calc(!!sym(max_fin_year), !!sym(min_fin_year)),
-          " since ",
-          min_fin_year
-        ),
-
-        level %in% c("HSCP", "HB") ~ paste0(
-          "The ",
-          location,
-          " ",
-          level,
-          " rate is ",
-          format(!!sym(max_fin_year), big.mark = ","),
-          ", ",
-          get_article(perc_change),
-          " ",
-          perc_change,
-          "% ",
-          word_change_calc(!!sym(max_fin_year), !!sym(min_fin_year)),
-          " since ",
-          min_fin_year
-        ),
-
-        level == "Scotland" ~ paste0(
-          "the ",
-          location,
-          " rate is ",
-          format(!!sym(max_fin_year), big.mark = ","),
-          ", ",
-          get_article(perc_change),
-          " ",
-          perc_change,
-          "% ",
-          word_change_calc(!!sym(max_fin_year), !!sym(min_fin_year)),
-          " since ",
-          min_fin_year
-        ),
-
-        TRUE ~ NA
-      )
-    ) %>%
-    filter(
-      (level == "Locality" & location == LOCALITY) |
-        level %in% c("HSCP", "HB", "Scotland")
+      text = 
+        if_else(level %in% c("Locality","Scotland"),"the ","The "),
+      
+      if_else(level %in% c("Locality"), 
+              
+              paste0(
+                str_to_lower(indicator_name),
+                " rate ",
+                if_else(
+                  denominator_number != 100000 | denominator_name != "population",
+                  paste0(
+                    "per ",
+                    format(denominator_number, big.mark = ",", scientific = FALSE),
+                    " ",
+                    paste0(denominator_name, " ")), ""
+                  ),
+                " in the ",
+                location,
+                " ",
+                level,
+                " for ",
+                max_fin_year
+              ),
+              
+              
+              paste0(
+                location,
+                " ",
+                level,
+                " rate"
+              )
+              
+      ),
+      
+      " is ",
+      format(!!sym(max_fin_year), big.mark = ","),
+      ", ",
+      get_article(perc_change),
+      " ",
+      perc_change,
+      "% ",
+      word_change_calc(!!sym(max_fin_year), !!sym(min_fin_year)),
+      " since ",
+      min_fin_year
     )
 
   indicator_paragraph_area <- paste0(
@@ -555,10 +527,10 @@ unscheduled_care_charts_and_text <- function(
     " and ",
     filter(percentage_change_areas, level == "Scotland")$text,
     "."
-  )
+  ) %>%
+    gsub("a & e", "A & E", .)
 
-  indicator_paragraph_area <- gsub("a & e", "A & E", indicator_paragraph_area)
-
+  
   if (indicator_name == "Potentially Preventable Admissions (PPA)") {
     indicator_paragraph_area <- paste0(
       toupper(substring(indicator_paragraph_area, 1, 1)),
@@ -699,7 +671,7 @@ unscheduled_care_charts_and_text <- function(
       pull(perc)
   }
 
-  # 14. Get Data Related To Indicator At Under and Over 65s For PPA Data ----
+  # 13. Get Data Related To Indicator At Under and Over 65s For PPA Data ----
 
   indicator_age_ts <- indicator_age %>%
     age_group_trend_usc(
@@ -713,7 +685,9 @@ unscheduled_care_charts_and_text <- function(
       source = paste("Source:", source)
     )
 
-  percentage_change_age <- indicator_age %>%
+  # 14. Get Paragraph To Go Before Time Series Chart Detailing Percentage Changes ----
+  
+  percentage_change_age <-  indicator_age %>%
     filter(financial_year %in% c(min_fin_year, max_fin_year)) %>%
     dplyr::select(
       financial_year,
@@ -722,13 +696,14 @@ unscheduled_care_charts_and_text <- function(
       hscp_locality,
       level,
       age_group,
+      pop,
       rate
     ) %>%
     pivot_wider(names_from = financial_year, values_from = rate) %>%
     mutate(rate_change = !!sym(max_fin_year) - !!sym(min_fin_year)) %>%
     mutate(perc_change = 100 * (abs(rate_change) / !!sym(min_fin_year))) %>%
     mutate(perc_change = round_half_up(perc_change, digits = 1)) %>%
-
+    
     mutate(
       rate_ranking = case_when(
         !!sym(max_fin_year) == max(!!sym(max_fin_year)) ~ "Highest",
@@ -736,79 +711,76 @@ unscheduled_care_charts_and_text <- function(
         TRUE ~ "Other"
       )
     ) %>%
-
     mutate(
-      text = case_when(
-        rate_ranking == "Highest" ~ paste0(
-          "the highest ",
-          str_to_lower(indicator_name),
-          " rate for the ",
-          hscp_locality,
-          " locality in ",
-          max_fin_year,
-          " is ",
-          format(!!sym(max_fin_year), big.mark = ","),
-          " ",
-          if_else(
-            denominator_number != 100000 | denominator_name != "population",
-            paste0(
-              "per ",
-              format(denominator_number, big.mark = ",", scientific = FALSE),
-              " "
-            ),
-            ""
+      text = paste0(
+        
+        if_else(rate_ranking == "Highest",
+                "the highest ",
+                "The lowest "),
+        
+        str_to_lower(indicator_name),
+        
+        " rate for the ",
+        
+        hscp_locality,
+        
+        " locality in ",
+        
+        max_fin_year,
+        
+        " is ",
+        
+        format(!!sym(max_fin_year), big.mark = ","),
+        
+        " ",
+        if_else(
+          denominator_number != 100000 | denominator_name != "population",
+          paste0(
+            "per ",
+            format(denominator_number, big.mark = ",", scientific = FALSE),
+            " "
           ),
-          if_else(
-            denominator_number != 100000 | denominator_name != "population",
-            paste0(denominator_name, " "),
-            ""
-          ),
-          "for the ",
-          age_group,
-          " age group with ",
-          get_article(perc_change),
-          " percentage ",
-          word_change_calc(!!sym(max_fin_year), !!sym(min_fin_year)),
-          " of ",
-          perc_change,
-          "% since ",
-          min_fin_year
+          ""
         ),
-
-        rate_ranking == "Lowest" ~ paste0(
-          "The lowest ",
-          str_to_lower(indicator_name),
-          " rate for ",
-          hscp_locality,
-          " in ",
-          max_fin_year,
-          " is ",
-          format(!!sym(max_fin_year), big.mark = ","),
-          " per 100,000 population for the ",
-          age_group,
-          " age group with ",
-          get_article(perc_change),
-          " percentage ",
-          word_change_calc(!!sym(max_fin_year), !!sym(min_fin_year)),
-          " of ",
-          perc_change,
-          "% since ",
-          min_fin_year
+        if_else(
+          denominator_number != 100000 | denominator_name != "population",
+          paste0(denominator_name, " "),
+          ""
         ),
-
-        TRUE ~ NA
+        
+        "for the ",
+        
+        age_group,
+        
+        " age group with ",
+        
+        get_article(perc_change),
+        
+        " percentage ",
+        
+        word_change_calc(!!sym(max_fin_year), !!sym(min_fin_year)),
+        
+        " of ",
+        
+        perc_change,
+        
+        "% since ",
+        
+        min_fin_year
+        
       )
     )
-
+  
   indicator_paragraph_age <- paste0(
     filter(percentage_change_age, rate_ranking == "Highest")$text,
     ". ",
     filter(percentage_change_age, rate_ranking == "Lowest")$text,
     "."
-  )
-
-  indicator_paragraph_age <- gsub("a & e", "A & E", indicator_paragraph_age)
-
+  ) %>%
+    gsub("a & e", "A & E", .)
+  
+  # 15. Create Output list for all relevant charts, stats and paragraphs ----
+ 
   output_list <- list(
     min_fin_year = min_fin_year,
     max_fin_year = max_fin_year,
