@@ -36,14 +36,13 @@ max_year <- 2024
 ########################## SECTION 2: Lookups & Populations ###############################
 
 aggregate_area_data <- function(data, measure) {
-  
   data %>%
 
     summarise(
       across(
-        .cols = any_of(c(measure,"pop")),  
-        .fns = ~sum(.x, na.rm = TRUE),  
-        .names = "{.col}" 
+        .cols = any_of(c(measure, "pop")),
+        .fns = ~ sum(.x, na.rm = TRUE),
+        .names = "{.col}"
       ),
       .by = c(
         "year",
@@ -61,9 +60,9 @@ aggregate_area_data <- function(data, measure) {
       summarise(
         filter(., level == "Locality"),
         across(
-          .cols = any_of(c(measure,"pop")), 
-          .fns = ~sum(.x, na.rm = TRUE), 
-          .names = "{.col}" 
+          .cols = any_of(c(measure, "pop")),
+          .fns = ~ sum(.x, na.rm = TRUE),
+          .names = "{.col}"
         ),
         .by = c(
           "year",
@@ -81,9 +80,9 @@ aggregate_area_data <- function(data, measure) {
       summarise(
         filter(., level == "Locality"),
         across(
-          .cols = any_of(c(measure,"pop")),
-          .fns = ~sum(.x, na.rm = TRUE),  
-          .names = "{.col}" 
+          .cols = any_of(c(measure, "pop")),
+          .fns = ~ sum(.x, na.rm = TRUE),
+          .names = "{.col}"
         ),
         .by = c("year", "financial_year", "hb2019name", "age_group")
       ) %>%
@@ -95,9 +94,9 @@ aggregate_area_data <- function(data, measure) {
       summarise(
         filter(., level == "Locality"),
         across(
-          .cols = any_of(c(measure,"pop")),  
-          .fns = ~sum(.x, na.rm = TRUE),  
-          .names = "{.col}" 
+          .cols = any_of(c(measure, "pop")),
+          .fns = ~ sum(.x, na.rm = TRUE),
+          .names = "{.col}"
         ),
         .by = c("year", "financial_year", "age_group")
       ) %>%
@@ -652,10 +651,17 @@ unscheduled_care_charts_and_text <- function(
       measure = "rate",
       plot_title = paste(
         indicator_name,
-        "per", format(denominator_number,big.mark=",") ,"over time by age group\n for",
+        "per",
+        format(denominator_number, big.mark = ","),
+        "over time by age group\n for",
         LOCALITY
       ),
-      yaxis_title = paste(indicator_name, "rate\n per",format(denominator_number,big.mark=","),"population"),
+      yaxis_title = paste(
+        indicator_name,
+        "rate\n per",
+        format(denominator_number, big.mark = ","),
+        "population"
+      ),
       source = paste("Source:", source)
     )
 
@@ -997,7 +1003,18 @@ emergency_adm <- read_parquet(paste0(
   mutate(level = "Locality") %>%
   filter(financial_year <= max_fy) %>%
   mutate(year = get_yr_from_fy(financial_year)) %>%
-  left_join(populations_filtered,by=c("financial_year","year","hscp2019name","hscp_locality","age_group","level"),relationship="one-to-one") %>%
+  left_join(
+    populations_filtered,
+    by = c(
+      "financial_year",
+      "year",
+      "hscp2019name",
+      "hscp_locality",
+      "age_group",
+      "level"
+    ),
+    relationship = "one-to-one"
+  ) %>%
   aggregate_area_data("admissions") %>%
   dplyr::select(
     financial_year,
@@ -1032,7 +1049,18 @@ bed_days <- read_parquet(paste0(import_folder, "bed_days_msg.parquet")) %>%
   filter(financial_year <= max_fy) %>%
   mutate(level = "Locality") %>%
   mutate(year = get_yr_from_fy(financial_year)) %>%
-  left_join(populations_filtered,by=c("financial_year","year","hscp2019name","hscp_locality","age_group","level"),relationship="one-to-one") %>%
+  left_join(
+    populations_filtered,
+    by = c(
+      "financial_year",
+      "year",
+      "hscp2019name",
+      "hscp_locality",
+      "age_group",
+      "level"
+    ),
+    relationship = "one-to-one"
+  ) %>%
   aggregate_area_data("bed_days") %>%
   dplyr::select(
     financial_year,
@@ -1070,7 +1098,18 @@ bed_days_mh <- read_parquet(paste0(
   mutate(level = "Locality") %>%
   filter(financial_year <= max_fy) %>%
   mutate(year = get_yr_from_fy(financial_year)) %>%
-  left_join(populations_filtered,by=c("financial_year","year","hscp2019name","hscp_locality","age_group","level"),relationship="one-to-one") %>%
+  left_join(
+    populations_filtered,
+    by = c(
+      "financial_year",
+      "year",
+      "hscp2019name",
+      "hscp_locality",
+      "age_group",
+      "level"
+    ),
+    relationship = "one-to-one"
+  ) %>%
   aggregate_area_data("bed_days") %>%
   dplyr::select(
     financial_year,
@@ -1110,7 +1149,18 @@ ae_attendances <- read_parquet(paste0(
   mutate(level = "Locality") %>%
   filter(financial_year <= max_fy) %>%
   mutate(year = get_yr_from_fy(financial_year)) %>%
-  left_join(populations_filtered,by=c("financial_year","year","hscp2019name","hscp_locality","age_group","level"),relationship="one-to-one") %>%
+  left_join(
+    populations_filtered,
+    by = c(
+      "financial_year",
+      "year",
+      "hscp2019name",
+      "hscp_locality",
+      "age_group",
+      "level"
+    ),
+    relationship = "one-to-one"
+  ) %>%
   aggregate_area_data("attendances") %>%
   dplyr::select(
     financial_year,
@@ -1156,8 +1206,19 @@ delayed_disch <- read_parquet(paste0(
   mutate(level = "Locality") %>%
   mutate(year = get_yr_from_fy(financial_year)) %>%
   filter(!is.na(year)) %>%
-  left_join(populations_filtered,by=c("financial_year","year","hscp2019name","hscp_locality","age_group","level"),relationship="one-to-one") %>%
-  aggregate_area_data(c("dd_people","dd_bed_days")) %>%
+  left_join(
+    populations_filtered,
+    by = c(
+      "financial_year",
+      "year",
+      "hscp2019name",
+      "hscp_locality",
+      "age_group",
+      "level"
+    ),
+    relationship = "one-to-one"
+  ) %>%
+  aggregate_area_data(c("dd_people", "dd_bed_days")) %>%
   dplyr::select(
     financial_year,
     year,
@@ -1192,7 +1253,18 @@ falls <- read_parquet(paste0(import_folder, "falls_smr.parquet")) %>%
   mutate(level = "Locality") %>%
   mutate(year = get_yr_from_fy(financial_year)) %>%
   filter(!is.na(year)) %>%
-  left_join(populations_filtered,by=c("financial_year","year","hscp2019name","hscp_locality","age_group","level"),relationship="one-to-one") %>%
+  left_join(
+    populations_filtered,
+    by = c(
+      "financial_year",
+      "year",
+      "hscp2019name",
+      "hscp_locality",
+      "age_group",
+      "level"
+    ),
+    relationship = "one-to-one"
+  ) %>%
   aggregate_area_data(c("admissions")) %>%
   dplyr::select(
     financial_year,
@@ -1232,8 +1304,19 @@ readmissions <- read_parquet(paste0(
   mutate(level = "Locality") %>%
   mutate(year = get_yr_from_fy(financial_year)) %>%
   filter(!is.na(year)) %>%
-  left_join(populations_filtered,by=c("financial_year","year","hscp2019name","hscp_locality","age_group","level"),relationship="one-to-one") %>%
-  aggregate_area_data(c("discharges","read_28")) %>%
+  left_join(
+    populations_filtered,
+    by = c(
+      "financial_year",
+      "year",
+      "hscp2019name",
+      "hscp_locality",
+      "age_group",
+      "level"
+    ),
+    relationship = "one-to-one"
+  ) %>%
+  aggregate_area_data(c("discharges", "read_28")) %>%
   dplyr::select(
     financial_year,
     year,
@@ -1267,7 +1350,18 @@ ppa <- read_parquet(paste0(import_folder, "ppa_smr.parquet")) %>%
   filter(financial_year <= max_fy) %>%
   mutate(level = "Locality") %>%
   mutate(year = get_yr_from_fy(financial_year)) %>%
-  left_join(populations_filtered,by=c("financial_year","year","hscp2019name","hscp_locality","age_group","level"),relationship="one-to-one") %>%
+  left_join(
+    populations_filtered,
+    by = c(
+      "financial_year",
+      "year",
+      "hscp2019name",
+      "hscp_locality",
+      "age_group",
+      "level"
+    ),
+    relationship = "one-to-one"
+  ) %>%
   aggregate_area_data(c("admissions")) %>%
   dplyr::select(
     financial_year,
