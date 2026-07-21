@@ -378,9 +378,8 @@ unscheduled_care_charts_and_text <- function(
     " to ",
     max_fin_year,
     "."
-  )
-
-  intro_paragraph_area <- gsub("a & e", "A & E", intro_paragraph_area)
+  ) %>%
+    gsub("a & e", "A & E", .)
 
   # 5. Get Data Related To Indicator At Area Level ----
 
@@ -442,7 +441,6 @@ unscheduled_care_charts_and_text <- function(
       hscp_locality,
       location,
       level,
-      pop,
       rate
     ) %>%
     pivot_wider(names_from = financial_year, values_from = rate) %>%
@@ -678,7 +676,6 @@ unscheduled_care_charts_and_text <- function(
       hscp_locality,
       level,
       age_group,
-      pop,
       rate
     ) %>%
     pivot_wider(names_from = financial_year, values_from = rate) %>%
