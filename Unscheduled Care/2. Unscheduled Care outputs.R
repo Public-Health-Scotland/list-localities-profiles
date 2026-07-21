@@ -458,51 +458,56 @@ unscheduled_care_charts_and_text <- function(
     ) %>%
 
     mutate(
-      text = if_else(level %in% c("Locality", "Scotland"), "the ", "The "),
-
-      if_else(
-        level %in% c("Locality"),
-
-        paste0(
-          str_to_lower(indicator_name),
-          " rate ",
-          if_else(
-            denominator_number != 100000 | denominator_name != "population",
-            paste0(
-              "per ",
-              format(denominator_number, big.mark = ",", scientific = FALSE),
-              " ",
-              paste0(denominator_name, " ")
+      text = paste0(
+        
+        if_else(level %in% c("Locality", "Scotland"), "the ", "The "),
+        
+        if_else(
+          level %in% c("Locality"),
+          
+          paste0(
+            str_to_lower(indicator_name),
+            " rate ",
+            if_else(
+              denominator_number != 100000 | denominator_name != "population",
+              paste0(
+                "per ",
+                format(denominator_number, big.mark = ",", scientific = FALSE),
+                " ",
+                paste0(denominator_name, " ")
+              ),
+              ""
             ),
-            ""
+            " in the ",
+            location,
+            " ",
+            level,
+            " for ",
+            max_fin_year
           ),
-          " in the ",
-          location,
-          " ",
-          level,
-          " for ",
-          max_fin_year
+          
+          paste0(
+            location,
+            " ",
+            level,
+            " rate"
+          )
         ),
+        
+        " is ",
+        format(!!sym(max_fin_year), big.mark = ","),
+        ", ",
+        get_article(perc_change),
+        " ",
+        perc_change,
+        "% ",
+        word_change_calc(!!sym(max_fin_year), !!sym(min_fin_year)),
+        " since ",
+        min_fin_year
+      )  
+        
 
-        paste0(
-          location,
-          " ",
-          level,
-          " rate"
-        )
-      ),
-
-      " is ",
-      format(!!sym(max_fin_year), big.mark = ","),
-      ", ",
-      get_article(perc_change),
-      " ",
-      perc_change,
-      "% ",
-      word_change_calc(!!sym(max_fin_year), !!sym(min_fin_year)),
-      " since ",
-      min_fin_year
-    )
+      )
 
   indicator_paragraph_area <- paste0(
     filter(percentage_change_areas, level == "Locality")$text,
@@ -652,14 +657,14 @@ unscheduled_care_charts_and_text <- function(
       plot_title = paste(
         indicator_name,
         "per",
-        format(denominator_number, big.mark = ","),
+        format(denominator_number, big.mark = ",", scientific = FALSE),
         "over time by age group\n for",
         LOCALITY
       ),
       yaxis_title = paste(
         indicator_name,
         "rate\n per",
-        format(denominator_number, big.mark = ","),
+        format(denominator_number, big.mark = ",", scientific = FALSE),
         "population"
       ),
       source = paste("Source:", source)
