@@ -1082,7 +1082,6 @@ bed_days_outputs <- unscheduled_care_charts_and_text(
   100000,
   "population",
   "PHS SMR01",
-  populations_filtered,
   LOCALITY,
   localities
 )
@@ -1131,7 +1130,6 @@ bed_days_mh_outputs <- unscheduled_care_charts_and_text(
   100000,
   "population",
   "PHS SMR04",
-  populations_filtered,
   LOCALITY,
   localities
 )
@@ -1181,7 +1179,6 @@ ae_attendances_outputs <- unscheduled_care_charts_and_text(
   100000,
   "population",
   "PHS A&E Datamart",
-  populations_filtered,
   LOCALITY,
   localities
 )
@@ -1238,7 +1235,6 @@ delayed_discharges_outputs <- unscheduled_care_charts_and_text(
   100000,
   "population aged over 65+",
   "PHS Delayed Discharges",
-  populations_filtered,
   LOCALITY,
   localities
 )
@@ -1286,7 +1282,6 @@ falls_outputs <- unscheduled_care_charts_and_text(
   100000,
   "population aged over 65+",
   "PHS SMR01",
-  populations_filtered,
   LOCALITY,
   localities
 )
@@ -1337,7 +1332,6 @@ readmissions_outputs <- unscheduled_care_charts_and_text(
   1000,
   "discharges",
   "PHS SMR01",
-  populations_filtered,
   LOCALITY,
   localities
 )
@@ -1382,7 +1376,6 @@ ppa_outputs <- unscheduled_care_charts_and_text(
   100000,
   "population",
   "PHS SMR01",
-  populations_filtered,
   LOCALITY,
   localities
 )
