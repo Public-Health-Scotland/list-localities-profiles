@@ -459,12 +459,11 @@ unscheduled_care_charts_and_text <- function(
 
     mutate(
       text = paste0(
-        
         if_else(level %in% c("Locality", "Scotland"), "the ", "The "),
-        
+
         if_else(
           level %in% c("Locality"),
-          
+
           paste0(
             str_to_lower(indicator_name),
             " rate ",
@@ -485,7 +484,7 @@ unscheduled_care_charts_and_text <- function(
             " for ",
             max_fin_year
           ),
-          
+
           paste0(
             location,
             " ",
@@ -493,7 +492,7 @@ unscheduled_care_charts_and_text <- function(
             " rate"
           )
         ),
-        
+
         " is ",
         format(!!sym(max_fin_year), big.mark = ","),
         ", ",
@@ -504,10 +503,8 @@ unscheduled_care_charts_and_text <- function(
         word_change_calc(!!sym(max_fin_year), !!sym(min_fin_year)),
         " since ",
         min_fin_year
-      )  
-        
-
       )
+    )
 
   indicator_paragraph_area <- paste0(
     filter(percentage_change_areas, level == "Locality")$text,
