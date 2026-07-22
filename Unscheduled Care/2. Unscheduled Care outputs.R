@@ -397,7 +397,9 @@ usc_area_level_charts_and_text <- function(
         "level"
       )
     ) %>%
-    mutate(rate = round_half_up(denominator_number * ({{ indicator_column }} / pop))) 
+    mutate(
+      rate = round_half_up(denominator_number * ({{ indicator_column }} / pop))
+    )
 
   # 5. Create Time Series Chart For Indicator At Area Level ----
 
@@ -561,7 +563,6 @@ usc_age_level_charts_and_text <- function(
   LOCALITY,
   locality_lookup
 ) {
-  
   # 1. Get Associated Areas ----
 
   get_associated_areas_output <- get_associated_areas(locality_lookup, LOCALITY)
@@ -710,7 +711,7 @@ usc_age_level_charts_and_text <- function(
         TRUE ~ "Other"
       )
     ) %>%
-    
+
     mutate(
       text = paste0(
         if_else(rate_ranking == "Highest", "the highest ", "The lowest "),
