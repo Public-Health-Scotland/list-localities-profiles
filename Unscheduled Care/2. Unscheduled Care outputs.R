@@ -1349,7 +1349,7 @@ readmissions <- read_parquet(paste0(
   mutate(level = "Locality") %>%
   mutate(year = get_yr_from_fy(financial_year)) %>%
   filter(!is.na(year)) %>%
-  
+
   left_join(
     populations_filtered,
     by = c(
@@ -1362,11 +1362,11 @@ readmissions <- read_parquet(paste0(
     ),
     relationship = "one-to-one"
   ) %>%
-  
+
   dplyr::select(-pop) %>%
-  
+
   rename("pop" = "discharges") %>% # We want number of discharges to be the population of comparison for this indicator
-  
+
   aggregate_area_data("read_28")
 
 readmissions_area_outputs <- usc_area_level_charts_and_text(
