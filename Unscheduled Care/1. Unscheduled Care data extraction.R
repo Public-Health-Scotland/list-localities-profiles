@@ -182,7 +182,6 @@ msg_dd <- msg_dd_raw %>%
     reason_for_delay
   ) %>%
   summarise(
-    dd_people = n(),
     dd_bed_days = sum(delayed_bed_days)
   ) %>%
   ungroup()
