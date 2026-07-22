@@ -48,7 +48,6 @@ emergency_adm_age_outputs$age_ts
 figure_num <- figure_num + 1
 ```
 
-\newpage
 
 ## Unscheduled Acute Bed Days
 
