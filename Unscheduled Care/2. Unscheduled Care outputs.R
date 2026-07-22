@@ -914,7 +914,7 @@ scotpho_unscheduled_care_charts_and_text <- function(
 
             if_else(aggregate_3_year_indicator, "3-year aggregate ", ""),
 
-            " rate ",
+            " rate "
           )
         ),
 
