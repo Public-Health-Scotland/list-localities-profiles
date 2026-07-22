@@ -1057,7 +1057,7 @@ emergency_adm <- read_parquet(paste0(
     ),
     relationship = "one-to-one"
   ) %>%
-  rename("adm"="admissions") %>%
+  rename("adm" = "admissions") %>%
   aggregate_area_data("adm")
 
 
@@ -1103,8 +1103,8 @@ bed_days <- read_parquet(paste0(import_folder, "bed_days_msg.parquet")) %>%
     ),
     relationship = "one-to-one"
   ) %>%
-  rename("bd"="bed_days") %>%
-  aggregate_area_data("bd") 
+  rename("bd" = "bed_days") %>%
+  aggregate_area_data("bd")
 
 
 bed_days_area_outputs <- usc_area_level_charts_and_text(
@@ -1152,8 +1152,8 @@ bed_days_mh <- read_parquet(paste0(
     ),
     relationship = "one-to-one"
   ) %>%
-  rename("bd"="bed_days") %>%
-  aggregate_area_data("bd") 
+  rename("bd" = "bed_days") %>%
+  aggregate_area_data("bd")
 
 
 bed_days_mh_area_outputs <- usc_area_level_charts_and_text(
@@ -1203,8 +1203,8 @@ ae_attendances <- read_parquet(paste0(
     ),
     relationship = "one-to-one"
   ) %>%
-  rename("att"="attendances") %>%
-  aggregate_area_data("att") 
+  rename("att" = "attendances") %>%
+  aggregate_area_data("att")
 
 
 ae_attendances_area_outputs <- usc_area_level_charts_and_text(
@@ -1307,8 +1307,8 @@ falls <- read_parquet(paste0(import_folder, "falls_smr.parquet")) %>%
     ),
     relationship = "one-to-one"
   ) %>%
-  rename("adm"="admissions") %>%
-  aggregate_area_data("adm") 
+  rename("adm" = "admissions") %>%
+  aggregate_area_data("adm")
 
 
 falls_area_outputs <- usc_area_level_charts_and_text(
@@ -1358,7 +1358,7 @@ readmissions <- read_parquet(paste0(
     ),
     relationship = "one-to-one"
   ) %>%
-  rename("dd"="discharges") %>%
+  rename("dd" = "discharges") %>%
   aggregate_area_data(c("dd", "read_28"))
 
 readmissions_area_outputs <- usc_area_level_charts_and_text(
@@ -1402,7 +1402,7 @@ ppa <- read_parquet(paste0(import_folder, "ppa_smr.parquet")) %>%
     ),
     relationship = "one-to-one"
   ) %>%
-  rename("adm"="admissions") %>%
+  rename("adm" = "admissions") %>%
   aggregate_area_data("adm")
 
 ppa_area_outputs <- usc_area_level_charts_and_text(
