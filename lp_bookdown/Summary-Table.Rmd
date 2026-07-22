@@ -9,7 +9,7 @@ library(officedown)
 
 # Summary Table
 
-```{r locality_names, include=FALSE}
+```{r define-locality-names, include=FALSE}
 # Set locality name object (with automatic wrapping)
 loc_name <- paste(LOCALITY, "Locality", sep = "\n") |>
   str_wrap(width = case_when(n_loc < 4 ~ 20, n_loc == 4 ~ 15, n_loc > 4 ~ 8))
@@ -33,7 +33,7 @@ headings <- c(
 )
 ```
 
-```{r summary_table_func, include=FALSE}
+```{r summary-table-function, include=FALSE}
 make_summary_table <- function(data) {
   info_cols <- 1:4
   loc_col <- 5
@@ -81,7 +81,7 @@ make_summary_table <- function(data) {
 }
 ```
 
-```{r demographics}
+```{r demographics-data}
 indicators <- c(
   "Total population",
   "Ratio male to female",
@@ -188,7 +188,7 @@ population_health_values <- tibble(
 colnames(population_health_values) <- c("Section", "Indicator", "Data Type", "Time Period", headings[-c(1, 2)])
 ```
 
-```{r lifestyle_risk_factors}
+```{r lifestyle-risk-factors-data}
 indicators <- c(
   "Alcohol-related hospital admissions per 100,000",
   "Alcohol-specific mortality per 100,000",

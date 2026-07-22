@@ -5,7 +5,7 @@ site: bookdown::bookdown_site
 documentclass: book
 ---
 
-```{r,echo=FALSE}
+```{r set-table-heading-style, echo=FALSE}
 library(officedown)
 
 table_heading_style <- fp_text(
@@ -31,7 +31,7 @@ superscript_style <- fp_text(
 )
 ```
 
-```{r setup, include = FALSE}
+```{r index-setup, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 options(kableExtra.auto_format = FALSE)
 
