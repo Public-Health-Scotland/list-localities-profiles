@@ -6,44 +6,44 @@
 
 **For the most recent time periods available, `r LOCALITY` had:**
 
--   **`r format(emergency_adm_outputs$current_locality_rate_area,big.mark=",")`** emergency hospital admissions per 100,000 population, compared to `r format(emergency_adm_outputs$current_scotland_rate_area,big.mark=",")` in Scotland.
+-   **`r format(emergency_adm_area_outputs$current_locality_rate_area,big.mark=",")`** emergency hospital admissions per 100,000 population, compared to `r format(emergency_adm_area_outputs$current_scotland_rate_area,big.mark=",")` in Scotland.
 
--   **`r format(bed_days_outputs$current_locality_rate_area,big.mark=",")`** unscheduled acute specialty bed days per 100,000 population, compared to `r format(bed_days_outputs$current_scotland_rate_area,big.mark=",")` in Scotland.
+-   **`r format(bed_days_area_outputs$current_locality_rate_area,big.mark=",")`** unscheduled acute specialty bed days per 100,000 population, compared to `r format(bed_days_area_outputs$current_scotland_rate_area,big.mark=",")` in Scotland.
 
--   **`r format(ae_attendances_outputs$current_locality_rate_area,big.mark=",")`** A&E attendances per 100,000 population, compared to `r format(ae_attendances_outputs$current_scotland_rate_area,big.mark=",")` in Scotland.
+-   **`r format(ae_attendances_area_outputs$current_locality_rate_area,big.mark=",")`** A&E attendances per 100,000 population, compared to `r format(ae_attendances_area_outputs$current_scotland_rate_area,big.mark=",")` in Scotland.
 
 -   **`r format(delayed_discharges_outputs$current_locality_rate_area,big.mark=",")`** delayed discharge bed days per 100,000 population aged over 65, compared to `r format(delayed_discharges_outputs$current_scotland_rate_area,big.mark=",")` in Scotland.
 
--   **`r format(falls_outputs$current_locality_rate_area,big.mark=",")`** emergency hospital admissions from falls per 100,000 population aged over 65, compared to `r format(falls_outputs$current_scotland_rate_area,big.mark=",")` in Scotland.
+-   **`r format(falls_area_outputs$current_locality_rate_area,big.mark=",")`** emergency hospital admissions from falls per 100,000 population aged over 65, compared to `r format(falls_area_outputs$current_scotland_rate_area,big.mark=",")` in Scotland.
 
--   **`r format(readmissions_outputs$current_locality_rate_area,big.mark=",")`** emergency readmissions (28 day) per 1,000 discharges, compared to `r format(readmissions_outputs$current_scotland_rate_area,big.mark=",")` in Scotland.
+-   **`r format(readmissions_area_outputs$current_locality_rate_area,big.mark=",")`** emergency readmissions (28 day) per 1,000 discharges, compared to `r format(readmissions_area_outputs$current_scotland_rate_area,big.mark=",")` in Scotland.
 
--   **`r format(ppa_outputs$current_locality_rate_area,big.mark=",")`** potentially preventable hospital admissions per 100,000 population, compared to `r format(ppa_outputs$current_scotland_rate_area,big.mark=",")` in Scotland.
+-   **`r format(ppa_area_outputs$current_locality_rate_area,big.mark=",")`** potentially preventable hospital admissions per 100,000 population, compared to `r format(ppa_area_outputs$current_scotland_rate_area,big.mark=",")` in Scotland.
 
 \newpage
 
 ## Emergency Admissions
 
-Figure `r figure_num` `r emergency_adm_outputs$intro_paragraph_area`
+Figure `r figure_num` `r emergency_adm_area_outputs$intro_paragraph_area`
 
-As presented in Figure `r figure_num`, `r emergency_adm_outputs$area_text`
+As presented in Figure `r figure_num`, `r emergency_adm_area_outputs$area_text`
 
 ```{r fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing six-year time trends for emergency admissions per 100,000 population for Locality, HSCP, Health Board and all Scotland."}
 ftext(paste0("Figure ", figure_num, ": Emergency admissions by geographical area"), table_heading_style)
 
-emergency_adm_outputs$area_ts
+emergency_adm_area_outputs$area_ts
 
 figure_num <- figure_num + 1
 ```
 
-Figure `r figure_num` `r emergency_adm_outputs$intro_paragraph_age`
+Figure `r figure_num` `r emergency_adm_age_outputs$intro_paragraph_age`
 
-As presented in Figure `r figure_num`, `r emergency_adm_outputs$age_text`
+As presented in Figure `r figure_num`, `r emergency_adm_age_outputs$age_text`
 
 ```{r fig.width = 8.5, fig.height = 4, warning = FALSE,  fig.cap = "A line graph showing six-year time trends for emergency admissions per 100,000 population split by age group."}
 ftext(paste0("Figure ", figure_num, ": Emergency admissions by age group"), table_heading_style)
 
-emergency_adm_outputs$age_ts
+emergency_adm_age_outputs$age_ts
 
 figure_num <- figure_num + 1
 ```
@@ -52,79 +52,79 @@ figure_num <- figure_num + 1
 
 ## Unscheduled Acute Bed Days
 
-Figure `r figure_num` `r bed_days_outputs$intro_paragraph_area`
+Figure `r figure_num` `r bed_days_area_outputs$intro_paragraph_area`
 
-As presented in Figure `r figure_num`, `r bed_days_outputs$area_text`
+As presented in Figure `r figure_num`, `r bed_days_area_outputs$area_text`
 
 
 ```{r fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing six-year time trends for unscheduled acute bed days per 100,000 population for Locality, HSCP, Health Board and all Scotland."}
 ftext(paste0("Figure ", figure_num, ": Unscheduled acute bed days by geographical area"), table_heading_style)
 
-bed_days_outputs$area_ts
+bed_days_area_outputs$area_ts
 
 figure_num <- figure_num + 1
 ```
 
-Figure `r figure_num` `r bed_days_outputs$intro_paragraph_age`
+Figure `r figure_num` `r bed_days_age_outputs$intro_paragraph_age`
 
-As presented in Figure `r figure_num`, `r bed_days_outputs$age_text`
+As presented in Figure `r figure_num`, `r bed_days_age_outputs$age_text`
 
 ```{r fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing six-year time trends for emergency admissions per 100,000 population split by age group."}
 ftext(paste0("Figure ", figure_num, ": Unscheduled acute bed days by age group"), table_heading_style)
 
-bed_days_outputs$age_ts
+bed_days_age_outputs$age_ts
 
 figure_num <- figure_num + 1
 ```
 
 ## A&E Attendances
 
-Figure `r figure_num` `r ae_attendances_outputs$intro_paragraph_area`
+Figure `r figure_num` `r ae_attendances_area_outputs$intro_paragraph_area`
 
-As presented in Figure `r figure_num`, `r ae_attendances_outputs$area_text`
+As presented in Figure `r figure_num`, `r ae_attendances_area_outputs$area_text`
 
 ```{r fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing six-year time trends for A&E attendancess per 100,000 population for Locality, HSCP, Health Board and all Scotland."}
 ftext(paste0("Figure ", figure_num, ": A&E attendances by geographical area"), table_heading_style)
 
-ae_attendances_outputs$area_ts
+ae_attendances_area_outputs$area_ts
 
 figure_num <- figure_num + 1
 ```
 
-Figure `r figure_num` `r ae_attendances_outputs$intro_paragraph_age`
+Figure `r figure_num` `r ae_attendances_age_outputs$intro_paragraph_age`
 
-As presented in Figure `r figure_num`, `r ae_attendances_outputs$age_text`
+As presented in Figure `r figure_num`, `r ae_attendances_age_outputs$age_text`
 
 ```{r fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing six-year time trends for A&E attendancess per 100,000 population split by age group."}
 ftext(paste0("Figure ", figure_num, ": A&E attendances by age group"), table_heading_style)
 
-ae_attendances_outputs$age_ts
+ae_attendances_age_outputs$age_ts
 
 figure_num <- figure_num + 1
 ```
 
 ## Emergency Readmissions (28 days)
 
-Figure `r figure_num` `r readmissions_outputs$intro_paragraph_area`
+Figure `r figure_num` `r readmissions_area_outputs$intro_paragraph_area`
 
-As presented in Figure `r figure_num`, `r readmissions_outputs$area_text`
+As presented in Figure `r figure_num`, `r readmissions_area_outputs$area_text`
 
 ```{r fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing seven-year time trends for emergency readmissions per 1,000 discharges split by geographical area."}
 ftext(paste0("Figure ", figure_num, ": Emergency readmissions (28 days) by geographical area"), table_heading_style)
 
-readmissions_outputs$area_ts
+readmissions_area_outputs$area_ts
 
 figure_num <- figure_num + 1
 ```
 
-Figure `r figure_num` `r readmissions_outputs$intro_paragraph_age`
+Figure `r figure_num` `r readmissions_age_outputs$intro_paragraph_age`
 
-As presented in Figure `r figure_num`, `r readmissions_outputs$age_text`
+As presented in Figure `r figure_num`, `r readmissions_age_outputs$age_text`
 
 ```{r fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing seven-year time trends for emergency readmissions per 1,000 discharges split by age group."}
 ftext(paste0("Figure ", figure_num, ": Emergency readmissions (28 days) by age group"), table_heading_style)
 
-readmissions_outputs$age_ts
+readmissions_age_outputs$age_ts
 
 figure_num <- figure_num + 1
 ```
@@ -149,14 +149,14 @@ figure_num <- figure_num + 1
 
 ## Emergency admissions from a fall
 
-Figure `r figure_num` `r falls_outputs$intro_paragraph_area`
+Figure `r figure_num` `r falls_area_outputs$intro_paragraph_area`
 
-As presented in Figure `r figure_num`, `r falls_outputs$area_text`
+As presented in Figure `r figure_num`, `r falls_area_outputs$area_text`
 
 ```{r fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing seven-year time trends for emergency admissions from a fall per 100,000 population aged 65+ split by geographical area."}
 ftext(paste0("Figure ", figure_num, ": Falls in the population aged 65+ by geographical area"), table_heading_style)
 
-falls_outputs$area_ts
+falls_area_outputs$area_ts
 
 figure_num <- figure_num + 1
 ```
@@ -165,14 +165,14 @@ figure_num <- figure_num + 1
 
 ## Potentially Preventable Admissions (PPAs)
 
-Information on the conditions included in Potentially Preventable Admissions (PPA)s is available in Appendix 3. In `r ppa_outputs$max_fin_year`, **`r ppa_outputs$over_65_perc`%** of PPAs in `r LOCALITY` were amongst those aged 65 and over, and **`r ppa_outputs$under_65_perc`%** were amongst those aged under 65.
+Information on the conditions included in Potentially Preventable Admissions (PPA)s is available in Appendix 3. In `r ppa_area_outputs$max_fin_year`, **`r ppa_age_outputs$over_65_perc`%** of PPAs in `r LOCALITY` were amongst those aged 65 and over, and **`r ppa_age_outputs$under_65_perc`%** were amongst those aged under 65.
 
-Figure `r figure_num` presents the PPA rate per 100,000 population in the `r LOCALITY` locality from `r ppa_outputs$min_fin_year` to `r ppa_outputs$max_fin_year`. `r ppa_outputs$area_text`
+Figure `r figure_num` presents the PPA rate per 100,000 population in the `r LOCALITY` locality from `r ppa_area_outputs$min_fin_year` to `r ppa_area_outputs$max_fin_year`. `r ppa_area_outputs$area_text`
 
 ```{r fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing seven-year time trends for potentially preventable admissions per 100,000 population split by geographical area."}
 ftext(paste0("Figure ", figure_num, ": Potentially Preventable Admissions (PPAs) by geographical area"), table_heading_style)
 
-ppa_outputs$area_ts
+ppa_area_outputs$area_ts
 
 figure_num <- figure_num + 1
 ```
@@ -186,7 +186,7 @@ figure_num <- figure_num + 1
 This section looks at mental health-related unscheduled care indicators. For the most recent time period available, `r LOCALITY` had:
 
 -   **`r format(psych_hosp_outputs$current_locality_rate_area,big.mark=",")`** psychiatric patient hospitalisations per 100,000, compared to `r format(psych_hosp_outputs$current_scotland_rate_area,big.mark=",")` in Scotland^4^.
--   **`r format(bed_days_mh_outputs$current_locality_rate_area,big.mark=",")`** unscheduled mental health specialty bed days per 100,000, compared to `r format(bed_days_mh_outputs$current_scotland_rate_area,big.mark=",")` in Scotland.
+-   **`r format(bed_days_mh_area_outputs$current_locality_rate_area,big.mark=",")`** unscheduled mental health specialty bed days per 100,000, compared to `r format(bed_days_mh_area_outputs$current_scotland_rate_area,big.mark=",")` in Scotland.
 
 ## Psychiatric patient hospitalisations
 
@@ -206,26 +206,26 @@ figure_num <- figure_num + 1
 
 ## Unscheduled Mental Health Specialty Bed Days
 
-Figure `r figure_num` `r bed_days_mh_outputs$intro_paragraph_area`
+Figure `r figure_num` `r bed_days_mh_area_outputs$intro_paragraph_area`
 
-As presented in Figure `r figure_num`, `r bed_days_mh_outputs$area_text`
+As presented in Figure `r figure_num`, `r bed_days_mh_area_outputs$area_text`
 
 ```{r fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing six-year time trends for uncscheduled mental health specialty bed days per 100,000 population split by geographical area."}
 ftext(paste0("Figure ", figure_num, ": Unscheduled mental health specialty bed days by geographical area"), table_heading_style)
 
-bed_days_mh_outputs$area_ts
+bed_days_mh_area_outputs$area_ts
 
 figure_num <- figure_num + 1
 ```
 
-Figure `r figure_num` `r bed_days_mh_outputs$intro_paragraph_age`
+Figure `r figure_num` `r bed_days_mh_age_outputs$intro_paragraph_age`
 
-As presented in Figure `r figure_num`, `r bed_days_mh_outputs$age_text`
+As presented in Figure `r figure_num`, `r bed_days_mh_age_outputs$age_text`
 
 ```{r fig.width = 8.5, fig.height = 4.5, warning = FALSE, fig.cap = "A line graph showing six-year time trends for unscheduled mental health specialty bed days per 100,000 population split by geographical area."}
 ftext(paste0("Figure ", figure_num, ": Unscheduled mental health specialty bed days by age group"), table_heading_style)
 
-bed_days_mh_outputs$age_ts
+bed_days_mh_age_outputs$age_ts
 
 figure_num <- figure_num + 1
 ```
