@@ -438,11 +438,11 @@ usc_area_level_charts_and_text <- function(
 
   percentage_change_areas <- indicator_areas %>%
     filter(
-    level == "Locality" &
-      location == LOCALITY |
-      level == "HSCP" & location == HSCP |
-      level == "HB" & location == HB |
-      level == "Scotland"
+      level == "Locality" &
+        location == LOCALITY |
+        level == "HSCP" & location == HSCP |
+        level == "HB" & location == HB |
+        level == "Scotland"
     ) %>%
     dplyr::select(-pop, -year, -{{ indicator_column }}) %>%
     filter(financial_year %in% c(min_fin_year, max_fin_year)) %>%
@@ -450,7 +450,6 @@ usc_area_level_charts_and_text <- function(
     mutate(rate_change = !!sym(max_fin_year) - !!sym(min_fin_year)) %>%
     mutate(perc_change = 100 * (abs(rate_change) / !!sym(min_fin_year))) %>%
     mutate(perc_change = round_half_up(perc_change, digits = 1)) %>%
-    
 
     mutate(
       text = paste0(
@@ -1133,10 +1132,14 @@ bed_days_mh <- read_parquet(paste0(
   mutate(level = "Locality") %>%
   filter(financial_year <= max_fy) %>%
   mutate(year = get_yr_from_fy(financial_year)) %>%
-  
-  complete(nesting(financial_year,year),nesting(hscp2019name,hscp_locality,level),age_group) %>%
+
+  complete(
+    nesting(financial_year, year),
+    nesting(hscp2019name, hscp_locality, level),
+    age_group
+  ) %>%
   replace_na(list(bed_days = 0)) %>%
-  
+
   left_join(
     populations_filtered,
     by = c(
@@ -1150,7 +1153,7 @@ bed_days_mh <- read_parquet(paste0(
     relationship = "one-to-one"
   ) %>%
   rename("bd" = "bed_days") %>%
-  
+
   aggregate_area_data("bd")
 
 
