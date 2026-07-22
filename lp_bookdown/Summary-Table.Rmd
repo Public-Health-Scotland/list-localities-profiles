@@ -275,8 +275,8 @@ usc_mh_values <- tibble(
 ) %>%
   bind_cols(
     bind_rows(
-      format_for_summary_table(bed_days_mh_area_outputs$current_all_areas),
-      scotpho_format_for_summary_table(psych_hosp_outputs$current_all_areas)
+      scotpho_format_for_summary_table(psych_hosp_outputs$current_all_areas),
+      format_for_summary_table(bed_days_mh_area_outputs$current_all_areas)
     )
   ) %>%
   dplyr::select(
