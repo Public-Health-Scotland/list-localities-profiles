@@ -1211,7 +1211,7 @@ ae_attendances_area_outputs <- usc_area_level_charts_and_text(
 )
 
 
-ae_attendances_area_outputs <- usc_age_level_charts_and_text(
+ae_attendances_age_outputs <- usc_age_level_charts_and_text(
   ae_attendances,
   att,
   "A & E Attendances",
