@@ -1057,19 +1057,8 @@ emergency_adm <- read_parquet(paste0(
     ),
     relationship = "one-to-one"
   ) %>%
-  aggregate_area_data("admissions") %>%
-  dplyr::select(
-    financial_year,
-    year,
-    hb2019name,
-    hscp2019name,
-    hscp_locality,
-    age_group,
-    location,
-    adm = admissions,
-    pop,
-    level
-  )
+  rename("adm"="admissions") %>%
+  aggregate_area_data("adm")
 
 
 emergency_adm_area_outputs <- usc_area_level_charts_and_text(
@@ -1114,19 +1103,8 @@ bed_days <- read_parquet(paste0(import_folder, "bed_days_msg.parquet")) %>%
     ),
     relationship = "one-to-one"
   ) %>%
-  aggregate_area_data("bed_days") %>%
-  dplyr::select(
-    financial_year,
-    year,
-    hb2019name,
-    hscp2019name,
-    hscp_locality,
-    age_group,
-    location,
-    bd = bed_days,
-    pop,
-    level
-  )
+  rename("bd"="bed_days") %>%
+  aggregate_area_data("bd") 
 
 
 bed_days_area_outputs <- usc_area_level_charts_and_text(
@@ -1174,19 +1152,8 @@ bed_days_mh <- read_parquet(paste0(
     ),
     relationship = "one-to-one"
   ) %>%
-  aggregate_area_data("bed_days") %>%
-  dplyr::select(
-    financial_year,
-    year,
-    hb2019name,
-    hscp2019name,
-    hscp_locality,
-    age_group,
-    location,
-    bd = bed_days,
-    pop,
-    level
-  )
+  rename("bd"="bed_days") %>%
+  aggregate_area_data("bd") 
 
 
 bed_days_mh_area_outputs <- usc_area_level_charts_and_text(
@@ -1236,19 +1203,9 @@ ae_attendances <- read_parquet(paste0(
     ),
     relationship = "one-to-one"
   ) %>%
-  aggregate_area_data("attendances") %>%
-  dplyr::select(
-    financial_year,
-    year,
-    hb2019name,
-    hscp2019name,
-    hscp_locality,
-    age_group,
-    location,
-    att = attendances,
-    pop,
-    level
-  )
+  rename("att"="attendances") %>%
+  aggregate_area_data("att") 
+
 
 ae_attendances_area_outputs <- usc_area_level_charts_and_text(
   ae_attendances,
@@ -1350,19 +1307,8 @@ falls <- read_parquet(paste0(import_folder, "falls_smr.parquet")) %>%
     ),
     relationship = "one-to-one"
   ) %>%
-  aggregate_area_data(c("admissions")) %>%
-  dplyr::select(
-    financial_year,
-    year,
-    hb2019name,
-    hscp2019name,
-    hscp_locality,
-    age_group,
-    location,
-    adm = admissions,
-    pop,
-    level
-  )
+  rename("adm"="admissions") %>%
+  aggregate_area_data("adm") 
 
 
 falls_area_outputs <- usc_area_level_charts_and_text(
@@ -1412,20 +1358,8 @@ readmissions <- read_parquet(paste0(
     ),
     relationship = "one-to-one"
   ) %>%
-  aggregate_area_data(c("discharges", "read_28")) %>%
-  dplyr::select(
-    financial_year,
-    year,
-    hb2019name,
-    hscp2019name,
-    hscp_locality,
-    age_group,
-    location,
-    dd = discharges,
-    read_28,
-    pop,
-    level
-  )
+  rename("dd"="discharges") %>%
+  aggregate_area_data(c("dd", "read_28"))
 
 readmissions_area_outputs <- usc_area_level_charts_and_text(
   readmissions,
@@ -1468,19 +1402,8 @@ ppa <- read_parquet(paste0(import_folder, "ppa_smr.parquet")) %>%
     ),
     relationship = "one-to-one"
   ) %>%
-  aggregate_area_data(c("admissions")) %>%
-  dplyr::select(
-    financial_year,
-    year,
-    hb2019name,
-    hscp2019name,
-    hscp_locality,
-    age_group,
-    location,
-    adm = admissions,
-    pop,
-    level
-  )
+  rename("adm"="admissions") %>%
+  aggregate_area_data("adm")
 
 ppa_area_outputs <- usc_area_level_charts_and_text(
   ppa,
