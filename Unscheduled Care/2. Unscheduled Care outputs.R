@@ -1232,7 +1232,7 @@ delayed_disch <- read_parquet(paste0(
     relationship = "one-to-one"
   ) %>%
   rename("dd_bd" = "dd_bed_days") %>%
-  aggregate_area_data("dd_bd") 
+  aggregate_area_data("dd_bd")
 
 
 delayed_discharges_area_outputs <- usc_area_level_charts_and_text(
@@ -1257,10 +1257,6 @@ delayed_discharges_age_outputs <- usc_age_level_charts_and_text(
   LOCALITY,
   localities
 )
-
-
-
-
 
 
 # 5. Fall Admissions ----
