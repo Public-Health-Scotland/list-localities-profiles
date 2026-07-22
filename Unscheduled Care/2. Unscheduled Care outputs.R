@@ -332,40 +332,39 @@ word_change_calc <- function(latest, first) {
 ####################### SECTION 4: Data manipulation & outputs #########################
 
 usc_area_level_charts_and_text <- function(
-    dataset,
-    indicator_column,
-    indicator_name,
-    denominator_number,
-    denominator_name,
-    source,
-    LOCALITY,
-    locality_lookup
-){
-  
+  dataset,
+  indicator_column,
+  indicator_name,
+  denominator_number,
+  denominator_name,
+  source,
+  LOCALITY,
+  locality_lookup
+) {
   # 1. Get Associated Areas ----
-  
+
   get_associated_areas_output <- get_associated_areas(locality_lookup, LOCALITY)
-  
+
   other_locs <- get_associated_areas_output$other_locs
-  
+
   HSCP <- get_associated_areas_output$HSCP
-  
+
   HB <- get_associated_areas_output$HB
-  
+
   # 3. Get Maximum and Minimum Financial Year In Data ----
-  
+
   min_fin_year <- dataset %>%
     filter(year == min(year)) %>%
     pull(financial_year) %>%
     unique()
-  
+
   max_fin_year <- dataset %>%
     filter(year == max_year) %>%
     pull(financial_year) %>%
     unique()
-  
+
   # 4. Get Intro Paragraph For Area Charts ----
-  
+
   intro_paragraph_area <- paste0(
     "presents the ",
     str_to_lower(indicator_name),
@@ -381,9 +380,9 @@ usc_area_level_charts_and_text <- function(
     "."
   ) %>%
     gsub("a & e", "A & E", .)
-  
+
   # 5. Get Data Related To Indicator At Area Level ----
-  
+
   indicator_areas <- dataset %>%
     summarise(
       {{ indicator_column }} := sum({{ indicator_column }}),
@@ -413,9 +412,9 @@ usc_area_level_charts_and_text <- function(
       pop,
       rate
     )
-  
+
   # 6. Create Time Series Chart For Indicator At Area Level ----
-  
+
   indicator_loc_ts <- indicator_areas %>%
     filter(
       level == "Locality" &
@@ -430,9 +429,9 @@ usc_area_level_charts_and_text <- function(
       yaxis_title = paste(indicator_name, "rate\n per 100,000 population"),
       source = paste("Source:", source)
     )
-  
+
   # 7. Get Paragraph To Go Before Time Series Chart Detailing Percentage Changes ----
-  
+
   percentage_change_areas <- indicator_areas %>%
     filter(financial_year %in% c(min_fin_year, max_fin_year)) %>%
     dplyr::select(
@@ -455,14 +454,14 @@ usc_area_level_charts_and_text <- function(
         level == "HB" & location == HB |
         level == "Scotland"
     ) %>%
-    
+
     mutate(
       text = paste0(
         if_else(level %in% c("Locality", "Scotland"), "the ", "The "),
-        
+
         if_else(
           level %in% c("Locality"),
-          
+
           paste0(
             str_to_lower(indicator_name),
             " rate ",
@@ -483,7 +482,7 @@ usc_area_level_charts_and_text <- function(
             " for ",
             max_fin_year
           ),
-          
+
           paste0(
             location,
             " ",
@@ -491,7 +490,7 @@ usc_area_level_charts_and_text <- function(
             " rate"
           )
         ),
-        
+
         " is ",
         format(!!sym(max_fin_year), big.mark = ","),
         ", ",
@@ -504,7 +503,7 @@ usc_area_level_charts_and_text <- function(
         min_fin_year
       )
     )
-  
+
   indicator_paragraph_area <- paste0(
     filter(percentage_change_areas, level == "Locality")$text,
     ". ",
@@ -516,34 +515,34 @@ usc_area_level_charts_and_text <- function(
     "."
   ) %>%
     gsub("a & e", "A & E", .)
-  
+
   if (indicator_name == "Potentially Preventable Admissions (PPA)") {
     indicator_paragraph_area <- paste0(
       toupper(substring(indicator_paragraph_area, 1, 1)),
       substring(indicator_paragraph_area, 2, nchar(indicator_paragraph_area))
     ) # Make first letter a capital
-    
+
     indicator_paragraph_area <- gsub(
       "potentially preventable admissions \\(ppa\\)",
       "PPA",
       indicator_paragraph_area
     )
   }
-  
+
   # 8. Pull Indicator Rate For Locality And Scotland ----
-  
+
   current_locality_rate_area <- indicator_areas %>%
     filter(financial_year == max_fin_year) %>%
     filter(level == "Locality" & hscp_locality == LOCALITY) %>%
     pull(rate)
-  
+
   current_scotland_rate_area <- indicator_areas %>%
     filter(financial_year == max_fin_year) %>%
     filter(level == "Scotland") %>%
     pull(rate)
-  
+
   # 9. Pull Indicator Rate For All Associated Areas ----
-  
+
   current_all_areas <- indicator_areas %>%
     filter(
       level == "Locality" &
@@ -554,64 +553,61 @@ usc_area_level_charts_and_text <- function(
         level == "Scotland"
     ) %>%
     filter(financial_year == max_fin_year)
-  
-  
+
   # 15. Create Output list for all relevant charts, stats and paragraphs ----
-  
+
   output_list <- list(
     min_fin_year = min_fin_year,
     max_fin_year = max_fin_year,
-    
+
     intro_paragraph_area = intro_paragraph_area,
     area_data = indicator_areas,
     area_ts = indicator_loc_ts,
     area_text = indicator_paragraph_area,
-    
+
     current_locality_rate_area = current_locality_rate_area,
     current_scotland_rate_area = current_scotland_rate_area,
     current_all_areas = current_all_areas
   )
-  
-  return(output_list)
 
+  return(output_list)
 }
 
 
 usc_age_level_charts_and_text <- function(
-    dataset,
-    indicator_column,
-    indicator_name,
-    denominator_number,
-    denominator_name,
-    source,
-    LOCALITY,
-    locality_lookup
-){
-  
+  dataset,
+  indicator_column,
+  indicator_name,
+  denominator_number,
+  denominator_name,
+  source,
+  LOCALITY,
+  locality_lookup
+) {
   # 1. Get Associated Areas ----
-  
+
   get_associated_areas_output <- get_associated_areas(locality_lookup, LOCALITY)
-  
+
   other_locs <- get_associated_areas_output$other_locs
-  
+
   HSCP <- get_associated_areas_output$HSCP
-  
+
   HB <- get_associated_areas_output$HB
-  
+
   # 3. Get Maximum and Minimum Financial Year In Data ----
-  
+
   min_fin_year <- dataset %>%
     filter(year == min(year)) %>%
     pull(financial_year) %>%
     unique()
-  
+
   max_fin_year <- dataset %>%
     filter(year == max_year) %>%
     pull(financial_year) %>%
     unique()
-  
+
   # 10. Get Intro Paragraph For Age Charts ----
-  
+
   intro_paragraph_age <- paste0(
     "presents the ",
     str_to_lower(indicator_name),
@@ -627,11 +623,11 @@ usc_age_level_charts_and_text <- function(
     max_fin_year,
     " by age group."
   )
-  
+
   intro_paragraph_age <- gsub("a & e", "A & E", intro_paragraph_age)
-  
+
   # 11. Create Time Series Chart For Indicator At Area Level ----
-  
+
   indicator_age <- dataset %>%
     filter(hscp_locality == LOCALITY & level == "Locality") %>%
     mutate(
@@ -649,9 +645,9 @@ usc_age_level_charts_and_text <- function(
       pop,
       rate
     )
-  
+
   # 12. Get Data Related To Indicator At Under and Over 65s For PPA Data ----
-  
+
   if (indicator_name == "Potentially Preventable Admissions (PPA)") {
     ppa_agebanded <- indicator_age %>%
       mutate(
@@ -688,20 +684,20 @@ usc_age_level_charts_and_text <- function(
         )
       ) %>%
       ungroup()
-    
+
     under_65_perc <- ppa_agebanded %>%
       filter(financial_year == max_fin_year) %>%
       filter(age_group_banded == "Under 65") %>%
       pull(perc)
-    
+
     over_65_perc <- ppa_agebanded %>%
       filter(financial_year == max_fin_year) %>%
       filter(age_group_banded == "65+") %>%
       pull(perc)
   }
-  
+
   # 13. Get Data Related To Indicator At Under and Over 65s For PPA Data ----
-  
+
   indicator_age_ts <- indicator_age %>%
     age_group_trend_usc(
       measure = "rate",
@@ -720,9 +716,9 @@ usc_age_level_charts_and_text <- function(
       ),
       source = paste("Source:", source)
     )
-  
+
   # 14. Get Paragraph To Go Before Time Series Chart Detailing Percentage Changes ----
-  
+
   percentage_change_age <- indicator_age %>%
     filter(financial_year %in% c(min_fin_year, max_fin_year)) %>%
     dplyr::select(
@@ -738,7 +734,7 @@ usc_age_level_charts_and_text <- function(
     mutate(rate_change = !!sym(max_fin_year) - !!sym(min_fin_year)) %>%
     mutate(perc_change = 100 * (abs(rate_change) / !!sym(min_fin_year))) %>%
     mutate(perc_change = round_half_up(perc_change, digits = 1)) %>%
-    
+
     mutate(
       rate_ranking = case_when(
         !!sym(max_fin_year) == max(!!sym(max_fin_year)) ~ "Highest",
@@ -749,21 +745,21 @@ usc_age_level_charts_and_text <- function(
     mutate(
       text = paste0(
         if_else(rate_ranking == "Highest", "the highest ", "The lowest "),
-        
+
         str_to_lower(indicator_name),
-        
+
         " rate for the ",
-        
+
         hscp_locality,
-        
+
         " locality in ",
-        
+
         max_fin_year,
-        
+
         " is ",
-        
+
         format(!!sym(max_fin_year), big.mark = ","),
-        
+
         " ",
         if_else(
           denominator_number != 100000 | denominator_name != "population",
@@ -779,29 +775,29 @@ usc_age_level_charts_and_text <- function(
           paste0(denominator_name, " "),
           ""
         ),
-        
+
         "for the ",
-        
+
         age_group,
-        
+
         " age group with ",
-        
+
         get_article(perc_change),
-        
+
         " percentage ",
-        
+
         word_change_calc(!!sym(max_fin_year), !!sym(min_fin_year)),
-        
+
         " of ",
-        
+
         perc_change,
-        
+
         "% since ",
-        
+
         min_fin_year
       )
     )
-  
+
   indicator_paragraph_age <- paste0(
     filter(percentage_change_age, rate_ranking == "Highest")$text,
     ". ",
@@ -809,29 +805,26 @@ usc_age_level_charts_and_text <- function(
     "."
   ) %>%
     gsub("a & e", "A & E", .)
-  
-  
+
   # 15. Create Output list for all relevant charts, stats and paragraphs ----
-  
+
   output_list <- list(
     min_fin_year = min_fin_year,
     max_fin_year = max_fin_year,
-    
+
     intro_paragraph_age = intro_paragraph_age,
     age_data = indicator_age,
     age_ts = indicator_age_ts,
     age_text = indicator_paragraph_age
   )
-  
+
   if (indicator_name == "Potentially Preventable Admissions (PPA)") {
     output_list["under_65_perc"] <- under_65_perc
-    
+
     output_list["over_65_perc"] <- over_65_perc
   }
-  
+
   return(output_list)
-  
-  
 }
 
 
@@ -1323,8 +1316,8 @@ ae_attendances_area_outputs <- usc_age_level_charts_and_text(
 #     dd_bd = dd_bed_days,
 #     level
 #   )
-# 
-# 
+#
+#
 # delayed_discharges_outputs <- unscheduled_care_charts_and_text(
 #   delayed_disch,
 #   dd_bd,
