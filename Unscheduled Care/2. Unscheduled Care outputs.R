@@ -351,7 +351,7 @@ usc_area_level_charts_and_text <- function(
 
   HB <- get_associated_areas_output$HB
 
-  # 3. Get Maximum and Minimum Financial Year In Data ----
+  # 2. Get Maximum and Minimum Financial Year In Data ----
 
   min_fin_year <- dataset %>%
     filter(year == min(year)) %>%
@@ -363,7 +363,7 @@ usc_area_level_charts_and_text <- function(
     pull(financial_year) %>%
     unique()
 
-  # 4. Get Intro Paragraph For Area Charts ----
+  # 3. Get Intro Paragraph For Area Charts ----
 
   intro_paragraph_area <- paste0(
     "presents the ",
@@ -381,15 +381,15 @@ usc_area_level_charts_and_text <- function(
   ) %>%
     gsub("a & e", "A & E", .)
 
-  # 5. Get Data Related To Indicator At Area Level ----
+  # 4. Get Data Related To Indicator At Area Level ----
 
   indicator_areas <- dataset %>%
     summarise(
       {{ indicator_column }} := sum({{ indicator_column }}),
       pop = sum(pop),
       .by = c(
-        "year",
         "financial_year",
+        "year",
         "hb2019name",
         "hscp2019name",
         "hscp_locality",
@@ -397,23 +397,9 @@ usc_area_level_charts_and_text <- function(
         "level"
       )
     ) %>%
-    mutate(
-      rate = round_half_up(denominator_number * ({{ indicator_column }} / pop))
-    ) %>%
-    dplyr::select(
-      financial_year,
-      year,
-      hb2019name,
-      hscp2019name,
-      hscp_locality,
-      location,
-      level,
-      {{ indicator_column }},
-      pop,
-      rate
-    )
+    mutate(rate = round_half_up(denominator_number * ({{ indicator_column }} / pop))) 
 
-  # 6. Create Time Series Chart For Indicator At Area Level ----
+  # 5. Create Time Series Chart For Indicator At Area Level ----
 
   indicator_loc_ts <- indicator_areas %>%
     filter(
@@ -430,19 +416,10 @@ usc_area_level_charts_and_text <- function(
       source = paste("Source:", source)
     )
 
-  # 7. Get Paragraph To Go Before Time Series Chart Detailing Percentage Changes ----
+  # 6. Get Paragraph To Go Before Time Series Chart Detailing Percentage Changes ----
 
   percentage_change_areas <- indicator_areas %>%
     filter(financial_year %in% c(min_fin_year, max_fin_year)) %>%
-    dplyr::select(
-      financial_year,
-      hb2019name,
-      hscp2019name,
-      hscp_locality,
-      location,
-      level,
-      rate
-    ) %>%
     pivot_wider(names_from = financial_year, values_from = rate) %>%
     mutate(rate_change = !!sym(max_fin_year) - !!sym(min_fin_year)) %>%
     mutate(perc_change = 100 * (abs(rate_change) / !!sym(min_fin_year))) %>%
@@ -529,7 +506,7 @@ usc_area_level_charts_and_text <- function(
     )
   }
 
-  # 8. Pull Indicator Rate For Locality And Scotland ----
+  # 7. Pull Indicator Rate For Locality And Scotland ----
 
   current_locality_rate_area <- indicator_areas %>%
     filter(financial_year == max_fin_year) %>%
@@ -541,7 +518,7 @@ usc_area_level_charts_and_text <- function(
     filter(level == "Scotland") %>%
     pull(rate)
 
-  # 9. Pull Indicator Rate For All Associated Areas ----
+  # 8. Pull Indicator Rate For All Associated Areas ----
 
   current_all_areas <- indicator_areas %>%
     filter(
@@ -554,7 +531,7 @@ usc_area_level_charts_and_text <- function(
     ) %>%
     filter(financial_year == max_fin_year)
 
-  # 15. Create Output list for all relevant charts, stats and paragraphs ----
+  # 9. Create Output list for all relevant charts, stats and paragraphs ----
 
   output_list <- list(
     min_fin_year = min_fin_year,
@@ -584,6 +561,7 @@ usc_age_level_charts_and_text <- function(
   LOCALITY,
   locality_lookup
 ) {
+  
   # 1. Get Associated Areas ----
 
   get_associated_areas_output <- get_associated_areas(locality_lookup, LOCALITY)
@@ -594,7 +572,7 @@ usc_age_level_charts_and_text <- function(
 
   HB <- get_associated_areas_output$HB
 
-  # 3. Get Maximum and Minimum Financial Year In Data ----
+  # 2 Get Maximum and Minimum Financial Year In Data ----
 
   min_fin_year <- dataset %>%
     filter(year == min(year)) %>%
@@ -606,7 +584,7 @@ usc_age_level_charts_and_text <- function(
     pull(financial_year) %>%
     unique()
 
-  # 10. Get Intro Paragraph For Age Charts ----
+  # 3. Get Intro Paragraph For Age Charts ----
 
   intro_paragraph_age <- paste0(
     "presents the ",
@@ -622,11 +600,10 @@ usc_age_level_charts_and_text <- function(
     " to ",
     max_fin_year,
     " by age group."
-  )
+  ) %>%
+    gsub("a & e", "A & E", intro_paragraph_age)
 
-  intro_paragraph_age <- gsub("a & e", "A & E", intro_paragraph_age)
-
-  # 11. Create Time Series Chart For Indicator At Area Level ----
+  # 4. Create Time Series Chart For Indicator At Area Level ----
 
   indicator_age <- dataset %>%
     filter(hscp_locality == LOCALITY & level == "Locality") %>%
@@ -646,7 +623,7 @@ usc_age_level_charts_and_text <- function(
       rate
     )
 
-  # 12. Get Data Related To Indicator At Under and Over 65s For PPA Data ----
+  # 5. Get Data Related To Indicator At Under and Over 65s For PPA Data ----
 
   if (indicator_name == "Potentially Preventable Admissions (PPA)") {
     ppa_agebanded <- indicator_age %>%
@@ -696,7 +673,7 @@ usc_age_level_charts_and_text <- function(
       pull(perc)
   }
 
-  # 13. Get Data Related To Indicator At Under and Over 65s For PPA Data ----
+  # 6. Get Data Related To Indicator At Under and Over 65s For PPA Data ----
 
   indicator_age_ts <- indicator_age %>%
     age_group_trend_usc(
@@ -717,19 +694,10 @@ usc_age_level_charts_and_text <- function(
       source = paste("Source:", source)
     )
 
-  # 14. Get Paragraph To Go Before Time Series Chart Detailing Percentage Changes ----
+  # 7. Get Paragraph To Go Before Time Series Chart Detailing Percentage Changes ----
 
   percentage_change_age <- indicator_age %>%
     filter(financial_year %in% c(min_fin_year, max_fin_year)) %>%
-    dplyr::select(
-      financial_year,
-      hb2019name,
-      hscp2019name,
-      hscp_locality,
-      level,
-      age_group,
-      rate
-    ) %>%
     pivot_wider(names_from = financial_year, values_from = rate) %>%
     mutate(rate_change = !!sym(max_fin_year) - !!sym(min_fin_year)) %>%
     mutate(perc_change = 100 * (abs(rate_change) / !!sym(min_fin_year))) %>%
@@ -742,6 +710,7 @@ usc_age_level_charts_and_text <- function(
         TRUE ~ "Other"
       )
     ) %>%
+    
     mutate(
       text = paste0(
         if_else(rate_ranking == "Highest", "the highest ", "The lowest "),
@@ -904,7 +873,7 @@ scotpho_usc_charts_and_text <- function(
     "."
   )
 
-  # 5. ----
+  # 5. Get Paragraph To Go Before Chart Detailing Percentage Changes ----
 
   percentage_change_data <- dataset %>%
     filter(area_name %in% c("Scotland", HB, HSCP, LOCALITY)) %>%
@@ -994,7 +963,7 @@ scotpho_usc_charts_and_text <- function(
     "."
   )
 
-  # 6. ----
+  # 6. Pull Indicator Rate For Locality And Scotland ----
 
   current_locality_rate_area <- dataset %>%
     filter(period == max_period) %>%
