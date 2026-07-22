@@ -242,7 +242,7 @@ usc_values <- tibble(
       format_for_summary_table(emergency_adm_area_outputs$current_all_areas),
       format_for_summary_table(bed_days_area_outputs$current_all_areas),
       format_for_summary_table(ae_attendances_area_outputs$current_all_areas),
-      format_for_summary_table(delayed_discharges_outputs$current_all_areas),
+      format_for_summary_table(delayed_discharges_area_outputs$current_all_areas),
       format_for_summary_table(ppa_area_outputs$current_all_areas)
     )
   ) %>%

@@ -12,7 +12,7 @@
 
 -   **`r format(ae_attendances_area_outputs$current_locality_rate_area,big.mark=",")`** A&E attendances per 100,000 population, compared to `r format(ae_attendances_area_outputs$current_scotland_rate_area,big.mark=",")` in Scotland.
 
--   **`r format(delayed_discharges_outputs$current_locality_rate_area,big.mark=",")`** delayed discharge bed days per 100,000 population aged over 65, compared to `r format(delayed_discharges_outputs$current_scotland_rate_area,big.mark=",")` in Scotland.
+-   **`r format(delayed_discharges_area_outputs$current_locality_rate_area,big.mark=",")`** delayed discharge bed days per 100,000 population aged over 65, compared to `r format(delayed_discharges_area_outputs$current_scotland_rate_area,big.mark=",")` in Scotland.
 
 -   **`r format(falls_area_outputs$current_locality_rate_area,big.mark=",")`** emergency hospital admissions from falls per 100,000 population aged over 65, compared to `r format(falls_area_outputs$current_scotland_rate_area,big.mark=",")` in Scotland.
 
@@ -133,14 +133,14 @@ figure_num <- figure_num + 1
 
 ## Delayed Discharge Bed Days
 
-Figure `r figure_num` `r delayed_discharges_outputs$intro_paragraph_area`
+Figure `r figure_num` `r delayed_discharges_area_outputs$intro_paragraph_area`
 
-As presented in Figure `r figure_num`, `r delayed_discharges_outputs$area_text`
+As presented in Figure `r figure_num`, `r delayed_discharges_area_outputs$area_text`
 
 ```{r fig.width = 8.5, fig.height = 4, warning = FALSE, fig.cap = "A line graph showing seven-year time trends for delayed discharge beddays per 100,000 population aged 65+ split by geographical area."}
 ftext(paste0("Figure ", figure_num, ": Delayed discharge bed days in the population aged 65+ by geographical area"), table_heading_style)
 
-delayed_discharges_outputs$area_ts
+delayed_discharges_area_outputs$area_ts
 
 figure_num <- figure_num + 1
 ```

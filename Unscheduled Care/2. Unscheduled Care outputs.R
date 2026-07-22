@@ -1204,57 +1204,64 @@ ae_attendances_area_outputs <- usc_age_level_charts_and_text(
 # 4. Delayed Discharges ----
 # _________________________________________________________________________
 
-# delayed_disch <- read_parquet(paste0(
-#   import_folder,
-#   "delayed_discharges_msg.parquet"
-# )) %>%
-#   filter(financial_year <= max_fy) %>%
-#   filter(age_group %in% c("65 - 74", "75+")) %>%
-#   group_by(financial_year, hscp2019name, hscp_locality, age_group) %>%
-#   summarise(
-#     dd_people = sum(dd_people),
-#     dd_bed_days = sum(dd_bed_days)
-#   ) %>%
-#   ungroup() %>%
-#   mutate(level = "Locality") %>%
-#   mutate(year = get_yr_from_fy(financial_year)) %>%
-#   filter(!is.na(year)) %>%
-#   left_join(
-#     populations_filtered,
-#     by = c(
-#       "financial_year",
-#       "year",
-#       "hscp2019name",
-#       "hscp_locality",
-#       "age_group",
-#       "level"
-#     ),
-#     relationship = "one-to-one"
-#   ) %>%
-#   aggregate_area_data(c("dd_people", "dd_bed_days")) %>%
-#   dplyr::select(
-#     financial_year,
-#     year,
-#     hb2019name,
-#     hscp2019name,
-#     hscp_locality,
-#     age_group,
-#     dd_ppl = dd_people,
-#     dd_bd = dd_bed_days,
-#     level
-#   )
-#
-#
-# delayed_discharges_outputs <- unscheduled_care_charts_and_text(
-#   delayed_disch,
-#   dd_bd,
-#   "Delayed Discharge Bed Days",
-#   100000,
-#   "population aged over 65+",
-#   "PHS Delayed Discharges",
-#   LOCALITY,
-#   localities
-# )
+delayed_disch <- read_parquet(paste0(
+  import_folder,
+  "delayed_discharges_msg.parquet"
+)) %>%
+  filter(financial_year <= max_fy) %>%
+  filter(age_group %in% c("65 - 74", "75+")) %>%
+  group_by(financial_year, hscp2019name, hscp_locality, age_group) %>%
+  summarise(
+    dd_people = sum(dd_people),
+    dd_bed_days = sum(dd_bed_days)
+  ) %>%
+  ungroup() %>%
+  mutate(level = "Locality") %>%
+  mutate(year = get_yr_from_fy(financial_year)) %>%
+  filter(!is.na(year)) %>%
+  left_join(
+    populations_filtered,
+    by = c(
+      "financial_year",
+      "year",
+      "hscp2019name",
+      "hscp_locality",
+      "age_group",
+      "level"
+    ),
+    relationship = "one-to-one"
+  ) %>%
+  rename("dd_bd" = "dd_bed_days") %>%
+  aggregate_area_data("dd_bd") 
+
+
+delayed_discharges_area_outputs <- usc_area_level_charts_and_text(
+  delayed_disch,
+  dd_bd,
+  "Delayed Discharge Bed Days",
+  100000,
+  "population aged over 65+",
+  "PHS Delayed Discharges",
+  LOCALITY,
+  localities
+)
+
+
+delayed_discharges_age_outputs <- usc_age_level_charts_and_text(
+  delayed_disch,
+  dd_bd,
+  "Delayed Discharge Bed Days",
+  100000,
+  "population aged over 65+",
+  "PHS Delayed Discharges",
+  LOCALITY,
+  localities
+)
+
+
+
+
+
 
 # 5. Fall Admissions ----
 # _________________________________________________________________________
