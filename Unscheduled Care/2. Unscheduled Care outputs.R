@@ -341,6 +341,25 @@ usc_area_level_charts_and_text <- function(
   LOCALITY,
   locality_lookup
 ) {
+  
+  # 0. Remove Unnecessary Columns ----
+  
+  dataset <- dataset %>% 
+    dplyr::select(
+      
+      year,
+      financial_year,
+      hb2019name,
+      hscp2019name,
+      hscp_locality,
+      age_group,
+      location,
+      level,
+      {{indicator_column}},
+      pop
+      
+    )
+  
   # 1. Get Associated Areas ----
 
   get_associated_areas_output <- get_associated_areas(locality_lookup, LOCALITY)
@@ -421,6 +440,7 @@ usc_area_level_charts_and_text <- function(
   # 6. Get Paragraph To Go Before Time Series Chart Detailing Percentage Changes ----
 
   percentage_change_areas <- indicator_areas %>%
+    dplyr::select(-pop,-year,-{{ indicator_column }}) %>%
     filter(financial_year %in% c(min_fin_year, max_fin_year)) %>%
     pivot_wider(names_from = financial_year, values_from = rate) %>%
     mutate(rate_change = !!sym(max_fin_year) - !!sym(min_fin_year)) %>%
@@ -563,6 +583,26 @@ usc_age_level_charts_and_text <- function(
   LOCALITY,
   locality_lookup
 ) {
+  
+  # 0. Remove Unnecessary Columns ----
+  
+  dataset <- dataset %>% 
+    dplyr::select(
+      
+      year,
+      financial_year,
+      hb2019name,
+      hscp2019name,
+      hscp_locality,
+      age_group,
+      location,
+      level,
+      {{indicator_column}},
+      pop
+      
+    )
+  
+  
   # 1. Get Associated Areas ----
 
   get_associated_areas_output <- get_associated_areas(locality_lookup, LOCALITY)
@@ -602,7 +642,7 @@ usc_age_level_charts_and_text <- function(
     max_fin_year,
     " by age group."
   ) %>%
-    gsub("a & e", "A & E", intro_paragraph_age)
+    gsub("a & e", "A & E", .)
 
   # 4. Create Time Series Chart For Indicator At Area Level ----
 
@@ -610,19 +650,7 @@ usc_age_level_charts_and_text <- function(
     filter(hscp_locality == LOCALITY & level == "Locality") %>%
     mutate(
       rate = round_half_up(denominator_number * ({{ indicator_column }} / pop))
-    ) %>%
-    dplyr::select(
-      financial_year,
-      year,
-      hb2019name,
-      hscp2019name,
-      hscp_locality,
-      age_group,
-      level,
-      {{ indicator_column }},
-      pop,
-      rate
-    )
+    ) 
 
   # 5. Get Data Related To Indicator At Under and Over 65s For PPA Data ----
 
@@ -698,6 +726,7 @@ usc_age_level_charts_and_text <- function(
   # 7. Get Paragraph To Go Before Time Series Chart Detailing Percentage Changes ----
 
   percentage_change_age <- indicator_age %>%
+    dplyr::select(-pop,-year,-{{ indicator_column }}) %>%
     filter(financial_year %in% c(min_fin_year, max_fin_year)) %>%
     pivot_wider(names_from = financial_year, values_from = rate) %>%
     mutate(rate_change = !!sym(max_fin_year) - !!sym(min_fin_year)) %>%
@@ -1212,7 +1241,6 @@ delayed_disch <- read_parquet(paste0(
   filter(age_group %in% c("65 - 74", "75+")) %>%
   group_by(financial_year, hscp2019name, hscp_locality, age_group) %>%
   summarise(
-    dd_people = sum(dd_people),
     dd_bed_days = sum(dd_bed_days)
   ) %>%
   ungroup() %>%
