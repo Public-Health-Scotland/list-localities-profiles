@@ -800,11 +800,11 @@ scotpho_usc_charts_and_text <- function(
 
   get_associated_areas_output <- get_associated_areas(locality_lookup, LOCALITY)
 
-  other_locs <- get_associated_areas_output$other_locs
+  other_locs <<- get_associated_areas_output$other_locs
 
-  HSCP <- get_associated_areas_output$HSCP
+  HSCP <<- get_associated_areas_output$HSCP
 
-  HB <- get_associated_areas_output$HB
+  HB <<- get_associated_areas_output$HB
 
   # 2. Pull Minimum And Maximum Period In Data ----
 
