@@ -6,7 +6,7 @@
 ext_year <- 2025
 
 # Set locality profiles file path
-#lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
+# lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
 import_folder <- paste0(lp_path, "Unscheduled Care/DATA ", ext_year, "/")
 
 ### for testing run global script and locality placeholder below
@@ -15,11 +15,11 @@ import_folder <- paste0(lp_path, "Unscheduled Care/DATA ", ext_year, "/")
 library(scales)
 
 ## Functions
-#source("Master RMarkdown Document & Render Code/Global Script.R")
+# source("Master RMarkdown Document & Render Code/Global Script.R")
 
 ## Define locality
 
-#LOCALITY <- "Inverness"
+# LOCALITY <- "Inverness"
 
 # Set date limit for financial year
 # Unless we're in Q4 use the previous FY as the max
@@ -31,13 +31,10 @@ library(scales)
 
 max_fy <- "2024/25" # TODO Change this to be dynamic and move to general!
 
-max_year <- 2024
-
 ########################## SECTION 2: Lookups & Populations ###############################
 
 aggregate_area_data <- function(data, measure) {
   data %>%
-
     summarise(
       across(
         .cols = any_of(c(measure, "pop")),
@@ -55,7 +52,6 @@ aggregate_area_data <- function(data, measure) {
     ) %>%
     mutate(location = hscp_locality) %>%
     mutate(level = "Locality") %>%
-
     bind_rows(
       summarise(
         filter(., level == "Locality"),
@@ -75,7 +71,6 @@ aggregate_area_data <- function(data, measure) {
         mutate(location = hscp2019name) %>%
         mutate(level = "HSCP")
     ) %>%
-
     bind_rows(
       summarise(
         filter(., level == "Locality"),
@@ -89,7 +84,6 @@ aggregate_area_data <- function(data, measure) {
         mutate(location = hb2019name) %>%
         mutate(level = "HB")
     ) %>%
-
     bind_rows(
       summarise(
         filter(., level == "Locality"),
@@ -375,7 +369,7 @@ usc_area_level_charts_and_text <- function(
     unique()
 
   max_fin_year <- dataset %>%
-    filter(year == max_year) %>%
+    filter(year == max(year)) %>%
     pull(financial_year) %>%
     unique()
 
@@ -450,14 +444,11 @@ usc_area_level_charts_and_text <- function(
     mutate(rate_change = !!sym(max_fin_year) - !!sym(min_fin_year)) %>%
     mutate(perc_change = 100 * (abs(rate_change) / !!sym(min_fin_year))) %>%
     mutate(perc_change = round_half_up(perc_change, digits = 1)) %>%
-
     mutate(
       text = paste0(
         if_else(level %in% c("Locality", "Scotland"), "the ", "The "),
-
         if_else(
           level %in% c("Locality"),
-
           paste0(
             str_to_lower(indicator_name),
             " rate ",
@@ -478,7 +469,6 @@ usc_area_level_charts_and_text <- function(
             " for ",
             max_fin_year
           ),
-
           paste0(
             location,
             " ",
@@ -486,7 +476,6 @@ usc_area_level_charts_and_text <- function(
             " rate"
           )
         ),
-
         " is ",
         format(!!sym(max_fin_year), big.mark = ","),
         ", ",
@@ -555,12 +544,10 @@ usc_area_level_charts_and_text <- function(
   output_list <- list(
     min_fin_year = min_fin_year,
     max_fin_year = max_fin_year,
-
     intro_paragraph_area = intro_paragraph_area,
     area_data = indicator_areas,
     area_ts = indicator_loc_ts,
     area_text = indicator_paragraph_area,
-
     current_locality_rate_area = current_locality_rate_area,
     current_scotland_rate_area = current_scotland_rate_area,
     current_all_areas = current_all_areas
@@ -614,7 +601,7 @@ usc_age_level_charts_and_text <- function(
     unique()
 
   max_fin_year <- dataset %>%
-    filter(year == max_year) %>%
+    filter(year == max(year)) %>%
     pull(financial_year) %>%
     unique()
 
@@ -725,7 +712,6 @@ usc_age_level_charts_and_text <- function(
     mutate(rate_change = !!sym(max_fin_year) - !!sym(min_fin_year)) %>%
     mutate(perc_change = 100 * (abs(rate_change) / !!sym(min_fin_year))) %>%
     mutate(perc_change = round_half_up(perc_change, digits = 1)) %>%
-
     mutate(
       rate_ranking = case_when(
         !!sym(max_fin_year) == max(!!sym(max_fin_year)) ~ "Highest",
@@ -733,25 +719,16 @@ usc_age_level_charts_and_text <- function(
         TRUE ~ "Other"
       )
     ) %>%
-
     mutate(
       text = paste0(
         if_else(rate_ranking == "Highest", "the highest ", "The lowest "),
-
         str_to_lower(indicator_name),
-
         " rate for the ",
-
         hscp_locality,
-
         " locality in ",
-
         max_fin_year,
-
         " is ",
-
         format(!!sym(max_fin_year), big.mark = ","),
-
         " ",
         if_else(
           denominator_number != 100000 | denominator_name != "population",
@@ -767,25 +744,15 @@ usc_age_level_charts_and_text <- function(
           paste0(denominator_name, " "),
           ""
         ),
-
         "for the ",
-
         age_group,
-
         " age group with ",
-
         get_article(perc_change),
-
         " percentage ",
-
         word_change_calc(!!sym(max_fin_year), !!sym(min_fin_year)),
-
         " of ",
-
         perc_change,
-
         "% since ",
-
         min_fin_year
       )
     )
@@ -803,7 +770,6 @@ usc_age_level_charts_and_text <- function(
   output_list <- list(
     min_fin_year = min_fin_year,
     max_fin_year = max_fin_year,
-
     intro_paragraph_age = intro_paragraph_age,
     age_data = indicator_age,
     age_ts = indicator_age_ts,
@@ -906,71 +872,44 @@ scotpho_usc_charts_and_text <- function(
     mutate(rate_change = !!sym(max_period) - !!sym(min_period)) %>%
     mutate(perc_change = 100 * (abs(rate_change) / !!sym(min_period))) %>%
     mutate(perc_change = round_half_up(perc_change, digits = 1)) %>%
-
     mutate(
       text = paste0(
         "the ",
-
         if_else(
           area_type == "Locality",
-
           paste0(
             if_else(aggregate_3_year_indicator, "3-year aggregate ", ""),
-
             str_to_lower(indicator_name),
-
             " rate per ",
-
             format(denominator_number, big.mark = ",", scientific = FALSE),
-
             " population in the ",
-
             area_name,
-
             " ",
-
             area_type,
-
             " for ",
-
             max_period_for_text
           ),
-
           paste0(
             if_else(area_type == "Health board", "The ", "the "),
-
             if_else(
               area_type == "Scotland",
               area_name,
               paste0(area_name, " ", area_type)
             ),
-
             " ",
-
             if_else(aggregate_3_year_indicator, "3-year aggregate ", ""),
-
             " rate "
           )
         ),
-
         " is ",
-
         format(!!sym(max_period), big.mark = ","),
-
         ", ",
-
         get_article(perc_change),
-
         " ",
-
         perc_change,
-
         "% ",
-
         word_change_calc(!!sym(max_period), !!sym(min_period)),
-
         " since ",
-
         min_period_for_text
       )
     )
@@ -1016,7 +955,6 @@ scotpho_usc_charts_and_text <- function(
       current_locality_rate_area = current_locality_rate_area,
       current_scotland_rate_area = current_scotland_rate_area,
       current_all_areas = current_all_areas,
-
       intro_paragraph = indicator_intro,
       indicator_ts = indicator_time_trend,
       indicator_paragraph = indicator_paragraph
@@ -1132,14 +1070,12 @@ bed_days_mh <- read_parquet(paste0(
   mutate(level = "Locality") %>%
   filter(financial_year <= max_fy) %>%
   mutate(year = get_yr_from_fy(financial_year)) %>%
-
   complete(
     nesting(financial_year, year),
     nesting(hscp2019name, hscp_locality, level),
     age_group
   ) %>%
   replace_na(list(bed_days = 0)) %>%
-
   left_join(
     populations_filtered,
     by = c(
@@ -1153,7 +1089,6 @@ bed_days_mh <- read_parquet(paste0(
     relationship = "one-to-one"
   ) %>%
   rename("bd" = "bed_days") %>%
-
   aggregate_area_data("bd")
 
 
@@ -1349,7 +1284,6 @@ readmissions <- read_parquet(paste0(
   mutate(level = "Locality") %>%
   mutate(year = get_yr_from_fy(financial_year)) %>%
   filter(!is.na(year)) %>%
-
   left_join(
     populations_filtered,
     by = c(
@@ -1362,9 +1296,7 @@ readmissions <- read_parquet(paste0(
     ),
     relationship = "one-to-one"
   ) %>%
-
   dplyr::select(-pop) %>%
-
   rename("pop" = "discharges") %>% # We want number of discharges to be the population of comparison for this indicator
 
   aggregate_area_data("read_28")
