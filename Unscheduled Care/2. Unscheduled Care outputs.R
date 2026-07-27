@@ -423,13 +423,37 @@ usc_area_level_charts_and_text <- function(
     ) %>%
     area_trend_usc(
       measure = "rate",
-      plot_title = if_else(denominator_number != 100000 | denominator_name != "population",
-        paste(indicator_name, "per", format(denominator_number, big.mark = ",", scientific = FALSE), denominator_name, "over time by residence"),
+      plot_title = if_else(
+        denominator_number != 100000 | denominator_name != "population",
+        paste(
+          indicator_name,
+          "per",
+          format(denominator_number, big.mark = ",", scientific = FALSE),
+          denominator_name,
+          "over time by residence"
+        ),
         paste(indicator_name, "per 100,000 over time by residence")
       ),
-      yaxis_title = if_else(denominator_number != 100000 | denominator_name != "population",
-        paste(if_else(indicator_name == "Potentially Preventable Admissions (PPA)", "PPA", indicator_name), "\nper", format(denominator_number, big.mark = ",", scientific = FALSE), denominator_name),
-        paste(if_else(indicator_name == "Potentially Preventable Admissions (PPA)", "PPA", indicator_name), "rate\n per 100,000 population")
+      yaxis_title = if_else(
+        denominator_number != 100000 | denominator_name != "population",
+        paste(
+          if_else(
+            indicator_name == "Potentially Preventable Admissions (PPA)",
+            "PPA",
+            indicator_name
+          ),
+          "\nper",
+          format(denominator_number, big.mark = ",", scientific = FALSE),
+          denominator_name
+        ),
+        paste(
+          if_else(
+            indicator_name == "Potentially Preventable Admissions (PPA)",
+            "PPA",
+            indicator_name
+          ),
+          "rate\n per 100,000 population"
+        )
       ),
       source = paste("Source:", source)
     )
@@ -693,12 +717,30 @@ usc_age_level_charts_and_text <- function(
   indicator_age_ts <- indicator_age %>%
     age_group_trend_usc(
       measure = "rate",
-      plot_title = if_else(denominator_number != 100000 | denominator_name != "population",
-        paste(indicator_name, "per", format(denominator_number, big.mark = ",", scientific = FALSE), denominator_name, "over time by age group\nfor", LOCALITY),
-        paste(indicator_name, "per 100,000 over time by age group\nfor", LOCALITY)
+      plot_title = if_else(
+        denominator_number != 100000 | denominator_name != "population",
+        paste(
+          indicator_name,
+          "per",
+          format(denominator_number, big.mark = ",", scientific = FALSE),
+          denominator_name,
+          "over time by age group\nfor",
+          LOCALITY
+        ),
+        paste(
+          indicator_name,
+          "per 100,000 over time by age group\nfor",
+          LOCALITY
+        )
       ),
-      yaxis_title = if_else(denominator_number != 100000 | denominator_name != "population",
-        paste(indicator_name, "rate\nper", format(denominator_number, big.mark = ",", scientific = FALSE), denominator_name),
+      yaxis_title = if_else(
+        denominator_number != 100000 | denominator_name != "population",
+        paste(
+          indicator_name,
+          "rate\nper",
+          format(denominator_number, big.mark = ",", scientific = FALSE),
+          denominator_name
+        ),
         paste(indicator_name, "rate\nper 100,000 population")
       ),
       source = paste("Source:", source)
