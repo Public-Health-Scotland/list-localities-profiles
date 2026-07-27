@@ -172,7 +172,7 @@ msg_dd <- msg_dd_raw %>%
   mutate(financial_year = phsmethods::extract_fin_year(month)) %>%
   mutate(hscp_locality = gsub("&", "and", locality, fixed = TRUE)) %>%
   # this data set has some data with partnership but no locality, need to tidy names
-  mutate(hscp2019name = gsub("&", "and", council, fixed = TRUE)) %>%
+  mutate(hscp2019name = gsub("&", "and", derived_partnership, fixed = TRUE)) %>%
   mutate(hscp2019name = ptsp(hscp2019name)) %>%
   group_by(
     financial_year,
@@ -182,7 +182,6 @@ msg_dd <- msg_dd_raw %>%
     reason_for_delay
   ) %>%
   summarise(
-    dd_people = n(),
     dd_bed_days = sum(delayed_bed_days)
   ) %>%
   ungroup()
