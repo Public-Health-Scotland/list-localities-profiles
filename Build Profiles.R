@@ -29,7 +29,8 @@ lookup <- read_in_localities()
 # For a larger test, use the below to produce profiles for HSCPs likely to cause issues.
 # source("Master RMarkdown Document & Render Code/find_hscp_outliers.R")
 # hscp_list <- outlier_hscps
-hscp_list <- unique(lookup$hscp2019name)
+#hscp_list <- unique(lookup$hscp2019name)
+hscp_list <- c("West Lothian","Angus")
 
 # NOTE - This checks that it exactly matches the lookup
 stopifnot(all(hscp_list %in% unique(lookup[["hscp2019name"]])))
@@ -141,6 +142,10 @@ for (HSCP in hscp_list) {
       "OFFICIAL_SENSITIVE_VMO"
     )
 
+    if (!dir_exists(path_dir(final_document_path))) {
+    dir_create(path_dir(final_document_path), recurse = TRUE)
+    }
+    
     if (file_exists(final_document_path)) {
       file_delete(final_document_path)
     }
