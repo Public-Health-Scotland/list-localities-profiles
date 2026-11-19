@@ -15,9 +15,8 @@ rlang::check_installed(
 # Source in functions code
 source("Master RMarkdown Document & Render Code/Global Script.R")
 
-# Set file path
-lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
-output_dir <- path(lp_path, "Profiles Output Apr26")
+# Set the output file path
+output_dir <- path(lp_path, "Profiles Output")
 
 
 # Below creates locality list of all the localities in a chosen HSCP
@@ -29,7 +28,8 @@ lookup <- read_in_localities()
 # For a larger test, use the below to produce profiles for HSCPs likely to cause issues.
 # source("Master RMarkdown Document & Render Code/find_hscp_outliers.R")
 # hscp_list <- outlier_hscps
-hscp_list <- unique(lookup$hscp2019name)
+#hscp_list <- unique(lookup$hscp2019name)
+hscp_list <- c("West Lothian", "Angus")
 
 # NOTE - This checks that it exactly matches the lookup
 stopifnot(all(hscp_list %in% unique(lookup[["hscp2019name"]])))
@@ -49,10 +49,10 @@ dir_copy("lp_bookdown", local_lp_bookdown)
 cover_page_path <- path(
   lp_path,
   "templates",
-  "phs-mngtinfo-cover.docx"
+  "phs-mngtinfo-coverV2.docx"
 )
 
-tmp_cover_page_path <- path(tmp_inputs_dir, "phs-mngtinfo-cover.docx")
+tmp_cover_page_path <- path(tmp_inputs_dir, "phs-mngtinfo-coverV2.docx")
 file_copy(cover_page_path, tmp_cover_page_path, overwrite = TRUE)
 
 local_lp_bookdown <- file_temp(pattern = "lp_bookdown-")
@@ -140,6 +140,10 @@ for (HSCP in hscp_list) {
       tmp_document_path,
       "OFFICIAL_SENSITIVE_VMO"
     )
+
+    if (!dir_exists(path_dir(final_document_path))) {
+      dir_create(path_dir(final_document_path), recurse = TRUE)
+    }
 
     if (file_exists(final_document_path)) {
       file_delete(final_document_path)
