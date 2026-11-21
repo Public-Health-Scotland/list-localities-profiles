@@ -14,8 +14,8 @@ library(reshape2)
 ## Final document will loop through a list of localities
 # Create placeholder for for loop
 #LOCALITY <- "Inverness"
-# LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
-# LOCALITY <- "Ayr North and Former Coalfield Communities"
+#LOCALITY <- "Stirling City with the Eastern Villages Bridge of Allan and Dunblane"
+#LOCALITY <- "Wigtownshire"
 
 ########################## SECTION 2: Data Imports ###############################
 
@@ -39,9 +39,9 @@ pop_min_year <- pop_max_year - 5
 pop_10y_groups <- pop_raw_data |>
   filter(
     hscp_locality == LOCALITY,
-    year == max(year)
+    year %in% c(max(year), max(year) - 5)
   ) |>
-  select(sex, starts_with("age")) |>
+  select(year, sex, starts_with("age")) |>
   pivot_longer(
     cols = starts_with("age"),
     names_to = "age_label",
@@ -58,11 +58,17 @@ pop_10y_groups <- pop_raw_data |>
       by = 10,
       as_factor = TRUE
     ),
-    sex = factor(sex, levels = c("F", "M"), labels = c("Female", "Male"))
+    sex = factor(
+      sex,
+      levels = c("F", "M"),
+      labels = c("Female", "Male")
+    )
   ) |>
-  group_by(sex, age_group) |>
-  summarise(pop = sum(pop)) |>
-  ungroup()
+  group_by(year, sex, age_group) |>
+  summarise(
+    pop = sum(pop, na.rm = TRUE),
+    .groups = "drop"
+  )
 
 # compute age bands
 pop_raw_data$"Pop0_4" <- rowSums(subset(pop_raw_data, select = age0:age4))
@@ -164,24 +170,27 @@ pop_breakdown <- pops %>%
     )
   )
 
+pop_pyramid_data <- pop_10y_groups |>
+  filter(year == max(year))
+
 pop_pyramid <- ggplot(
-  pop_10y_groups,
+  pop_pyramid_data,
   aes(
     y = age_group,
     fill = sex
   )
 ) +
   geom_col(
-    data = subset(pop_10y_groups, sex == "Female"),
+    data = subset(pop_pyramid_data, sex == "Female"),
     aes(x = pop * -1)
   ) +
   geom_col(
-    data = subset(pop_10y_groups, sex == "Male"),
+    data = subset(pop_pyramid_data, sex == "Male"),
     aes(x = pop)
   ) +
   scale_x_continuous(
     labels = \(x) label_comma()(abs(x)),
-    limits = max(pop_10y_groups$pop) * c(-1, 1),
+    limits = max(pop_pyramid_data$pop) * c(-1, 1),
     breaks = breaks_extended()
   ) +
   scale_fill_manual(values = palette) +
@@ -196,29 +205,33 @@ pop_pyramid <- ggplot(
   )
 
 # Population Structure Changes
-hist_pop_breakdown <- pops %>%
-  filter(
-    hscp_locality == LOCALITY,
-    year %in% c(max(year), max(year) - 5)
-  ) %>%
-  select(-hscp_locality, -total_pop, -hscp2019name, -Pop65Plus) %>%
-  reshape2::melt(id.vars = c("sex", "year")) %>%
+hist_pop_breakdown <- pop_10y_groups |>
+  pivot_wider(
+    names_from = year,
+    values_from = pop,
+    names_prefix = "pop_"
+  ) |>
   mutate(
-    variable = str_replace_all(
-      variable,
-      c("Pop" = fixed(""), "Plus" = fixed("+"), "_" = fixed("-"))
-    )
-  ) %>%
-  rename(Gender = sex, Age = variable, Population = value) %>%
-  group_by(Gender, Age) %>%
-  arrange(year) %>%
-  summarise(
-    change = (last(Population) - first(Population)) / first(Population)
-  ) %>%
-  ungroup() %>%
-  mutate(Gender = ifelse(Gender == "F", "Female", "Male"))
+    change = (pop_2024 - pop_2019) / pop_2019
+  ) |>
+  select(
+    Gender = sex,
+    Age = age_group,
+    change
+  )
 
-ord <- c("0-4", "5-17", "18-44", "45-64", "65-74", "75-84", "85+")
+ord <- c(
+  "0-9",
+  "10-19",
+  "20-29",
+  "30-39",
+  "40-49",
+  "50-59",
+  "60-69",
+  "70-79",
+  "80-89",
+  "90+"
+)
 
 hist_pop_change <- ggplot(
   hist_pop_breakdown,
