@@ -221,8 +221,16 @@ hist_pop_breakdown <- pop_10y_groups |>
   )
 
 ord <- c(
-  "0-9", "10-19", "20-29", "30-39", "40-49",
-  "50-59", "60-69", "70-79", "80-89", "90+"
+  "0-9",
+  "10-19",
+  "20-29",
+  "30-39",
+  "40-49",
+  "50-59",
+  "60-69",
+  "70-79",
+  "80-89",
+  "90+"
 )
 
 hist_pop_change <- ggplot(
@@ -252,7 +260,6 @@ hist_pop_change <- ggplot(
     ),
     caption = "Source: National Records Scotland"
   )
-
 
 
 ######################## SECTION 4: Population over time ############################
