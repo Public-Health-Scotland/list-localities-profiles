@@ -19,7 +19,7 @@
 
 ### Appendix 1: Indicator Definitions
 
-```{r echo = FALSE, fig.width = 4, fig.height = 10, ft.split = TRUE}
+```{r appendix-1}
 flextable(indicator_defs, theme_fun = NULL) |>
   lp_flextable_theme() |>
   bold(j = 1, part = "body") |>
@@ -30,7 +30,7 @@ flextable(indicator_defs, theme_fun = NULL) |>
 
 ### Appendix 2: Date of Indicator Data Extractions
 
-```{r echo = FALSE, fig.width = 4, fig.height = 10, ft.split = TRUE}
+```{r appendix-2}
 flextable(dates_extract, theme_fun = NULL) |>
   lp_flextable_theme() |>
   bold(j = 1, part = "body") |>
@@ -41,7 +41,7 @@ flextable(dates_extract, theme_fun = NULL) |>
 
 ### Appendix 3: Conditions included as Potentially Preventable Admissions (PPAs)
 
-```{r echo = FALSE, fig.width = 7, fig.height = 10, warning = FALSE}
+```{r appendix-3, warning = FALSE}
 flextable(ppa_def, theme_fun = NULL) |>
   lp_flextable_theme() |>
   bold(j = 1, part = "body") |>
