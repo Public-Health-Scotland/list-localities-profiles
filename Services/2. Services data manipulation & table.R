@@ -32,7 +32,7 @@ lookup <- read_in_localities(dz_level = TRUE)
 lookup2 <- read_in_localities()
 
 # This will set the HSCP for the chosen locality. Testing only.
-# HSCP <- get_hscp_from_locality(LOCALITY, lookup)
+# HSCP <- get_hscp_from_locality(LOCALITY, lookup2)
 
 # Get number of localities in HSCP
 n_loc <- count_localities(lookup2, HSCP)
