@@ -206,19 +206,17 @@ pop_pyramid <- ggplot(
 
 # Population Structure Changes
 hist_pop_breakdown <- pop_10y_groups |>
-  pivot_wider(
-    names_from = year,
-    values_from = pop,
-    names_prefix = "pop_"
+  arrange(year) |>
+  summarise(
+    # Deal with pops being 0 e.g. small area 90+
+    change = if (n() == 2L && isTRUE(first(pop) > 0)) {
+      (last(pop) - first(pop)) / first(pop)
+    } else {
+      NA_real_
+    },
+    .by = c(sex, age_group)
   ) |>
-  mutate(
-    change = (pop_2024 - pop_2019) / pop_2019
-  ) |>
-  select(
-    Gender = sex,
-    Age = age_group,
-    change
-  )
+  select(Gender = sex, Age = age_group, change)
 
 ord <- c(
   "0-9",
