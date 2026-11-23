@@ -40,10 +40,10 @@ max_fy <- "2024/25" # TODO Change this to be dynamic and move to general!
 localities <- read_in_localities()
 
 # This will set the HSCP for the chosen locality. Testing only.
-# HSCP <- get_hscp_from_locality(LOCALITY, lookup)
+# HSCP <- get_hscp_from_locality(LOCALITY, localities)
 
 # This will set the HB
-HB <- get_hb_from_locality(LOCALITY, lookup)
+HB <- get_hb_from_locality(LOCALITY, localities)
 
 # Determine other localities based on LOCALITY object
 other_locs <- localities %>%
