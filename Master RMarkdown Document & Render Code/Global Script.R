@@ -346,7 +346,6 @@ read_in_pop_proj_raw <- function() {
 read_in_pop_proj <- memoise(read_in_pop_proj_raw)
 
 ## Function to read and prepare HSCP locality shapefile ----
-# Argument HSCP: Name of the HSCP, e.g. "Highland"
 # Returns locality polygons for that HSCP in EPSG:4326 with wrapped names
 read_in_all_hscp_locality_shapes_raw <- function() {
   lookups_dir <- fs::path("/conf/linkage/output/lookups/Unicode")
