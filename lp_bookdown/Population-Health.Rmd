@@ -128,7 +128,7 @@ ftext("*COPD: Chronic Obstructive Pulmonary Disease", superscript_style)
 ```
 
 
-```{r top-five-physical-ltcs-table, fig.width = 7.5, fig.height = 2.5}
+```{r top-five-physical-ltcs-table}
 ftext(glue("Table {table_num}: Top five physical LTCs in, {LOCALITY} Locality as a percentage of the population for {latest_year_ltc}, compared to {HSCP} HSCP and Scotland."), table_heading_style)
 
 top5_ltc_table
