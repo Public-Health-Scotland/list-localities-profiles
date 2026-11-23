@@ -4,8 +4,6 @@ library(openxlsx)
 
 rm(list = ls())
 
-# system unmask function so files have read-write permissions
-Sys.umask("006")
 
 # Set file path
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"

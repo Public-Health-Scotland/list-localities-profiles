@@ -1245,7 +1245,7 @@ delayed_disch <- read_parquet(paste0(
   filter(age_group %in% c("65 - 74", "75+")) %>%
   group_by(financial_year, hscp2019name, hscp_locality) %>%
   summarise(
-    dd_people = sum(dd_people),
+    #dd_people = sum(dd_people),
     dd_bed_days = sum(dd_bed_days)
   ) %>%
   ungroup()

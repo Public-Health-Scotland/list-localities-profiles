@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref || github.ref }}
           fetch-depth: 0
@@ -95,7 +95,7 @@ jobs:
 
       - name: Cache styler results
         if: steps.changed_rmd.outputs.rmd_changed == 'true'
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ steps.styler-location.outputs.location }}
           key: ${{ runner.os }}-styler-${{ hashFiles('**/*.Rmd', '**/*.R') }}

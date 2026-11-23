@@ -9,8 +9,6 @@
 # Long Term Conditions data for Statistical Disclosure Control - SDC.
 rm(list = ls())
 
-# Make sure files have read-write permissions
-Sys.umask("006")
 
 # Load Global packages and functions
 source("Master RMarkdown Document & Render Code/Global Script.R")
