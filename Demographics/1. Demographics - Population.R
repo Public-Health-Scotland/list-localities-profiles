@@ -411,72 +411,56 @@ change_point <- ifelse(
   change_point
 )
 
-pop_change <- ifelse(
-  pop_latest > pop_last,
-  "been rising since",
-  ifelse(pop_latest == pop_last, "remained the same as", "been falling since")
+pop_change <- case_when(
+  pop_latest > pop_last ~ "been rising since",
+  pop_latest == pop_last ~ "remained the same as",
+  pop_latest < pop_last ~ "been falling since",
+  .default = NA_character_
 )
 
-pop_graph_text <- ifelse(
-  pval < 0.05,
-
-  # if the pvalue is less than .05 then return:
-  paste0(
-    "The population has been ",
-
-    # determine whether its rising or falling:
-    ifelse(coef < 0, "falling", "rising"),
-
-    # could have trend that has changed in recent years
-    ifelse(
-      coef < 0 & pop_latest > pop_last,
-      " in general, however it has risen since last year.",
-      ifelse(
-        coef > 0 & pop_latest < pop_last,
-        " in general, however it has fallen since last year.",
-        "."
-      )
-    )
+pop_graph_text <- case_when(
+  pval < 0.05 & coef < 0 & pop_latest > pop_last ~
+    "The population has been falling in general, however it has risen since last year.",
+  pval < 0.05 & coef >= 0 & pop_latest < pop_last ~
+    "The population has been rising in general, however it has fallen since last year.",
+  pval < 0.05 & coef < 0 ~ "The population has been falling.",
+  pval < 0.05 & coef >= 0 ~ "The population has been rising.",
+  pval >= 0.05 ~ glue(
+    "There is no significant linear trend in population. ",
+    "However, it has {pop_change} {change_point}."
   ),
-
-  # if the pvalue is not significant then return:
-  paste0(
-    paste(
-      "There is no significant linear trend in population.",
-      "However, it has",
-      pop_change,
-      change_point
-    ),
-    "."
-  )
-) %>%
-  paste()
+  .default = NA_character_
+)
 
 ## Pop projection
-pop_proj_change <- 100 *
-  abs(pop_proj_dat[1, 2] - pop_proj_dat[10, 2]) /
-  pop_proj_dat[1, 2]
-pop_proj_change <- round_half_up(pop_proj_change, 1) %>% as.character()
+# Select the first and last projection years rather than fixed row numbers.
+pop_proj_min_year <- min(pop_proj_dat$year)
+pop_proj_max_year <- max(pop_proj_dat$year)
+pop_proj_min_pop <- pop_proj_dat$pop[
+  match(pop_proj_min_year, pop_proj_dat$year)
+]
+pop_proj_max_pop <- pop_proj_dat$pop[
+  match(pop_proj_max_year, pop_proj_dat$year)
+]
 
-pop_proj_text <- paste(
-  "The population in",
-  LOCALITY,
-  "is estimated to",
-  ifelse(
-    pop_proj_dat[1, 2] < pop_proj_dat[10, 2],
-    paste0("increase by ", pop_proj_change, "%"),
-    ifelse(
-      pop_proj_dat[1, 2] == pop_proj_dat[10, 2],
-      "remain the same",
-      paste0("decrease by ", pop_proj_change, "%")
-    )
-  ),
-  "from ",
-  pop_proj_dat[1, 1],
-  " to ",
-  pop_proj_dat[10, 1]
+# Determine increase/decrease from counts before rounding the percentage.
+pop_proj_change <- pop_proj_max_pop - pop_proj_min_pop
+pop_proj_change_pct <- round_half_up(
+  100 * abs(pop_proj_change) / pop_proj_min_pop,
+  1
 )
 
+pop_proj_direction <- case_when(
+  pop_proj_change > 0 ~ glue("increase by {pop_proj_change_pct}%"),
+  pop_proj_change < 0 ~ glue("decrease by {pop_proj_change_pct}%"),
+  pop_proj_change == 0 ~ "remain the same",
+  .default = NA_character_
+)
+
+pop_proj_text <- glue(
+  "The population in {LOCALITY} is estimated to ",
+  "{pop_proj_direction} from {pop_proj_min_year} to {pop_proj_max_year}"
+)
 
 rm(
   reg,
@@ -487,7 +471,13 @@ rm(
   change_point,
   pop_10y_groups,
   pop_change,
+  pop_proj_min_year,
+  pop_proj_max_year,
+  pop_proj_min_pop,
+  pop_proj_max_pop,
   pop_proj_change,
+  pop_proj_change_pct,
+  pop_proj_direction,
   locality_pop_trend,
   loc_pops,
   hscp_pop_proj_weight,
