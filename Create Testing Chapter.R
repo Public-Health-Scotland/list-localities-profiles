@@ -15,6 +15,7 @@ source("Master RMarkdown Document & Render Code/Global Script.R")
 chapter_oi <- c("Demographics.Rmd")
 stopifnot(chapter_oi %in% path_file(dir_ls("lp_bookdown")))
 LOCALITY <- "Falkirk West"
+HSCP <- get_hscp_from_locality(LOCALITY)
 
 # Output Directory
 lp_path <- "/conf/LIST_analytics/West Hub/02 - Scaled Up Work/RMarkdown/Locality Profiles/"
