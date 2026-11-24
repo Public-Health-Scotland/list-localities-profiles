@@ -32,7 +32,7 @@ superscript_style <- fp_text(
 ```
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, out.width = "6.2in")
 options(kableExtra.auto_format = FALSE)
 
 figure_num <- 1 # object for figure numbers
