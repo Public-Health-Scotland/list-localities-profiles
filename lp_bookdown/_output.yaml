@@ -1,4 +1,7 @@
-bookdown::word_document2:
+officedown::rdocx_document:
+  base_format: bookdown::word_document2
+  plots:
+    style: Normal
   toc: yes
   toc_depth: 1
   number_sections: no

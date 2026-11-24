@@ -235,6 +235,24 @@ count_localities <- function(locality_lookup, hscp_name) {
   return(sum(locality_lookup[["hscp2019name"]] == hscp_name))
 }
 
+get_hscp_from_locality <- function(
+  locality_name,
+  localities_lookup = read_in_localities()
+) {
+  localities_lookup[["hscp2019name"]][
+    localities_lookup[["hscp_locality"]] == locality_name
+  ]
+}
+
+get_hb_from_locality <- function(
+  locality_name,
+  localities_lookup = read_in_localities()
+) {
+  localities_lookup[["hb2019name"]][
+    localities_lookup[["hscp_locality"]] == locality_name
+  ]
+}
+
 ## Function to read in latest SPD file ----
 
 # No arguments needed, just use read_in_latest_postcodes()
@@ -373,7 +391,6 @@ clean_scotpho_dat <- function(data) {
 # Data must first be cleaned using clean_scotpho_dat function
 # Uses variable "period_short" which must be created - this is a shortened version of the "period" column in ScotPHO data
 # ex: mutate(period_short = gsub("to", "-", substr(period, 1, 12)))
-# Uses objects "LOCALITY", "HSCP" and "HB" to filter - these must be specified earlier in script
 
 # Arguments:
 # data: data to use for chart
@@ -388,9 +405,13 @@ scotpho_time_trend <- function(
   xaxis_title,
   yaxis_title,
   string_wrap,
+  locality,
   rotate_xaxis = FALSE,
   trend_years = 10
 ) {
+  hscp <- get_hscp_from_locality(locality)
+  hb <- get_hb_from_locality(locality)
+
   # rotate axis criteria if T/F
   if (rotate_xaxis) {
     rotation <- element_text(angle = 45, hjust = 1)
@@ -401,9 +422,9 @@ scotpho_time_trend <- function(
   # filter and reorder data
   data |>
     filter(
-      (area_name == LOCALITY & area_type == "Locality") |
-        (area_name == HSCP & area_type == "HSCP") |
-        area_name == HB |
+      (area_name == .env$locality & area_type == "Locality") |
+        (area_name == .env$hscp & area_type == "HSCP") |
+        area_name == .env$hb |
         area_name == "Scotland"
     ) |>
     filter(year >= max(year) - trend_years) |>
@@ -462,8 +483,12 @@ scotpho_time_trend_HSCP <- function(
   xaxis_title,
   yaxis_title,
   string_wrap,
+  locality,
   rotate_xaxis = FALSE
 ) {
+  hscp <- get_hscp_from_locality(locality)
+  hb <- get_hb_from_locality(locality)
+
   # rotate axis criteria if T/F
   if (rotate_xaxis) {
     rotation <- element_text(angle = 45, hjust = 1)
@@ -474,8 +499,8 @@ scotpho_time_trend_HSCP <- function(
   # filter and reorder data
   data |>
     filter(
-      (area_name == HSCP & area_type == "HSCP") |
-        area_name == HB |
+      (area_name == .env$hscp & area_type == "HSCP") |
+        area_name == .env$hb |
         area_name == "Scotland"
     ) |>
     filter(year >= max(year) - 10) |>
@@ -531,26 +556,29 @@ scotpho_time_trend_HSCP <- function(
 # Creates a horizontal bar chart comparing the last time period of data across
 # all localities in a partnership, the HSCP, HB, and Scotland
 # Data must first be cleaned using clean_scotpho_dat function
-# Uses object "LOCALITY" and vector "other_locs" (other localities in HSCP) to filter
-# these must be specified earlier in script
 
 # Arguments:
 # data: data to use for chart
 # chart_title, xaxis_title : titles for chart and x axis
 
-scotpho_bar_chart <- function(data, chart_title, xaxis_title) {
+scotpho_bar_chart <- function(data, chart_title, xaxis_title, locality) {
+  localities_lookup <- read_in_localities()
+  hscp <- get_hscp_from_locality(locality, localities_lookup)
+  hb <- get_hb_from_locality(locality, localities_lookup)
+  hscp_localities <- localities_lookup[["hscp_locality"]][
+    localities_lookup[["hscp2019name"]] == hscp
+  ]
+
   data_for_plot <- data |>
     filter(year == max(year)) |>
     filter(
-      (area_name %in%
-        c(LOCALITY, other_locs$hscp_locality) &
-        area_type == "Locality") |
-        (area_name == HSCP & area_type == "HSCP") |
-        area_name == HB |
+      (area_name %in% .env$hscp_localities & area_type == "Locality") |
+        (area_name == .env$hscp & area_type == "HSCP") |
+        area_name == .env$hb |
         area_name == "Scotland"
     ) |>
     mutate(
-      text_highlight = area_name == LOCALITY,
+      text_highlight = area_name == .env$locality,
       area_type = factor(
         area_type,
         levels = c("Locality", "HSCP", "Health board", "Scotland")
@@ -585,17 +613,25 @@ scotpho_bar_chart <- function(data, chart_title, xaxis_title) {
 }
 
 
-scotpho_bar_chart_HSCP <- function(data, chart_title, xaxis_title) {
+scotpho_bar_chart_HSCP <- function(data, chart_title, xaxis_title, locality) {
+  localities_lookup <- read_in_localities()
+  hscp <- get_hscp_from_locality(locality, localities_lookup)
+  hb <- get_hb_from_locality(locality, localities_lookup)
+  hscp_localities <- localities_lookup[["hscp_locality"]][
+    localities_lookup[["hscp2019name"]] == hscp &
+      localities_lookup[["hscp_locality"]] != locality
+  ]
+
   data_for_plot <- data |>
     filter(year == max(year)) |>
     filter(
-      (area_name %in% c(other_locs$hscp_locality) & area_type == "Locality") |
-        (area_name == HSCP & area_type == "HSCP") |
-        area_name == HB |
+      (area_name %in% .env$hscp_localities & area_type == "Locality") |
+        (area_name == .env$hscp & area_type == "HSCP") |
+        area_name == .env$hb |
         area_name == "Scotland"
     ) |>
     mutate(
-      text_highlight = area_name == HSCP,
+      text_highlight = area_name == .env$hscp,
       area_type = factor(
         area_type,
         levels = c("Locality", "HSCP", "Health board", "Scotland")
@@ -892,23 +928,20 @@ create_testing_chapter <- function(chapters_oi, locality_oi, output_directory) {
     "{LOCALITY} - Locality Profile {chapters_oi_name} Practice Chapter.docx"
   )
 
-  # render test chapter
-  bookdown::render_book(
+  document_path <- bookdown::render_book(
     input = "lp_bookdown",
     output_dir = output_dir,
     output_file = output_doc_name,
     new_session = FALSE,
-    output_format = "bookdown::word_document2",
+    output_format = "officedown::rdocx_document",
     config_file = path(tempdir(), "_practice_chapter_temp.yaml")
   )
-
-  document_path <- path(output_dir, output_doc_name)
 
   if ("Summary-Table.Rmd" %in% chapters_oi) {
     orient(document_path)
   }
 
-  return(document_path)
+  document_path
 }
 
 
@@ -949,4 +982,186 @@ orient <- function(document_path) {
   }
 
   print(doc, target = document_path)
+}
+
+#### Word Locality Profile generation #### ----
+
+# Stage the completed file before replacing any existing profile.
+move_profile_to_stats <- function(document_path, output_path) {
+  staged_path <- tempfile(
+    pattern = ".lp-profile-",
+    tmpdir = fs::path_dir(output_path),
+    fileext = ".docx"
+  )
+  on.exit(unlink(staged_path), add = TRUE)
+
+  fs::file_copy(document_path, staged_path)
+  fs::file_chown(staged_path, group_id = "LIST_analytics")
+
+  if (!file.rename(staged_path, output_path)) {
+    stop("Could not replace the existing profile: ", output_path, call. = FALSE)
+  }
+
+  output_path
+}
+
+build_profiles <- function(
+  localities,
+  output_dir,
+  progress = function(event) NULL
+) {
+  if (!fs::dir_exists(output_dir)) {
+    stop("Output directory does not exist: ", output_dir, call. = FALSE)
+  }
+  if (!fs::file_access(output_dir, mode = c("write", "execute"))) {
+    stop("Output directory is not writable: ", output_dir, call. = FALSE)
+  }
+
+  localities <- unique(localities)
+  lookup <- read_in_localities()
+
+  unknown_localities <- setdiff(localities, lookup$hscp_locality)
+  if (length(unknown_localities) > 0) {
+    stop("Unknown localities: ", toString(unknown_localities), call. = FALSE)
+  }
+
+  locality_lookup <- dplyr::distinct(lookup, hscp_locality, hscp2019name)
+
+  profiles <- tibble::tibble(locality = localities) |>
+    dplyr::left_join(locality_lookup, by = c(locality = "hscp_locality")) |>
+    dplyr::mutate(
+      locality = locality,
+      hscp = hscp2019name,
+      output_filename = paste0(
+        gsub("[/\\\\]", "-", locality),
+        " - Locality Profile.docx"
+      ),
+      .keep = "none"
+    )
+
+  # Share memoised readers without sharing locality-specific variables.
+  common_environment <- new.env(parent = environment(build_profiles))
+  common_environment$lookup <- lookup
+  common_environment$output_dir <- output_dir
+  common_environment$hscp_list <- unique(profiles$hscp)
+
+  temp_root <- fs::file_temp(pattern = "lp-profile-build-")
+  fs::dir_create(temp_root)
+  on.exit(fs::dir_delete(temp_root), add = TRUE)
+
+  inputs_dir <- fs::path(temp_root, "inputs")
+  documents_dir <- fs::path(temp_root, "docs")
+  fs::dir_create(c(inputs_dir, documents_dir))
+
+  bookdown_dir <- fs::path(inputs_dir, "lp_bookdown")
+  fs::dir_copy("lp_bookdown", bookdown_dir)
+
+  cover_page <- fs::path(lp_path, "templates", "phs-mngtinfo-coverV2.docx")
+  temp_cover_page <- fs::path(inputs_dir, "phs-mngtinfo-coverV2.docx")
+  fs::file_copy(cover_page, temp_cover_page)
+
+  section_scripts <- c(
+    "Demographics/1. Demographics - Population.R",
+    "Demographics/2. Demographics - SIMD.R",
+    "Households/Households Code.R",
+    "Services/2. Services data manipulation & table.R",
+    "Services/3. Service HSCP map.R",
+    "Population Health/3. Population Health Outputs.R",
+    "Lifestyle & Risk Factors/2. Lifestyle & Risk Factors Outputs.R",
+    "Unscheduled Care/2. Unscheduled Care outputs.R",
+    "Master RMarkdown Document & Render Code/Tables for Appendix.R"
+  )
+
+  generate_profile <- function(locality_profile) {
+    locality_environment <- new.env(parent = common_environment)
+    locality_environment$HSCP <- locality_profile$hscp
+    locality_environment$LOCALITY <- locality_profile$locality
+
+    # Keep nested source() calls in the current locality environment.
+    locality_environment$source <- function(file, ...) {
+      base::source(file, local = locality_environment, ...)
+    }
+
+    if (fs::dir_exists(documents_dir)) {
+      fs::dir_delete(documents_dir)
+    }
+    fs::dir_create(documents_dir)
+
+    purrr::walk(section_scripts, sys.source, envir = locality_environment)
+
+    output_filename <- locality_profile$output_filename
+    main_title <- sub("\\.docx$", "", output_filename)
+    output_document <- fs::path(output_dir, output_filename)
+
+    temp_document <- bookdown::render_book(
+      input = bookdown_dir,
+      output_dir = documents_dir,
+      output_file = output_filename,
+      new_session = FALSE,
+      output_format = "officedown::rdocx_document",
+      config_file = "_bookdown.yaml",
+      envir = locality_environment
+    )
+
+    orient(temp_document)
+    add_cover_page(temp_document, temp_cover_page, main_title)
+    phstemplates::apply_sensitivity_label(
+      temp_document,
+      "OFFICIAL_SENSITIVE_VMO"
+    )
+
+    move_profile_to_stats(temp_document, output_document)
+  }
+
+  generate_profile_safely <- purrr::safely(generate_profile)
+
+  results <- purrr::map(seq_len(nrow(profiles)), function(result_num) {
+    locality_profile <- profiles[result_num, ]
+
+    progress(list(
+      locality = locality_profile$locality,
+      hscp = locality_profile$hscp,
+      position = result_num,
+      total = nrow(profiles),
+      status = "running",
+      output_path = NA_character_,
+      error = NA_character_
+    ))
+
+    result <- generate_profile_safely(locality_profile)
+    succeeded <- is.null(result$error)
+
+    status <- if (succeeded) "succeeded" else "failed"
+    output_path <- if (succeeded) result$result else NA_character_
+    error <- if (succeeded) NA_character_ else conditionMessage(result$error)
+
+    progress(list(
+      locality = locality_profile$locality,
+      hscp = locality_profile$hscp,
+      position = result_num,
+      total = nrow(profiles),
+      status = status,
+      output_path = output_path,
+      error = error
+    ))
+
+    # Release large per-locality objects before starting the next profile.
+    gc()
+
+    tibble::tibble(
+      locality = locality_profile$locality,
+      hscp = locality_profile$hscp,
+      status = status,
+      output_path = output_path,
+      error = error
+    )
+  }) |>
+    purrr::list_rbind()
+
+  list(
+    total = nrow(results),
+    succeeded = sum(results$status == "succeeded"),
+    failed = sum(results$status == "failed"),
+    results = results
+  )
 }

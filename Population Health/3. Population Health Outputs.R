@@ -317,7 +317,8 @@ deaths_15_44_time_trend <- scotpho_time_trend(
   chart_title = "Deaths Aged 15 to 44 Time Trend",
   xaxis_title = "Year Groups (3-year aggregates)",
   yaxis_title = "Deaths, aged 15 to 44\n(Standardised rates per 100,000)",
-  string_wrap = 10
+  string_wrap = 10,
+  locality = LOCALITY
 )
 
 
@@ -328,7 +329,8 @@ deaths_15_44_bar <- scotpho_bar_chart(
     "Deaths, Aged 15 to 44 by area, ",
     max(deaths_15_44[["period_short"]])
   ),
-  xaxis_title = "Deaths (Standardised rates per 100,000)"
+  xaxis_title = "Deaths (Standardised rates per 100,000)",
+  locality = LOCALITY
 )
 
 
@@ -371,7 +373,8 @@ cancer_reg_time_trend <- scotpho_time_trend(
   chart_title = "Cancer Registrations Time Trend",
   xaxis_title = "Year Groups (3-year aggregates)",
   yaxis_title = "Cancer registrations \n(Standardised rates per 100,000)",
-  string_wrap = 10
+  string_wrap = 10,
+  locality = LOCALITY
 )
 
 
@@ -413,7 +416,8 @@ early_deaths_cancer_time_trend <- scotpho_time_trend(
   chart_title = "Early Deaths from Cancer Time Trend",
   xaxis_title = "Year Groups (3-year aggregates)",
   yaxis_title = "Early deaths from cancer\n(Standardised rates per 100,000)",
-  string_wrap = 10
+  string_wrap = 10,
+  locality = LOCALITY
 )
 
 
@@ -509,7 +513,8 @@ adp_presc_time_trend <- scotpho_time_trend(
   xaxis_title = "Financial Year",
   yaxis_title = "Population prescribed\n medication (%)",
   string_wrap = 20,
-  rotate_xaxis = TRUE
+  rotate_xaxis = TRUE,
+  locality = LOCALITY
 )
 
 
@@ -521,7 +526,8 @@ adp_presc_bar <-
       "Anxiety, Depression and Psychosis Prescriptions, ",
       max(adp_presc$period_short)
     ),
-    xaxis_title = "Population prescribed medication (%)"
+    xaxis_title = "Population prescribed medication (%)",
+    locality = LOCALITY
   )
 
 

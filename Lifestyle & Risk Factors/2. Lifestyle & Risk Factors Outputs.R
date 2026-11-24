@@ -135,7 +135,8 @@ drug_hosp_time_trend <- scotpho_time_trend(
   yaxis_title = "Drug-related admissions\n(Standardised rates per 100,000)",
   string_wrap = 10,
   trend_years = trend_years,
-  rotate_xaxis = TRUE
+  rotate_xaxis = TRUE,
+  locality = LOCALITY
 )
 
 drug_hosp_time_trend
@@ -147,7 +148,8 @@ drug_hosp_bar <- drug_hosp %>%
       "Drug-related Hospital Admissions by Area, ",
       latest_period_drug_hosp
     ),
-    xaxis_title = "Drug-related admissions (Standardised rates per 100,000)"
+    xaxis_title = "Drug-related admissions (Standardised rates per 100,000)",
+    locality = LOCALITY
   )
 
 drug_hosp_bar
@@ -221,7 +223,8 @@ alcohol_hosp_time_trend <- scotpho_time_trend(
   xaxis_title = "Financial Year",
   yaxis_title = "Alcohol-related admissions\n(Standardised rates per 100,000)",
   string_wrap = 10,
-  rotate_xaxis = TRUE
+  rotate_xaxis = TRUE,
+  locality = LOCALITY
 )
 
 alcohol_hosp_time_trend
@@ -234,7 +237,8 @@ alcohol_hosp_bar <- alcohol_hosp %>%
       "Alcohol-related Hospital Admissions by Area, ",
       max(.$period_short)
     ),
-    xaxis_title = "Alcohol-related admissions (Standardised rates per 100,000)"
+    xaxis_title = "Alcohol-related admissions (Standardised rates per 100,000)",
+    locality = LOCALITY
   )
 
 alcohol_hosp_bar
@@ -304,7 +308,8 @@ alcohol_deaths_time_trend <- scotpho_time_trend(
   chart_title = "Alcohol-specific Deaths Time Trend",
   xaxis_title = "Year Groups (5-year aggregates)",
   yaxis_title = "Alcohol-specific deaths\n(Standardised rates per 100,000)",
-  string_wrap = 10
+  string_wrap = 10,
+  locality = LOCALITY
 )
 
 alcohol_deaths_time_trend
@@ -317,7 +322,8 @@ alcohol_deaths_bar <- alcohol_deaths %>%
       "Alcohol-specific Deaths by Area, ",
       max(.$period_short)
     ),
-    xaxis_title = "Alcohol-specific deaths (Standardised rates per 100,000)"
+    xaxis_title = "Alcohol-specific deaths (Standardised rates per 100,000)",
+    locality = LOCALITY
   )
 
 alcohol_deaths_bar
@@ -388,7 +394,8 @@ bowel_screening_time_trend <- scotpho_time_trend(
   chart_title = "Bowel Screening Uptake Time Trend",
   xaxis_title = "Year Groups (3-year aggregates)",
   yaxis_title = "Bowel screening uptake (%)",
-  string_wrap = 10
+  string_wrap = 10,
+  locality = LOCALITY
 )
 
 bowel_screening_time_trend
@@ -401,7 +408,8 @@ bowel_screening_bar <- bowel_screening %>%
       "Bowel Screening Uptake by Area, ",
       max(.$period_short)
     ),
-    xaxis_title = "Bowel screening uptake (%)"
+    xaxis_title = "Bowel screening uptake (%)",
+    locality = LOCALITY
   )
 
 bowel_screening_bar
